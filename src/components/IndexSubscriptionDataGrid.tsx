@@ -27,8 +27,18 @@ interface Props {
 const IndexSubscriptionDataGrid: FC<Props> = ({network, queryResult, setPaging, ordering, setOrdering}) => {
   const columns: GridColDef[] = [
     {field: 'id', hide: true},
-    {field: 'token', headerName: "Token", flex: 1, renderCell: (params) => (<SuperTokenAddress network={network} address={params.value} />)},
-    {field: 'publisher', headerName: "Publisher", flex: 1, renderCell: (params) => (<AccountAddress network={network} address={params.value} />)},
+    {
+      field: 'token',
+      headerName: "Token",
+      flex: 1,
+      renderCell: (params) => (<SuperTokenAddress network={network} address={params.value}/>)
+    },
+    {
+      field: 'publisher',
+      headerName: "Publisher",
+      flex: 1,
+      renderCell: (params) => (<AccountAddress network={network} address={params.value}/>)
+    },
     {field: 'approved', headerName: "Approved", flex: 1},
     {field: 'units', headerName: "Total Index Units", flex: 1},
     {field: 'totalAmountReceivedUntilUpdatedAt', headerName: "Total Amount Received", flex: 1},
