@@ -3,7 +3,7 @@ import {FC, useMemo, useState} from "react";
 import {Network} from "../redux/networks";
 import {DataGridProps, GridColDef, GridRenderCellParams} from "@mui/x-data-grid";
 import AccountAddress from "./AccountAddress";
-import {createSkipPaging, Ordering, SkipPaging, Stream, Stream_OrderBy} from "@superfluid-finance/sdk-core";
+import {createSkipPaging, Ordering, Paging, SkipPaging, Stream, Stream_OrderBy} from "@superfluid-finance/sdk-core";
 import FlowingBalance from "./FlowingBalance";
 import {timeAgo} from "../utils/dateTime";
 import {sfSubgraph} from "../redux/store";
@@ -48,13 +48,9 @@ export const NetworkStreams: FC<{ network: Network }> = ({network}) => {
     }
   ], [network.chainId]);
 
-  const [ordering, setOrdering] = useState<Ordering<Stream_OrderBy> | undefined>({
-    orderBy: "createdAtTimestamp",
-    orderDirection: "desc"
-  });
-  const [paging, setPaging] = useState<SkipPaging>(createSkipPaging({
-    take: 10
-  }));
+  const [ordering, setOrdering] = useState<Ordering<Stream_OrderBy> | undefined>(defaultStreamQueryOrdering);
+
+  const [paging, setPaging] = useState<SkipPaging>(defaultStreamQueryPaging);
 
   const query = sfSubgraph.useStreamsQuery({
     chainId: network.chainId,
@@ -76,6 +72,16 @@ export const NetworkStreams: FC<{ network: Network }> = ({network}) => {
     setPaging={setPaging} ordering={ordering}
     setOrdering={(x: any) => setOrdering(x)}/>);
 }
+
+export const defaultStreamQueryOrdering: Ordering<Stream_OrderBy> = {
+  orderBy: "createdAtTimestamp",
+  orderDirection: "desc"
+};
+
+
+export const defaultStreamQueryPaging: Paging = createSkipPaging({
+  take: 10
+});
 
 const SenderReceiver: FC<{ network: Network, fromAddress: string, toAddress: string }> = ({
                                                                                             network,
