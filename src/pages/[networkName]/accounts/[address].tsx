@@ -10,7 +10,7 @@ import {
   Tab,
   Typography
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { sfApi, sfSubgraph } from "../../../redux/store";
 import { skipToken } from "@reduxjs/toolkit/query";
@@ -22,13 +22,18 @@ import NetworkDisplay from "../../../components/NetworkDisplay";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import EventList from "../../../components/EventList";
-import { findNetwork } from "../../../redux/networks";
+import { findNetwork, Network } from "../../../redux/networks";
 import { FavouriteButton } from "../../../components/AddressBook";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { addressBookSelectors, createEntryId } from "../../../redux/slices/addressBook.slice";
 import { useAppSelector } from "../../../redux/hooks";
 import { ethers } from "ethers";
 import Error from "next/error";
+import { incomingStreamOrderingDefault, incomingStreamPagingDefault } from "../../../components/AccountStreamsIncomingDataGrid";
+import { outgoingStreamOrderingDefault, outgoingStreamPagingDefault } from "../../../components/AccountStreamsOutgoingDataGrid";
+import { publishedIndexOrderingDefault, publishedIndexPagingDefault } from "../../../components/AccountIndexesDataGrid";
+import { indexSubscriptionOrderingDefault, indexSubscriptionPagingDefault } from "../../../components/AccountIndexSubscriptionsDataGrid";
+import AccountAddress from "../../../components/AccountAddress";
 
 const getAddress = (address: unknown): string => {
   if (typeof address === "string") {
@@ -43,6 +48,7 @@ const AccountPage: NextPage = () => {
   const { networkName, address } = router.query;
 
   const network = typeof networkName === "string" ? findNetwork(networkName) : undefined;
+
   const accountQuery = sfSubgraph.useAccountQuery(network ? {
     chainId: network.chainId,
     id: getAddress(address)
@@ -59,8 +65,15 @@ const AccountPage: NextPage = () => {
     }
   }, [])
 
+  const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams')
+  const prefetchIndexesQuery = sfSubgraph.usePrefetch('indexes')
+  const prefetchIndexSubscriptionsQuery = sfSubgraph.usePrefetch('indexSubscriptions')
+  const prefetchTokensQuery = sfSubgraph.usePrefetch('accountTokenSnapshots')
+  const prefetchEventsQuery = sfSubgraph.usePrefetch('events')
+
+  const accountAddress = getAddress(address);
   const [tabValue, setTabValue] = useState<string>("streams");
-  const addressBookEntry = useAppSelector(state => network ? addressBookSelectors.selectById(state, createEntryId(network, getAddress(address))) : undefined);
+  const addressBookEntry = useAppSelector(state => network ? addressBookSelectors.selectById(state, createEntryId(network, accountAddress)) : undefined);
 
   if (!accountQuery.isLoading && !accountQuery.data) {
     return <Error statusCode={404} />;
@@ -124,8 +137,47 @@ const AccountPage: NextPage = () => {
                   scrollButtons="auto"
                   onChange={(_event, newValue: string) => setTabValue(newValue)}
                   aria-label="tabs">
-                  <Tab label="Streams" value="streams" />
-                  <Tab label="Indexes" value="indexes" />
+                  <Tab label="Streams" value="streams" onMouseEnter={() => {
+                    if (network) {
+                      prefetchStreamsQuery({
+                        chainId: network.chainId,
+                        filter: {
+                          receiver: accountAddress
+                        },
+                        order: incomingStreamOrderingDefault,
+                        pagination: incomingStreamPagingDefault
+                      })
+                      prefetchStreamsQuery({
+                        chainId: network.chainId,
+                        filter: {
+                          sender: accountAddress
+                        },
+                        order: outgoingStreamOrderingDefault,
+                        pagination: outgoingStreamPagingDefault
+                      })
+                    }
+                  }} />
+                  <Tab label="Indexes" value="indexes"
+                    onMouseEnter={() => {
+                      if (network) {
+                        prefetchIndexesQuery({
+                          chainId: network.chainId,
+                          filter: {
+                            publisher: accountAddress
+                          },
+                          order: publishedIndexOrderingDefault,
+                          pagination: publishedIndexPagingDefault
+                        })
+                        prefetchIndexSubscriptionsQuery({
+                          chainId: network.chainId,
+                          filter: {
+                            subscriber: accountAddress
+                          },
+                          order: indexSubscriptionOrderingDefault,
+                          pagination: indexSubscriptionPagingDefault
+                        })
+                      }
+                    }} />
                   <Tab label="Super Tokens" value="tokens" />
                   <Tab label="Events" value="events" />
                 </TabList>

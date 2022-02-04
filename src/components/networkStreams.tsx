@@ -49,7 +49,6 @@ export const NetworkStreams: FC<{ network: Network }> = ({network}) => {
   ], [network.chainId]);
 
   const [ordering, setOrdering] = useState<Ordering<Stream_OrderBy> | undefined>(defaultStreamQueryOrdering);
-
   const [paging, setPaging] = useState<SkipPaging>(defaultStreamQueryPaging);
 
   const query = sfSubgraph.useStreamsQuery({
@@ -79,7 +78,7 @@ export const defaultStreamQueryOrdering: Ordering<Stream_OrderBy> = {
 };
 
 
-export const defaultStreamQueryPaging: Paging = createSkipPaging({
+export const defaultStreamQueryPaging: SkipPaging = createSkipPaging({
   take: 10
 });
 
