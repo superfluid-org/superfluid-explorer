@@ -61,7 +61,7 @@ function MyApp(props: MyAppProps) {
           sx={{
             display: "flex",
             flexFlow: "column",
-            height: "100vh",
+            height: "100vh"
           }}
         >
           <SfAppBar />
@@ -69,8 +69,8 @@ function MyApp(props: MyAppProps) {
             <Layout>
               <Component {...pageProps} />
             </Layout>
+            <Footer />
           </Box>
-          <Footer />
         </Box>
       </ThemeProvider>
     </CacheProvider>

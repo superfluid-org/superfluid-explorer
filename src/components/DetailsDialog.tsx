@@ -33,7 +33,8 @@ const DetailsDialog: FC<{
       // TransitionComponent={Transition}
       PaperProps={{
         sx: {
-          width: "50%"
+          width: "50%",
+          bgcolor: "background.default"
         }
       }}
     >
