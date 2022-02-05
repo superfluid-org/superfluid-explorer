@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import DetailsDialog from "./DetailsDialog";
 import { Network } from "../redux/networks";
-import { IndexSubscriptionPageContent } from "../pages/[networkName]/index-subscriptions/[id]";
+import { IndexSubscriptionPageContent } from "../pages/[_network]/index-subscriptions/[_id]";
 
 export const IndexSubscriptionDetailsDialog: FC<{ indexSubscriptionId: string, network: Network }> = (props) => {
   const [open, setOpen] = useState(false);

@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import DetailsDialog from "./DetailsDialog";
 import {Network} from "../redux/networks";
-import { StreamPageContent } from "../pages/[networkName]/streams/[id]";
+import { StreamPageContent } from "../pages/[_network]/streams/[_id]";
 
 export const StreamDetailsDialog: FC<{ streamId: string, network: Network}> = (props) => {
   const [open, setOpen] = useState(false);

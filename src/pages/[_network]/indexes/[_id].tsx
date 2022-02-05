@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { findNetwork, Network } from "../../../redux/networks";
+import { tryGetNetwork, Network } from "../../../redux/networks";
 import Error from "next/error";
 import { FC, useState } from "react";
 import { sfSubgraph } from "../../../redux/store";
@@ -14,15 +14,15 @@ import IndexSubscriptionDataGrid from "../../../components/IndexSubscriptionData
 
 const IndexPage: NextPage = () => {
     const router = useRouter()
-    const { networkName, id } = router.query;
+    const { _network, _id } = router.query;
 
-    const network = typeof networkName === "string" ? findNetwork(networkName) : undefined;
+    const network = typeof _network === "string" ? tryGetNetwork(_network) : undefined;
 
     if (!network) {
         return <Error statusCode={404} />;
     }
 
-    return <IndexPageContent indexId={getId(id)} network={network} />;
+    return <IndexPageContent indexId={getId(_id)} network={network} />;
 }
 
 export default IndexPage;

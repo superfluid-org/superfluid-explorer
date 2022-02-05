@@ -4,7 +4,7 @@ import {
   Button} from "@mui/material";
 import DetailsDialog from "./DetailsDialog";
 import {Network} from "../redux/networks";
-import { IndexPageContent } from "../pages/[networkName]/indexes/[id]";
+import { IndexPageContent } from "../pages/[_network]/indexes/[_id]";
 
 export const IndexPublicationDetailsDialog: FC<{  network: Network;
   indexId: string}> = (props) => {

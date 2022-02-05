@@ -22,7 +22,7 @@ import NetworkDisplay from "../../../components/NetworkDisplay";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import EventList from "../../../components/EventList";
-import { findNetwork, Network } from "../../../redux/networks";
+import { tryGetNetwork, Network } from "../../../redux/networks";
 import { FavouriteButton } from "../../../components/AddressBook";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { addressBookSelectors, createEntryId } from "../../../redux/slices/addressBook.slice";
@@ -45,13 +45,13 @@ const getAddress = (address: unknown): string => {
 
 const AccountPage: NextPage = () => {
   const router = useRouter()
-  const { networkName, address } = router.query;
+  const { _network, _address } = router.query;
 
-  const network = typeof networkName === "string" ? findNetwork(networkName) : undefined;
+  const network = typeof _network === "string" ? tryGetNetwork(_network) : undefined;
 
   const accountQuery = sfSubgraph.useAccountQuery(network ? {
     chainId: network.chainId,
-    id: getAddress(address)
+    id: getAddress(_address)
   } : skipToken);
 
   const [triggerMonitoring, monitorResult] = sfApi.useMonitorForEventsToInvalidateCacheMutation();
@@ -71,7 +71,7 @@ const AccountPage: NextPage = () => {
   const prefetchTokensQuery = sfSubgraph.usePrefetch('accountTokenSnapshots')
   const prefetchEventsQuery = sfSubgraph.usePrefetch('events')
 
-  const accountAddress = getAddress(address);
+  const accountAddress = getAddress(_address);
   const [tabValue, setTabValue] = useState<string>("streams");
   const addressBookEntry = useAppSelector(state => network ? addressBookSelectors.selectById(state, createEntryId(network, accountAddress)) : undefined);
 
@@ -184,16 +184,16 @@ const AccountPage: NextPage = () => {
               </Box>
               <Box>
                 <TabPanel value="events">
-                  {(network && address) && <EventList network={network} address={getAddress(address)} />}
+                  {(network && _address) && <EventList network={network} address={getAddress(_address)} />}
                 </TabPanel>
                 <TabPanel value="tokens">
-                  {(network && address) && <AccountTokens network={network} accountAddress={getAddress(address)} />}
+                  {(network && _address) && <AccountTokens network={network} accountAddress={getAddress(_address)} />}
                 </TabPanel>
                 <TabPanel value="streams">
-                  {(network && address) && <AccountStreams network={network} accountAddress={getAddress(address)} />}
+                  {(network && _address) && <AccountStreams network={network} accountAddress={getAddress(_address)} />}
                 </TabPanel>
                 <TabPanel value="indexes">
-                  {(network && address) && <AccountIndexes network={network} accountAddress={getAddress(address)} />}
+                  {(network && _address) && <AccountIndexes network={network} accountAddress={getAddress(_address)} />}
                 </TabPanel>
               </Box>
             </TabContext>

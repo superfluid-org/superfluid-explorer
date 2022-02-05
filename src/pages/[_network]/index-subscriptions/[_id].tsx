@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
-import { findNetwork, Network } from "../../../redux/networks";
+import { tryGetNetwork, Network } from "../../../redux/networks";
 import Error from "next/error";
 import { sfSubgraph } from "../../../redux/store";
 import { createSkipPaging, Index, IndexSubscription, Ordering, SkipPaging, SubscriptionUnitsUpdatedEvent_OrderBy } from "@superfluid-finance/sdk-core";
@@ -15,15 +15,15 @@ import SubscriptionUnitsUpdatedEventDataGrid from "../../../components/Subscript
 
 const IndexSubscriptionPage: NextPage = () => {
     const router = useRouter()
-    const { networkName, id } = router.query;
+    const { _network, _id } = router.query;
 
-    const network = typeof networkName === "string" ? findNetwork(networkName) : undefined;
+    const network = typeof _network === "string" ? tryGetNetwork(_network) : undefined;
 
     if (!network) {
         return <Error statusCode={404} />;
     }
 
-    return <IndexSubscriptionPageContent indexSubscriptionId={getId(id)} network={network} />;;
+    return <IndexSubscriptionPageContent indexSubscriptionId={getId(_id)} network={network} />;;
 }
 
 export default IndexSubscriptionPage;

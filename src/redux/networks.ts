@@ -107,16 +107,22 @@ export const networksByName = new Map(networks.map(x => [x.slugName.toLowerCase(
 
 export const networksByChainId = new Map(networks.map(x => [x.chainId, x]))
 
-export const findNetwork = (x: unknown): Network => {
+export const tryGetNetwork = (x: unknown): Network | undefined => {
   let network: Network | undefined = undefined;
 
   if (typeof x === "string") {
     network = networksByName.get(x.toLowerCase());
   }
 
-  if (network) {
-    return network;
-  } else {
-    throw Error(`Network ${x} not found. TODO(KK): error page`)
+  if (typeof x === "number") {
+    network = networksByChainId.get(x);
   }
+
+  return network;
 }
+
+export const tryGetString = (x: unknown): string | undefined => {
+  if (typeof x === "string") {
+    return x;
+  }
+} 

@@ -22,7 +22,7 @@ import {BoxProps} from "@mui/material/Box/Box";
 import _ from "lodash";
 import NextLink from 'next/link';
 import NetworkFormatted from "./NetworkDisplay";
-import {findNetwork, Network, networks, networksByChainId} from "../redux/networks";
+import {tryGetNetwork, Network, networks, networksByChainId} from "../redux/networks";
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
 import {
   createEntryId,
