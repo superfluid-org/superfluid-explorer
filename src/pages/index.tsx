@@ -13,6 +13,8 @@ import AppLink from '../components/AppLink';
 import { sfSubgraph } from '../redux/store';
 
 const Home: NextPage = () => {
+console.log("Should not log on server.")
+
   const [value, setValue] = React.useState('matic');
 
   const networksOrdered = _.sortBy(networks, x => x.isTestnet, x => x.slugName)
