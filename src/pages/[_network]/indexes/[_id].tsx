@@ -1,8 +1,7 @@
 import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { tryGetNetwork, Network } from "../../../redux/networks";
+import { Network } from "../../../redux/networks";
 import Error from "next/error";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { sfSubgraph } from "../../../redux/store";
 import { createSkipPaging, Index, IndexSubscription_OrderBy, IndexUpdatedEvent_OrderBy, Ordering, SkipPaging } from "@superfluid-finance/sdk-core";
 import { Box, Card, Container, Grid, List, ListItem, ListItemText, Skeleton, Typography } from "@mui/material";
@@ -11,18 +10,14 @@ import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import IndexUpdatedEventDataGrid from "../../../components/IndexUpdatedEventDataGrid";
 import IndexSubscriptionDataGrid from "../../../components/IndexSubscriptionDataGrid";
+import NetworkContext from "../../../contexts/NetworkContext";
+import IdContext from "../../../contexts/IdContext";
 
 const IndexPage: NextPage = () => {
-    const router = useRouter()
-    const { _network, _id } = router.query;
+    const network = useContext(NetworkContext);
+    const indexId = useContext(IdContext);
 
-    const network = typeof _network === "string" ? tryGetNetwork(_network) : undefined;
-
-    if (!network) {
-        return <Error statusCode={404} />;
-    }
-
-    return <IndexPageContent indexId={getId(_id)} network={network} />;
+    return <IndexPageContent indexId={indexId} network={network} />;
 }
 
 export default IndexPage;
@@ -64,9 +59,13 @@ export const IndexPageContent: FC<{ indexId: string, network: Network }> = ({ in
         order: indexSubscriptionPagingOrdering
     });
 
-    if (!indexQuery.isLoading && !indexQuery.data) {
+    if (
+        !indexQuery.isUninitialized &&
+        !indexQuery.isLoading &&
+        !indexQuery.data
+      ) {
         return <Error statusCode={404} />;
-    }
+      }
 
     return (<Container component={Box} sx={{ my: 2, py: 2 }}>
         <Grid container spacing={3}>
@@ -129,11 +128,4 @@ export const IndexPageContent: FC<{ indexId: string, network: Network }> = ({ in
         </Grid>
     </Container>
     );
-}
-
-const getId = (id: unknown): string => {
-    if (typeof id === "string") {
-        return id;
-    }
-    throw `Id ${id} not found. TODO(KK): error page`;
 }

@@ -10,10 +10,8 @@ import {
   Tab,
   Typography
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import { sfApi, sfSubgraph } from "../../../redux/store";
-import { skipToken } from "@reduxjs/toolkit/query";
 import AccountStreams from "../../../components/AccountStreams";
 import AccountIndexes from "../../../components/AccountIndexes";
 import AccountTokens from "../../../components/AccountTokens";
@@ -22,7 +20,6 @@ import NetworkDisplay from "../../../components/NetworkDisplay";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import EventList from "../../../components/EventList";
-import { tryGetNetwork, Network } from "../../../redux/networks";
 import { FavouriteButton } from "../../../components/AddressBook";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { addressBookSelectors, createEntryId } from "../../../redux/slices/addressBook.slice";
@@ -33,26 +30,17 @@ import { incomingStreamOrderingDefault, incomingStreamPagingDefault } from "../.
 import { outgoingStreamOrderingDefault, outgoingStreamPagingDefault } from "../../../components/AccountStreamsOutgoingDataGrid";
 import { publishedIndexOrderingDefault, publishedIndexPagingDefault } from "../../../components/AccountIndexesDataGrid";
 import { indexSubscriptionOrderingDefault, indexSubscriptionPagingDefault } from "../../../components/AccountIndexSubscriptionsDataGrid";
-import AccountAddress from "../../../components/AccountAddress";
-
-const getAddress = (address: unknown): string => {
-  if (typeof address === "string") {
-    return address;
-  }
-
-  throw `Address ${address} not found. TODO(KK): error page`
-}
+import NetworkContext from "../../../contexts/NetworkContext";
+import IdContext from "../../../contexts/IdContext";
 
 const AccountPage: NextPage = () => {
-  const router = useRouter()
-  const { _network, _id } = router.query;
+  const network = useContext(NetworkContext);
+  const address = useContext(IdContext);
 
-  const network = typeof _network === "string" ? tryGetNetwork(_network) : undefined;
-
-  const accountQuery = sfSubgraph.useAccountQuery(network ? {
+  const accountQuery = sfSubgraph.useAccountQuery({
     chainId: network.chainId,
-    id: getAddress(_id)
-  } : skipToken);
+    id: address
+  });
 
   const [triggerMonitoring, monitorResult] = sfApi.useMonitorForEventsToInvalidateCacheMutation();
   useEffect(() => {
@@ -71,11 +59,14 @@ const AccountPage: NextPage = () => {
   const prefetchTokensQuery = sfSubgraph.usePrefetch('accountTokenSnapshots')
   const prefetchEventsQuery = sfSubgraph.usePrefetch('events')
 
-  const accountAddress = getAddress(_id);
   const [tabValue, setTabValue] = useState<string>("streams");
-  const addressBookEntry = useAppSelector(state => network ? addressBookSelectors.selectById(state, createEntryId(network, accountAddress)) : undefined);
+  const addressBookEntry = useAppSelector(state => network ? addressBookSelectors.selectById(state, createEntryId(network, address)) : undefined);
 
-  if (!accountQuery.isLoading && !accountQuery.data) {
+  if (
+    !accountQuery.isUninitialized &&
+    !accountQuery.isLoading &&
+    !accountQuery.data
+  ) {
     return <Error statusCode={404} />;
   }
 
@@ -142,7 +133,7 @@ const AccountPage: NextPage = () => {
                       prefetchStreamsQuery({
                         chainId: network.chainId,
                         filter: {
-                          receiver: accountAddress
+                          receiver: address
                         },
                         order: incomingStreamOrderingDefault,
                         pagination: incomingStreamPagingDefault
@@ -150,7 +141,7 @@ const AccountPage: NextPage = () => {
                       prefetchStreamsQuery({
                         chainId: network.chainId,
                         filter: {
-                          sender: accountAddress
+                          sender: address
                         },
                         order: outgoingStreamOrderingDefault,
                         pagination: outgoingStreamPagingDefault
@@ -163,7 +154,7 @@ const AccountPage: NextPage = () => {
                         prefetchIndexesQuery({
                           chainId: network.chainId,
                           filter: {
-                            publisher: accountAddress
+                            publisher: address
                           },
                           order: publishedIndexOrderingDefault,
                           pagination: publishedIndexPagingDefault
@@ -171,7 +162,7 @@ const AccountPage: NextPage = () => {
                         prefetchIndexSubscriptionsQuery({
                           chainId: network.chainId,
                           filter: {
-                            subscriber: accountAddress
+                            subscriber: address
                           },
                           order: indexSubscriptionOrderingDefault,
                           pagination: indexSubscriptionPagingDefault
@@ -184,16 +175,16 @@ const AccountPage: NextPage = () => {
               </Box>
               <Box>
                 <TabPanel value="events">
-                  {(network && _id) && <EventList network={network} address={getAddress(_id)} />}
+                  <EventList network={network} address={address} />
                 </TabPanel>
                 <TabPanel value="tokens">
-                  {(network && _id) && <AccountTokens network={network} accountAddress={getAddress(_id)} />}
+                  <AccountTokens network={network} accountAddress={address} />
                 </TabPanel>
                 <TabPanel value="streams">
-                  {(network && _id) && <AccountStreams network={network} accountAddress={getAddress(_id)} />}
+                  <AccountStreams network={network} accountAddress={address} />
                 </TabPanel>
                 <TabPanel value="indexes">
-                  {(network && _id) && <AccountIndexes network={network} accountAddress={getAddress(_id)} />}
+                  <AccountIndexes network={network} accountAddress={address} />
                 </TabPanel>
               </Box>
             </TabContext>

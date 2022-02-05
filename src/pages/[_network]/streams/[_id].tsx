@@ -18,33 +18,22 @@ import {
 } from "@superfluid-finance/sdk-core";
 import { NextPage } from "next";
 import Error from "next/error";
-import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import AccountAddress from "../../../components/AccountAddress";
 import FlowingBalance from "../../../components/FlowingBalance";
-import FullPageLoader from "../../../components/FullPageLoader";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import StreamPeriodDataGrid from "../../../components/StreamPeriodDataGrid";
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
-import { tryGetNetwork, Network, tryGetString } from "../../../redux/networks";
+import IdContext from "../../../contexts/IdContext";
+import NetworkContext from "../../../contexts/NetworkContext";
+import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 
 const StreamPage: NextPage = () => {
-  const router = useRouter();
-  const { _network, _id } = router.query;
+  const network = useContext(NetworkContext);
+  const streamId = useContext(IdContext);
 
-  const network = tryGetNetwork(_network);
-  const id = tryGetString(_id);
-
-  if ((!network || !id)) {
-      if (router.isReady) {
-        return <Error statusCode={404} />;
-      } else {
-          return <FullPageLoader />
-      }
-  }
-
-  return <StreamPageContent streamId={getId(id)} network={network} />;
+  return <StreamPageContent streamId={streamId} network={network} />;
 };
 
 export default StreamPage;
@@ -78,7 +67,11 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
     order: streamPeriodOrdering,
   });
 
-  if (!streamQuery.isLoading && !streamQuery.data) {
+  if (
+    !streamQuery.isUninitialized &&
+    !streamQuery.isLoading &&
+    !streamQuery.data
+  ) {
     return <Error statusCode={404} />;
   }
 
@@ -207,11 +200,4 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
       </Grid>
     </Container>
   );
-};
-
-const getId = (id: unknown): string => {
-  if (typeof id === "string") {
-    return id;
-  }
-  throw `Id ${id} not found. TODO(KK): error page`;
 };

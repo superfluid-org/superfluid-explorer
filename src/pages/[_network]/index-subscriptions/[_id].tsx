@@ -1,8 +1,6 @@
 import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { FC, useState } from "react";
-import { tryGetNetwork, Network } from "../../../redux/networks";
-import Error from "next/error";
+import { FC, useContext, useState } from "react";
+import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import { createSkipPaging, Index, IndexSubscription, Ordering, SkipPaging, SubscriptionUnitsUpdatedEvent_OrderBy } from "@superfluid-finance/sdk-core";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
@@ -12,18 +10,15 @@ import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import AccountAddress from "../../../components/AccountAddress";
 import { BigNumber } from "ethers";
 import SubscriptionUnitsUpdatedEventDataGrid from "../../../components/SubscriptionUnitsUpdatedEventDataGrid";
+import NetworkContext from "../../../contexts/NetworkContext";
+import IdContext from "../../../contexts/IdContext";
+import Error from "next/error"
 
 const IndexSubscriptionPage: NextPage = () => {
-    const router = useRouter()
-    const { _network, _id } = router.query;
+    const network = useContext(NetworkContext);
+    const indexSubscriptionId = useContext(IdContext);
 
-    const network = typeof _network === "string" ? tryGetNetwork(_network) : undefined;
-
-    if (!network) {
-        return <Error statusCode={404} />;
-    }
-
-    return <IndexSubscriptionPageContent indexSubscriptionId={getId(_id)} network={network} />;;
+    return <IndexSubscriptionPageContent indexSubscriptionId={indexSubscriptionId} network={network} />;;
 }
 
 export default IndexSubscriptionPage;
@@ -56,6 +51,14 @@ export const IndexSubscriptionPageContent: FC<{ indexSubscriptionId: string, net
         order: subscriptionUnitsUpdatedEventPagingOrdering
     });
 
+    if (
+        !indexQuery.isUninitialized &&
+        !indexQuery.isLoading &&
+        !indexQuery.data
+      ) {
+        return <Error statusCode={404} />;
+      }
+
     return (<Container component={Box} sx={{ my: 2, py: 2 }}>
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -69,19 +72,19 @@ export const IndexSubscriptionPageContent: FC<{ indexSubscriptionId: string, net
                     <List>
                         <ListItem divider>
                             <ListItemText secondary="Token"
-                                primary={(network && indexSubscription) ?
+                                primary={(indexSubscription) ?
                                     <SuperTokenAddress network={network} address={indexSubscription.token} /> :
                                     <SkeletonAddress />} />
                         </ListItem>
                         <ListItem divider>
                             <ListItemText secondary="Publisher"
-                                primary={(network && indexSubscription) ?
+                                primary={(indexSubscription) ?
                                     <AccountAddress network={network} address={indexSubscription.publisher} /> :
                                     <SkeletonAddress />} />
                         </ListItem>
                         <ListItem divider>
                             <ListItemText secondary="Subscriber"
-                                primary={(network && indexSubscription) ?
+                                primary={(indexSubscription) ?
                                     <AccountAddress network={network} address={indexSubscription.subscriber} /> :
                                     <SkeletonAddress />} />
                         </ListItem>
@@ -111,13 +114,6 @@ export const IndexSubscriptionPageContent: FC<{ indexSubscriptionId: string, net
             </Grid>
         </Grid>
     </Container>)
-}
-
-const getId = (id: unknown): string => {
-    if (typeof id === "string") {
-        return id;
-    }
-    throw `Id ${id} not found. TODO(KK): error page`;
 }
 
 const calculateUnitsReceived = (

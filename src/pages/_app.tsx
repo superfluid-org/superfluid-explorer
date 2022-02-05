@@ -15,6 +15,13 @@ import useSfTheme from "../styles/useSfTheme";
 import { hotjar } from "react-hotjar";
 import Footer from "../components/Footer";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import { tryGetNetwork, tryGetString } from "../redux/networks";
+import { isDynamicRoute } from "../utils/isDynamicRoute";
+import FullPageLoader from "../components/FullPageLoader";
+import Error from "next/error";
+import NetworkContext from "../contexts/NetworkContext";
+import IdContext from "../contexts/IdContext";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -59,9 +66,9 @@ function MyApp(props: MyAppProps) {
         >
           <SfAppBar />
           <Box component="main" sx={{ height: "100vh" }}>
-            <NoSsr>
+            <Layout>
               <Component {...pageProps} />
-            </NoSsr>
+            </Layout>
           </Box>
           <Footer />
         </Box>
@@ -70,8 +77,44 @@ function MyApp(props: MyAppProps) {
   );
 }
 
-// NOTE: This wraps the React code with Redux provider component.
+/**
+ * Scopes to network & id for dynamic routes. Idea is to reduce boilerplate in the specific pages. The downside is that a bit less can be pre-rendered.
+ */
+const Layout: FC = ({ children }) => {
+  const router = useRouter();
+  const { _network, _id } = router.query;
 
+  if (isDynamicRoute(router)) {
+    if (router.isReady) {
+      const network = tryGetNetwork(_network);
+      const id = tryGetString(_id);
+
+      if (!network || !id) {
+        return <Error statusCode={404} />;
+      } else {
+        return (
+          <NetworkContext.Provider value={network}>
+            <IdContext.Provider value={id}>{children}</IdContext.Provider>
+          </NetworkContext.Provider>
+        );
+      }
+    } else {
+      return (
+        // Prefer to show blank page here instead of a loder (less flickering).
+        <Box
+          sx={{
+            height: "100vh",
+            width: "100vw",
+          }}
+        ></Box>
+      );
+    }
+  }
+
+  return <>{children}</>;
+};
+
+// NOTE: This wraps the React code with Redux provider component.
 export default wrapper.withRedux(MyApp);
 
 export const getRenderedThemeMode = (): "light" | "dark" => {
@@ -87,5 +130,3 @@ export const getRenderedThemeMode = (): "light" | "dark" => {
 const Noop: FC = ({ children }) => {
   return <>{children}</>;
 };
-
-const NoSsr = dynamic(() => Promise.resolve(Noop), { ssr: false });

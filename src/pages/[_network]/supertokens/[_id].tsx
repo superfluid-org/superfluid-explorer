@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import { sfSubgraph, sfApi } from "../../../redux/store";
-import { skipToken } from "@reduxjs/toolkit/query";
 import {
   Breadcrumbs,
   Card,
@@ -20,50 +18,39 @@ import { Token } from "@superfluid-finance/sdk-core";
 import { NextPage } from "next";
 import SuperTokenIndexes from "../../../components/SuperTokenIndexes";
 import SuperTokenStreams from "../../../components/SuperTokenStreams";
-import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SkeletonTokenSymbol from "../../../components/skeletons/SkeletonTokenSymbol";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonTokenName from "../../../components/skeletons/SkeletonTokenName";
 import EventList from "../../../components/EventList";
-import { tryGetNetwork, tryGetString } from "../../../redux/networks";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Error from "next/error";
+import NetworkContext from "../../../contexts/NetworkContext";
+import IdContext from "../../../contexts/IdContext";
 
 const SuperTokenPage: NextPage = () => {
-  const router = useRouter();
-  const { _network, _id } = router.query;
+  const network = useContext(NetworkContext);
+  const address = useContext(IdContext);
 
-  const network = tryGetNetwork(_network);
-  const address = tryGetString(_id);
-
-  const tokenQuery = sfSubgraph.useTokenQuery(
-    network && address
-      ? {
-          chainId: network.chainId,
-          id: address,
-        }
-      : skipToken
-  );
+  const tokenQuery = sfSubgraph.useTokenQuery({
+    chainId: network.chainId,
+    id: address,
+  });
 
   const superToken: Token | null | undefined = tokenQuery.data;
 
   const [triggerMonitoring, monitorResult] =
     sfApi.useMonitorForEventsToInvalidateCacheMutation();
   useEffect(() => {
-    if (network && tokenQuery.data) {
+    if (superToken) {
       triggerMonitoring({
         chainId: network.chainId,
-        address: tokenQuery.data.id,
+        address: superToken.id,
       });
       return monitorResult.reset;
     }
-  }, [network, superToken]);
+  }, [superToken]);
 
   const [tabValue, setTabValue] = useState<string>("streams");
-
-  if (router.isReady && !network) {
-    return <Error statusCode={404} />;
-  }
 
   if (
     !tokenQuery.isUninitialized &&
@@ -79,7 +66,7 @@ const SuperTokenPage: NextPage = () => {
         <Grid item xs={12}>
           <Breadcrumbs aria-label="breadcrumb">
             <Typography color="text.secondary">
-              {network && network.displayName}
+              {network.displayName}
             </Typography>
             <Typography color="text.secondary">Super Tokens</Typography>
             <Typography color="text.secondary">
@@ -136,13 +123,7 @@ const SuperTokenPage: NextPage = () => {
                   <ListItem divider>
                     <ListItemText
                       secondary="Network"
-                      primary={
-                        network ? (
-                          <NetworkDisplay network={network} />
-                        ) : (
-                          <SkeletonNetwork />
-                        )
-                      }
+                      primary={<NetworkDisplay network={network} />}
                     />
                   </ListItem>
                   <ListItem divider>
@@ -180,25 +161,23 @@ const SuperTokenPage: NextPage = () => {
               </Box>
               <Box>
                 <TabPanel value="events">
-                  {network && address && (
-                    <EventList network={network} address={address} />
-                  )}
+                  {<EventList network={network} address={address} />}
                 </TabPanel>
                 <TabPanel value="streams">
-                  {network && address && (
+                  {
                     <SuperTokenStreams
                       network={network}
                       tokenAddress={address}
                     />
-                  )}
+                  }
                 </TabPanel>
                 <TabPanel value="indexes">
-                  {network && address && (
+                  {
                     <SuperTokenIndexes
                       network={network}
                       tokenAddress={address}
                     />
-                  )}
+                  }
                 </TabPanel>
               </Box>
             </TabContext>
