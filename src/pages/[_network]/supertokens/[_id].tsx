@@ -31,10 +31,10 @@ import Error from "next/error";
 
 const SuperTokenPage: NextPage = () => {
   const router = useRouter();
-  const { _network, _address } = router.query;
+  const { _network, _id } = router.query;
 
   const network = tryGetNetwork(_network);
-  const address = tryGetString(_address);
+  const address = tryGetString(_id);
 
   const tokenQuery = sfSubgraph.useTokenQuery(
     network && address

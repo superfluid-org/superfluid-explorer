@@ -45,13 +45,13 @@ const getAddress = (address: unknown): string => {
 
 const AccountPage: NextPage = () => {
   const router = useRouter()
-  const { _network, _address } = router.query;
+  const { _network, _id } = router.query;
 
   const network = typeof _network === "string" ? tryGetNetwork(_network) : undefined;
 
   const accountQuery = sfSubgraph.useAccountQuery(network ? {
     chainId: network.chainId,
-    id: getAddress(_address)
+    id: getAddress(_id)
   } : skipToken);
 
   const [triggerMonitoring, monitorResult] = sfApi.useMonitorForEventsToInvalidateCacheMutation();
@@ -71,7 +71,7 @@ const AccountPage: NextPage = () => {
   const prefetchTokensQuery = sfSubgraph.usePrefetch('accountTokenSnapshots')
   const prefetchEventsQuery = sfSubgraph.usePrefetch('events')
 
-  const accountAddress = getAddress(_address);
+  const accountAddress = getAddress(_id);
   const [tabValue, setTabValue] = useState<string>("streams");
   const addressBookEntry = useAppSelector(state => network ? addressBookSelectors.selectById(state, createEntryId(network, accountAddress)) : undefined);
 
@@ -184,16 +184,16 @@ const AccountPage: NextPage = () => {
               </Box>
               <Box>
                 <TabPanel value="events">
-                  {(network && _address) && <EventList network={network} address={getAddress(_address)} />}
+                  {(network && _id) && <EventList network={network} address={getAddress(_id)} />}
                 </TabPanel>
                 <TabPanel value="tokens">
-                  {(network && _address) && <AccountTokens network={network} accountAddress={getAddress(_address)} />}
+                  {(network && _id) && <AccountTokens network={network} accountAddress={getAddress(_id)} />}
                 </TabPanel>
                 <TabPanel value="streams">
-                  {(network && _address) && <AccountStreams network={network} accountAddress={getAddress(_address)} />}
+                  {(network && _id) && <AccountStreams network={network} accountAddress={getAddress(_id)} />}
                 </TabPanel>
                 <TabPanel value="indexes">
-                  {(network && _address) && <AccountIndexes network={network} accountAddress={getAddress(_address)} />}
+                  {(network && _id) && <AccountIndexes network={network} accountAddress={getAddress(_id)} />}
                 </TabPanel>
               </Box>
             </TabContext>
