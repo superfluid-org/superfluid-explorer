@@ -41,7 +41,7 @@ export const AccountIndexesDataGrid: FC<{
         <IndexPublicationDetailsDialog network={network} indexId={cellParams.id.toString()} />
       )
     }
-  ], []);
+  ], [network]);
 
   const [publishedIndexPaging, setPublishedIndexPaging] = useState<SkipPaging>(publishedIndexPagingDefault);
 

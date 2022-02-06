@@ -57,7 +57,7 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
         <IndexSubscriptionDetailsDialog network={network} indexSubscriptionId={cellParams.id.toString()}/>
       )
     }
-  ], []);
+  ], [network]);
 
   const rows: IndexSubscription[] = indexSubscriptionQuery.data ? indexSubscriptionQuery.data.data : [];
 

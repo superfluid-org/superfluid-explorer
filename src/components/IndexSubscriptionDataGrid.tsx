@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useMemo} from "react";
 import {AppDataGrid} from "./AppDataGrid";
 import {GridColDef} from "@mui/x-data-grid";
 import {
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const IndexSubscriptionDataGrid: FC<Props> = ({network, queryResult, setPaging, ordering, setOrdering}) => {
-  const columns: GridColDef[] = [
+  const columns: GridColDef[] = useMemo(() => [
     {field: 'id', hide: true},
     {field: 'token', headerName: "Token", flex: 1, renderCell: (params) => (<SuperTokenAddress network={network} address={params.value} />)},
     {field: 'publisher', headerName: "Publisher", flex: 1, renderCell: (params) => (<AccountAddress network={network} address={params.value} />)},
@@ -38,7 +38,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({network, queryResult, setPaging, 
         <IndexSubscriptionDetailsDialog network={network} indexSubscriptionId={cellParams.id.toString()}/>
       )
     }
-  ];
+  ], [network]);
 
   const rows: IndexSubscription[] = queryResult.data ? queryResult.data.data : [];
 

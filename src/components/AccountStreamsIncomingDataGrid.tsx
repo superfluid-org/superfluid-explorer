@@ -76,7 +76,7 @@ const AccountStreamsIncomingDataGrid: FC<{ network: Network, accountAddress: str
         <StreamDetailsDialog network={network} streamId={cellParams.id.toString()} />
       )
     }
-  ], []);
+  ], [network]);
 
   const [incomingStreamOrdering, setIncomingStreamOrdering] = useState<Ordering<Stream_OrderBy> | undefined>(incomingStreamOrderingDefault);
   const [incomingStreamPaging, setIncomingStreamPaging] = useState<SkipPaging>(incomingStreamPagingDefault);

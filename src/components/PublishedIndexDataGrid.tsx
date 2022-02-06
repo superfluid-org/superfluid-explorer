@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useMemo} from "react";
 import {AppDataGrid} from "./AppDataGrid";
 import {GridColDef} from "@mui/x-data-grid";
 import {Index, Ordering, PagedResult, SkipPaging, Index_OrderBy} from "@superfluid-finance/sdk-core";
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const PublishedIndexDataGrid: FC<Props> = ({network, queryResult, setPaging, ordering, setOrdering}) => {
-  const columns: GridColDef[] = [
+  const columns: GridColDef[] = useMemo(() => [
     {field: 'id', hide: true, flex: 1},
     // {field: 'publisher', headerName: "Publisher", flex: 1, renderCell: (params) => (<AccountAddress network={network} address={params.value} />)},
     {field: 'token', headerName: "Token", sortable: true, flex: 1, renderCell: (params) => (<SuperTokenAddress network={network} address={params.value} />)},
@@ -33,7 +33,7 @@ const PublishedIndexDataGrid: FC<Props> = ({network, queryResult, setPaging, ord
         <IndexPublicationDetailsDialog network={network} indexId={cellParams.id.toString()}/>
       )
     }
-  ];
+  ], [network]);
 
   const rows: Index[] = queryResult.data ? queryResult.data.data : [];
 

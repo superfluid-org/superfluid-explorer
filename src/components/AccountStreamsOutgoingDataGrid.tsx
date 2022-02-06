@@ -79,7 +79,7 @@ const AccountStreamsOutgoingDataGrid: FC<{ network: Network, accountAddress: str
         <StreamDetailsDialog network={network} streamId={cellParams.id.toString()} />
       )
     }
-  ], []);
+  ], [network]);
 
   const outgoingStreamsQuery = sfSubgraph.useStreamsQuery({
     chainId: network.chainId,

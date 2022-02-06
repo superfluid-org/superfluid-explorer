@@ -71,7 +71,7 @@ export const NetworkStreams: FC<{ network: Network }> = ({ network }) => {
         ),
       },
     ],
-    [network.chainId]
+    [network]
   );
 
   const [ordering, setOrdering] = useState<

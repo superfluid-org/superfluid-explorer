@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useMemo} from "react";
 import {AppDataGrid} from "./AppDataGrid";
 import {GridColDef} from "@mui/x-data-grid";
 import {
@@ -25,7 +25,7 @@ interface Props {
 
 
 const AccountTokenSnapshotDataGrid: FC<Props> = ({network, queryResult, setPaging, ordering, setOrdering}) => {
-  const columns: GridColDef[] = [
+  const columns: GridColDef[] = useMemo(() => [
     {field: 'id', hide: true, sortable: false, flex: 1},
     {field: 'token', headerName: "Token", sortable: true, flex: 1, renderCell: (params) => (<SuperTokenAddress network={network} address={params.value} />)},
     {
@@ -62,7 +62,7 @@ const AccountTokenSnapshotDataGrid: FC<Props> = ({network, queryResult, setPagin
       sortable: true,
       flex: 1
     },
-  ];
+  ], [network]);
 
   const rows: AccountTokenSnapshot[] = queryResult.data?.data ?? [];
 
