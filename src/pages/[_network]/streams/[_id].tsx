@@ -20,6 +20,7 @@ import { NextPage } from "next";
 import Error from "next/error";
 import { FC, useContext, useState } from "react";
 import AccountAddress from "../../../components/AccountAddress";
+import ClipboardCopy from "../../../components/ClipboardCopy";
 import FlowingBalance from "../../../components/FlowingBalance";
 import FlowRate from "../../../components/FlowRate";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
@@ -178,7 +179,12 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
               <ListItem divider>
                 <ListItemText
                   secondary="Subgraph ID"
-                  primary={stream && stream.id}
+                  primary={
+                    <>
+                      {streamId}
+                      <ClipboardCopy copyText={streamId} />
+                    </>
+                  }
                 />
               </ListItem>
             </List>
