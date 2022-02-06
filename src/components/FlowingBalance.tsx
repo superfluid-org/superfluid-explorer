@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Box } from "@mui/material";
 
-const ANIMATION_MINIMUM_STEP_TIME = 100;
+const ANIMATION_MINIMUM_STEP_TIME = 80;
 
 const FlowingBalance: FC<{
   balance: string;
@@ -61,7 +61,7 @@ const FlowingBalance: FC<{
     return () => {
       stopAnimation = true;
     };
-  }, [balance, balanceTimestamp, flowRate, format]);
+  }, [balance, balanceTimestamp, flowRate]);
   return (
     <Box
       component="span"
