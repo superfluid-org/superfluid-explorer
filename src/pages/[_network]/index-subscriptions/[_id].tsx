@@ -25,7 +25,7 @@ import {
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import AccountAddress from "../../../components/AccountAddress";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import SubscriptionUnitsUpdatedEventDataGrid from "../../../components/SubscriptionUnitsUpdatedEventDataGrid";
 import NetworkContext from "../../../contexts/NetworkContext";
 import IdContext from "../../../contexts/IdContext";
@@ -158,19 +158,51 @@ export const IndexSubscriptionPageContent: FC<{
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Total Units Received"
+                  secondary="Units"
+                  primary={
+                    indexSubscription ? (
+                      indexSubscription.units
+                    ) : (
+                      <Skeleton sx={{ width: "75px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  secondary="Approved"
+                  primary={
+                    indexSubscription ? (
+                      indexSubscription.approved
+                    ) : (
+                      <Skeleton sx={{ width: "25px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  secondary="Total Amount Received"
                   primary={
                     indexSubscription && index ? (
-                      calculateUnitsReceived(
-                        BigNumber.from(index.indexValue),
-                        BigNumber.from(
-                          indexSubscription.totalAmountReceivedUntilUpdatedAt
-                        ),
-                        BigNumber.from(
-                          indexSubscription.indexValueUntilUpdatedAt
-                        ),
-                        Number(indexSubscription.units)
-                      ).toString()
+                      <>
+                        {calculateEtherAmountReceived(
+                          BigNumber.from(index.indexValue),
+                          BigNumber.from(
+                            indexSubscription.totalAmountReceivedUntilUpdatedAt
+                          ),
+                          BigNumber.from(
+                            indexSubscription.indexValueUntilUpdatedAt
+                          ),
+                          Number(indexSubscription.units)
+                        ).toString()}{" "}
+                        <SuperTokenAddress
+                          network={network}
+                          address={index.token}
+                          format={(token) => token.symbol}
+                          formatLoading={() => ""}
+                        />
+                      </>
                     ) : (
                       <Skeleton sx={{ width: "100px" }} />
                     )
@@ -210,7 +242,7 @@ export const IndexSubscriptionPageContent: FC<{
   );
 };
 
-const calculateUnitsReceived = (
+const calculateEtherAmountReceived = (
   publisherIndexValue: BigNumber,
   subscriberTotalAmountReceivedUntilUpdatedAt: BigNumber,
   subscriberIndexValueUntilUpdatedAt: BigNumber,
@@ -222,5 +254,5 @@ const calculateUnitsReceived = (
       .mul(subscriberUnits)
   );
 
-  return totalUnitsReceived;
+  return ethers.utils.formatEther(totalUnitsReceived);
 };

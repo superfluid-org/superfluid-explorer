@@ -30,6 +30,9 @@ import IndexSubscriptionDataGrid from "../../../components/IndexSubscriptionData
 import NetworkContext from "../../../contexts/NetworkContext";
 import IdContext from "../../../contexts/IdContext";
 import ClipboardCopy from "../../../components/ClipboardCopy";
+import DateTime from "../../../components/Date";
+import TimeAgo from "../../../components/TimeAgo";
+import { ethers } from "ethers";
 
 const IndexPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -152,12 +155,70 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Total Distributed"
+                  secondary="Total Units Approved"
                   primary={
                     index ? (
-                      index.totalAmountDistributedUntilUpdatedAt
+                      index.totalUnitsApproved
                     ) : (
                       <Skeleton sx={{ width: "75px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  secondary="Total Units Pending"
+                  primary={
+                    index ? (
+                      index.totalUnitsPending
+                    ) : (
+                      <Skeleton sx={{ width: "75px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  secondary="Total Amount Distributed"
+                  primary={
+                    index ? (
+                      <>
+                        {ethers.utils.formatEther(
+                          index.totalAmountDistributedUntilUpdatedAt
+                        )}{" "}
+                        <SuperTokenAddress
+                          network={network}
+                          address={index.token}
+                          format={(token) => token.symbol}
+                          formatLoading={() => ""}
+                        />
+                      </>
+                    ) : (
+                      <Skeleton sx={{ width: "75px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  secondary="Last Updated At"
+                  primary={
+                    index ? (
+                      <TimeAgo subgraphTime={index.updatedAtTimestamp} />
+                    ) : (
+                      <Skeleton sx={{ width: "80px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  secondary="Created At"
+                  primary={
+                    index ? (
+                      <TimeAgo subgraphTime={index.createdAtTimestamp} />
+                    ) : (
+                      <Skeleton sx={{ width: "80px" }} />
                     )
                   }
                 />

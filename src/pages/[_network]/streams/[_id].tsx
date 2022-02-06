@@ -151,13 +151,21 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                   secondary="Total Amount Streamed"
                   primary={
                     stream ? (
-                      <FlowingBalance
-                        {...{
-                          balance: stream.streamedUntilUpdatedAt,
-                          balanceTimestamp: stream.updatedAtTimestamp,
-                          flowRate: stream.currentFlowRate,
-                        }}
-                      />
+                      <>
+                        <FlowingBalance
+                          {...{
+                            balance: stream.streamedUntilUpdatedAt,
+                            balanceTimestamp: stream.updatedAtTimestamp,
+                            flowRate: stream.currentFlowRate,
+                          }}
+                        />{" "}
+                        <SuperTokenAddress
+                          network={network}
+                          address={stream.token}
+                          format={(token) => token.symbol}
+                          formatLoading={() => ""}
+                        />
+                      </>
                     ) : (
                       <Skeleton sx={{ width: "125px" }} />
                     )

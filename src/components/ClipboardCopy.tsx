@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { SvgIconProps, Tooltip, TooltipProps } from "@mui/material";
+import { Box, SvgIconProps, Tooltip, TooltipProps } from "@mui/material";
 import { DefaultComponentProps } from "@mui/material/OverridableComponent";
 import _ from "lodash";
 
@@ -31,24 +31,24 @@ const ClipboardCopy: FC<{
   };
 
   return (
-    <Tooltip
-      {..._.merge(
-        {
-          title: isCopied ? "Copied!" : "Copy to clipboard",
-        },
-        TooltipProps
-      )}
-    >
-      <ContentCopyIcon
-        onClick={handleCopyClick}
+      <Tooltip
         {..._.merge(
           {
-            sx: { fontSize: "small", cursor: "pointer" },
+            title: isCopied ? "Copied!" : "Copy to clipboard",
           },
-          IconProps
+          TooltipProps
         )}
-      />
-    </Tooltip>
+      >
+        <ContentCopyIcon
+          onClick={handleCopyClick}
+          {..._.merge(
+            {
+              sx: { fontSize: "small", cursor: "pointer", ml: 0.5 },
+            },
+            IconProps
+          )}
+        />
+      </Tooltip>
   );
 };
 

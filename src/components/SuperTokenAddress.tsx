@@ -2,22 +2,21 @@ import { FC } from "react";
 import { ethers } from "ethers";
 import AppLink from "./AppLink";
 import { sfSubgraph } from "../redux/store";
-import {
-  CircularProgress,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import QueryError from "./QueryError";
+import { Grid, Typography } from "@mui/material";
 import { Network } from "../redux/networks";
+import { Token } from "@superfluid-finance/sdk-core";
 
 const SuperTokenAddress: FC<{
   network: Network;
   address: string;
-}> = ({ network, address }) => {
+  format?: (token: Token) => string;
+  formatLoading?: () => string;
+}> = ({
+  network,
+  address,
+  format = (token) => `${token.name} (${token.symbol})`,
+  formatLoading = () => ethers.utils.getAddress(address),
+}) => {
   const tokenQuery = sfSubgraph.useTokenQuery({
     chainId: network.chainId,
     id: address,
@@ -28,51 +27,9 @@ const SuperTokenAddress: FC<{
       className="address"
       href={`/${network.slugName}/supertokens/${address}`}
     >
-      {tokenQuery.data ? (
-        <>
-          {tokenQuery.data.name} ({tokenQuery.data.symbol})
-        </>
-      ) : (
-        ethers.utils.getAddress(address)
-      )}
+      {tokenQuery.data ? format(tokenQuery.data) : formatLoading()}
     </AppLink>
   );
-};
-
-// <Tooltip title={tokenQuery.data.id}>
-// </Tooltip>
-const SuperTokenTooltipContent: FC<{
-  network: Network;
-  address: string;
-}> = ({ network, address }) => {
-  const tokenQuery = sfSubgraph.useTokenQuery({
-    chainId: network.chainId,
-    id: address,
-  });
-
-  if (tokenQuery.isLoading) {
-    return <CircularProgress />;
-  }
-
-  if (tokenQuery.error) {
-    return <QueryError error={tokenQuery.error} />;
-  }
-
-  // <List>
-  //   <ListItem>
-  //     <ListItemText primary={accountQuery.data.isSuperApp ? "SuperApp" : "Account"}/></ListItem>
-  // </List>
-
-  return tokenQuery.data ? (
-    <List>
-      <ListItem>
-        <ListItemText primary="Super Token" />
-      </ListItem>
-      <ListItem>
-        <ListItemText primary={tokenQuery.data.name} />
-      </ListItem>
-    </List>
-  ) : null;
 };
 
 export const SuperTokenFormatted: FC<{
