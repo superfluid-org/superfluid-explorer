@@ -1,4 +1,12 @@
-import { Box, AppBar, Button, Toolbar, Container, Stack, Dialog } from "@mui/material";
+import {
+  Box,
+  AppBar,
+  Button,
+  Toolbar,
+  Container,
+  Stack,
+  Dialog,
+} from "@mui/material";
 import AppLink from "./AppLink";
 import AppSearch from "./AppSearch";
 import SelectThemeButton from "./SelectThemeButton";
@@ -12,23 +20,38 @@ export const SfAppBar = () => {
   return (
     <AppBar position="sticky">
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <AppLink href="/" >
-          <Box sx={{ filter: "invert(1)" }} >
-            <Image src="/superfluid-logo.svg" width={150} height={36} layout='intrinsic' alt="Superfluid logo" />
+        <AppLink href="/">
+          <Box sx={{ filter: "invert(1)" }}>
+            <Image
+              src="/superfluid-logo.svg"
+              width={150}
+              height={36}
+              layout="fixed"
+              alt="Superfluid logo"
+            />
           </Box>
         </AppLink>
 
-        <Container maxWidth="md">
+        <Container
+          component={Box}
+          maxWidth="md"
+          sx={{
+            display: isSearchOpen ? "none" : "inline",
+          }}
+        >
           <SearchBar>
-            <Box sx={{
-              cursor: "pointer",
-              width: "100%",
-              height: "100%",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              zIndex: 10
-            }} onClick={() => setIsSearchOpen(true)}></Box>
+            <Box
+              sx={{
+                cursor: "pointer",
+                width: "100%",
+                height: "100%",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                zIndex: 10,
+              }}
+              onClick={() => setIsSearchOpen(true)}
+            ></Box>
           </SearchBar>
         </Container>
 
@@ -41,17 +64,20 @@ export const SfAppBar = () => {
           spacing={2}
         >
           <AppLink href="/subgraph">
-            <Button sx={{ ml: 1, whiteSpace: "nowrap" }}
+            <Button
+              sx={{ ml: 1, whiteSpace: "nowrap" }}
               id="search-button"
               size="medium"
-              variant="contained">Subgraph Explorer</Button>
+              variant="contained"
+            >
+              Subgraph Explorer
+            </Button>
           </AppLink>
           <SelectThemeButton />
         </Stack>
-
       </Toolbar>
     </AppBar>
   );
-}
+};
 
 export default SfAppBar;

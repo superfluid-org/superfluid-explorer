@@ -10,7 +10,7 @@ const SearchBar: FC = ({ children}) => {
                 <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-                placeholder="Search any address on any network..."
+                placeholder={searchBarPlaceholderText}
             />
             {children}
         </Search>
@@ -18,6 +18,8 @@ const SearchBar: FC = ({ children}) => {
 }
 
 export default SearchBar;
+
+export const searchBarPlaceholderText = "Search any address on any network..."
 
 // NOTE: Search bar UI is inspired by: https://mui.com/components/app-bar/#app-bar-with-a-primary-search-field
 
