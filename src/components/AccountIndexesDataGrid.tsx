@@ -7,6 +7,7 @@ import { IndexPublicationDetailsDialog } from "./IndexPublicationDetails";
 import { createSkipPaging, Index, Index_OrderBy, Ordering, SkipPaging } from "@superfluid-finance/sdk-core";
 import { sfSubgraph } from "../redux/store";
 import { AppDataGrid } from "./AppDataGrid";
+import TimeAgo from "./TimeAgo";
 
 export const publishedIndexOrderingDefault: Ordering<Index_OrderBy> | undefined = undefined;
 export const publishedIndexPagingDefault: SkipPaging = createSkipPaging({
@@ -33,7 +34,7 @@ export const AccountIndexesDataGrid: FC<{
       headerName: "Created At",
       sortable: true,
       flex: 1,
-      renderCell: (params) => (timeAgo(params.value * 1000))
+      renderCell: (params) => <TimeAgo subgraphTime={params.value} />
     },
     {
       field: 'details', headerName: "Details", flex: 1, sortable: false, renderCell: (cellParams) => (

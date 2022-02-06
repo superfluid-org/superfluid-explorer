@@ -10,6 +10,7 @@ import { timeAgo } from "../utils/dateTime";
 import { StreamDetailsDialog } from "./StreamDetails";
 import { sfSubgraph } from "../redux/store";
 import { AppDataGrid } from "./AppDataGrid";
+import TimeAgo from "./TimeAgo";
 
 export const outgoingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
   orderBy: "createdAtTimestamp",
@@ -71,7 +72,7 @@ const AccountStreamsOutgoingDataGrid: FC<{ network: Network, accountAddress: str
       headerName: "Created At",
       sortable: true,
       flex: 1,
-      renderCell: (params) => (timeAgo(params.value * 1000))
+      renderCell: (params) => <TimeAgo subgraphTime={params.value} />
     },
     {
       field: 'details', headerName: "Details", flex: 1, sortable: false, renderCell: (cellParams) => (

@@ -6,6 +6,7 @@ import {Event_OrderBy} from "@superfluid-finance/sdk-core/dist/module/subgraph/s
 import {Network} from "../redux/networks";
 import {timeAgo} from "../utils/dateTime";
 import {TransactionHash} from "./TransactionHash";
+import TimeAgo from "./TimeAgo";
 
 interface Props {
   network: Network,
@@ -27,7 +28,7 @@ const EventDataGrid: FC<Props> = ({network, queryResult, setPaging, ordering, se
       headerName: "Timestamp",
       sortable: false,
       flex: 1,
-      renderCell: (params) => (timeAgo(params.value * 1000))
+      renderCell: (params) => <TimeAgo subgraphTime={params.value} />
     },
     {field: 'blockNumber', headerName: "Block Number", sortable: false, flex: 1},
     {

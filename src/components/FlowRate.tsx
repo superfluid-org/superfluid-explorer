@@ -13,7 +13,7 @@ const FlowRate: FC<{
   const flowRateBigNumber = BigNumber.from(flowRate);
   const flowRatePerDay = flowRateBigNumber.mul(60 * 60 * 24).toString();
 
-  return (<Tooltip title={`${flowRate}`} placement="right" arrow><Box component="span">{ethers.utils.formatEther(flowRatePerDay)}/day</Box></Tooltip>);
+  return (<Tooltip title={`${flowRate} wei/s` } placement="right" arrow><Box component="span">{ethers.utils.formatEther(flowRatePerDay)}/day</Box></Tooltip>);
 }
 
 export default FlowRate;
