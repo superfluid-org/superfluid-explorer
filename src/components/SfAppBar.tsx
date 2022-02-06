@@ -14,7 +14,7 @@ export const SfAppBar = () => {
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <AppLink href="/" >
           <Box sx={{ filter: "invert(1)" }} >
-            <Image src="/superfluid-logo.svg" width={150} height={36} layout='intrinsic' />
+            <Image src="/superfluid-logo.svg" width={150} height={36} layout='intrinsic' alt="Superfluid logo" />
           </Box>
         </AppLink>
 
