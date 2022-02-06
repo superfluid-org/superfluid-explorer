@@ -23,6 +23,7 @@ import { Divider, Grid, Typography } from "@mui/material";
 import { ethers } from "ethers";
 import AppLink from "./AppLink";
 import TimeAgo from "./TimeAgo";
+import FlowingBalanceWithToken from "./FlowingBalanceWithToken";
 
 export const NetworkStreams: FC<{ network: Network }> = ({ network }) => {
   const columns: GridColDef[] = useMemo(
@@ -165,18 +166,7 @@ const TotalStreamed: FC<{
         Total streamed:
       </Grid>
       <Grid item xs={12}>
-        <FlowingBalance
-          {...props}
-          format={(value) => ethers.utils.formatEther(value).padEnd(20, "0")}
-        />{" "}
-        {tokenQuery.data ? (
-          <AppLink
-            className="address"
-            href={`/${network.slugName}/supertokens/${tokenAddress}`}
-          >
-            {tokenQuery.data.symbol}
-          </AppLink>
-        ) : null}
+        <FlowingBalanceWithToken {...props}  />
       </Grid>
     </Grid>
   );

@@ -4,12 +4,14 @@ import { Box } from "@mui/material";
 
 const ANIMATION_MINIMUM_STEP_TIME = 80;
 
-const FlowingBalance: FC<{
+export interface FlowingBalanceProps {
   balance: string;
   balanceTimestamp: number;
   flowRate: string;
   format?: (flowingBalance: string) => string;
-}> = ({
+} 
+
+const FlowingBalance: FC<FlowingBalanceProps> = ({
   balance,
   balanceTimestamp,
   flowRate,

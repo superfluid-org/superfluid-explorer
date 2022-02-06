@@ -21,6 +21,7 @@ import Error from "next/error";
 import { FC, useContext, useState } from "react";
 import AccountAddress from "../../../components/AccountAddress";
 import FlowingBalance from "../../../components/FlowingBalance";
+import FlowRate from "../../../components/FlowRate";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import StreamPeriodDataGrid from "../../../components/StreamPeriodDataGrid";
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
@@ -137,7 +138,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                   secondary="Current Flow Rate"
                   primary={
                     stream ? (
-                      stream.currentFlowRate
+                      <FlowRate flowRate={stream.currentFlowRate} />
                     ) : (
                       <Skeleton sx={{ width: "125px" }} />
                     )

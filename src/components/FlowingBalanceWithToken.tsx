@@ -1,0 +1,36 @@
+import { ethers } from "ethers";
+import _ from "lodash";
+import { FC } from "react";
+import { Network } from "../redux/networks";
+import { sfSubgraph } from "../redux/store";
+import AppLink from "./AppLink";
+import FlowingBalance, { FlowingBalanceProps } from "./FlowingBalance";
+
+const FlowingBalanceWithToken: FC<
+  FlowingBalanceProps & { network: Network; tokenAddress: string }
+> = ({ network, tokenAddress, ...flowingBalanceProps }) => {
+  const tokenQuery = sfSubgraph.useTokenQuery({
+    chainId: network.chainId,
+    id: tokenAddress,
+  });
+  return (
+    <>
+      <FlowingBalance
+        format={(value) =>
+          ethers.utils.formatEther(value).padEnd(20, "0")
+        }
+        {...flowingBalanceProps}
+      />{" "}
+      {tokenQuery.data ? (
+        <AppLink
+          className="address"
+          href={`/${network.slugName}/supertokens/${tokenAddress}`}
+        >
+          {tokenQuery.data.symbol}
+        </AppLink>
+      ) : null}
+    </>
+  );
+};
+
+export default FlowingBalanceWithToken;
