@@ -12,6 +12,7 @@ import {IndexSubscriptionDetailsDialog} from "./IndexSubscriptionDetails";
 import AccountAddress from "./AccountAddress";
 import SuperTokenAddress from "./SuperTokenAddress";
 import {Network} from "../redux/networks";
+import { ethers } from "ethers";
 
 interface Props {
   network: Network,
@@ -31,7 +32,19 @@ const IndexSubscriptionDataGrid: FC<Props> = ({network, queryResult, setPaging, 
     {field: 'publisher', headerName: "Publisher", flex: 1, renderCell: (params) => (<AccountAddress network={network} address={params.value} />)},
     {field: 'approved', headerName: "Approved", flex: 1},
     {field: 'units', headerName: "Total Index Units", flex: 1},
-    {field: 'totalAmountReceivedUntilUpdatedAt', headerName: "Total Amount Received", flex: 1},
+    // Kind of not worth showing this...
+    // {field: 'totalAmountReceivedUntilUpdatedAt', headerName: "Total Amount Received", flex: 1,         renderCell: (params) =>
+    // (
+    //   <>
+    //     {ethers.utils.formatEther(params.value)}&nbsp;
+    //     <SuperTokenAddress
+    //       network={network}
+    //       address={params.row.token}
+    //       format={(token) => token.symbol}
+    //       formatLoading={() => ""}
+    //     />
+    //   </>
+    // )},
     {field: 'units', headerName: "Subscription Units", flex: 1},
     {
       field: 'details', headerName: "Details", flex: 1, sortable: false, renderCell: (cellParams) => (

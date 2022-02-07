@@ -1,19 +1,23 @@
 import { NextPage } from "next";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useMemo, useState } from "react";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import {
   createSkipPaging,
   Index,
   IndexSubscription,
+  IndexUpdatedEvent,
+  IndexUpdatedEvent_OrderBy,
   Ordering,
   SkipPaging,
+  SubscriptionUnitsUpdatedEvent,
   SubscriptionUnitsUpdatedEvent_OrderBy,
 } from "@superfluid-finance/sdk-core";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import {
   Box,
   Card,
+  CircularProgress,
   Container,
   Grid,
   List,
@@ -31,6 +35,156 @@ import NetworkContext from "../../../contexts/NetworkContext";
 import IdContext from "../../../contexts/IdContext";
 import Error from "next/error";
 import ClipboardCopy from "../../../components/ClipboardCopy";
+import TimeAgo from "../../../components/TimeAgo";
+import _ from "lodash";
+import { GridColDef } from "@mui/x-data-grid";
+import { AppDataGrid } from "../../../components/AppDataGrid";
+
+const IndexSubscriptionDistributions: FC<{
+  network: Network;
+  indexSubscriptionId: string;
+}> = ({ network, indexSubscriptionId }) => {
+  const indexSubscriptionQuery = sfSubgraph.useIndexSubscriptionQuery({
+    chainId: network.chainId,
+    id: indexSubscriptionId,
+  });
+
+  const indexSubscription: IndexSubscription | undefined | null =
+    indexSubscriptionQuery.data;
+
+  const indexQuery = sfSubgraph.useIndexQuery(
+    indexSubscription
+      ? {
+          chainId: network.chainId,
+          id: indexSubscription.index,
+        }
+      : skipToken
+  );
+
+  const index: Index | undefined | null = indexQuery.data;
+
+  const [indexUpdatedEventPaging, setIndexUpdatedEventPaging] =
+    useState<SkipPaging>(
+      createSkipPaging({
+        take: 10,
+      })
+    );
+  const [indexUpdatedEventOrdering, setIndexUpdatedEventOrdering] = useState<
+    Ordering<IndexUpdatedEvent_OrderBy> | undefined
+  >({
+    orderBy: "timestamp",
+    orderDirection: "desc",
+  });
+
+  const subscriptionUnitsUpdatedEventsQuery =
+    sfSubgraph.useSubscriptionUnitsUpdatedEventsQuery({
+      chainId: network.chainId,
+      filter: {
+        subscription: indexSubscriptionId,
+      },
+      pagination: {
+        take: 999,
+        skip: 0,
+      },
+      // Very important to order by timestamp in descending direction. Later `distributionAmount` logic depends on it.
+      order: {
+        orderBy: "timestamp",
+        orderDirection: "desc",
+      },
+    });
+
+  const subscriptionUnitsUpdatedEvents:
+    | SubscriptionUnitsUpdatedEvent[]
+    | undefined = subscriptionUnitsUpdatedEventsQuery.data?.data;
+
+  const indexUpdatedEventsQuery = sfSubgraph.useIndexUpdatedEventsQuery(
+    index && subscriptionUnitsUpdatedEvents?.length
+      ? {
+          chainId: network.chainId,
+          filter: {
+            index: index.id,
+            timestamp_gte: _.last(
+              subscriptionUnitsUpdatedEvents
+            )!.timestamp.toString(),
+          },
+          order: indexUpdatedEventOrdering,
+          pagination: indexUpdatedEventPaging,
+        }
+      : skipToken
+  );
+
+  const indexUpdatedEvents: IndexUpdatedEvent[] | undefined =
+    indexUpdatedEventsQuery.data?.data ?? [];
+
+  const columns: GridColDef[] = useMemo(
+    () => [
+      { field: "id", hide: true, sortable: false, flex: 1 },
+      {
+        field: "timestamp",
+        headerName: "Distribution Date",
+        sortable: true,
+        flex: 1,
+        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+      },
+      {
+        field: "newIndexValue",
+        headerName: "Amount Received",
+        hide: false,
+        sortable: false,
+        flex: 1,
+        renderCell: (params) => {
+          if (!index || !subscriptionUnitsUpdatedEvents?.length) {
+            return <Skeleton sx={{ width: "100px" }} />;
+          }
+
+          // Crazy logic below...
+
+          const indexUpdatedEvent = params.row as IndexUpdatedEvent;
+          const closestSubscriptionUnitsUpdatedEvent = _.first(
+            subscriptionUnitsUpdatedEvents.filter(
+              (x) => x.timestamp <= indexUpdatedEvent.timestamp
+            )
+          )!;
+          const poolFraction = BigNumber.from(
+            indexUpdatedEvent.totalUnitsPending
+          )
+            .add(BigNumber.from(indexUpdatedEvent.totalUnitsApproved))
+            .div(BigNumber.from(closestSubscriptionUnitsUpdatedEvent.units));
+
+          const indexDistributionAmount = BigNumber.from(
+            indexUpdatedEvent.newIndexValue
+          ).sub(BigNumber.from(indexUpdatedEvent.oldIndexValue));
+          const subscriptionDistributionAmount =
+            indexDistributionAmount.mul(poolFraction);
+
+          return (
+            <>
+              {ethers.utils.formatEther(subscriptionDistributionAmount)}&nbsp;
+              <SuperTokenAddress
+                network={network}
+                address={index.token}
+                format={(token) => token.symbol}
+                formatLoading={() => ""}
+              />
+            </>
+          );
+        },
+      },
+    ],
+    [network, index, subscriptionUnitsUpdatedEvents]
+  );
+
+  return (
+    <AppDataGrid
+      rows={indexUpdatedEvents}
+      columns={columns}
+      queryResult={indexUpdatedEventsQuery}
+      setOrdering={(x) => setIndexUpdatedEventOrdering(x as any)}
+      ordering={indexUpdatedEventOrdering}
+      setPaging={setIndexUpdatedEventPaging}
+    />
+  );
+};
 
 const IndexSubscriptionPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -158,12 +312,19 @@ export const IndexSubscriptionPageContent: FC<{
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Units"
+                  secondary="Units (Pool %)"
                   primary={
-                    indexSubscription ? (
-                      indexSubscription.units
+                    indexSubscription && index ? (
+                      <>
+                        {indexSubscription.units} / {index.totalUnits} (
+                        {BigNumber.from(indexSubscription.units)
+                          .div(BigNumber.from(index.totalUnits))
+                          .mul(100)
+                          .toString()}
+                        %)
+                      </>
                     ) : (
-                      <Skeleton sx={{ width: "75px" }} />
+                      <Skeleton sx={{ width: "150px" }} />
                     )
                   }
                 />
@@ -173,7 +334,7 @@ export const IndexSubscriptionPageContent: FC<{
                   secondary="Approved"
                   primary={
                     indexSubscription ? (
-                      indexSubscription.approved
+                      indexSubscription.approved.toString()
                     ) : (
                       <Skeleton sx={{ width: "25px" }} />
                     )
@@ -195,7 +356,8 @@ export const IndexSubscriptionPageContent: FC<{
                             indexSubscription.indexValueUntilUpdatedAt
                           ),
                           Number(indexSubscription.units)
-                        ).toString()}{" "}
+                        ).toString()}
+                        &nbsp;
                         <SuperTokenAddress
                           network={network}
                           address={index.token}
@@ -205,6 +367,34 @@ export const IndexSubscriptionPageContent: FC<{
                       </>
                     ) : (
                       <Skeleton sx={{ width: "100px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  secondary="Last Updated At"
+                  primary={
+                    indexSubscription ? (
+                      <TimeAgo
+                        subgraphTime={indexSubscription.updatedAtTimestamp}
+                      />
+                    ) : (
+                      <Skeleton sx={{ width: "80px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  secondary="Created At"
+                  primary={
+                    indexSubscription ? (
+                      <TimeAgo
+                        subgraphTime={indexSubscription.createdAtTimestamp}
+                      />
+                    ) : (
+                      <Skeleton sx={{ width: "80px" }} />
                     )
                   }
                 />
@@ -227,6 +417,18 @@ export const IndexSubscriptionPageContent: FC<{
         <Grid item xs={12}>
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Distributions
+          </Typography>
+          <Card elevation={2}>
+            <IndexSubscriptionDistributions
+              network={network}
+              indexSubscriptionId={indexSubscriptionId}
+            />
+          </Card>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+            Units Updated (i.e. Pool % Updated)
           </Typography>
           <Card elevation={2}>
             <SubscriptionUnitsUpdatedEventDataGrid

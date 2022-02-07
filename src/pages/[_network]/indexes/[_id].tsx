@@ -185,7 +185,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                       <>
                         {ethers.utils.formatEther(
                           index.totalAmountDistributedUntilUpdatedAt
-                        )}{" "}
+                        )}&nbsp;
                         <SuperTokenAddress
                           network={network}
                           address={index.token}

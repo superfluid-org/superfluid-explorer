@@ -1,6 +1,6 @@
-import { FC, useMemo } from "react";
+import { FC, useContext, useMemo } from "react";
 import { AppDataGrid } from "./AppDataGrid";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import {
   Index,
   IndexUpdatedEvent_OrderBy,
@@ -9,8 +9,11 @@ import {
   SkipPaging,
 } from "@superfluid-finance/sdk-core";
 import { IndexUpdatedEvent } from "@superfluid-finance/sdk-core";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import TimeAgo from "./TimeAgo";
+import SuperTokenAddress from "./SuperTokenAddress";
+import { Network } from "../redux/networks";
+import NetworkContext from "../contexts/NetworkContext";
 
 interface Props {
   index: Index | null | undefined;
@@ -47,6 +50,8 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
   ordering,
   setOrdering,
 }) => {
+  const network = useContext(NetworkContext);
+
   const columns: GridColDef[] = useMemo(
     () => [
       { field: "id", hide: true, sortable: false, flex: 1 },
@@ -72,9 +77,24 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
       {
         field: "distributionAmount",
         headerName: "Distribution Amount",
-        hide: true,
+        hide: false,
         sortable: false,
         flex: 1,
+        renderCell: (params) => {
+          return (
+            <>
+              {ethers.utils.formatEther(params.value)}&nbsp;
+              {index && (
+                <SuperTokenAddress
+                  network={network}
+                  address={index.token}
+                  format={(token) => token.symbol}
+                  formatLoading={() => ""}
+                />
+              )}
+            </>
+          );
+        },
       },
     ],
     []

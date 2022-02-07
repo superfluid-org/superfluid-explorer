@@ -20,7 +20,7 @@ const FlowingBalanceWithToken: FC<
           ethers.utils.formatEther(value).padEnd(20, "0")
         }
         {...flowingBalanceProps}
-      />{" "}
+      />&nbsp;
       {tokenQuery.data ? (
         <AppLink
           className="address"

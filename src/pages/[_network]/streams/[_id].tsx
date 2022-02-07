@@ -158,7 +158,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                             balanceTimestamp: stream.updatedAtTimestamp,
                             flowRate: stream.currentFlowRate,
                           }}
-                        />{" "}
+                        />&nbsp;
                         <SuperTokenAddress
                           network={network}
                           address={stream.token}
