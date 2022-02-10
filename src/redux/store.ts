@@ -5,7 +5,8 @@ import {
   initializeSubgraphSlice,
   initializeSfTransactionSlice,
   setFrameworkForSdkRedux,
-  allSubgraphSliceEndpoints,
+  subgraphSliceAllEndpoints,
+  sfApiAllEndpoints,
 } from "@superfluid-finance/sdk-redux";
 import { Framework } from "@superfluid-finance/sdk-core";
 import { ethers } from "ethers";
@@ -32,11 +33,11 @@ import {
 import { isServer } from "../utils/isServer";
 import { addDays } from "../utils/dateTime";
 
-export const { sfApi } = initializeSfApiSlice(createApiWithReactHooks);
+export const sfApi = initializeSfApiSlice(createApiWithReactHooks).injectEndpoints(sfApiAllEndpoints);
 export const sfSubgraph = initializeSubgraphSlice(
   createApiWithReactHooks
-).injectEndpoints(allSubgraphSliceEndpoints);
-export const { sfTransactions } = initializeSfTransactionSlice();
+).injectEndpoints(subgraphSliceAllEndpoints);
+export const sfTransactions = initializeSfTransactionSlice();
 
 const infuraProviders = networks.map((network) => ({
   chainId: network.chainId,

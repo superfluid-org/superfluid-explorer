@@ -489,7 +489,7 @@
   dependencies:
     "@ethersproject/logger" "^5.5.0"
 
-"@ethersproject/providers@5.5.3", "@ethersproject/providers@^5.5.1":
+"@ethersproject/providers@5.5.3", "@ethersproject/providers@^5.5.3":
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.5.3.tgz#56c2b070542ac44eb5de2ed3cf6784acd60a3130"
   integrity sha512-ZHXxXXXWHuwCQKrgdpIkbzMNJMvs+9YWemanwp1fA7XZEv7QlilseysPvQe0D7Q7DlkJX/w/bGA1MdgK2TbGvA==
@@ -1168,25 +1168,25 @@
   dependencies:
     "@sentry/cli" "^1.72.0"
 
-"@superfluid-finance/sdk-core@^0.3.1-dev.da50fa8.0":
-  version "0.3.1-dev.da50fa8.0"
-  resolved "https://npm.pkg.github.com/download/@superfluid-finance/sdk-core/0.3.1-dev.da50fa8.0/f2c8c406b00fde7c1c5e53a796e1321fba95e43d8091dfdaa9798678c2b65870#933c8cbf82bec37d68748d60c0c9882e633652b7"
-  integrity sha512-4UIrB4AopBLePerg7vwosUtbPDTD+obTlocqiYiroo0Rd+gtIwWXnRSZ/0Z3WVrcxXykk2tChAlB46i7UFlzgg==
+"@superfluid-finance/sdk-core@^0.3.1-PR601.1cfd47d.0":
+  version "0.3.1-PR601.1cfd47d.0"
+  resolved "https://npm.pkg.github.com/download/@superfluid-finance/sdk-core/0.3.1-PR601.1cfd47d.0/2a18416724a164ace0bc8c32cce3fe995e834e456dd2940f96d264ac2ba09164#b3479a10d445e84085cdc06283fdd2a6c0bdbab4"
+  integrity sha512-OH4DtY82/GV3wgEUJyVApZ+d2l6MQcWrKWGdKSIjv4SF4/ZkkzA0VhdF1b/hl4nN75x+kq8KCvxtc2AwJ3pE8g==
   dependencies:
-    "@ethersproject/providers" "^5.5.1"
-    ajv "^8.8.2"
+    "@ethersproject/providers" "^5.5.3"
+    ajv "^8.9.0"
     browserify "^17.0.0"
-    ethers "^5.5.2"
+    ethers "^5.5.4"
     graphql-request "^3.7.0"
     lodash "^4.17.21"
     tsify "^5.0.4"
 
-"@superfluid-finance/sdk-redux@^0.2.1-dev.da50fa8.0":
-  version "0.2.1-dev.da50fa8.0"
-  resolved "https://npm.pkg.github.com/download/@superfluid-finance/sdk-redux/0.2.1-dev.da50fa8.0/9443bf923808f1251e94138b76760308e255267fdf207f53a09074dbab9825c3#fa177864e2914fa92dab193e5ad1745639016952"
-  integrity sha512-Qud1ZJZ/W2fX94DYO7GYH4GQnS3CVlP5pszh8DIMv0x4JxIuP8hhuIn1uv/xKqqTFAsfmwm4xi4OTuTLsgCCbg==
+"@superfluid-finance/sdk-redux@^0.2.1-PR601.1cfd47d.0":
+  version "0.2.1-PR601.1cfd47d.0"
+  resolved "https://npm.pkg.github.com/download/@superfluid-finance/sdk-redux/0.2.1-PR601.1cfd47d.0/8d81b1b2bf2cdd4fb8ae7fc9f8863b076a943cb4195a847a483426869ff8664a#ef393de1032ed341e83cdb7fd83db86e54ecccc6"
+  integrity sha512-MEanTLkJk1GOebrqOcSqIBNI4mzd4Qr0+IU31k7Qgb8g9JWmsIIuGLV+jVdAlEDawYNnnEPJkmPgN6q8aPHbNA==
   dependencies:
-    ethers "^5.5.1"
+    ethers "^5.5.4"
     graphql-request "^3.7.0"
     lodash "^4.17.21"
 
@@ -1402,10 +1402,10 @@ ajv@^6.10.0, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.8.2:
-  version "8.9.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.9.0.tgz#738019146638824dea25edcf299dcba1b0e7eb18"
-  integrity sha512-qOKJyNj/h+OWx7s5DePL6Zu1KeM9jPZhwBqs+7DzP6bGOvqzVCSf0xueYmVuaC/oQ/VtS2zLMLHdQFbkka+XDQ==
+ajv@^8.9.0:
+  version "8.10.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.10.0.tgz#e573f719bd3af069017e3b66538ab968d040e54d"
+  integrity sha512-bzqAEZOjkrUMl2afH8dknrq5KEk2SrwdBROR+vH1EKVQTqaUbJVPdc/gEdggTMM0Se+s+Ja4ju4TlNcStKl2Hw==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -2105,7 +2105,7 @@ debug@^3.2.7:
   dependencies:
     ms "^2.1.1"
 
-decimal.js@^2.5.1:
+decimal.js@^10.3.1:
   version "10.3.1"
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.3.1.tgz#d8c3a444a9c6774ba60ca6ad7261c3a94fd5e783"
   integrity sha512-V0pfhfr8suzyPGOx3nmq4aHqabehUZn6Ch9kyFpV79TGDTWFmHqUqXdabR7QHqxzrYolF4+tVmJhUG4OURg5dQ==
@@ -2517,7 +2517,7 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
-ethers@^5.5.1, ethers@^5.5.2, ethers@^5.5.4:
+ethers@^5.5.4:
   version "5.5.4"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.5.4.tgz#e1155b73376a2f5da448e4a33351b57a885f4352"
   integrity sha512-N9IAXsF8iKhgHIC6pquzRgPBJEzc9auw3JoRkaKe+y4Wl/LFBtDDunNe7YmdomontECAcC5APaAgWZBiu1kirw==

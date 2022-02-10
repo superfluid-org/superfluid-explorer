@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {AppDataGrid} from "./AppDataGrid";
 import {GridColDef} from "@mui/x-data-grid";
-import {AllEvents, Ordering, PagedResult, SkipPaging} from "@superfluid-finance/sdk-core";
+import {AllEvents, EventBase, Ordering, PagedResult, SkipPaging} from "@superfluid-finance/sdk-core";
 import {Event_OrderBy} from "@superfluid-finance/sdk-core/dist/module/subgraph/schema.generated";
 import {Network} from "../redux/networks";
 import {timeAgo} from "../utils/dateTime";
@@ -12,7 +12,7 @@ interface Props {
   network: Network,
   queryResult: {
     isFetching: boolean
-    data?: PagedResult<AllEvents>
+    data?: PagedResult<EventBase>
   }
   setPaging: (paging: SkipPaging) => void;
   ordering: Ordering<Event_OrderBy> | undefined;
@@ -40,7 +40,7 @@ const EventDataGrid: FC<Props> = ({network, queryResult, setPaging, ordering, se
         <TransactionHash network={network} transactionHash={params.value}/>)
     }
   ];
-  const rows: AllEvents[] = queryResult.data ? queryResult.data.data : [];
+  const rows: EventBase[] = queryResult.data ? queryResult.data.data : [];
 
   return (<AppDataGrid columns={columns} rows={rows} queryResult={queryResult} setPaging={setPaging} ordering={ordering}
                        setOrdering={x => setOrdering(x as any)}/>);
