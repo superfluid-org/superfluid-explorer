@@ -12,7 +12,7 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -64,19 +64,18 @@ export const AddressBookDialog: FC<{
   open: boolean;
   handleClose: () => void;
 }> = ({ network, address, open, handleClose }) => {
-  const getInitialNameTag = () => existingEntry?.nameTag ?? "";
-
+  const dispatch = useAppDispatch();
   const existingEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
+
+  const getInitialNameTag = () => existingEntry?.nameTag ?? "";
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag());
 
-  const dispatch = useAppDispatch();
-
-  const handleCloseWrapped = () => {
-    handleClose();
+  // Fixes: https://github.com/superfluid-finance/superfluid-console/issues/21
+  useEffect(() => {
     setNameTag(getInitialNameTag());
-  };
+  }, [network, address, open]);
 
   const handleRemove = () => {
     handleClose();
@@ -100,7 +99,7 @@ export const AddressBookDialog: FC<{
   };
 
   return (
-    <Dialog fullWidth maxWidth="xs" open={open} onClose={handleCloseWrapped}>
+    <Dialog fullWidth maxWidth="xs" open={open} onClose={handleClose}>
       <Box sx={{ pb: 1 }}>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <DialogTitle>
@@ -128,7 +127,7 @@ export const AddressBookDialog: FC<{
               Remove entry
             </Button>
           ) : (
-            <Button onClick={handleCloseWrapped}>Cancel</Button>
+            <Button onClick={handleClose}>Cancel</Button>
           )}
           <Button onClick={handleSave} variant="contained">
             Save
