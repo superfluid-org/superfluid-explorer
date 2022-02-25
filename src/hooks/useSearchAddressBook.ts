@@ -22,7 +22,7 @@ export const useSearchAddressBook = (searchTerm: string) => {
     return {
       network: network,
       accounts: addressBookEntries
-        .filter((x) => x.nameTag.toLowerCase().includes(searchTerm))
+        .filter((x) => x.nameTag.toLowerCase().includes(searchTerm.toLowerCase()))
         .map((x) => ({id: x.address})),
     };
   });
