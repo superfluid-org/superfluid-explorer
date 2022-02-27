@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import AppLink from "./AppLink";
 import SearchDialog from "./SearchDialog";
-import SelectThemeButton from "./SelectThemeButton";
 import Image from "next/image";
 import SearchBar from "./SearchBar";
 import { FC, useState } from "react";

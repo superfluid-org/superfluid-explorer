@@ -1,6 +1,7 @@
-import React, { FC, ReactElement, useEffect, useState } from "react";
-import { ethers } from "ethers";
+import { FC, ReactElement, useEffect, useState } from "react";
+import { BigNumberish, ethers } from "ethers";
 import { Box } from "@mui/material";
+import EtherFormatted from "./EtherFormatted";
 
 const ANIMATION_MINIMUM_STEP_TIME = 80;
 
@@ -8,16 +9,15 @@ export interface FlowingBalanceProps {
   balance: string;
   balanceTimestamp: number;
   flowRate: string;
-  format?: (flowingBalance: string) => string;
-} 
+}
 
 const FlowingBalance: FC<FlowingBalanceProps> = ({
   balance,
   balanceTimestamp,
   flowRate,
-  format = (x) => ethers.utils.formatEther(x),
 }): ReactElement => {
-  const [formattedValue, setFormattedValue] = useState("");
+  const [weiValue, setWeiValue] = useState<BigNumberish>(0);
+
   useEffect(() => {
     const balanceBigNumber = ethers.BigNumber.from(balance);
     const flowRateBigNumber = ethers.BigNumber.from(flowRate);
@@ -40,16 +40,12 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
           new Date().getTime()
         );
 
-        setFormattedValue(
-          format(
-            balanceBigNumber
-              .add(
-                currentTimestampBigNumber
-                  .sub(balanceTimestampBigNumber)
-                  .mul(flowRateBigNumber)
-                  .div(1000)
-              )
-              .toString()
+        setWeiValue(
+          balanceBigNumber.add(
+            currentTimestampBigNumber
+              .sub(balanceTimestampBigNumber)
+              .mul(flowRateBigNumber)
+              .div(1000)
           )
         );
 
@@ -71,7 +67,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
         textOverflow: "ellipsis",
       }}
     >
-      {formattedValue}
+      <EtherFormatted wei={weiValue} />
     </Box>
   );
 };

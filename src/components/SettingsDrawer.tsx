@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   changeThemePreference,
   changeStreamGranularity,
+  changeEtherDecimalPlaces,
 } from "../redux/slices/appPreferences.slice";
 
 const Heading = styled(Typography)(({ theme }) => ({
@@ -48,6 +49,9 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
   );
   const currentStreamGranularity = useAppSelector(
     (state) => state.appPreferences.streamGranularity
+  );
+  const currentEtherDecimalPlaces = useAppSelector(
+    (state) => state.appPreferences.etherDecimalPlaces
   );
 
   return (
@@ -128,6 +132,28 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
           <IconToggleButton value="day">Day</IconToggleButton>
           <IconToggleButton value="week">Week</IconToggleButton>
           <IconToggleButton value="month">30 Day</IconToggleButton>
+        </ToggleButtonGroup>
+
+        <Heading gutterBottom>Ether Decimal Places</Heading>
+        <ToggleButtonGroup
+          exclusive
+          value={currentEtherDecimalPlaces.toString()}
+          color="primary"
+          onChange={(_event, newEtherDecimalPlaces: "18" | "9" | "5") => {
+            if (!newEtherDecimalPlaces) {
+              return;
+            }
+            dispatch(
+              changeEtherDecimalPlaces(
+                Number(newEtherDecimalPlaces) as 18 | 9 | 5
+              )
+            );
+          }}
+          fullWidth
+        >
+          <IconToggleButton value="18">18</IconToggleButton>
+          <IconToggleButton value="9">9</IconToggleButton>
+          <IconToggleButton value="5">5</IconToggleButton>
         </ToggleButtonGroup>
       </Box>
     </Drawer>

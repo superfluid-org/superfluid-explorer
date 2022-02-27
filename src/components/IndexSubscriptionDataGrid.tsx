@@ -12,11 +12,12 @@ import { IndexSubscriptionDetailsDialog } from "./IndexSubscriptionDetails";
 import AccountAddress from "./AccountAddress";
 import SuperTokenAddress from "./SuperTokenAddress";
 import { Network } from "../redux/networks";
-import calculateEtherAmountReceived from "../logic/calculateEtherAmountReceived";
+import calculateWeiAmountReceived from "../logic/calculateWeiAmountReceived";
 import { BigNumber } from "ethers";
 import calculatePoolPercentage from "../logic/calculatePoolPercentage";
 import Decimal from "decimal.js";
 import TimeAgo from "./TimeAgo";
+import EtherFormatted from "./EtherFormatted";
 
 interface Props {
   network: Network;
@@ -63,12 +64,12 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
           params: GridRenderCellParams<string, IndexSubscription>
         ) => (
           <>
-            {calculateEtherAmountReceived(
+            <EtherFormatted wei={calculateWeiAmountReceived(
               BigNumber.from(params.row.indexValueCurrent),
               BigNumber.from(params.row.totalAmountReceivedUntilUpdatedAt),
               BigNumber.from(params.row.indexValueUntilUpdatedAt),
               BigNumber.from(params.row.units)
-            )}
+            )} />
             &nbsp;
             <SuperTokenAddress
               network={network}
@@ -92,7 +93,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
               {`(${calculatePoolPercentage(
                 new Decimal(params.row.indexTotalUnits),
                 new Decimal(params.row.units)
-              ).toFixed(2)}%)`}
+              ).toDP(2).toString()}%)`}
             </>
           );
         },

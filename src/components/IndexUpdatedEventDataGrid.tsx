@@ -13,6 +13,7 @@ import { BigNumber, ethers } from "ethers";
 import TimeAgo from "./TimeAgo";
 import SuperTokenAddress from "./SuperTokenAddress";
 import NetworkContext from "../contexts/NetworkContext";
+import EtherFormatted from "./EtherFormatted";
 
 interface Props {
   index: Index | null | undefined;
@@ -71,7 +72,7 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
         renderCell: (params) => {
           return (
             <>
-              {ethers.utils.formatEther(params.value)}&nbsp;
+              <EtherFormatted wei={params.value} />&nbsp;
               {index && (
                 <SuperTokenAddress
                   network={network}

@@ -36,6 +36,7 @@ import { ethers } from "ethers";
 import CopyLink from "../../../components/CopyLink";
 import { gql } from "graphql-request";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
+import EtherFormatted from "../../../components/EtherFormatted";
 
 const IndexPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -271,9 +272,9 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   primary={
                     index ? (
                       <>
-                        {ethers.utils.formatEther(
-                          index.totalAmountDistributedUntilUpdatedAt
-                        )}
+                        <EtherFormatted
+                          wei={index.totalAmountDistributedUntilUpdatedAt}
+                        />
                         &nbsp;
                         <SuperTokenAddress
                           network={network}

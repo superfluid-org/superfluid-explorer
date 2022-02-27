@@ -4,6 +4,7 @@ import {HYDRATE} from "next-redux-wrapper";
 export interface IAppPreferences {
   themePreference: 'system' | 'light' | 'dark';
   streamGranularity: keyof typeof streamGranularityInSeconds;
+  etherDecimalPlaces: etherDecimalPlaces;
 }
 
 export const streamGranularityInSeconds = {
@@ -15,9 +16,12 @@ export const streamGranularityInSeconds = {
   month: 86400 * 30
 }
 
+type etherDecimalPlaces = 18 | 9 | 5; 
+
 const initialState: IAppPreferences = {
   themePreference: 'system',
-  streamGranularity: 'day'
+  streamGranularity: 'day',
+  etherDecimalPlaces: 18
 };
 
 const sliceName = 'appPreferences'
@@ -32,6 +36,9 @@ export const themePreferenceSlice = createSlice({
     changeStreamGranularity(state, action: PayloadAction<IAppPreferences['streamGranularity']>) {
       state.streamGranularity = action.payload;
     },
+    changeEtherDecimalPlaces(state, action: PayloadAction<etherDecimalPlaces>) {
+      state.etherDecimalPlaces = action.payload;
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, {payload}) => ({
@@ -41,4 +48,4 @@ export const themePreferenceSlice = createSlice({
   },
 });
 
-export const { changeThemePreference, changeStreamGranularity } = themePreferenceSlice.actions;
+export const { changeThemePreference, changeStreamGranularity, changeEtherDecimalPlaces } = themePreferenceSlice.actions;

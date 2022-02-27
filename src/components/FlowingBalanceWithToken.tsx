@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import _ from "lodash";
 import { FC } from "react";
 import { Network } from "../redux/networks";
@@ -15,12 +14,8 @@ const FlowingBalanceWithToken: FC<
   });
   return (
     <>
-      <FlowingBalance
-        format={(value) =>
-          ethers.utils.formatEther(value).padEnd(20, "0")
-        }
-        {...flowingBalanceProps}
-      />&nbsp;
+      <FlowingBalance {...flowingBalanceProps} />
+      &nbsp;
       {tokenQuery.data ? (
         <AppLink
           className="address"

@@ -15,6 +15,7 @@ import { sfSubgraph } from "../redux/store";
 import { AppDataGrid } from "./AppDataGrid";
 import TimeAgo from "./TimeAgo";
 import { ethers } from "ethers";
+import EtherFormatted from "./EtherFormatted";
 
 export const publishedIndexOrderingDefault:
   | Ordering<Index_OrderBy>
@@ -53,7 +54,7 @@ export const AccountIndexesDataGrid: FC<{
         flex: 1.5,
         renderCell: (params) => (
           <>
-            {ethers.utils.formatEther(params.value)}&nbsp;
+            <EtherFormatted wei={params.value} />&nbsp;
             <SuperTokenAddress
               network={network}
               address={(params.row as Index).token}
