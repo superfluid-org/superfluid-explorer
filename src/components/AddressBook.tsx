@@ -78,24 +78,27 @@ export const AddressBookDialog: FC<{
   }, [network, address, open]);
 
   const handleRemove = () => {
-    handleClose();
-    setNameTag("");
     if (existingEntry) {
       dispatch(
         addressBookSlice.actions.entryRemoved(getEntryId(existingEntry))
       );
     }
+    handleClose();
   };
 
   const handleSave = () => {
+    const nameTagTrimmed = nameTag.trim();
+    // Only save non-empty names
+    if (nameTagTrimmed) {
+      dispatch(
+        addressBookSlice.actions.entryUpserted({
+          chainId: network.chainId,
+          address: ethers.utils.getAddress(address),
+          nameTag: nameTagTrimmed
+        })
+      );
+    }
     handleClose();
-    dispatch(
-      addressBookSlice.actions.entryUpserted({
-        chainId: network.chainId,
-        address: ethers.utils.getAddress(address),
-        nameTag: nameTag,
-      })
-    );
   };
 
   return (
