@@ -21,6 +21,7 @@ const AccountAddress: FC<{
 
   return (
     <AppLink
+      data-cy={"wallet-address"}
       className="address"
       href={`/${network.slugName}/accounts/${address}`}
       onMouseEnter={() => {

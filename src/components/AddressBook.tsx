@@ -124,13 +124,13 @@ export const AddressBookDialog: FC<{
         </DialogContent>
         <DialogActions>
           {existingEntry ? (
-            <Button onClick={handleRemove} variant="outlined">
+            <Button data-cy={"address-remove"} onClick={handleRemove} variant="outlined">
               Remove entry
             </Button>
           ) : (
-            <Button onClick={handleCloseWrapped}>Cancel</Button>
+            <Button data-cy={"address-cancel"} onClick={handleCloseWrapped}>Cancel</Button>
           )}
-          <Button onClick={handleSave} variant="contained">
+          <Button data-cy={"address-save"} onClick={handleSave} variant="contained">
             Save
           </Button>
         </DialogActions>

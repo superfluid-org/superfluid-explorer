@@ -40,7 +40,7 @@ const Home: NextPage = () => {
             Welcome to Superfluid Console
           </Typography>
           <Typography variant="body1" align="center" color="text.secondary" paragraph>
-            Superfluid Console is an explorer meant for developers and advanced users of the <AppLink href="https://docs.superfluid.finance/superfluid/protocol-overview/what-is-superfluid" target="_blank"
+            Superfluid Console is an explorer meant for developers and advanced users of the <AppLink data-cy={"protocol-link"} href="https://docs.superfluid.finance/superfluid/protocol-overview/what-is-superfluid" target="_blank"
               rel="noreferrer">Superfluid Protocol</AppLink>.
           </Typography>
           <Stack
@@ -53,7 +53,7 @@ const Home: NextPage = () => {
         </Container>
       </Box>
       <Container maxWidth="lg">
-        <Card>
+        <Card data-cy={"landing-page-card"}>
           <Typography variant="h5" sx={{ m: 2 }}>
             Network Data
           </Typography>
@@ -63,9 +63,10 @@ const Home: NextPage = () => {
               <TabList
                 variant="scrollable"
                 scrollButtons="auto"
+                data-cy={"landing-page-networks"}
                 onChange={(_event, newValue: string) => setValue(newValue)}>
                 {
-                  networksOrdered.map((network) => <Tab key={`Tab_${network.slugName}`} label={network.displayName} value={network.slugName} onMouseEnter={() => prefetchStreamsQuery({
+                  networksOrdered.map((network) => <Tab data-cy={`${network.slugName}-landing-button`} key={`Tab_${network.slugName}`} label={network.displayName} value={network.slugName} onMouseEnter={() => prefetchStreamsQuery({
                     chainId: network.chainId,
                     order: defaultStreamQueryOrdering,
                     pagination: defaultStreamQueryPaging
@@ -74,7 +75,7 @@ const Home: NextPage = () => {
               </TabList>
             </Box>
             {
-              networksOrdered.map((network) => <TabPanel key={`TabPanel_${network.slugName}`} value={network.slugName}>
+              networksOrdered.map((network) => <TabPanel key={`TabPanel_${network.slugName}`} value={network.slugName} data-cy={`${network.slugName}-streams`}>
                 <NetworkStreams network={network} />
               </TabPanel>)
             }

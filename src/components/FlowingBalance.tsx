@@ -9,7 +9,7 @@ export interface FlowingBalanceProps {
   balanceTimestamp: number;
   flowRate: string;
   format?: (flowingBalance: string) => string;
-} 
+}
 
 const FlowingBalance: FC<FlowingBalanceProps> = ({
   balance,
@@ -66,6 +66,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
   }, [balance, balanceTimestamp, flowRate]);
   return (
     <Box
+      data-cy={"total-streamed"}
       component="span"
       sx={{
         textOverflow: "ellipsis",

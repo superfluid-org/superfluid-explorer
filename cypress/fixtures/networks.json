@@ -1,0 +1,479 @@
+{
+  "goerli": {
+    "address": {
+      "fullAddress": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
+      "shortAddress": "0x8a...27e2",
+      "tokenBalances": [
+        {
+          "name": "Super fUSDC Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "349.99696",
+          "balanceTooltip": "349.996961805555555575",
+          "symbol": "fUSDCx",
+          "streamEvents": [
+            {
+              "fromTo": "To",
+              "otherAccount": "0xf9ce34dfcd3cc92804772f3022af27bcd5e43ff2",
+              "otherAccountShort": "0xf9...3ff2",
+              "flowRatePerSecond": "0.00001",
+              "flowRatePerSecondTooltip": "0.000009645061728395",
+              "streamedAmount": "0.00304",
+              "streamedAmountTooltip": "0.003038194444444425",
+              "timeActiveFromTimestamp": "1621588448",
+              "timeActiveToTimestamp": "1621588523"
+            },
+            {
+              "flowRatePerSecond": "0.00004",
+              "flowRatePerSecondTooltip": "0.00003858024691358",
+              "streamedAmount": "0.00231",
+              "streamedAmountTooltip": "0.0023148148148148",
+              "timeActiveFromTimestamp": "1621588388",
+              "timeActiveToTimestamp": "1621588448"
+            }
+          ]
+        },
+        {
+          "name": "Super fTUSD Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "500.00000",
+          "balanceTooltip": "500.0",
+          "symbol": "fTUSDx"
+        },
+        {
+          "name": "Super fDAI Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "400.00000",
+          "balanceTooltip": "400.0",
+          "symbol": "fDAIx"
+        }
+      ]
+    },
+    "token": {
+      "address": "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00",
+      "shortAddress": "0xf2...ad00",
+      "name": "Super fDAI Fake Token",
+      "symbol": "fDAIx",
+      "tokenType": "Wrapped",
+      "totalSupply": "52938203209951976381583760",
+      "underlyingTokenAddress": "0x88271d333c72e51516b67f5567c728e702b3eee8",
+      "underlyingSupply": "10024584881260615648148258125891",
+      "latestSupertokenSol": "Yes",
+      "numberOfOpenStreams": "463"
+    }
+  },
+  "ropsten": {
+    "address": {
+      "fullAddress": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
+      "shortAddress": "0x8a...27e2",
+      "tokenBalances": [
+        {
+          "name": "Super fUSDC Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "349.99878",
+          "balanceTooltip": "349.998775077160493835",
+          "symbol": "fUSDCx",
+          "streamEvents": [
+            {
+              "fromTo": "To",
+              "otherAccount": "0xf9ce34dfcd3cc92804772f3022af27bcd5e43ff2",
+              "otherAccountShort": "0xf9...3ff2",
+              "flowRatePerSecond": "0.00001",
+              "flowRatePerSecondTooltip": "0.000009645061728395",
+              "streamedAmount": "0.00122",
+              "streamedAmountTooltip": "0.001224922839506165",
+              "timeActiveFromTimestamp": "1621586912",
+              "timeActiveToTimestamp": "1621586955"
+            },
+            {
+              "flowRatePerSecond": "0.00004",
+              "flowRatePerSecondTooltip": "0.00003858024691358",
+              "streamedAmount": "0.00081",
+              "streamedAmountTooltip": "0.00081018518518518",
+              "timeActiveFromTimestamp": "1621586891",
+              "timeActiveToTimestamp": "1621586912"
+            }
+          ]
+        },
+        {
+          "name": "Super fDAI Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "400.00000",
+          "balanceTooltip": "400.0",
+          "symbol": "fDAIx"
+        },
+        {
+          "name": "Super fTUSD Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "500.00000",
+          "balanceTooltip": "500.0",
+          "symbol": "fTUSDx"
+        }
+      ]
+    },
+    "token": {
+      "address": "0xbf6201a6c48b56d8577edd079b84716bb4918e8a",
+      "shortAddress": "0xbf...8e8a",
+      "name": "Super fDAI Fake Token",
+      "symbol": "fDAIx",
+      "tokenType": "Wrapped",
+      "totalSupply": "500352505049975044091713366",
+      "underlyingTokenAddress": "0x15f0ca26781c3852f8166ed2ebce5d18265cceb7",
+      "underlyingSupply": "1605490709999999999991611392",
+      "latestSupertokenSol": "Yes",
+      "numberOfOpenStreams": "91"
+    }
+  },
+  "rinkeby": {
+    "address": {
+      "fullAddress": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
+      "shortAddress": "0x8a...27e2",
+      "tokenBalances": [
+        {
+          "name": "Super fUSDC Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "349.99696",
+          "balanceTooltip": "349.996961805555555575",
+          "symbol": "fUSDCx",
+          "streamEvents": [
+            {
+              "fromTo": "To",
+              "otherAccount": "0xf9ce34dfcd3cc92804772f3022af27bcd5e43ff2",
+              "otherAccountShort": "0xf9...3ff2",
+              "flowRatePerSecond": "0.00001",
+              "flowRatePerSecondTooltip": "0.000009645061728395",
+              "streamedAmount": "0.00304",
+              "streamedAmountTooltip": "0.003038194444444425",
+              "timeActiveFromTimestamp": "1621585622",
+              "timeActiveToTimestamp": "1621585637"
+            },
+            {
+              "flowRatePerSecond": "0.00004",
+              "flowRatePerSecondTooltip": "0.00003858024691358",
+              "streamedAmount": "0.00289",
+              "streamedAmountTooltip": "0.0028935185185185",
+              "timeActiveFromTimestamp": "1621585547",
+              "timeActiveToTimestamp": "1621585622"
+            }
+          ]
+        },
+        {
+          "name": "Super fDAI Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "400.00000",
+          "balanceTooltip": "400.0",
+          "symbol": "fDAIx"
+        },
+        {
+          "name": "Super fTUSD Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "500.00000",
+          "balanceTooltip": "500.0",
+          "symbol": "fTUSDx"
+        }
+      ]
+    },
+    "token": {
+      "address": "0x745861aed1eee363b4aaa5f1994be40b1e05ff90",
+      "shortAddress": "0x74...ff90",
+      "name": "Super fDAI Fake Token",
+      "symbol": "fDAIx",
+      "tokenType": "Wrapped",
+      "totalSupply": "868853354313756932705169",
+      "underlyingTokenAddress": "0x15f0ca26781c3852f8166ed2ebce5d18265cceb7",
+      "underlyingSupply": "115792089237316195350517916280681741865800000000000205581000008482101313059520",
+      "latestSupertokenSol": "Yes",
+      "numberOfOpenStreams": "528"
+    }
+  },
+  "kovan": {
+    "address": {
+      "fullAddress": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
+      "shortAddress": "0x8a...27e2",
+      "tokenBalances": [
+        {
+          "name": "Super fUSDC Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "349.99776",
+          "balanceTooltip": "349.99776234567901236",
+          "symbol": "fUSDCx",
+          "streamEvents": [
+            {
+              "fromTo": "To",
+              "otherAccount": "0xf9ce34dfcd3cc92804772f3022af27bcd5e43ff2",
+              "otherAccountShort": "0xf9...3ff2",
+              "flowRatePerSecond": "0.00001",
+              "flowRatePerSecondTooltip": "0.000009645061728395",
+              "streamedAmount": "0.00224",
+              "streamedAmountTooltip": "0.00223765432098764",
+              "timeActiveFromTimestamp": "1621590592",
+              "timeActiveToTimestamp": "1621590616"
+            },
+            {
+              "flowRatePerSecond": "0.00004",
+              "flowRatePerSecondTooltip": "0.00003858024691358",
+              "streamedAmount": "0.00201",
+              "streamedAmountTooltip": "0.00200617283950616",
+              "timeActiveFromTimestamp": "1621590540",
+              "timeActiveToTimestamp": "1621590592"
+            }
+          ]
+        },
+        {
+          "name": "Super fTUSD Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "500.00000",
+          "balanceTooltip": "500.0",
+          "symbol": "fTUSDx"
+        },
+        {
+          "name": "Super fDAI Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "400.00000",
+          "balanceTooltip": "400.0",
+          "symbol": "fDAIx"
+        }
+      ]
+    },
+    "token": {
+      "address": "0xe3cb950cb164a31c66e32c320a800d477019dcff",
+      "shortAddress": "0xe3...dcff",
+      "name": "Super fDAI Fake Token",
+      "symbol": "fDAIx",
+      "tokenType": "Wrapped",
+      "totalSupply": "388886756240649461697364",
+      "underlyingTokenAddress": "0xb64845d53a373d35160b72492818f0d2f51292c0",
+      "underlyingSupply": "1842225000000000000000000",
+      "latestSupertokenSol": "Yes",
+      "numberOfOpenStreams": "195"
+    }
+  },
+  "mumbai": {
+    "address": {
+      "fullAddress": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
+      "shortAddress": "0x8a...27e2",
+      "tokenBalances": [
+        {
+          "name": "Super fUSDC Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "351.99782",
+          "balanceTooltip": "351.99782021604938273",
+          "symbol": "fUSDCx",
+          "streamEvents": [
+            {
+              "fromTo": "To",
+              "otherAccount": "0xf9ce34dfcd3cc92804772f3022af27bcd5e43ff2",
+              "otherAccountShort": "0xf9...3ff2",
+              "flowRatePerSecond": "0.00001",
+              "flowRatePerSecondTooltip": "0.000009645061728395",
+              "streamedAmount": "0.00218",
+              "streamedAmountTooltip": "0.00217978395061727",
+              "timeActiveFromTimestamp": "1621589354",
+              "timeActiveToTimestamp": "1621589412"
+            },
+            {
+              "flowRatePerSecond": "0.00004",
+              "flowRatePerSecondTooltip": "0.00003858024691358",
+              "streamedAmount": "0.00162",
+              "streamedAmountTooltip": "0.00162037037037036",
+              "timeActiveFromTimestamp": "1621589312",
+              "timeActiveToTimestamp": "1621589354"
+            }
+          ]
+        },
+        {
+          "name": "Super fDAI Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "400.00000",
+          "balanceTooltip": "400.0",
+          "symbol": "fDAIx"
+        },
+        {
+          "name": "Super fTUSD Fake Token",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "500.00000",
+          "balanceTooltip": "500.0",
+          "symbol": "fTUSDx"
+        }
+      ]
+    },
+    "token": {
+      "address": "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
+      "shortAddress": "0x5d...d01f",
+      "name": "Super fDAI Fake Token",
+      "symbol": "fDAIx",
+      "tokenType": "Wrapped",
+      "totalSupply": "168772598464015003911471",
+      "underlyingTokenAddress": "0x15f0ca26781c3852f8166ed2ebce5d18265cceb7",
+      "underlyingSupply": "692100000000000000200000",
+      "latestSupertokenSol": "Yes",
+      "numberOfOpenStreams": "51"
+    }
+  },
+  "matic": {
+    "address": {
+      "fullAddress": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
+      "shortAddress": "0x8a...27e2",
+      "tokenBalances": [
+        {
+          "name": "Super MATIC",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "4.00000",
+          "balanceTooltip": "4.0",
+          "symbol": "MATICx"
+        },
+        {
+          "name": "Super USDC (PoS)",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "4.99990",
+          "balanceTooltip": "4.9999027777927779",
+          "symbol": "USDCx",
+          "streamEvents": [
+            {
+              "fromTo": "To",
+              "otherAccount": "0xf9ce34dfcd3cc92804772f3022af27bcd5e43ff2",
+              "otherAccountShort": "0xf9...3ff2",
+              "flowRatePerSecond": "0.00000",
+              "flowRatePerSecondTooltip": "0.000000385802469135",
+              "streamedAmount": "0.00010",
+              "streamedAmountTooltip": "0.0000972222222221",
+              "timeActiveFromTimestamp": "1628852734",
+              "timeActiveToTimestamp": "1628852826"
+            },
+            {
+              "flowRatePerSecond": "0.00000",
+              "flowRatePerSecondTooltip": "0.000000771604938271",
+              "streamedAmount": "0.00006",
+              "streamedAmountTooltip": "0.00006172839506168",
+              "timeActiveFromTimestamp": "1628852654",
+              "timeActiveToTimestamp": "1628852734"
+            }
+          ]
+        }
+      ]
+    },
+    "token": {
+      "address": "0x1305f6b6df9dc47159d12eb7ac2804d4a33173c2",
+      "shortAddress": "0x13...73c2",
+      "name": "Super DAI (PoS)",
+      "symbol": "DAIx",
+      "tokenType": "Wrapped",
+      "totalSupply": "124618791055939592769429",
+      "underlyingTokenAddress": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+      "underlyingSupply": "293092484454995637160551997",
+      "latestSupertokenSol": "Yes",
+      "numberOfOpenStreams": "684"
+    }
+  },
+  "xdai": {
+    "address": {
+      "fullAddress": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
+      "shortAddress": "0x8a...27e2",
+      "tokenBalances": [
+        {
+          "name": "Super xDAI",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "5.00000",
+          "balanceTooltip": "5.0",
+          "symbol": "xDAIx"
+        },
+        {
+          "name": "Minerva Wallet SuperToken",
+          "netflow": "0.00000",
+          "netflowTooltip": "0.0",
+          "incommingStreams": "0",
+          "outgoingStreams": "0",
+          "balance": "50.31005",
+          "balanceTooltip": "50.3",
+          "symbol": "MIVA",
+          "streamEvents": [
+            {
+              "fromTo": "To",
+              "otherAccount": "0xf9ce34dfcd3cc92804772f3022af27bcd5e43ff2",
+              "otherAccountShort": "0xf9...3ff2",
+              "flowRatePerSecond": "0.00001",
+              "flowRatePerSecondTooltip": "0.000009645061728395",
+              "streamedAmount": "0.00087",
+              "streamedAmountTooltip": "0.00086805555555555",
+              "timeActiveFromTimestamp": "1621599815",
+              "timeActiveToTimestamp": "1621599855"
+            },
+            {
+              "flowRatePerSecond": "0.00002",
+              "flowRatePerSecondTooltip": "0.00001929012345679",
+              "streamedAmount": "0.00048",
+              "streamedAmountTooltip": "0.00048225308641975",
+              "timeActiveFromTimestamp": "1621599790",
+              "timeActiveToTimestamp": "1621599815"
+            }
+          ]
+        }
+      ]
+    },
+    "token": {
+      "address": "0x59988e47a3503aafaa0368b9def095c818fdca01",
+      "shortAddress": "0x59...ca01",
+      "name": "Super xDAI",
+      "symbol": "xDAIx",
+      "tokenType": "Wrapped",
+      "totalSupply": "57535768767517761287068",
+      "underlyingTokenAddress": "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d",
+      "underlyingSupply": "20359586412562634662968771",
+      "latestSupertokenSol": "Yes",
+      "numberOfOpenStreams": "1000+"
+    }
+  }
+}

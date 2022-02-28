@@ -23,6 +23,7 @@ export const SfAppBar = () => {
         <AppLink href="/">
           <Box>
             <Image
+              data-cy={"superfluid-logo"}
               src="/superfluid-logo.svg"
               width={150}
               height={36}

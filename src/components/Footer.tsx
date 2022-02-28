@@ -13,6 +13,7 @@ const Footer: FC = () => {
             <p>
                 By using this web app, you accept our{' '}
                 <AppLink
+                    data-cy={"terms-of-use-link"}
                     href="https://www.superfluid.finance/termsofuse/"
                     target="_blank"
                     rel="noreferrer"
@@ -21,6 +22,7 @@ const Footer: FC = () => {
                 </AppLink>{' '}
                 and{' '}
                 <AppLink
+                    data-cy={"privacy-policy-link"}
                     href="https://www.iubenda.com/privacy-policy/34415583/legal"
                     target="_blank"
                     rel="noreferrer"

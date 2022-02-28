@@ -75,7 +75,7 @@ function MyApp(props: MyAppProps) {
 }
 
 /**
- * Scopes to network & id for dynamic routes. Idea is to reduce boilerplate in the specific pages. The downside is that a bit less can be pre-rendered.
+ * Scopes to network & id for dynamic routes. Idea is to reduce boilerplate in the specific pageObjects. The downside is that a bit less can be pre-rendered.
  */
 const Layout: FC = ({ children }) => {
   const router = useRouter();

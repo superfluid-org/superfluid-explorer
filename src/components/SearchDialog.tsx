@@ -103,6 +103,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
               <InputAdornment position="start">
                 {networkSearchResults.some((x) => x.isFetching) ? (
                   <CircularProgress
+                    data-cy={"search-loading-spinner"}
                     size={24}
                     sx={{ color: "text.secondary" }}
                   />
@@ -129,6 +130,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                 <List disablePadding>
                   {x.accounts.map((account) => (
                     <ListItem
+                      data-cy={x.network.slugName + "-account-search-result"}
                       disablePadding
                       sx={{ pt: 0.5, pb: 0.5 }}
                       key={`${x.network.chainId}_${account.id}`}
@@ -151,6 +153,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                       disablePadding
                       sx={{ mt: 1, mb: 1 }}
                       key={`${x.network.chainId}_${token.id}`}
+                      data-cy={x.network.slugName + "-token-search-result"}
                     >
                       <NextLink
                         href={`/${x.network.slugName}/supertokens/${token.id}`}
@@ -190,6 +193,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                 >
                   <ListItemButton>
                     <ListItemText
+                      data-cy={"address-book-entry"}
                       primary={
                         <AccountAddress
                           network={networksByChainId.get(entry.chainId)!}

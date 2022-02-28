@@ -175,6 +175,7 @@ const SuperTokenPage: NextPage = () => {
                   </ListItem>
                   <ListItem divider>
                     <ListItemText
+                      data-cy={"token-listed-status"}
                       secondary="Listed"
                       primary={
                         superToken ? (

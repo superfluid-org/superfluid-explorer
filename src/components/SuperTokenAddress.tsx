@@ -25,6 +25,7 @@ const SuperTokenAddress: FC<{
 
   return (
     <AppLink
+      data-cy={"token-address"}
       className="address"
       href={`/${network.slugName}/supertokens/${address}`}
     >
@@ -41,11 +42,11 @@ export const SuperTokenFormatted: FC<{
 }> = ({ address, name, symbol, isListed }) => {
   return (
     <Grid container>
-      <Grid item xs={12}>
+      <Grid item xs={12} data-cy={"token-name-and-symbol"}>
         {name} ({symbol}){" "}{isListed && <Tooltip title="Is listed"><VerifiedIcon sx={{fontSize: "inherit"}} /></Tooltip>}
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="caption" component="span">
+        <Typography data-cy={"token-address"} variant="caption" component="span">
           {ethers.utils.getAddress(address)}
         </Typography>
       </Grid>

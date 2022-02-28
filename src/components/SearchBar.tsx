@@ -10,7 +10,8 @@ const SearchBar: FC = ({ children}) => {
                 <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-                placeholder={searchBarPlaceholderText}
+              data-cy={"search-input-base"}
+              placeholder={searchBarPlaceholderText}
             />
             {children}
         </Search>

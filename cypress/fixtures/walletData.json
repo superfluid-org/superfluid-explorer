@@ -1,0 +1,90 @@
+{
+  "xdai": {
+    "address": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
+    "networkFancyName": "Gnosis Chain",
+    "accountType": "Regular account",
+    "streams": {
+      "incomming": [],
+      "outgoing": [
+        {
+          "token": "Minerva Wallet SuperToken (MIVA)",
+          "receiver": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
+          "flowRate": 0,
+          "totalStreamed": 0.00086805555555555
+        }
+      ]
+    },
+    "indexes": {
+      "publications": [],
+      "subscriptions": []
+    },
+    "superTokens": [
+      {
+        "tokenName": "Super xDAI (xDAIx)",
+        "balance": 5.0,
+        "activeStreamCount": 0,
+        "closedStreamCount": 0,
+        "subscriptionWithUnitsCount": 0
+      },
+      {
+        "tokenName": "Minerva Wallet SuperToken (MIVA)",
+        "balance": 50.310045431912825203,
+        "activeStreamCount": 0,
+        "closedStreamCount": 1,
+        "subscriptionWithUnitsCount": 0
+      }
+    ],
+    "events": [
+      {
+        "name": "Transfer",
+        "blockNumber": "16213608",
+        "transactionHash": "0x205c..."
+      },
+      {
+        "name": "Sent",
+        "blockNumber": "16213608",
+        "shortTransactionHash": "0x205c..."
+      },
+      {
+        "name": "FlowUpdated",
+        "blockNumber": "16165770",
+        "shortTransactionHash": "0x296d..."
+      },
+      {
+        "name": "FlowUpdated",
+        "blockNumber": "16165762",
+        "shortTransactionHash": "0xd386..."
+      },
+      {
+        "name": "FlowUpdated",
+        "blockNumber": "16165757",
+        "shortTransactionHash": "0xf028..."
+      },
+      {
+        "name": "Transfer",
+        "blockNumber": "16165745",
+        "shortTransactionHash": "0x35b6..."
+      },
+      {
+        "name": "Sent",
+        "blockNumber": "16165745",
+        "shortTransactionHash": "0x35b6..."
+      },
+      {
+        "name": "Transfer",
+        "blockNumber": "16165737",
+        "shortTransactionHash": "0xd219..."
+      },
+      {
+        "name": "Sent",
+        "blockNumber": "16165737",
+        "shortTransactionHash": "0xd219..."
+      },
+      {
+        "name": "Transfer",
+        "blockNumber": "16164877",
+        "shortTransactionHash": "0xc106..."
+      }
+    ]
+  }
+}
