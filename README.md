@@ -23,7 +23,6 @@ user accounts instantaneously as a result.
 Superfluid Console is an explorer meant for developers and advanced users of the Superfluid Protocol.
 
 ## How to use
-s
 To install packages and start development server, run:
 
 ```sh
