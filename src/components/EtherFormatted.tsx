@@ -11,7 +11,7 @@ const EtherFormatted: FC<{ wei: BigNumberish }> = ({ wei }) => {
   const ether = ethers.utils.formatEther(wei);
   const isRounded = ether.split(".")[1].length > etherDecimalPlaces;
 
-  return <>{isRounded && "~"}{new Decimal(ether).toDP(etherDecimalPlaces).toString()}</>;
+  return <>{isRounded && "~"}{new Decimal(ether).toDP(etherDecimalPlaces).toFixed(etherDecimalPlaces)}</>;
 };
 
 export default EtherFormatted;
