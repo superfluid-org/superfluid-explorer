@@ -41,20 +41,20 @@ const AccountStreamsOutgoingDataGrid: FC<{ network: Network, accountAddress: str
       field: 'receiver',
       headerName: "Receiver",
       sortable: false,
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => (<AccountAddress network={network} address={params.value} />)
     },
     {
       field: 'currentFlowRate',
       headerName: "Flow Rate",
       sortable: true,
-      flex: 1,
+      flex: 2,
       renderCell: (params) => (<FlowRate flowRate={params.value} />)
     },
     {
       field: 'streamedUntilUpdatedAt',
       headerName: "Total Streamed",
-      flex: 1,
+      flex: 1.5,
       sortable: false,
       renderCell: (params) => {
         const stream = params.row as Stream;

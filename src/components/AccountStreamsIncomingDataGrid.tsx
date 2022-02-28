@@ -30,7 +30,7 @@ const AccountStreamsIncomingDataGrid: FC<{ network: Network, accountAddress: str
     {
       field: 'token',
       headerName: "Token",
-      flex: 1,
+      flex: 1.5,
       sortable: false,
       renderCell: (params) => (<SuperTokenAddress network={network} address={params.value} />)
     },
@@ -38,20 +38,20 @@ const AccountStreamsIncomingDataGrid: FC<{ network: Network, accountAddress: str
       field: 'sender',
       headerName: "Sender",
       sortable: false,
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => (<AccountAddress network={network} address={params.value} />)
     },
     {
       field: 'currentFlowRate',
       headerName: "Flow Rate",
-      flex: 1,
+      flex: 2,
       sortable: true,
       renderCell: (params) => (<FlowRate flowRate={params.value} />)
     },
     {
       field: 'streamedUntilUpdatedAt',
       headerName: "Total Streamed",
-      flex: 1,
+      flex: 1.5,
       sortable: false,
       renderCell: (params) => {
         const stream = params.row as Stream;
@@ -72,7 +72,7 @@ const AccountStreamsIncomingDataGrid: FC<{ network: Network, accountAddress: str
       renderCell: (params) => <TimeAgo subgraphTime={params.value} />
     },
     {
-      field: 'details', headerName: "Details", flex: 1, sortable: false, renderCell: (cellParams) => (
+      field: 'details', headerName: "Details", flex: 0.5, sortable: false, renderCell: (cellParams) => (
         <StreamDetailsDialog network={network} streamId={cellParams.id.toString()} />
       )
     }
