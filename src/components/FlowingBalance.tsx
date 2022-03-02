@@ -3,6 +3,7 @@ import { BigNumberish, ethers } from "ethers";
 import { Box } from "@mui/material";
 import EtherFormatted from "./EtherFormatted";
 import _ from "lodash";
+import moment from "moment";
 
 const ANIMATION_MINIMUM_STEP_TIME = 80;
 
@@ -22,13 +23,12 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
 }): ReactElement => {
   const [weiValue, setWeiValue] = useState<BigNumberish>(balance);
 
-  const balanceTimestampAsLocalBigNumber = useMemo(
+  const balanceTimestampMs = useMemo(
     () =>
       ethers.BigNumber.from(balanceTimestamp)
-        .mul(1000)
-        .add(getTimezoneOffsetMemoized()),
+        .mul(1000),
     [balanceTimestamp]
-  ); // Easier to convert balance timestamp to local time once than constantly convert local time to UTC time.
+  );
 
   useEffect(() => {
     const flowRateBigNumber = ethers.BigNumber.from(flowRate);
@@ -51,13 +51,13 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
         ANIMATION_MINIMUM_STEP_TIME
       ) {
         const currentTimestampBigNumber = ethers.BigNumber.from(
-          new Date().getTime()
+          moment.utc().valueOf()
         );
 
         setWeiValue(
           balanceBigNumber.add(
             currentTimestampBigNumber
-              .sub(balanceTimestampAsLocalBigNumber)
+              .sub(balanceTimestampMs)
               .mul(flowRateBigNumber)
               .div(1000)
           )
@@ -89,7 +89,3 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
 };
 
 export default FlowingBalance;
-
-const getTimezoneOffsetMemoized = _.memoize(
-  () => new Date().getTimezoneOffset() * 60 * 1000
-);
