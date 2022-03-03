@@ -43,5 +43,5 @@ jobs:
           wait-on-timeout: 180
           record: true
         env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_CONSOLE_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
