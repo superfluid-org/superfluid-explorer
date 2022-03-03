@@ -9,13 +9,13 @@ const AccountIndexes: FC<{
   accountAddress: string
 }> = ({ network, accountAddress }): ReactElement => {
   return <>
-    <Box>
+    <Box data-cy={"publications-box"}>
       <Typography variant="h6" component="h2" sx={{ ml: 1, mb: 1 }}>
         Publications
       </Typography>
       <AccountIndexesDataGrid network={network} accountAddress={accountAddress} />
     </Box>
-    <Box>
+    <Box data-cy={"subscriptions-box"}>
       <Typography variant="h6" component="h2" sx={{ mt: 3, ml: 1, mb: 1 }}>
         Subscriptions
       </Typography>

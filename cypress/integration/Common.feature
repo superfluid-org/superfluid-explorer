@@ -10,37 +10,25 @@ Feature: Test cases for common elements and functionalities
       | network          |
       | matic            |
       | xdai             |
-#      | arbitrum-rinkeby |
-#      | avalanche-fuji   |
-#      | goerli           |
-#      | kovan            |
-#      | mumbai           |
-#      | optimism-kovan   |
-#      | rinkeby          |
-#      | ropsten          |
+      | arbitrum-rinkeby |
+      | avalanche-fuji   |
+      | goerli           |
+      | kovan            |
+      | mumbai           |
+      | optimism-kovan   |
+      | rinkeby          |
+      | ropsten          |
 
-  Scenario Outline: Searching for a listed token
+  Scenario: Searching for a listed token
     Given User has opened the "landing" page
     And User clicks on the header search bar
     And User searches for "USDCx"
-    And User opens the first token result on "<network>"
-    Then The token page on "<network>" is opened
+    And User opens the first token result on "matic"
+    Then The token page on "matic" is opened
     And Token listed status is "Yes"
-    Examples:
-      | network          |
-      | matic            |
-      | xdai             |
-#      | arbitrum-rinkeby |
-#      | avalanche-fuji   |
-#      | goerli           |
-#      | kovan            |
-#      | mumbai           |
-#      | optimism-kovan   |
-#      | rinkeby          |
-#      | ropsten          |
 
   Scenario Outline: Adding an account to address book and searching for it
-    Given User has opened the "static balance account" page on "xdai"
+    Given User has opened the "static balance account" page on "matic"
     And User clicks the address book button
     And User saves the entry as "<entry>"
     And Address book button is filled
@@ -49,13 +37,13 @@ Feature: Test cases for common elements and functionalities
     And User searches for "<entry>"
     And Account search result entry named "<entry>" is shown
     Examples:
-      | entry           |
-      | testingtesting  |
-      | TestingWithUpperCase|
-      | Testing With Spaces |
-      | Testing With 123!@£ |
+      | entry                |
+      | testingtesting       |
+      | TestingWithUpperCase |
+      | Testing With Spaces  |
+      | Testing With 123!@£  |
 
-    Scenario: Opening subgraph page
-      Given User has opened the "landing" page
-      And User clicks on the subgraph explorer button
-      Then Subgraph explorer page is opened
+  Scenario: Opening subgraph page
+    Given User has opened the "landing" page
+    And User clicks on the subgraph explorer button
+    Then Subgraph explorer page is opened

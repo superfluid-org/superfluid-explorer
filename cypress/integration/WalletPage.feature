@@ -1,23 +1,13 @@
-Feature: Address page test cases
+Feature: Account page test cases
 
-  Scenario Outline: Data displayed in wallet page
-    Given User has opened the "static balance account" page on "<network>"
-    And The account address, type and network is shown correctly for "<network>"
-    And The account streams are shown correctly for "<network>"
+  Scenario: Data displayed in account page
+    Given User has opened the "static balance account" page on "matic"
+    And The account address, type and network is shown correctly for "matic"
+    And The account streams are shown correctly for "matic"
     And User switches to "indexes" tab
-    And The account publications are shown correctly for "<network>"
+    And The account publications are shown correctly for "matic"
     And User switches to "super tokens" tab
-    And The account balances are shown correctly for "<network>"
+    And The account balances are shown correctly for "matic"
     And User switches to "events" tab
-    Then The account events are shown correctly for "<network>"
-    Examples:
-      | network          |
-      | xdai             |
-#      | arbitrum-rinkeby |
-#      | avalanche-fuji   |
-#      | goerli           |
-#      | kovan            |
-#      | mumbai           |
-#      | optimism-kovan   |
-#      | rinkeby          |
-#      | ropsten          |
+    Then The account events are shown correctly for "matic"
+

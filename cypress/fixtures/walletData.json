@@ -1,16 +1,16 @@
 {
-  "xdai": {
+  "matic": {
     "address": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
-    "networkFancyName": "Gnosis Chain",
+    "networkFancyName": "Polygon",
     "accountType": "Regular account",
     "streams": {
-      "incomming": [],
+      "incoming": [],
       "outgoing": [
         {
-          "token": "Minerva Wallet SuperToken (MIVA)",
+          "token": "Super USDC (PoS) (USDCx)",
           "receiver": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
           "flowRate": 0,
-          "totalStreamed": 0.00086805555555555
+          "totalStreamed": 0.0000972222222221
         }
       ]
     },
@@ -20,15 +20,15 @@
     },
     "superTokens": [
       {
-        "tokenName": "Super xDAI (xDAIx)",
-        "balance": 5.0,
+        "tokenName": "Super MATIC (MATICx)",
+        "balance": "4.0",
         "activeStreamCount": 0,
         "closedStreamCount": 0,
         "subscriptionWithUnitsCount": 0
       },
       {
-        "tokenName": "Minerva Wallet SuperToken (MIVA)",
-        "balance": 50.310045431912825203,
+        "tokenName": "Super USDC (PoS) (USDCx)",
+        "balance": "4.9999027777927779",
         "activeStreamCount": 0,
         "closedStreamCount": 1,
         "subscriptionWithUnitsCount": 0
@@ -36,54 +36,54 @@
     ],
     "events": [
       {
-        "name": "Transfer",
-        "blockNumber": "16213608",
-        "transactionHash": "0x205c..."
-      },
-      {
-        "name": "Sent",
-        "blockNumber": "16213608",
-        "shortTransactionHash": "0x205c..."
+        "name": "FlowUpdated",
+        "blockNumber": "17936924",
+        "shortTransactionHash": "0x62d1..."
       },
       {
         "name": "FlowUpdated",
-        "blockNumber": "16165770",
-        "shortTransactionHash": "0x296d..."
+        "blockNumber": "17936880",
+        "shortTransactionHash": "0x67cf..."
       },
       {
         "name": "FlowUpdated",
-        "blockNumber": "16165762",
-        "shortTransactionHash": "0xd386..."
-      },
-      {
-        "name": "FlowUpdated",
-        "blockNumber": "16165757",
-        "shortTransactionHash": "0xf028..."
+        "blockNumber": "17936840",
+        "shortTransactionHash": "0x384b..."
       },
       {
         "name": "Transfer",
-        "blockNumber": "16165745",
-        "shortTransactionHash": "0x35b6..."
+        "blockNumber": "17935699",
+        "shortTransactionHash": "0xfdfa..."
       },
       {
         "name": "Sent",
-        "blockNumber": "16165745",
-        "shortTransactionHash": "0x35b6..."
+        "blockNumber": "17935699",
+        "shortTransactionHash": "0xfdfa..."
       },
       {
         "name": "Transfer",
-        "blockNumber": "16165737",
-        "shortTransactionHash": "0xd219..."
+        "blockNumber": "17935647",
+        "shortTransactionHash": "0x5124..."
       },
       {
         "name": "Sent",
-        "blockNumber": "16165737",
-        "shortTransactionHash": "0xd219..."
+        "blockNumber": "17935647",
+        "shortTransactionHash": "0x5124..."
       },
       {
         "name": "Transfer",
-        "blockNumber": "16164877",
-        "shortTransactionHash": "0xc106..."
+        "blockNumber": "17935626",
+        "shortTransactionHash": "0x781c..."
+      },
+      {
+        "name": "TokenUpgraded",
+        "blockNumber": "17935626",
+        "shortTransactionHash": "0x781c..."
+      },
+      {
+        "name": "Minted",
+        "blockNumber": "17935626",
+        "shortTransactionHash": "0x781c..."
       }
     ]
   }

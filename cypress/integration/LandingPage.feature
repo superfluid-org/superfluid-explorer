@@ -23,20 +23,9 @@ Feature: Landing page
       | superfluid protocol |
       | privacy policy      |
 
-
-  Scenario Outline: Switching between networks on latest streams section
+  Scenario: Switching between networks on latest streams section
     Given User has opened the "landing" page
-    And User switches the latest stream network data to "<network>"
-    Then The latest streams for "<network>" are shown
-    And All of the hyperlinks lead to "<network>" pages
-    Examples:
-      | network          |
-      | xdai             |
-      | arbitrum-rinkeby |
-#      | avalanche-fuji   |
-#      | goerli           |
-#      | kovan            |
-#      | mumbai           |
-#      | optimism-kovan   |
-#      | rinkeby          |
-#      | ropsten          |
+    And User switches the latest stream network data to "xdai"
+    Then The latest streams for "xdai" are shown
+    And All of the hyperlinks lead to "xdai" pages
+

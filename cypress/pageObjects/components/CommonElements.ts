@@ -21,7 +21,7 @@ export class CommonElements extends BasePage {
 
   static searchForStaticBalanceAccount() {
     cy.fixture("commonData").then(fixture => {
-      this.type(MODAL_SEARCH_INPUT,fixture.staticBalanceAccount)
+      this.type(MODAL_SEARCH_INPUT, fixture.staticBalanceAccount)
     })
   }
 
@@ -32,14 +32,14 @@ export class CommonElements extends BasePage {
     this.click("[data-cy=" + network + "-account-search-result]")
   }
 
-  static validateAccountPageLink(network : string) {
+  static validateAccountPageLink(network: string) {
     cy.get("@lastOpenedResult").then(result => {
       this.validatePageUrl("/" + network + "/accounts/" + result + "?tab=streams")
     })
   }
 
   static searchFor(text: string) {
-    this.type(MODAL_SEARCH_INPUT,text)
+    this.type(MODAL_SEARCH_INPUT, text)
   }
 
   static openFirstTokenResult(network: string) {
@@ -49,23 +49,23 @@ export class CommonElements extends BasePage {
     this.clickFirstVisible("[data-cy=" + network + "-token-search-result]")
   }
 
-  static validateTokenPageLink(network: string ) {
+  static validateTokenPageLink(network: string) {
     cy.get("@lastOpenedResult").then(result => {
       this.validatePageUrl("/" + network + "/supertokens/" + result + "?tab=streams")
     })
   }
 
-  static inputAndSaveToAddressBook(name:string) {
-    this.type(ADDRESS_BOOK_NAME_INPUT , name)
+  static inputAndSaveToAddressBook(name: string) {
+    this.type(ADDRESS_BOOK_NAME_INPUT, name)
     this.click(ADDRESS_BOOK_SAVE)
   }
 
-  static addressBookEntryIsShown(name:string){
-    this.containsText(ADDRESS_BOOK_ENTRIES,name)
+  static addressBookEntryIsShown(name: string) {
+    this.containsText(ADDRESS_BOOK_ENTRIES, name)
   }
 
   static accountSearchResultContainsName(name: any) {
-    this.containsText(ALL_ACCOUNT_SEARCH_RESULTS,name)
+    this.containsText(ALL_ACCOUNT_SEARCH_RESULTS, name)
   }
 
   static clickSubgraphButton() {
@@ -77,7 +77,7 @@ export class CommonElements extends BasePage {
   }
 
   static switchToTab(tab: string) {
-    this.click("[data-cy="+ tab.replaceAll(" ","-")+"-tab")
+    this.click("[data-cy=" + tab.replaceAll(" ", "-") + "-tab")
   }
 
 }

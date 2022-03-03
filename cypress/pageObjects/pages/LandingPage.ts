@@ -16,16 +16,16 @@ const SUPERFLUID_PROTOCOL_LINK = "https://docs.superfluid.finance/superfluid/pro
 
 export class LandingPage extends BasePage {
 
-  static latestStreamsAreVisible(network :string) {
+  static latestStreamsAreVisible(network: string) {
     this.doesNotExist(LOADING_SPINNER)
-    this.hasAttributeWithValue("[data-cy=" + network + "-landing-button]" , "aria-selected" , "true")
+    this.hasAttributeWithValue("[data-cy=" + network + "-landing-button]", "aria-selected", "true")
     this.hasLength(ADDRESS_LINKS, 20)
-    this.hasLength(TOTAL_STREAMED , 10)
-    this.hasLength(TOKEN_LINKS , 10)
+    this.hasLength(TOTAL_STREAMED, 10)
+    this.hasLength(TOKEN_LINKS, 10)
   }
 
   static openPage(page: string) {
-    switch(page) {
+    switch (page) {
       case "terms of use": {
         cy.visit(TERMS_OF_USE_LINK)
         break;
@@ -48,8 +48,8 @@ export class LandingPage extends BasePage {
     }
   }
 
-  static openDataPage(page: string , network :string) {
-    switch(page) {
+  static openDataPage(page: string, network: string) {
+    switch (page) {
       case "static balance account": {
         cy.fixture("walletData").then(fixture => {
           cy.visit("/" + network + "/accounts/" + fixture[network].address)
@@ -75,7 +75,7 @@ export class LandingPage extends BasePage {
   }
 
   static clickHyperlink(link: string) {
-    switch(link) {
+    switch (link) {
       case "terms of use": {
         this.click(TERMS_LINK)
         break;
@@ -99,17 +99,17 @@ export class LandingPage extends BasePage {
   }
 
   static validateLinkHref(link: string) {
-    switch(link) {
+    switch (link) {
       case "terms of use": {
-        this.hasAttributeWithValue(TERMS_LINK,"href",TERMS_OF_USE_LINK)
+        this.hasAttributeWithValue(TERMS_LINK, "href", TERMS_OF_USE_LINK)
         break;
       }
       case "superfluid protocol": {
-        this.hasAttributeWithValue(PROTOCOL_LINK,"href",SUPERFLUID_PROTOCOL_LINK)
+        this.hasAttributeWithValue(PROTOCOL_LINK, "href", SUPERFLUID_PROTOCOL_LINK)
         break;
       }
       case "privacy policy": {
-        this.hasAttributeWithValue(PRIVACY_LINK,"href",PRIVACY_POLICY_LINK)
+        this.hasAttributeWithValue(PRIVACY_LINK, "href", PRIVACY_POLICY_LINK)
         break;
       }
       default: {
@@ -120,15 +120,15 @@ export class LandingPage extends BasePage {
 
   static switchLatestStreamNetwork(network: string) {
     this.click(NETWORK_RIGHT_ARROW)
-    this.click("[data-cy=" + network + "-landing-button]" )
-    this.hasAttributeWithValue("[data-cy=" + network + "-landing-button]" , "aria-selected" , "true")
+    this.click("[data-cy=" + network + "-landing-button]")
+    this.hasAttributeWithValue("[data-cy=" + network + "-landing-button]", "aria-selected", "true")
     this.hasLength(ADDRESS_LINKS, 20)
-    this.hasLength(TOTAL_STREAMED , 10)
-    this.hasLength(TOKEN_LINKS , 10)
+    this.hasLength(TOTAL_STREAMED, 10)
+    this.hasLength(TOKEN_LINKS, 10)
   }
 
-  static validateLatestStreamHyperlinks(network : string) {
-    cy.get(ADDRESS_LINKS).should("have.attr" , "href").and("contain", network + "/accounts/")
-    cy.get(TOKEN_LINKS).should("have.attr" , "href").and("contain", network+ "/supertokens/")
+  static validateLatestStreamHyperlinks(network: string) {
+    cy.get(ADDRESS_LINKS).should("have.attr", "href").and("contain", network + "/accounts/")
+    cy.get(TOKEN_LINKS).should("have.attr", "href").and("contain", network + "/supertokens/")
   }
 }

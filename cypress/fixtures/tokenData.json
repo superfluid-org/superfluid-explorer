@@ -1,5 +1,9 @@
 {
-  "xdai": {
-    "address": "0x59988e47a3503aafaa0368b9def095c818fdca01"
+  "matic": {
+    "address": "0x1305F6B6Df9Dc47159D12Eb7aC2804d4A33173c2",
+    "symbol": "DAIx",
+    "listedStatus": "Yes",
+    "networkFancyName": "Polygon",
+    "underlyingTokenAddress": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063"
   }
 }
