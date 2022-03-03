@@ -1,12 +1,16 @@
-import { FC, ReactElement, useEffect, useState } from "react";
+import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { BigNumberish, ethers } from "ethers";
 import { Box } from "@mui/material";
 import EtherFormatted from "./EtherFormatted";
+import _ from "lodash";
 
 const ANIMATION_MINIMUM_STEP_TIME = 80;
 
 export interface FlowingBalanceProps {
   balance: string;
+  /**
+   * Timestamp in Subgraph's UTC.
+   */
   balanceTimestamp: number;
   flowRate: string;
 }
@@ -16,34 +20,43 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
   balanceTimestamp,
   flowRate,
 }): ReactElement => {
-  const [weiValue, setWeiValue] = useState<BigNumberish>(0);
+  const [weiValue, setWeiValue] = useState<BigNumberish>(balance);
+
+  const balanceTimestampMs = useMemo(
+    () =>
+      ethers.BigNumber.from(balanceTimestamp)
+        .mul(1000),
+    [balanceTimestamp]
+  );
 
   useEffect(() => {
-    const balanceBigNumber = ethers.BigNumber.from(balance);
     const flowRateBigNumber = ethers.BigNumber.from(flowRate);
-    const balanceTimestampBigNumber =
-      ethers.BigNumber.from(balanceTimestamp).mul(1000);
+    if (flowRateBigNumber.isZero()) {
+      return; // No need to show animation when flow rate is zero.
+    }
+
+    const balanceBigNumber = ethers.BigNumber.from(balance);
 
     let stopAnimation = false;
     let lastAnimationTimestamp: DOMHighResTimeStamp = 0;
 
     const animationStep = (currentAnimationTimestamp: DOMHighResTimeStamp) => {
+      if (stopAnimation) {
+        return;
+      }
+
       if (
         currentAnimationTimestamp - lastAnimationTimestamp >
         ANIMATION_MINIMUM_STEP_TIME
       ) {
-        if (stopAnimation) {
-          return;
-        }
-
         const currentTimestampBigNumber = ethers.BigNumber.from(
-          new Date().getTime()
+          new Date().valueOf() // Milliseconds elapsed since UTC epoch, disregards timezone.
         );
 
         setWeiValue(
           balanceBigNumber.add(
             currentTimestampBigNumber
-              .sub(balanceTimestampBigNumber)
+              .sub(balanceTimestampMs)
               .mul(flowRateBigNumber)
               .div(1000)
           )
@@ -51,6 +64,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
 
         lastAnimationTimestamp = currentAnimationTimestamp;
       }
+      
       window.requestAnimationFrame(animationStep);
     };
 
@@ -60,6 +74,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
       stopAnimation = true;
     };
   }, [balance, balanceTimestamp, flowRate]);
+
   return (
     <Box
       component="span"
