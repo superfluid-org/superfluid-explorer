@@ -30,32 +30,32 @@ const AccountStreamsIncomingDataGrid: FC<{ network: Network, accountAddress: str
     {
       field: 'token',
       headerName: "Token",
-      flex: 1,
+      flex: 1.5,
       sortable: false,
-      renderCell: (params) => (<SuperTokenAddress data-cy={"incoming-token"} network={network} address={params.value} />)
+      renderCell: (params) => (<SuperTokenAddress network={network} address={params.value} />)
     },
     {
       field: 'sender',
       headerName: "Sender",
       sortable: false,
-      flex: 1,
-      renderCell: (params) => (<AccountAddress data-cy={"incomming-address"} network={network} address={params.value} />)
+      flex: 1.5,
+      renderCell: (params) => (<AccountAddress network={network} address={params.value} />)
     },
     {
       field: 'currentFlowRate',
       headerName: "Flow Rate",
-      flex: 1,
+      flex: 2,
       sortable: true,
       renderCell: (params) => (<FlowRate flowRate={params.value} />)
     },
     {
       field: 'streamedUntilUpdatedAt',
       headerName: "Total Streamed",
-      flex: 1,
+      flex: 1.5,
       sortable: false,
       renderCell: (params) => {
         const stream = params.row as Stream;
-        return (<FlowingBalance data-cy={"incomming-total-streamed"}
+        return (<FlowingBalance
           {...{
             balance: stream.streamedUntilUpdatedAt,
             balanceTimestamp: stream.updatedAtTimestamp,

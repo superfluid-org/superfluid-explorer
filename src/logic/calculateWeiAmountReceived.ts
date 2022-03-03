@@ -1,6 +1,6 @@
 import { BigNumber, ethers } from "ethers";
 
-const calculateEtherAmountReceived = (
+const calculateWeiAmountReceived = (
   publisherIndexValue: BigNumber,
   subscriberTotalAmountReceivedUntilUpdatedAt: BigNumber,
   subscriberIndexValueUntilUpdatedAt: BigNumber,
@@ -14,7 +14,7 @@ const calculateEtherAmountReceived = (
     publisherSubscriberDifference
   );
 
-  return ethers.utils.formatEther(totalAmountReceived);
+  return totalAmountReceived;
 };
 
-export default calculateEtherAmountReceived;
+export default calculateWeiAmountReceived;

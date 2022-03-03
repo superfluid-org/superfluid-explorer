@@ -23,9 +23,6 @@ user accounts instantaneously as a result.
 Superfluid Console is an explorer meant for developers and advanced users of the Superfluid Protocol.
 
 ## How to use
-
-Create `.env` for environment variables based off of `.env-sample`. The only required dependency for local development is `NEXT_PUBLIC_INFURA_ID` which you can get from https://infura.io/.
-
 To install packages and start development server, run:
 
 ```sh

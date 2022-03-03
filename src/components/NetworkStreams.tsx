@@ -146,13 +146,6 @@ const TotalStreamed: FC<{
   balanceTimestamp: number;
   flowRate: string;
 }> = (props) => {
-  const { network, tokenAddress } = props;
-
-  const tokenQuery = sfSubgraph.useTokenQuery({
-    chainId: network.chainId,
-    id: tokenAddress,
-  });
-
   return (
     <Grid container spacing={0} sx={{ lineHeight: "1.5" }}>
       <Grid item xs={12}>

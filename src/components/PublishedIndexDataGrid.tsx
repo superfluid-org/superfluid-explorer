@@ -15,6 +15,7 @@ import { timeAgo } from "../utils/dateTime";
 import TimeAgo from "./TimeAgo";
 import { ethers } from "ethers";
 import AccountAddress from "./AccountAddress";
+import EtherFormatted from "./EtherFormatted";
 
 interface Props {
   network: Network;
@@ -67,7 +68,8 @@ const PublishedIndexDataGrid: FC<Props> = ({
         flex: 1.5,
         renderCell: (params) => (
           <>
-            {ethers.utils.formatEther(params.value)}&nbsp;
+            <EtherFormatted wei={params.value} />
+            &nbsp;
             <SuperTokenAddress
               network={network}
               address={(params.row as Index).token}

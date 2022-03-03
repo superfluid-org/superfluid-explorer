@@ -15,8 +15,9 @@ import { IndexSubscriptionDetailsDialog } from "./IndexSubscriptionDetails";
 import { AppDataGrid } from "./AppDataGrid";
 import calculatePoolPercentage from "../logic/calculatePoolPercentage";
 import Decimal from "decimal.js";
-import calculateEtherAmountReceived from "../logic/calculateEtherAmountReceived";
+import calculateWeiAmountReceived from "../logic/calculateWeiAmountReceived";
 import { BigNumber } from "ethers";
+import EtherFormatted from "./EtherFormatted";
 
 export const indexSubscriptionOrderingDefault:
   | Ordering<IndexSubscription_OrderBy>
@@ -80,12 +81,12 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
           params: GridRenderCellParams<string, IndexSubscription>
         ) => (
           <>
-            {calculateEtherAmountReceived(
+            <EtherFormatted wei={calculateWeiAmountReceived(
               BigNumber.from(params.row.indexValueCurrent),
               BigNumber.from(params.row.totalAmountReceivedUntilUpdatedAt),
               BigNumber.from(params.row.indexValueUntilUpdatedAt),
               BigNumber.from(params.row.units)
-            )}
+            )} />
             &nbsp;
             <SuperTokenAddress
               network={network}
@@ -109,7 +110,7 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
               {`(${calculatePoolPercentage(
                 new Decimal(params.row.indexTotalUnits),
                 new Decimal(params.row.units)
-              ).toFixed(2)}%)`}
+              ).toDP(2).toString()}%)`}
             </>
           );
         },

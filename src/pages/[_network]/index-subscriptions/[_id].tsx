@@ -29,7 +29,7 @@ import {
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import AccountAddress from "../../../components/AccountAddress";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, BigNumberish, ethers } from "ethers";
 import SubscriptionUnitsUpdatedEventDataGrid from "../../../components/SubscriptionUnitsUpdatedEventDataGrid";
 import NetworkContext from "../../../contexts/NetworkContext";
 import IdContext from "../../../contexts/IdContext";
@@ -40,11 +40,12 @@ import { GridColDef } from "@mui/x-data-grid";
 import { AppDataGrid } from "../../../components/AppDataGrid";
 import Decimal from "decimal.js";
 import CopyLink from "../../../components/CopyLink";
-import calculateEtherAmountReceived from "../../../logic/calculateEtherAmountReceived";
+import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceived";
 import AppLink from "../../../components/AppLink";
 import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import { gql } from "graphql-request";
+import EtherFormatted from "../../../components/EtherFormatted";
 
 const IndexSubscriptionPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -109,8 +110,8 @@ export const IndexSubscriptionPageContent: FC<{
     });
 
   const [poolPercentage, setPoolPercentage] = useState<Decimal | undefined>();
-  const [totalEtherAmountReceived, setTotalEtherAmountReceived] = useState<
-    string | undefined
+  const [totalWeiAmountReceived, setTotalWeiAmountReceived] = useState<
+    BigNumberish | undefined
   >();
 
   useEffect(() => {
@@ -122,8 +123,8 @@ export const IndexSubscriptionPageContent: FC<{
         )
       );
 
-      setTotalEtherAmountReceived(
-        calculateEtherAmountReceived(
+      setTotalWeiAmountReceived(
+        calculateWeiAmountReceived(
           BigNumber.from(index.indexValue),
           BigNumber.from(indexSubscription.totalAmountReceivedUntilUpdatedAt),
           BigNumber.from(indexSubscription.indexValueUntilUpdatedAt),
@@ -301,7 +302,7 @@ export const IndexSubscriptionPageContent: FC<{
                       <>
                         {indexSubscription.units} / {index.totalUnits} (
                         {poolPercentage &&
-                          poolPercentage.toFixed(2).toString() + " %"}
+                          poolPercentage.toDP(2).toString() + " %"}
                         )
                       </>
                     ) : (
@@ -330,9 +331,9 @@ export const IndexSubscriptionPageContent: FC<{
                 <ListItemText
                   secondary="Total Amount Received"
                   primary={
-                    indexSubscription && index && totalEtherAmountReceived ? (
+                    indexSubscription && index && totalWeiAmountReceived ? (
                       <>
-                        {totalEtherAmountReceived}
+                        <EtherFormatted wei={totalWeiAmountReceived} />
                         &nbsp;
                         <SuperTokenAddress
                           network={network}
@@ -544,9 +545,7 @@ export const IndexSubscriptionDistributions: FC<{
 
           return (
             <>
-              {ethers.utils.formatEther(
-                subscriptionDistributionAmount.toString()
-              )}
+              <EtherFormatted wei={subscriptionDistributionAmount} />
               &nbsp;
               <SuperTokenAddress
                 network={network}

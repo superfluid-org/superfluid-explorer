@@ -81,6 +81,7 @@ const Layout: FC = ({ children }) => {
   const router = useRouter();
   const { _network, _id } = router.query;
 
+  // For dynamic routes, pre-load the network and the entity ID. Makes the specific page implementations less boilerplate-y.
   if (isDynamicRoute(router)) {
     if (router.isReady) {
       const network = tryGetNetwork(_network);
@@ -97,7 +98,7 @@ const Layout: FC = ({ children }) => {
       }
     } else {
       return (
-        // Prefer to show blank page here instead of a loder (less flickering).
+        // Prefer to show blank page here instead of a loader (less flickering).
         <Box
           sx={{
             height: "100vh",
@@ -108,12 +109,14 @@ const Layout: FC = ({ children }) => {
     }
   }
 
+  // For non-dynamic routes, don't do anything special.
   return <>{children}</>;
 };
 
 // NOTE: This wraps the React code with Redux provider component.
 export default wrapper.withRedux(MyApp);
 
+// There were some weird moments with Emotion cache'ing and SSR, so to figure out _the actual_ rendered theme this helper looks at the DOM.
 export const getRenderedThemeMode = (): "light" | "dark" => {
   // Theme mode is saved to meta tag. We look for it from the DOM because of static optimizations of Next.js.
   const themeModeMetaElement = window.document.getElementById("theme-mode");
