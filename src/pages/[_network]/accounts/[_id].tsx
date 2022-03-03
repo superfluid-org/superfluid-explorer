@@ -1,9 +1,12 @@
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Box,
   Breadcrumbs,
   Card,
   Container,
   Grid,
+  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -12,33 +15,13 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { sfApi, sfSubgraph } from "../../../redux/store";
-import AccountStreams from "../../../components/AccountStreams";
-import AccountIndexes from "../../../components/AccountIndexes";
-import AccountTokens from "../../../components/AccountTokens";
-import { NextPage } from "next";
-import NetworkDisplay from "../../../components/NetworkDisplay";
-import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
-import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
-import EventList from "../../../components/EventList";
-import { AddressBookButton } from "../../../components/AddressBook";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import {
-  addressBookSelectors,
-  createEntryId,
-} from "../../../redux/slices/addressBook.slice";
-import { useAppSelector } from "../../../redux/hooks";
 import { ethers } from "ethers";
+import { gql } from "graphql-request";
+import { NextPage } from "next";
 import Error from "next/error";
-import {
-  incomingStreamOrderingDefault,
-  incomingStreamPagingDefault,
-} from "../../../components/AccountStreamsIncomingDataGrid";
-import {
-  outgoingStreamOrderingDefault,
-  outgoingStreamPagingDefault,
-} from "../../../components/AccountStreamsOutgoingDataGrid";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import AccountIndexes from "../../../components/AccountIndexes";
 import {
   publishedIndexOrderingDefault,
   publishedIndexPagingDefault,
@@ -47,14 +30,32 @@ import {
   indexSubscriptionOrderingDefault,
   indexSubscriptionPagingDefault,
 } from "../../../components/AccountIndexSubscriptionsDataGrid";
-import NetworkContext from "../../../contexts/NetworkContext";
-import IdContext from "../../../contexts/IdContext";
+import AccountStreams from "../../../components/AccountStreams";
+import {
+  incomingStreamOrderingDefault,
+  incomingStreamPagingDefault,
+} from "../../../components/AccountStreamsIncomingDataGrid";
+import {
+  outgoingStreamOrderingDefault,
+  outgoingStreamPagingDefault,
+} from "../../../components/AccountStreamsOutgoingDataGrid";
+import AccountTokens from "../../../components/AccountTokens";
+import { AddressBookButton } from "../../../components/AddressBook";
+import CopyClipboard from "../../../components/CopyClipboard";
 import CopyLink from "../../../components/CopyLink";
-import { useRouter } from "next/router";
-import AppLink from "../../../components/AppLink";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import EventList from "../../../components/EventList";
+import NetworkDisplay from "../../../components/NetworkDisplay";
+import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
+import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
-import { gql } from "graphql-request";
+import IdContext from "../../../contexts/IdContext";
+import NetworkContext from "../../../contexts/NetworkContext";
+import { useAppSelector } from "../../../redux/hooks";
+import {
+  addressBookSelectors,
+  createEntryId,
+} from "../../../redux/slices/addressBook.slice";
+import { sfApi, sfSubgraph } from "../../../redux/store";
 
 const AccountPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -67,6 +68,7 @@ const AccountPage: NextPage = () => {
 
   const [triggerMonitoring, monitorResult] =
     sfApi.useMonitorForEventsToInvalidateCacheMutation();
+
   useEffect(() => {
     if (network && accountQuery.data) {
       triggerMonitoring({
@@ -75,6 +77,7 @@ const AccountPage: NextPage = () => {
       });
       return monitorResult.reset;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams");
@@ -89,6 +92,7 @@ const AccountPage: NextPage = () => {
   const [tabValue, setTabValue] = useState<string>(
     (tab as string) ?? "streams"
   );
+
   useEffect(() => {
     router.replace({
       query: {
@@ -97,6 +101,7 @@ const AccountPage: NextPage = () => {
         tab: tabValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue]);
 
   const addressBookEntry = useAppSelector((state) =>
@@ -132,13 +137,10 @@ const AccountPage: NextPage = () => {
           {network && accountQuery.data ? (
             <Typography variant="h4" component="h1">
               <Grid container alignItems="center">
-                <Grid item>
-                  <AddressBookButton
-                    iconProps={{ fontSize: "large" }}
-                    network={network}
-                    address={accountQuery.data.id}
-                  />
-                </Grid>
+                <AddressBookButton
+                  network={network}
+                  address={accountQuery.data.id}
+                />
                 <Grid item sx={{ mx: 0.5 }}>
                   {addressBookEntry
                     ? addressBookEntry.nameTag
@@ -146,29 +148,32 @@ const AccountPage: NextPage = () => {
                     ? "Super App"
                     : "Account"}
                 </Grid>
-                <Grid item>
-                  <CopyLink
-                    IconProps={{ fontSize: "large" }}
-                    localPath={`/${network.slugName}/accounts/${address}`}
-                  />
-                </Grid>
-                <Grid item>
-                  <SubgraphQueryLink
-                    network={network}
-                    query={gql`
-                      query ($id: ID = "") {
-                        account(id: $id) {
-                          createdAtTimestamp
-                          createdAtBlockNumber
-                          isSuperApp
-                          updatedAtBlockNumber
-                          updatedAtTimestamp
-                        }
+                <CopyLink
+                  localPath={`/${network.slugName}/accounts/${address}`}
+                />
+                <SubgraphQueryLink
+                  network={network}
+                  query={gql`
+                    query ($id: ID = "") {
+                      account(id: $id) {
+                        createdAtTimestamp
+                        createdAtBlockNumber
+                        isSuperApp
+                        updatedAtBlockNumber
+                        updatedAtTimestamp
                       }
-                    `}
-                    variables={`{ "id": "${address.toLowerCase()}" }`}
-                  />
-                </Grid>
+                    }
+                  `}
+                  variables={`{ "id": "${address.toLowerCase()}" }`}
+                />
+                <Tooltip title="View on blockchain Explorer">
+                  <IconButton
+                    href={network.getLinkForAddress(accountQuery.data.id)}
+                    target="_blank"
+                  >
+                    <OpenInNewIcon />
+                  </IconButton>
+                </Tooltip>
               </Grid>
             </Typography>
           ) : (
@@ -186,21 +191,14 @@ const AccountPage: NextPage = () => {
                       secondary="Address"
                       primary={
                         accountQuery.data ? (
-                          <Tooltip title="View on blockchain explorer">
-                            <AppLink
-                              href={network.getLinkForAddress(
+                          <div>
+                            {ethers.utils.getAddress(accountQuery.data.id)}
+                            <CopyClipboard
+                              copyText={ethers.utils.getAddress(
                                 accountQuery.data.id
                               )}
-                              target="_blank"
-                            >
-                              <Grid container alignItems="center">
-                                {ethers.utils.getAddress(accountQuery.data.id)}
-                                <OpenInNewIcon
-                                  sx={{ ml: 0.5, fontSize: "inherit" }}
-                                />
-                              </Grid>
-                            </AppLink>
-                          </Tooltip>
+                            />
+                          </div>
                         ) : (
                           <SkeletonAddress />
                         )

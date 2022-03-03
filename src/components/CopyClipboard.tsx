@@ -1,7 +1,8 @@
-import { FC, useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { SvgIcon, SvgIconProps, Tooltip, TooltipProps } from "@mui/material";
 import _ from "lodash";
+import { FC, useState } from "react";
+import copyTextToClipboard from "../utils/copyTextToClipboard";
 
 /**
  * Inspired by: https://blog.logrocket.com/implementing-copy-to-clipboard-in-react-with-clipboard-api/
@@ -30,34 +31,27 @@ const CopyClipboard: FC<{
   };
 
   return (
-      <Tooltip
+    <Tooltip
+      title={isCopied ? "Copied!" : "Copy to clipboard"}
+      {...TooltipProps}
+    >
+      <SvgIcon
+        component={ContentCopyIcon}
+        onClick={handleCopyClick}
         {..._.merge(
           {
-            title: isCopied ? "Copied!" : "Copy to clipboard",
-          },
-          TooltipProps
-        )}
-      >
-        <SvgIcon
-          component={ContentCopyIcon}
-          onClick={handleCopyClick}
-          {..._.merge(
-            {
-              sx: { fontSize: "inherit", cursor: "pointer", ml: 1 },
+            sx: {
+              fontSize: "inherit",
+              cursor: "pointer",
+              ml: 1,
+              verticalAlign: "middle",
             },
-            IconProps
-          )}
-        />
-      </Tooltip>
+          },
+          IconProps
+        )}
+      />
+    </Tooltip>
   );
 };
 
 export default CopyClipboard;
-
-async function copyTextToClipboard(text: string) {
-  if ("clipboard" in navigator) {
-    return await navigator.clipboard.writeText(text);
-  } else {
-    return document.execCommand("copy", true, text);
-  }
-}

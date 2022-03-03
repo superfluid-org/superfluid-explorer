@@ -37,17 +37,17 @@ export const AddressBookButton: FC<{
 
   return (
     <>
-      <IconButton onClick={() => setIsDialogOpen(!isDialogOpen)}>
-        {entry ? (
-          <Tooltip title="Edit address book entry">
+      <Tooltip
+        title={entry ? "Edit address book entry" : "Add to address book"}
+      >
+        <IconButton onClick={() => setIsDialogOpen(!isDialogOpen)}>
+          {entry ? (
             <StarIcon {...iconProps} />
-          </Tooltip>
-        ) : (
-          <Tooltip title="Add to address book">
+          ) : (
             <StarBorderIcon {...iconProps} />
-          </Tooltip>
-        )}
-      </IconButton>
+          )}
+        </IconButton>
+      </Tooltip>
       <AddressBookDialog
         network={network}
         address={address}
@@ -75,6 +75,7 @@ export const AddressBookDialog: FC<{
   // Fixes: https://github.com/superfluid-finance/superfluid-console/issues/21
   useEffect(() => {
     setNameTag(getInitialNameTag());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network, address, open]);
 
   const handleRemove = () => {
@@ -94,7 +95,7 @@ export const AddressBookDialog: FC<{
         addressBookSlice.actions.entryUpserted({
           chainId: network.chainId,
           address: ethers.utils.getAddress(address),
-          nameTag: nameTagTrimmed
+          nameTag: nameTagTrimmed,
         })
       );
     }

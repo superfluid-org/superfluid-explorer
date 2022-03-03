@@ -48,6 +48,7 @@ const SuperTokenPage: NextPage = () => {
 
   const [triggerMonitoring, monitorResult] =
     sfApi.useMonitorForEventsToInvalidateCacheMutation();
+
   useEffect(() => {
     if (superToken) {
       triggerMonitoring({
@@ -56,6 +57,7 @@ const SuperTokenPage: NextPage = () => {
       });
       return monitorResult.reset;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [superToken]);
 
   const router = useRouter();
@@ -63,6 +65,7 @@ const SuperTokenPage: NextPage = () => {
   const [tabValue, setTabValue] = useState<string>(
     (tab as string) ?? "streams"
   );
+
   useEffect(() => {
     router.replace({
       query: {
@@ -71,6 +74,7 @@ const SuperTokenPage: NextPage = () => {
         tab: tabValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue]);
 
   if (
@@ -103,32 +107,27 @@ const SuperTokenPage: NextPage = () => {
                 <Grid item sx={{ mx: 0.5 }}>
                   {superToken.name}
                 </Grid>
-                <Grid item>
-                  <CopyLink
-                    IconProps={{ fontSize: "large" }}
-                    localPath={`/${network.slugName}/supertokens/${address}`}
-                  />
-                </Grid>
-                <Grid item>
-                  <SubgraphQueryLink
-                    network={network}
-                    query={gql`
-                      query ($id: ID!) {
-                        token(id: $id) {
-                          name
-                          symbol
-                          isSuperToken
-                          isListed
-                          underlyingAddress
-                          decimals
-                          createdAtTimestamp
-                          createdAtBlockNumber
-                        }
+                <CopyLink
+                  localPath={`/${network.slugName}/supertokens/${address}`}
+                />
+                <SubgraphQueryLink
+                  network={network}
+                  query={gql`
+                    query ($id: ID!) {
+                      token(id: $id) {
+                        name
+                        symbol
+                        isSuperToken
+                        isListed
+                        underlyingAddress
+                        decimals
+                        createdAtTimestamp
+                        createdAtBlockNumber
                       }
-                    `}
-                    variables={`{ "id": "${address.toLowerCase()}" }`}
-                  />
-                </Grid>
+                    }
+                  `}
+                  variables={`{ "id": "${address.toLowerCase()}" }`}
+                />
               </Grid>
             ) : (
               <SkeletonTokenName />

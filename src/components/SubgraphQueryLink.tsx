@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
-import AppLink from "./AppLink";
-import { Network } from "../redux/networks";
 import { IconButton, Tooltip } from "@mui/material";
+import Link from "next/link";
+import { FC, useState } from "react";
+import { Network } from "../redux/networks";
 import SubgraphIcon from "./SubgraphIcon";
 
 const SubgraphQueryLink: FC<{
@@ -15,19 +15,18 @@ const SubgraphQueryLink: FC<{
   );
 
   return (
-    <Tooltip title="View on Subgraph Explorer">
-      <AppLink
-        href={`/subgraph?_network=${
-          network.slugName
-        }&_query=${queryCompressed}${
-          variablesCompressed ? `&_variables=${variablesCompressed}` : ""
-        }`}
-      >
+    <Link
+      passHref
+      href={`/subgraph?_network=${network.slugName}&_query=${queryCompressed}${
+        variablesCompressed ? `&_variables=${variablesCompressed}` : ""
+      }`}
+    >
+      <Tooltip title="View on Subgraph Explorer">
         <IconButton>
           <SubgraphIcon />
         </IconButton>
-      </AppLink>
-    </Tooltip>
+      </Tooltip>
+    </Link>
   );
 };
 

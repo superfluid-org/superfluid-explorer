@@ -132,6 +132,7 @@ export const IndexSubscriptionPageContent: FC<{
         )
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indexSubscription && index]);
 
   if (
@@ -163,28 +164,23 @@ export const IndexSubscriptionPageContent: FC<{
               <Grid item sx={{ mx: 0.5 }}>
                 Index Subscription
               </Grid>
-              <Grid item>
-                <CopyLink
-                  IconProps={{ fontSize: "large" }}
-                  localPath={`/${network.slugName}/index-subscriptions/${indexSubscriptionId}`}
-                />
-              </Grid>
-              <Grid item>
-                <SubgraphQueryLink
-                  network={network}
-                  query={gql`
-                    query ($id: ID!) {
-                      indexSubscription(id: $id) {
-                        indexValueUntilUpdatedAt
-                        approved
-                        totalAmountReceivedUntilUpdatedAt
-                        units
-                      }
+              <CopyLink
+                localPath={`/${network.slugName}/index-subscriptions/${indexSubscriptionId}`}
+              />
+              <SubgraphQueryLink
+                network={network}
+                query={gql`
+                  query ($id: ID!) {
+                    indexSubscription(id: $id) {
+                      indexValueUntilUpdatedAt
+                      approved
+                      totalAmountReceivedUntilUpdatedAt
+                      units
                     }
-                  `}
-                  variables={`{ "id": "${indexSubscriptionId.toLowerCase()}" }`}
-                />
-              </Grid>
+                  }
+                `}
+                variables={`{ "id": "${indexSubscriptionId.toLowerCase()}" }`}
+              />
             </Grid>
           </Typography>
         </Grid>

@@ -102,35 +102,30 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
               <Grid item sx={{ mx: 0.5 }}>
                 Stream
               </Grid>
-              <Grid item>
-                <CopyLink
-                  IconProps={{ fontSize: "large" }}
-                  localPath={`/${network.slugName}/streams/${streamId}`}
-                />
-              </Grid>
-              <Grid item>
-                <SubgraphQueryLink
-                  network={network}
-                  query={gql`
-                    query ($id: ID!) {
-                      stream(id: $id) {
-                        currentFlowRate
-                        sender {
-                          id
-                        }
-                        receiver {
-                          id
-                        }
-                        token {
-                          symbol
-                        }
-                        streamedUntilUpdatedAt
+              <CopyLink
+                localPath={`/${network.slugName}/streams/${streamId}`}
+              />
+              <SubgraphQueryLink
+                network={network}
+                query={gql`
+                  query ($id: ID!) {
+                    stream(id: $id) {
+                      currentFlowRate
+                      sender {
+                        id
                       }
+                      receiver {
+                        id
+                      }
+                      token {
+                        symbol
+                      }
+                      streamedUntilUpdatedAt
                     }
-                  `}
-                  variables={`{ "id": "${streamId.toLowerCase()}" }`}
-                />
-              </Grid>
+                  }
+                `}
+                variables={`{ "id": "${streamId.toLowerCase()}" }`}
+              />
             </Grid>
           </Typography>
         </Grid>
