@@ -1448,7 +1448,7 @@
   dependencies:
     "@ethersproject/logger" "^5.5.0"
 
-"@ethersproject/providers@5.5.3", "@ethersproject/providers@^5.5.1":
+"@ethersproject/providers@5.5.3", "@ethersproject/providers@^5.5.3":
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.5.3.tgz#56c2b070542ac44eb5de2ed3cf6784acd60a3130"
   integrity sha512-ZHXxXXXWHuwCQKrgdpIkbzMNJMvs+9YWemanwp1fA7XZEv7QlilseysPvQe0D7Q7DlkJX/w/bGA1MdgK2TbGvA==
@@ -2147,15 +2147,15 @@
   dependencies:
     "@sentry/cli" "^1.73.0"
 
-"@superfluid-finance/sdk-core@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.3.0.tgz#8845d933f46e4825d45f6eb4c2218889c65d6ceb"
-  integrity sha512-xON7MKl9PTfHGynGtWuobFbrHF4vz7MB2EQIBfEZshGx83JCF+Gof73PneGg7gDXkwhfSQQWOYiYGnZ5jD2o4Q==
+"@superfluid-finance/sdk-core@0.3.1-dev.e75e426.0":
+  version "0.3.1-dev.e75e426.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.3.1-dev.e75e426.0.tgz#c42971f16ca1574b5b65873e54e9ca7e7624ee7b"
+  integrity sha512-nILHRIwmuAXoJvPDO3dTV6psleWd8xuy2ohECBZ3ww442QIulDqMcFtUIX6RCFcdscQFj5oIIpeS/F9amHfrKg==
   dependencies:
-    "@ethersproject/providers" "^5.5.1"
-    ajv "^8.8.2"
+    "@ethersproject/providers" "^5.5.3"
+    ajv "^8.9.0"
     browserify "^17.0.0"
-    ethers "^5.5.2"
+    ethers "^5.5.4"
     graphql-request "^3.7.0"
     lodash "^4.17.21"
     tsify "^5.0.4"
@@ -2411,7 +2411,7 @@ ajv@^6.10.0, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.8.2:
+ajv@^8.9.0:
   version "8.10.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.10.0.tgz#e573f719bd3af069017e3b66538ab968d040e54d"
   integrity sha512-bzqAEZOjkrUMl2afH8dknrq5KEk2SrwdBROR+vH1EKVQTqaUbJVPdc/gEdggTMM0Se+s+Ja4ju4TlNcStKl2Hw==
@@ -4166,7 +4166,7 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
-ethers@^5.5.2, ethers@^5.5.4:
+ethers@^5.5.4:
   version "5.5.4"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.5.4.tgz#e1155b73376a2f5da448e4a33351b57a885f4352"
   integrity sha512-N9IAXsF8iKhgHIC6pquzRgPBJEzc9auw3JoRkaKe+y4Wl/LFBtDDunNe7YmdomontECAcC5APaAgWZBiu1kirw==
