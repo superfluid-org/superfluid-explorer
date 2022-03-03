@@ -3,7 +3,6 @@ import { BigNumberish, ethers } from "ethers";
 import { Box } from "@mui/material";
 import EtherFormatted from "./EtherFormatted";
 import _ from "lodash";
-import moment from "moment";
 
 const ANIMATION_MINIMUM_STEP_TIME = 80;
 
