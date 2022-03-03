@@ -1,7 +1,7 @@
 {
   "testFiles": "**/*.feature",
   "env": {
-    "TAGS": "@WIP and not @ignore"
+    "TAGS": "not @ignore"
   },
   "baseUrl": "http://localhost:3000",
   "ignoreTestFiles": "*.js",
