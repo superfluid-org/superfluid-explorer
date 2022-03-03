@@ -51,7 +51,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
         ANIMATION_MINIMUM_STEP_TIME
       ) {
         const currentTimestampBigNumber = ethers.BigNumber.from(
-          moment.utc().valueOf()
+          new Date().valueOf() // Milliseconds elapsed since UTC epoch, disregards timezone.
         );
 
         setWeiValue(
