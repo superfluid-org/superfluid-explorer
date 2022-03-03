@@ -43,6 +43,7 @@ Feature: Test cases for common elements and functionalities
       | Testing With Spaces  |
       | Testing With 123!@£  |
 
+    @WIP
   Scenario: Opening subgraph page
     Given User has opened the "landing" page
     And User clicks on the subgraph explorer button

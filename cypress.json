@@ -1,11 +1,12 @@
 {
   "testFiles": "**/*.feature",
   "env": {
-    "TAGS": "not @ignore"
+    "TAGS": "@WIP and not @ignore"
   },
   "baseUrl": "http://localhost:3000",
   "ignoreTestFiles": "*.js",
   "viewportHeight": 1080,
   "viewportWidth": 1920,
-  "defaultCommandTimeout": 15000
+  "defaultCommandTimeout": 15000,
+  "retries": 2
 }

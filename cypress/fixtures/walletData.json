@@ -21,7 +21,7 @@
     "superTokens": [
       {
         "tokenName": "Super MATIC (MATICx)",
-        "balance": "4.0",
+        "balance": "4",
         "activeStreamCount": 0,
         "closedStreamCount": 0,
         "subscriptionWithUnitsCount": 0
