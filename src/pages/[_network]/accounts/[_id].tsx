@@ -191,14 +191,14 @@ const AccountPage: NextPage = () => {
                       secondary="Address"
                       primary={
                         accountQuery.data ? (
-                          <div>
+                          <>
                             {ethers.utils.getAddress(accountQuery.data.id)}
                             <CopyClipboard
                               copyText={ethers.utils.getAddress(
                                 accountQuery.data.id
                               )}
                             />
-                          </div>
+                          </>
                         ) : (
                           <SkeletonAddress />
                         )
