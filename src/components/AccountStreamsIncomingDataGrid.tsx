@@ -72,7 +72,7 @@ const AccountStreamsIncomingDataGrid: FC<{ network: Network, accountAddress: str
       renderCell: (params) => <TimeAgo subgraphTime={params.value} />
     },
     {
-      field: 'details', headerName: "Details", flex: 1, sortable: false, renderCell: (cellParams) => (
+      field: 'details', headerName: "Details", flex: 0.5, sortable: false, renderCell: (cellParams) => (
         <StreamDetailsDialog network={network} streamId={cellParams.id.toString()} />
       )
     }
