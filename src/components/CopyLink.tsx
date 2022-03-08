@@ -1,15 +1,7 @@
-import { FC, useEffect, useState } from "react";
-import {
-  Icon,
-  IconButton,
-  SvgIcon,
-  SvgIconProps,
-  Tooltip,
-  TooltipProps,
-} from "@mui/material";
-import _ from "lodash";
 import LinkIcon from "@mui/icons-material/Link";
-import { useRouter } from "next/router";
+import { IconButton, SvgIconProps, Tooltip, TooltipProps } from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import copyTextToClipboard from "../utils/copyTextToClipboard";
 
 /**
  * Inspired by: https://blog.logrocket.com/implementing-copy-to-clipboard-in-react-with-clipboard-api/
@@ -44,30 +36,15 @@ const CopyLink: FC<{
   };
 
   return (
-    <IconButton>
-      <Tooltip
-        {..._.merge(
-          {
-            title: isCopied ? "Link copied!" : "Copy link to clipboard",
-          },
-          TooltipProps
-        )}
-      >
-        <LinkIcon
-          onClick={handleCopyClick}
-          {..._.merge(IconProps)}
-        />
-      </Tooltip>
-    </IconButton>
+    <Tooltip
+      title={isCopied ? "Link copied!" : "Copy link to clipboard"}
+      {...TooltipProps}
+    >
+      <IconButton>
+        <LinkIcon {...IconProps} onClick={handleCopyClick} />
+      </IconButton>
+    </Tooltip>
   );
 };
 
 export default CopyLink;
-
-async function copyTextToClipboard(text: string) {
-  if ("clipboard" in navigator) {
-    return await navigator.clipboard.writeText(text);
-  } else {
-    return document.execCommand("copy", true, text);
-  }
-}

@@ -123,31 +123,24 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               <Grid item sx={{ mx: 0.5 }}>
                 Index
               </Grid>
-              <Grid item>
-                <CopyLink
-                  IconProps={{ fontSize: "large" }}
-                  localPath={`/${network.slugName}/indexes/${indexId}`}
-                />
-              </Grid>
-              <Grid item>
-                <SubgraphQueryLink
-                  network={network}
-                  query={gql`
-                    query ($id: ID!) {
-                      index(id: $id) {
-                        indexId
-                        indexValue
-                        totalAmountDistributedUntilUpdatedAt
-                        totalSubscriptionsWithUnits
-                        totalUnits
-                        totalUnitsApproved
-                        totalUnitsPending
-                      }
+              <CopyLink localPath={`/${network.slugName}/indexes/${indexId}`} />
+              <SubgraphQueryLink
+                network={network}
+                query={gql`
+                  query ($id: ID!) {
+                    index(id: $id) {
+                      indexId
+                      indexValue
+                      totalAmountDistributedUntilUpdatedAt
+                      totalSubscriptionsWithUnits
+                      totalUnits
+                      totalUnitsApproved
+                      totalUnitsPending
                     }
-                  `}
-                  variables={`{ "id": "${indexId.toLowerCase()}" }`}
-                />
-              </Grid>
+                  }
+                `}
+                variables={`{ "id": "${indexId.toLowerCase()}" }`}
+              />
             </Grid>
           </Typography>
         </Grid>
