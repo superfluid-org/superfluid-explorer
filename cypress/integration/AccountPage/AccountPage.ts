@@ -1,6 +1,6 @@
 import {Given, Then} from "cypress-cucumber-preprocessor/steps";
 import {LandingPage} from "../../pageObjects/pages/LandingPage";
-import {WalletPage} from "../../pageObjects/pages/WalletPage";
+import {AccountPage} from "../../pageObjects/pages/AccountPage";
 import {CommonElements} from "../../pageObjects/components/CommonElements";
 
 Given(`User has opened the {string} page on {string}`, (page, network) => {
@@ -8,11 +8,11 @@ Given(`User has opened the {string} page on {string}`, (page, network) => {
 });
 
 Given(`The account address, type and network is shown correctly for {string}`, (network) => {
-  WalletPage.validateWalletAddressTypeAndNetwork(network)
+  AccountPage.validateAccountAddressTypeAndNetwork(network)
 });
 
 Given(`The account streams are shown correctly for {string}`, (network) => {
-  WalletPage.validateStreamsTabEntries(network)
+  AccountPage.validateStreamsTabEntries(network)
 });
 
 Given(`User switches to {string} tab`, (tab) => {
@@ -20,14 +20,14 @@ Given(`User switches to {string} tab`, (tab) => {
 });
 
 Given(`The account publications are shown correctly for {string}`, (network) => {
-  WalletPage.validateIndexTabEntries(network)
+  AccountPage.validateIndexTabEntries(network)
 });
 
 Given(`The account balances are shown correctly for {string}`, (network) => {
-  WalletPage.validateTokensTabEntries(network)
+  AccountPage.validateTokensTabEntries(network)
 });
 
 Then(`The account events are shown correctly for {string}`, (network) => {
-  WalletPage.validateEventsTabEntries(network)
+  AccountPage.validateEventsTabEntries(network)
 });
 

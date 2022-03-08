@@ -3,9 +3,6 @@ name: Dev CI/CD
 on:
   pull_request:
     types: [opened, reopened, ready_for_review, synchronize]
-env:
-  REACT_APP_INFURA_ID: ${{ secrets.DEV_INFURA_ID }}
-  GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
 
 jobs:
 
@@ -14,7 +11,7 @@ jobs:
     if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     container:
-      image: cypress/browsers:node14.16.0-chrome89-ff86
+      image: cypress/browsers:node16.5.0-chrome97-ff96
       options: --user 1001
     strategy:
       fail-fast: false
@@ -28,10 +25,10 @@ jobs:
         uses: browser-actions/setup-firefox@latest
         if: ${{ matrix.browser == 'firefox' }}
 
-      - name: Use Node.js 14.x
+      - name: Use Node.js 16.x
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 16.x
 
       - name: Cypress tests
         uses: cypress-io/github-action@v2

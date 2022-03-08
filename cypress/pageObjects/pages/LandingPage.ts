@@ -5,7 +5,7 @@ const PROTOCOL_LINK = "[data-cy=protocol-link]"
 const TERMS_LINK = "[data-cy=terms-of-use-link]"
 const PRIVACY_LINK = "[data-cy=privacy-policy-link]"
 const LOADING_SPINNER = "[data-cy=loading-spinner]"
-const ADDRESS_LINKS = "[data-cy=wallet-address]"
+const ADDRESS_LINKS = "[data-cy=account-address]"
 const TOKEN_LINKS = "[data-cy=token-link]"
 const TOTAL_STREAMED = "[data-cy=total-streamed]"
 const NETWORK_RIGHT_ARROW = "[data-testid=KeyboardArrowRightIcon]"
@@ -51,7 +51,7 @@ export class LandingPage extends BasePage {
   static openDataPage(page: string, network: string) {
     switch (page) {
       case "static balance account": {
-        cy.fixture("walletData").then(fixture => {
+        cy.fixture("accountData").then(fixture => {
           cy.visit("/" + network + "/accounts/" + fixture[network].address)
         })
         break;

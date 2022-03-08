@@ -3,13 +3,13 @@ import {Given, Then} from 'cypress-cucumber-preprocessor/steps'
 import {CommonElements} from "../../pageObjects/components/CommonElements";
 import {LandingPage} from "../../pageObjects/pages/LandingPage";
 import {TokenPage} from "../../pageObjects/pages/TokenPage";
-import {WalletPage} from "../../pageObjects/pages/WalletPage";
+import {AccountPage} from "../../pageObjects/pages/AccountPage";
 
 Given(`User has opened the {string} page`, (page) => {
   LandingPage.openPage(page)
 });
 
-Then(`User clicks on the header search bar`, () => {
+Then(`User opens search dialog`, () => {
   CommonElements.clickHeaderSearchBar()
 });
 
@@ -42,7 +42,7 @@ Given(`Token listed status is {string}`, (text) => {
 });
 
 Given(`User clicks the address book button`, () => {
-  WalletPage.clickAddressBookButton()
+  AccountPage.clickAddressBookButton()
 });
 
 Given(`User saves the entry as {string}`, (name) => {
@@ -50,7 +50,7 @@ Given(`User saves the entry as {string}`, (name) => {
 });
 
 Given(`Address book button is filled`, () => {
-  WalletPage.addressBookButtonIsFilled()
+  AccountPage.addressBookButtonIsFilled()
 });
 
 Given(`User has opened the {string} page on {string}`, (page, network) => {
