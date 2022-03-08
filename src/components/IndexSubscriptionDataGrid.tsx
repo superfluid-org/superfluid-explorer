@@ -1,6 +1,10 @@
 import { FC, useMemo } from "react";
 import { AppDataGrid } from "./AppDataGrid";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import {
+  GridColDef,
+  GridColumnHeaderTitle,
+  GridRenderCellParams,
+} from "@mui/x-data-grid";
 import {
   IndexSubscription,
   IndexSubscription_OrderBy,
@@ -18,6 +22,8 @@ import calculatePoolPercentage from "../logic/calculatePoolPercentage";
 import Decimal from "decimal.js";
 import TimeAgo from "./TimeAgo";
 import EtherFormatted from "./EtherFormatted";
+import AppLink from "./AppLink";
+import InfoTooltipBtn from "./InfoTooltipBtn";
 
 interface Props {
   network: Network;
@@ -45,7 +51,9 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
         headerName: "Created At",
         sortable: true,
         flex: 0.5,
-        renderCell: (params: GridRenderCellParams<number>) => <TimeAgo subgraphTime={params.value} />,
+        renderCell: (params: GridRenderCellParams<number>) => (
+          <TimeAgo subgraphTime={params.value} />
+        ),
       },
       {
         field: "approved",
@@ -53,6 +61,18 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
         flex: 0.5,
         renderCell: (params: GridRenderCellParams<boolean>) => (
           <>{params.value ? "Yes" : "No"}</>
+        ),
+        renderHeader: ({ colDef }) => (
+          <>
+            <GridColumnHeaderTitle
+              label="Approved"
+              columnWidth={colDef.computedWidth}
+            />
+            <InfoTooltipBtn
+              title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
+              iconSx={{ mb: 0, mr: 0.5 }}
+            />
+          </>
         ),
       },
       {
@@ -64,12 +84,14 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
           params: GridRenderCellParams<string, IndexSubscription>
         ) => (
           <>
-            <EtherFormatted wei={calculateWeiAmountReceived(
-              BigNumber.from(params.row.indexValueCurrent),
-              BigNumber.from(params.row.totalAmountReceivedUntilUpdatedAt),
-              BigNumber.from(params.row.indexValueUntilUpdatedAt),
-              BigNumber.from(params.row.units)
-            )} />
+            <EtherFormatted
+              wei={calculateWeiAmountReceived(
+                BigNumber.from(params.row.indexValueCurrent),
+                BigNumber.from(params.row.totalAmountReceivedUntilUpdatedAt),
+                BigNumber.from(params.row.indexValueUntilUpdatedAt),
+                BigNumber.from(params.row.units)
+              )}
+            />
             &nbsp;
             <SuperTokenAddress
               network={network}
@@ -93,7 +115,9 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
               {`(${calculatePoolPercentage(
                 new Decimal(params.row.indexTotalUnits),
                 new Decimal(params.row.units)
-              ).toDP(2).toString()}%)`}
+              )
+                .toDP(2)
+                .toString()}%)`}
             </>
           );
         },

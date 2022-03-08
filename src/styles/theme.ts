@@ -15,6 +15,9 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
       error: {
         main: red.A400,
       },
+      info: {
+        main: "rgba(0, 0, 0, 0.87)",
+      },
       background:
         mode === "light"
           ? {
@@ -31,6 +34,6 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
       },
     },
     shape: {
-      borderRadius: 7
-    }
+      borderRadius: 7,
+    },
   });

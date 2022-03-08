@@ -19,6 +19,7 @@ import {
   changeStreamGranularity,
   changeEtherDecimalPlaces,
 } from "../redux/slices/appPreferences.slice";
+import InfoTooltipBtn from "./InfoTooltipBtn";
 
 const Heading = styled(Typography)(({ theme }) => ({
   margin: "20px 0 10px",
@@ -104,7 +105,10 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
           </IconToggleButton>
         </ToggleButtonGroup>
 
-        <Heading gutterBottom>Stream Granularity</Heading>
+        <Heading gutterBottom>
+          Stream Granularity
+          <InfoTooltipBtn title="Representation of calculated stream flow in selected time span." />
+        </Heading>
         <ToggleButtonGroup
           exclusive
           value={currentStreamGranularity}

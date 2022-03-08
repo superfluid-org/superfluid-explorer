@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
   Skeleton,
+  Stack,
   Typography,
 } from "@mui/material";
 import {
@@ -34,6 +35,8 @@ import NetworkContext from "../../../contexts/NetworkContext";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import { gql } from "graphql-request";
+import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
+import AppLink from "../../../components/AppLink";
 
 const StreamPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -217,7 +220,12 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
             <List>
               <ListItem divider>
                 <ListItemText
-                  secondary="Current Flow Rate"
+                  secondary={
+                    <>
+                      Current Flow Rate
+                      <InfoTooltipBtn title="The number of tokens being sent per day/month" />
+                    </>
+                  }
                   primary={
                     stream ? (
                       <FlowRate flowRate={stream.currentFlowRate} />
@@ -259,9 +267,36 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-            Stream periods
-          </Typography>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ mb: 1, mr: 1 }}
+          >
+            <Typography variant="h5" component="h2">
+              Stream periods
+            </Typography>
+            <InfoTooltipBtn
+              title={
+                <>
+                  The amount of tokens sent from sender to receiver in a stream
+                  until it is updated or deleted. For example, if I create a
+                  stream on day 1, update it on day 3, and delete it on day 5, I
+                  will have generated 2 distinct stream periods: one between
+                  creation and update, and another between the update and
+                  deletion.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/subgraph#higher-order-level-entities"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+              size={22}
+            />
+          </Stack>
+
           <Card elevation={2}>
             <StreamPeriodDataGrid
               queryResult={streamPeriodListQuery}
