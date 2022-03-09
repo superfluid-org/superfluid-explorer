@@ -44,7 +44,7 @@ import { AddressBookButton } from "../../../components/AddressBook";
 import CopyClipboard from "../../../components/CopyClipboard";
 import CopyLink from "../../../components/CopyLink";
 import EventList from "../../../components/EventList";
-import NetworkDisplay from "../../../components/NetworkDisplay";
+import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
@@ -233,7 +233,10 @@ const AccountPage: NextPage = () => {
                       secondary="Network"
                       primary={
                         network ? (
-                          <NetworkDisplay network={network} />
+                          <AccountNetworkSelect
+                            activeNetwork={network}
+                            address={address}
+                          />
                         ) : (
                           <SkeletonNetwork />
                         )
@@ -306,7 +309,11 @@ const AccountPage: NextPage = () => {
                       }
                     }}
                   />
-                  <Tab data-cy={"super-tokens-tab"} label="Super Tokens" value="tokens" />
+                  <Tab
+                    data-cy={"super-tokens-tab"}
+                    label="Super Tokens"
+                    value="tokens"
+                  />
                   <Tab data-cy={"events-tab"} label="Events" value="events" />
                 </TabList>
               </Box>
