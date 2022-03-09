@@ -88,14 +88,14 @@ const AccountTokenSnapshotDataGrid: FC<Props> = ({
             <InfoTooltipBtn
               title={
                 <>
-                  The amount of subscribers on an{" "}
+                  The amount of subscribers on an index that hold some number of
+                  units.{" "}
                   <AppLink
                     href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                     target="_blank"
                   >
-                    index
-                  </AppLink>{" "}
-                  that hold some number of units.
+                    Read more
+                  </AppLink>
                 </>
               }
               iconSx={{ mb: 0, mr: 0.5 }}

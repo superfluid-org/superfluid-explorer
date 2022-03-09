@@ -352,9 +352,7 @@ export const IndexSubscriptionPageContent: FC<{
                   secondary={
                     <>
                       Approved
-                      <InfoTooltipBtn
-                        title={`Indicates if account has claimed all past distributions and automatically claims all future distributions.`}
-                      />
+                      <InfoTooltipBtn title="Indicates if account has claimed all past distributions and automatically claims all future distributions." />
                     </>
                   }
                   primary={

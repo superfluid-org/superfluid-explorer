@@ -43,14 +43,14 @@ const EventList: FC<Props> = ({ network, address }): ReactElement => {
   return (
     <>
       <HelpAlert sx={{ mb: 3 }}>
-        A timeline of{" "}
+        A timeline of events emitted by contracts that are related to the
+        current address.{" "}
         <AppLink
           href="https://docs.superfluid.finance/superfluid/protocol-developers/subgraph#event-entities"
           target="_blank"
         >
-          events
-        </AppLink>{" "}
-        emitted by contracts that are related to the current address.
+          Read more
+        </AppLink>
       </HelpAlert>
       <EventDataGrid
         network={network}

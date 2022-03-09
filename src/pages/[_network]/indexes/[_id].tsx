@@ -181,7 +181,25 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Index ID"
+                  secondary={
+                    <>
+                      Index ID
+                      <InfoTooltipBtn
+                        title={
+                          <>
+                            A random number defined when creating the index that
+                            is used to issue units and distribute funds.{" "}
+                            <AppLink
+                              href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                              target="_blank"
+                            >
+                              Read more
+                            </AppLink>
+                          </>
+                        }
+                      />
+                    </>
+                  }
                   primary={
                     index ? index.indexId : <Skeleton sx={{ width: "20px" }} />
                   }
@@ -229,7 +247,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   secondary={
                     <>
                       Total Units
-                      <InfoTooltipBtn title="The sum of total pending and approved units." />
+                      <InfoTooltipBtn title="The sum of total pending and approved units issued to subscribers." />
                     </>
                   }
                   primary={
@@ -243,7 +261,12 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Total Units Approved"
+                  secondary={
+                    <>
+                      Total Units Approved
+                      <InfoTooltipBtn title="Units that have claimed all past distributions and will automatically claim all future distributions." />
+                    </>
+                  }
                   primary={
                     index ? (
                       index.totalUnitsApproved
@@ -255,7 +278,12 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Total Units Pending"
+                  secondary={
+                    <>
+                      Total Units Pending
+                      <InfoTooltipBtn title="Units that have not claimed their distribution yet." />
+                    </>
+                  }
                   primary={
                     index ? (
                       index.totalUnitsPending

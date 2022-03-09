@@ -13,17 +13,17 @@ const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
   return (
     <>
       <HelpAlert>
+        Streams represent super token flows between a sender and a receiver.
+        Sender accounts can create, update, and delete streams, while receiver
+        accounts can delete streams. However, a pair of addresses may only have
+        one stream open per token (but this stream may be updated at any time by
+        the sender).{" "}
         <AppLink
           href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/money-streaming-1"
           target="_blank"
         >
-          Streams
-        </AppLink>{" "}
-        represent super token flows between a sender and a receiver. Sender
-        accounts can create, update, and delete streams, while receiver accounts
-        can delete streams. However, a pair of addresses may only have one
-        stream open per token (but this stream may be updated at any time by the
-        sender).
+          Read more
+        </AppLink>
       </HelpAlert>
 
       <Box data-cy={"incoming-box"}>

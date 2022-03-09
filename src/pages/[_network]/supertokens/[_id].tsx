@@ -185,16 +185,16 @@ const SuperTokenPage: NextPage = () => {
                             title={
                               <>
                                 A token is listed & recognized by the Superfluid
-                                protocol. Benefits of deploying a listed{" "}
+                                protocol. Benefits of deploying a listed super
+                                token include that it may be instantiated by
+                                symbol in our SDK, and listed by symbol in the
+                                Superfluid dashboard{" "}
                                 <AppLink
                                   href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
                                   target="_blank"
                                 >
-                                  super token
-                                </AppLink>{" "}
-                                include that it may be instantiated by symbol in
-                                our SDK, and listed by symbol in the Superfluid
-                                dashboard
+                                  Read more
+                                </AppLink>
                               </>
                             }
                           />
@@ -234,14 +234,13 @@ const SuperTokenPage: NextPage = () => {
                             title={
                               <>
                                 Already existing ERC20 token&apos;s address that
-                                has been upgraded to{" "}
+                                has been upgraded to super token.{" "}
                                 <AppLink
                                   href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
                                   target="_blank"
                                 >
-                                  super token
+                                  Read more
                                 </AppLink>
-                                .
                               </>
                             }
                             size={16}
