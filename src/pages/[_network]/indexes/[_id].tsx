@@ -187,8 +187,9 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                       <InfoTooltipBtn
                         title={
                           <>
-                            A random number defined when creating the index that
-                            is used to issue units and distribute funds.{" "}
+                            The ID which is associated with each index in the
+                            instant distribution agreement - this number is
+                            created when a publisher creates an index.{" "}
                             <AppLink
                               href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                               target="_blank"

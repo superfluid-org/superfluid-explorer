@@ -13,7 +13,7 @@ const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
   return (
     <>
       <HelpAlert>
-        Streams represent super token flows between a sender and a receiver.
+        Stream represents super token flow between a sender and a receiver.
         Sender accounts can create, update, and delete streams, while receiver
         accounts can delete streams. However, a pair of addresses may only have
         one stream open per token (but this stream may be updated at any time by

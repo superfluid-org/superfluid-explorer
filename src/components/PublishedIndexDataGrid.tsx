@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { AppDataGrid } from "./AppDataGrid";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridColumnHeaderTitle } from "@mui/x-data-grid";
 import {
   Index,
   Ordering,
@@ -16,6 +16,8 @@ import TimeAgo from "./TimeAgo";
 import { ethers } from "ethers";
 import AccountAddress from "./AccountAddress";
 import EtherFormatted from "./EtherFormatted";
+import AppLink from "./AppLink";
+import InfoTooltipBtn from "./InfoTooltipBtn";
 
 interface Props {
   network: Network;
@@ -58,8 +60,31 @@ const PublishedIndexDataGrid: FC<Props> = ({
       },
       {
         field: "indexId",
-        headerName: "Index ID",
-        flex: 0.5,
+        flex: 0.75,
+        renderHeader: ({ colDef }) => (
+          <>
+            <GridColumnHeaderTitle
+              label="Index ID"
+              columnWidth={colDef.computedWidth}
+            />
+            <InfoTooltipBtn
+              title={
+                <>
+                  The ID which is associated with each index in the instant
+                  distribution agreement - this number is created when a
+                  publisher creates an index.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+              iconSx={{ mb: 0, mr: 0.5 }}
+            />
+          </>
+        ),
       },
       {
         field: "totalAmountDistributedUntilUpdatedAt",
