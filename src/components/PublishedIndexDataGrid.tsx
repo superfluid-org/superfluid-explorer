@@ -1,21 +1,21 @@
-import { FC, useMemo } from "react";
-import { AppDataGrid } from "./AppDataGrid";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridColumnHeaderTitle } from "@mui/x-data-grid";
 import {
   Index,
+  Index_OrderBy,
   Ordering,
   PagedResult,
   SkipPaging,
-  Index_OrderBy,
 } from "@superfluid-finance/sdk-core";
-import { IndexPublicationDetailsDialog } from "./IndexPublicationDetails";
-import SuperTokenAddress from "./SuperTokenAddress";
+import { FC, useMemo } from "react";
 import { Network } from "../redux/networks";
-import { timeAgo } from "../utils/dateTime";
-import TimeAgo from "./TimeAgo";
-import { ethers } from "ethers";
 import AccountAddress from "./AccountAddress";
+import { AppDataGrid } from "./AppDataGrid";
+import AppLink from "./AppLink";
 import EtherFormatted from "./EtherFormatted";
+import { IndexPublicationDetailsDialog } from "./IndexPublicationDetails";
+import InfoTooltipBtn from "./InfoTooltipBtn";
+import SuperTokenAddress from "./SuperTokenAddress";
+import TimeAgo from "./TimeAgo";
 
 interface Props {
   network: Network;
@@ -50,16 +50,61 @@ const PublishedIndexDataGrid: FC<Props> = ({
       },
       {
         field: "publisher",
-        headerName: "Publisher",
         flex: 1.5,
         renderCell: (params) => (
           <AccountAddress network={network} address={params.value} />
         ),
+        renderHeader: ({ colDef }) => (
+          <>
+            <GridColumnHeaderTitle
+              label="Publisher"
+              columnWidth={colDef.computedWidth}
+            />
+            <InfoTooltipBtn
+              title={
+                <>
+                  The creator of an index using the IDA - publishers may update
+                  the index of subscribers and distribute funds to subscribers.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+              iconSx={{ mb: 0, mr: 0.5 }}
+            />
+          </>
+        ),
       },
       {
         field: "indexId",
-        headerName: "Index ID",
-        flex: 0.5,
+        flex: 0.75,
+        renderHeader: ({ colDef }) => (
+          <>
+            <GridColumnHeaderTitle
+              label="Index ID"
+              columnWidth={colDef.computedWidth}
+            />
+            <InfoTooltipBtn
+              title={
+                <>
+                  The ID which is associated with each index in the instant
+                  distribution agreement - this number is created when a
+                  publisher creates an index.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+              iconSx={{ mb: 0, mr: 0.5 }}
+            />
+          </>
+        ),
       },
       {
         field: "totalAmountDistributedUntilUpdatedAt",

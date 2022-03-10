@@ -1,16 +1,3 @@
-import { NextPage } from "next";
-import { Network } from "../../../redux/networks";
-import Error from "next/error";
-import { FC, useContext, useState } from "react";
-import { sfSubgraph } from "../../../redux/store";
-import {
-  createSkipPaging,
-  Index,
-  IndexSubscription_OrderBy,
-  IndexUpdatedEvent_OrderBy,
-  Ordering,
-  SkipPaging,
-} from "@superfluid-finance/sdk-core";
 import {
   Box,
   Breadcrumbs,
@@ -21,22 +8,36 @@ import {
   ListItem,
   ListItemText,
   Skeleton,
+  Stack,
   Typography,
 } from "@mui/material";
-import AccountAddress from "../../../components/AccountAddress";
-import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
-import SuperTokenAddress from "../../../components/SuperTokenAddress";
-import IndexUpdatedEventDataGrid from "../../../components/IndexUpdatedEventDataGrid";
-import IndexSubscriptionDataGrid from "../../../components/IndexSubscriptionDataGrid";
-import NetworkContext from "../../../contexts/NetworkContext";
-import IdContext from "../../../contexts/IdContext";
-import CopyClipboard from "../../../components/CopyClipboard";
-import TimeAgo from "../../../components/TimeAgo";
-import { ethers } from "ethers";
-import CopyLink from "../../../components/CopyLink";
+import {
+  createSkipPaging,
+  Index,
+  IndexSubscription_OrderBy,
+  IndexUpdatedEvent_OrderBy,
+  Ordering,
+  SkipPaging,
+} from "@superfluid-finance/sdk-core";
 import { gql } from "graphql-request";
-import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
+import { NextPage } from "next";
+import Error from "next/error";
+import { FC, useContext, useState } from "react";
+import AccountAddress from "../../../components/AccountAddress";
+import AppLink from "../../../components/AppLink";
+import CopyLink from "../../../components/CopyLink";
 import EtherFormatted from "../../../components/EtherFormatted";
+import IndexSubscriptionDataGrid from "../../../components/IndexSubscriptionDataGrid";
+import IndexUpdatedEventDataGrid from "../../../components/IndexUpdatedEventDataGrid";
+import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
+import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
+import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
+import SuperTokenAddress from "../../../components/SuperTokenAddress";
+import TimeAgo from "../../../components/TimeAgo";
+import IdContext from "../../../contexts/IdContext";
+import NetworkContext from "../../../contexts/NetworkContext";
+import { Network } from "../../../redux/networks";
+import { sfSubgraph } from "../../../redux/store";
 
 const IndexPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -165,7 +166,26 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Publisher"
+                  secondary={
+                    <>
+                      Publisher
+                      <InfoTooltipBtn
+                        title={
+                          <>
+                            The creator of an index using the IDA - publishers
+                            may update the index of subscribers and distribute
+                            funds to subscribers.{" "}
+                            <AppLink
+                              href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                              target="_blank"
+                            >
+                              Read more
+                            </AppLink>
+                          </>
+                        }
+                      />
+                    </>
+                  }
                   primary={
                     index ? (
                       <AccountAddress
@@ -180,7 +200,26 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Index ID"
+                  secondary={
+                    <>
+                      Index ID
+                      <InfoTooltipBtn
+                        title={
+                          <>
+                            The ID which is associated with each index in the
+                            instant distribution agreement - this number is
+                            created when a publisher creates an index.{" "}
+                            <AppLink
+                              href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                              target="_blank"
+                            >
+                              Read more
+                            </AppLink>
+                          </>
+                        }
+                      />
+                    </>
+                  }
                   primary={
                     index ? index.indexId : <Skeleton sx={{ width: "20px" }} />
                   }
@@ -225,7 +264,12 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
             <List>
               <ListItem divider>
                 <ListItemText
-                  secondary="Total Units"
+                  secondary={
+                    <>
+                      Total Units
+                      <InfoTooltipBtn title="The sum of total pending and approved units issued to subscribers." />
+                    </>
+                  }
                   primary={
                     index ? (
                       index.totalUnits
@@ -237,7 +281,12 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Total Units Approved"
+                  secondary={
+                    <>
+                      Total Units Approved
+                      <InfoTooltipBtn title="Units that have claimed all past distributions and will automatically claim all future distributions." />
+                    </>
+                  }
                   primary={
                     index ? (
                       index.totalUnitsApproved
@@ -249,7 +298,12 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Total Units Pending"
+                  secondary={
+                    <>
+                      Total Units Pending
+                      <InfoTooltipBtn title="Units that have not claimed their distribution yet." />
+                    </>
+                  }
                   primary={
                     index ? (
                       index.totalUnitsPending
@@ -289,7 +343,24 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
         <Grid item xs={12}>
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Distributions
+            <InfoTooltipBtn
+              size={22}
+              title={
+                <>
+                  An event in which super tokens are distributed to the entire
+                  pool of subscribers for a given index using the Superfluid
+                  IDA.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+            />
           </Typography>
+
           <Card elevation={2}>
             <IndexUpdatedEventDataGrid
               index={index}
@@ -304,6 +375,22 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
         <Grid item xs={12}>
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Subscriptions
+            <InfoTooltipBtn
+              size={22}
+              title={
+                <>
+                  Accounts that have received units within the Index.
+                  Subscribers will receive distributed funds based on the
+                  portion of units they own in and index.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+            />
           </Typography>
           <Card elevation={2}>
             <IndexSubscriptionDataGrid

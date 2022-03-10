@@ -40,8 +40,8 @@ const CopyLink: FC<{
       title={isCopied ? "Link copied!" : "Copy link to clipboard"}
       {...TooltipProps}
     >
-      <IconButton>
-        <LinkIcon {...IconProps} onClick={handleCopyClick} />
+      <IconButton onClick={handleCopyClick}>
+        <LinkIcon {...IconProps} />
       </IconButton>
     </Tooltip>
   );

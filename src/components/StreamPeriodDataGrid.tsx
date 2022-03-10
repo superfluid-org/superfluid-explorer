@@ -1,6 +1,4 @@
-import { FC, useMemo } from "react";
-import { AppDataGrid } from "./AppDataGrid";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridColumnHeaderTitle } from "@mui/x-data-grid";
 import {
   Ordering,
   PagedResult,
@@ -8,8 +6,11 @@ import {
   StreamPeriod,
   StreamPeriod_OrderBy,
 } from "@superfluid-finance/sdk-core";
+import { FC, useMemo } from "react";
+import { AppDataGrid } from "./AppDataGrid";
 import FlowingBalance from "./FlowingBalance";
 import FlowRate from "./FlowRate";
+import InfoTooltipBtn from "./InfoTooltipBtn";
 
 interface Props {
   queryResult: {
@@ -32,10 +33,21 @@ const StreamPeriodDataGrid: FC<Props> = ({
       { field: "id", hide: true, sortable: false, flex: 1 },
       {
         field: "flowRate",
-        headerName: "Flow Rate",
         sortable: true,
         flex: 1,
         renderCell: (params) => <FlowRate flowRate={params.value} />,
+        renderHeader: ({ colDef }) => (
+          <>
+            <GridColumnHeaderTitle
+              label="Flow Rate"
+              columnWidth={colDef.computedWidth}
+            />
+            <InfoTooltipBtn
+              title="Flow rate is the velocity of tokens being streamed."
+              iconSx={{ mb: 0, mr: 0.5 }}
+            />
+          </>
+        ),
       },
       {
         field: "totalAmountStreamed",

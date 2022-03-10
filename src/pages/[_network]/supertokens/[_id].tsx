@@ -34,6 +34,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { ethers } from "ethers";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import { gql } from "graphql-request";
+import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 
 const SuperTokenPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -177,7 +178,28 @@ const SuperTokenPage: NextPage = () => {
                   <ListItem divider>
                     <ListItemText
                       data-cy={"token-listed-status"}
-                      secondary="Listed"
+                      secondary={
+                        <>
+                          Listed
+                          <InfoTooltipBtn
+                            title={
+                              <>
+                                A token is listed & recognized by the Superfluid
+                                protocol. Benefits of deploying a listed super
+                                token include that it may be instantiated by
+                                symbol in our SDK, and listed by symbol in the
+                                Superfluid dashboard{" "}
+                                <AppLink
+                                  href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
+                                  target="_blank"
+                                >
+                                  Read more
+                                </AppLink>
+                              </>
+                            }
+                          />
+                        </>
+                      }
                       primary={
                         superToken ? (
                           superToken.isListed ? (
@@ -205,7 +227,26 @@ const SuperTokenPage: NextPage = () => {
                   <ListItem divider>
                     <ListItemText
                       data-cy={"underlying-token-address"}
-                      secondary="Underlying Token Address"
+                      secondary={
+                        <>
+                          Underlying Token Address
+                          <InfoTooltipBtn
+                            title={
+                              <>
+                                Already existing ERC20 token&apos;s address that
+                                has been upgraded to super token.{" "}
+                                <AppLink
+                                  href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
+                                  target="_blank"
+                                >
+                                  Read more
+                                </AppLink>
+                              </>
+                            }
+                            size={16}
+                          />
+                        </>
+                      }
                       primary={
                         superToken ? (
                           superToken.underlyingAddress ===
@@ -253,30 +294,28 @@ const SuperTokenPage: NextPage = () => {
                   onChange={(_event, newValue: string) => setTabValue(newValue)}
                   aria-label="tabs"
                 >
-                  <Tab data-cy={"streams-tab"} label="Streams" value="streams" />
-                  <Tab data-cy={"indexes-tab"} label="Indexes" value="indexes" />
+                  <Tab
+                    data-cy={"streams-tab"}
+                    label="Streams"
+                    value="streams"
+                  />
+                  <Tab
+                    data-cy={"indexes-tab"}
+                    label="Indexes"
+                    value="indexes"
+                  />
                   <Tab data-cy={"events-tab"} label="Events" value="events" />
                 </TabList>
               </Box>
               <Box>
                 <TabPanel value="events">
-                  {<EventList network={network} address={address} />}
+                  <EventList network={network} address={address} />
                 </TabPanel>
                 <TabPanel value="streams">
-                  {
-                    <SuperTokenStreams
-                      network={network}
-                      tokenAddress={address}
-                    />
-                  }
+                  <SuperTokenStreams network={network} tokenAddress={address} />
                 </TabPanel>
                 <TabPanel value="indexes">
-                  {
-                    <SuperTokenIndexes
-                      network={network}
-                      tokenAddress={address}
-                    />
-                  }
+                  <SuperTokenIndexes network={network} tokenAddress={address} />
                 </TabPanel>
               </Box>
             </TabContext>

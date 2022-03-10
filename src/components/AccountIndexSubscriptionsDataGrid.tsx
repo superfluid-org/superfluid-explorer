@@ -1,5 +1,8 @@
-import { FC, useMemo, useState } from "react";
-import { Network } from "../redux/networks";
+import {
+  GridColDef,
+  GridColumnHeaderTitle,
+  GridRenderCellParams,
+} from "@mui/x-data-grid";
 import {
   createSkipPaging,
   IndexSubscription,
@@ -7,17 +10,20 @@ import {
   Ordering,
   SkipPaging,
 } from "@superfluid-finance/sdk-core";
-import { sfSubgraph } from "../redux/store";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import SuperTokenAddress from "./SuperTokenAddress";
-import AccountAddress from "./AccountAddress";
-import { IndexSubscriptionDetailsDialog } from "./IndexSubscriptionDetails";
-import { AppDataGrid } from "./AppDataGrid";
-import calculatePoolPercentage from "../logic/calculatePoolPercentage";
 import Decimal from "decimal.js";
-import calculateWeiAmountReceived from "../logic/calculateWeiAmountReceived";
 import { BigNumber } from "ethers";
+import { FC, useMemo, useState } from "react";
+import calculatePoolPercentage from "../logic/calculatePoolPercentage";
+import calculateWeiAmountReceived from "../logic/calculateWeiAmountReceived";
+import { Network } from "../redux/networks";
+import { sfSubgraph } from "../redux/store";
+import AccountAddress from "./AccountAddress";
+import { AppDataGrid } from "./AppDataGrid";
+import AppLink from "./AppLink";
 import EtherFormatted from "./EtherFormatted";
+import { IndexSubscriptionDetailsDialog } from "./IndexSubscriptionDetails";
+import InfoTooltipBtn from "./InfoTooltipBtn";
+import SuperTokenAddress from "./SuperTokenAddress";
 
 export const indexSubscriptionOrderingDefault:
   | Ordering<IndexSubscription_OrderBy>
@@ -58,18 +64,50 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
       },
       {
         field: "publisher",
-        headerName: "Publisher",
         flex: 1.5,
         renderCell: (params) => (
           <AccountAddress network={network} address={params.value} />
         ),
+        renderHeader: ({ colDef }) => (
+          <>
+            <GridColumnHeaderTitle
+              label="Publisher"
+              columnWidth={colDef.computedWidth}
+            />
+            <InfoTooltipBtn
+              title={
+                <>
+                  The creator of an index using the IDA - publishers may update
+                  the index of subscribers and distribute funds to subscribers.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+              iconSx={{ mb: 0, mr: 0.5 }}
+            />
+          </>
+        ),
       },
       {
         field: "approved",
-        headerName: "Approved",
-        flex: 0.5,
-        renderCell: (params: GridRenderCellParams<boolean>) => (
-          <>{params.value ? "Yes" : "No"}</>
+        flex: 0.75,
+        renderCell: (params: GridRenderCellParams<boolean>) =>
+          params.value ? "Yes" : "No",
+        renderHeader: ({ colDef }) => (
+          <>
+            <GridColumnHeaderTitle
+              label="Approved"
+              columnWidth={colDef.computedWidth}
+            />
+            <InfoTooltipBtn
+              title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
+              iconSx={{ mb: 0, mr: 0.5 }}
+            />
+          </>
         ),
       },
       {
@@ -81,12 +119,14 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
           params: GridRenderCellParams<string, IndexSubscription>
         ) => (
           <>
-            <EtherFormatted wei={calculateWeiAmountReceived(
-              BigNumber.from(params.row.indexValueCurrent),
-              BigNumber.from(params.row.totalAmountReceivedUntilUpdatedAt),
-              BigNumber.from(params.row.indexValueUntilUpdatedAt),
-              BigNumber.from(params.row.units)
-            )} />
+            <EtherFormatted
+              wei={calculateWeiAmountReceived(
+                BigNumber.from(params.row.indexValueCurrent),
+                BigNumber.from(params.row.totalAmountReceivedUntilUpdatedAt),
+                BigNumber.from(params.row.indexValueUntilUpdatedAt),
+                BigNumber.from(params.row.units)
+              )}
+            />
             &nbsp;
             <SuperTokenAddress
               network={network}
@@ -110,7 +150,9 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
               {`(${calculatePoolPercentage(
                 new Decimal(params.row.indexTotalUnits),
                 new Decimal(params.row.units)
-              ).toDP(2).toString()}%)`}
+              )
+                .toDP(2)
+                .toString()}%)`}
             </>
           );
         },

@@ -1,19 +1,3 @@
-import { NextPage } from "next";
-import { FC, useContext, useEffect, useMemo, useState } from "react";
-import { Network } from "../../../redux/networks";
-import { sfSubgraph } from "../../../redux/store";
-import {
-  createSkipPaging,
-  Index,
-  IndexSubscription,
-  IndexUpdatedEvent,
-  IndexUpdatedEvent_OrderBy,
-  Ordering,
-  SkipPaging,
-  SubscriptionUnitsUpdatedEvent,
-  SubscriptionUnitsUpdatedEvent_OrderBy,
-} from "@superfluid-finance/sdk-core";
-import { skipToken } from "@reduxjs/toolkit/dist/query";
 import {
   Box,
   Breadcrumbs,
@@ -26,26 +10,43 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
-import SuperTokenAddress from "../../../components/SuperTokenAddress";
-import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
-import AccountAddress from "../../../components/AccountAddress";
-import { BigNumber, BigNumberish, ethers } from "ethers";
-import SubscriptionUnitsUpdatedEventDataGrid from "../../../components/SubscriptionUnitsUpdatedEventDataGrid";
-import NetworkContext from "../../../contexts/NetworkContext";
-import IdContext from "../../../contexts/IdContext";
-import Error from "next/error";
-import TimeAgo from "../../../components/TimeAgo";
-import _ from "lodash";
 import { GridColDef } from "@mui/x-data-grid";
-import { AppDataGrid } from "../../../components/AppDataGrid";
+import { skipToken } from "@reduxjs/toolkit/dist/query";
+import {
+  createSkipPaging,
+  Index,
+  IndexSubscription,
+  IndexUpdatedEvent,
+  IndexUpdatedEvent_OrderBy,
+  Ordering,
+  SkipPaging,
+  SubscriptionUnitsUpdatedEvent,
+  SubscriptionUnitsUpdatedEvent_OrderBy,
+} from "@superfluid-finance/sdk-core";
 import Decimal from "decimal.js";
-import CopyLink from "../../../components/CopyLink";
-import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceived";
-import AppLink from "../../../components/AppLink";
-import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
-import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
+import { BigNumber, BigNumberish } from "ethers";
 import { gql } from "graphql-request";
+import _ from "lodash";
+import { NextPage } from "next";
+import Error from "next/error";
+import { FC, useContext, useEffect, useMemo, useState } from "react";
+import AccountAddress from "../../../components/AccountAddress";
+import { AppDataGrid } from "../../../components/AppDataGrid";
+import AppLink from "../../../components/AppLink";
+import CopyLink from "../../../components/CopyLink";
 import EtherFormatted from "../../../components/EtherFormatted";
+import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
+import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
+import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
+import SubscriptionUnitsUpdatedEventDataGrid from "../../../components/SubscriptionUnitsUpdatedEventDataGrid";
+import SuperTokenAddress from "../../../components/SuperTokenAddress";
+import TimeAgo from "../../../components/TimeAgo";
+import IdContext from "../../../contexts/IdContext";
+import NetworkContext from "../../../contexts/NetworkContext";
+import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
+import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceived";
+import { Network } from "../../../redux/networks";
+import { sfSubgraph } from "../../../redux/store";
 
 const IndexSubscriptionPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -221,7 +222,26 @@ export const IndexSubscriptionPageContent: FC<{
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Publisher"
+                  secondary={
+                    <>
+                      Publisher
+                      <InfoTooltipBtn
+                        title={
+                          <>
+                            The creator of an index using the IDA - publishers
+                            may update the index of subscribers and distribute
+                            funds to subscribers.{" "}
+                            <AppLink
+                              href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                              target="_blank"
+                            >
+                              Read more
+                            </AppLink>
+                          </>
+                        }
+                      />
+                    </>
+                  }
                   primary={
                     indexSubscription ? (
                       <AccountAddress
@@ -292,7 +312,26 @@ export const IndexSubscriptionPageContent: FC<{
             <List>
               <ListItem divider>
                 <ListItemText
-                  secondary="Units (Pool %)"
+                  secondary={
+                    <>
+                      Units (Pool %)
+                      <InfoTooltipBtn
+                        title={
+                          <>
+                            Amount of units compared to the total pool. Funds
+                            will be distributed depending on the portion of
+                            units an account has.{" "}
+                            <AppLink
+                              href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                              target="_blank"
+                            >
+                              Read more
+                            </AppLink>
+                          </>
+                        }
+                      />
+                    </>
+                  }
                   primary={
                     indexSubscription && index ? (
                       <>
@@ -309,7 +348,12 @@ export const IndexSubscriptionPageContent: FC<{
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Approved"
+                  secondary={
+                    <>
+                      Approved
+                      <InfoTooltipBtn title="Indicates if account has claimed all past distributions and automatically claims all future distributions." />
+                    </>
+                  }
                   primary={
                     indexSubscription ? (
                       indexSubscription.approved ? (
@@ -351,7 +395,24 @@ export const IndexSubscriptionPageContent: FC<{
         <Grid item xs={12}>
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Distributions
+            <InfoTooltipBtn
+              title={
+                <>
+                  An event in which super tokens are distributed to the entire
+                  pool of subscribers for a given index using the Superfluid
+                  IDA.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+              size={22}
+            />
           </Typography>
+
           <Card elevation={2}>
             <IndexSubscriptionDistributions
               network={network}

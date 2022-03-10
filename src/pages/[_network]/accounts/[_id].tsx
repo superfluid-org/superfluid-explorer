@@ -44,6 +44,7 @@ import { AddressBookButton } from "../../../components/AddressBook";
 import CopyClipboard from "../../../components/CopyClipboard";
 import CopyLink from "../../../components/CopyLink";
 import EventList from "../../../components/EventList";
+import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
@@ -209,7 +210,12 @@ const AccountPage: NextPage = () => {
                   <ListItem divider>
                     <ListItemText
                       data-cy={"account-type"}
-                      secondary="Account Type"
+                      secondary={
+                        <>
+                          Account type
+                          <InfoTooltipBtn title="Either a regular account or a super app." />
+                        </>
+                      }
                       primary={
                         accountQuery.data ? (
                           accountQuery.data.isSuperApp ? (

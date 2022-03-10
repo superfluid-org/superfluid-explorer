@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from "react";
 import { Network } from "../redux/networks";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridColumnHeaderTitle } from "@mui/x-data-grid";
 import SuperTokenAddress from "./SuperTokenAddress";
 import { timeAgo } from "../utils/dateTime";
 import { IndexPublicationDetailsDialog } from "./IndexPublicationDetails";
@@ -16,6 +16,7 @@ import { AppDataGrid } from "./AppDataGrid";
 import TimeAgo from "./TimeAgo";
 import { ethers } from "ethers";
 import EtherFormatted from "./EtherFormatted";
+import InfoTooltipBtn from "./InfoTooltipBtn";
 
 export const publishedIndexOrderingDefault:
   | Ordering<Index_OrderBy>
@@ -54,7 +55,8 @@ export const AccountIndexesDataGrid: FC<{
         flex: 1.5,
         renderCell: (params) => (
           <>
-            <EtherFormatted wei={params.value} />&nbsp;
+            <EtherFormatted wei={params.value} />
+            &nbsp;
             <SuperTokenAddress
               network={network}
               address={(params.row as Index).token}
@@ -66,9 +68,20 @@ export const AccountIndexesDataGrid: FC<{
       },
       {
         field: "totalUnits",
-        headerName: "Total Units",
         sortable: true,
         flex: 2,
+        renderHeader: ({ colDef }) => (
+          <>
+            <GridColumnHeaderTitle
+              label="Total Units"
+              columnWidth={colDef.computedWidth}
+            />
+            <InfoTooltipBtn
+              title="The sum of total pending and approved units issued to subscribers."
+              iconSx={{ mb: 0, mr: 0.5 }}
+            />
+          </>
+        ),
       },
       {
         field: "details",
