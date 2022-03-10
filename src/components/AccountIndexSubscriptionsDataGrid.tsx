@@ -19,6 +19,7 @@ import { Network } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
 import AccountAddress from "./AccountAddress";
 import { AppDataGrid } from "./AppDataGrid";
+import AppLink from "./AppLink";
 import EtherFormatted from "./EtherFormatted";
 import { IndexSubscriptionDetailsDialog } from "./IndexSubscriptionDetails";
 import InfoTooltipBtn from "./InfoTooltipBtn";
@@ -63,10 +64,32 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
       },
       {
         field: "publisher",
-        headerName: "Publisher",
         flex: 1.5,
         renderCell: (params) => (
           <AccountAddress network={network} address={params.value} />
+        ),
+        renderHeader: ({ colDef }) => (
+          <>
+            <GridColumnHeaderTitle
+              label="Publisher"
+              columnWidth={colDef.computedWidth}
+            />
+            <InfoTooltipBtn
+              title={
+                <>
+                  The creator of an index using the IDA - publishers may update
+                  the index of subscribers and distribute funds to subscribers.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+              iconSx={{ mb: 0, mr: 0.5 }}
+            />
+          </>
         ),
       },
       {

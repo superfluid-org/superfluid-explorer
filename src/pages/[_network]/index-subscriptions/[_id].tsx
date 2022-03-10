@@ -8,7 +8,6 @@ import {
   ListItem,
   ListItemText,
   Skeleton,
-  Stack,
   Typography,
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
@@ -394,15 +393,8 @@ export const IndexSubscriptionPageContent: FC<{
         </Grid>
 
         <Grid item xs={12}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ mb: 1, mr: 1 }}
-          >
-            <Typography variant="h5" component="h2">
-              Distributions
-            </Typography>
+          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+            Distributions
             <InfoTooltipBtn
               title={
                 <>
@@ -419,7 +411,7 @@ export const IndexSubscriptionPageContent: FC<{
               }
               size={22}
             />
-          </Stack>
+          </Typography>
 
           <Card elevation={2}>
             <IndexSubscriptionDistributions

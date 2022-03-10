@@ -8,7 +8,6 @@ import {
   ListItem,
   ListItemText,
   Skeleton,
-  Stack,
   Typography,
 } from "@mui/material";
 import {
@@ -18,13 +17,16 @@ import {
   Stream,
   StreamPeriod_OrderBy,
 } from "@superfluid-finance/sdk-core";
+import { gql } from "graphql-request";
 import { NextPage } from "next";
 import Error from "next/error";
 import { FC, useContext, useState } from "react";
 import AccountAddress from "../../../components/AccountAddress";
+import AppLink from "../../../components/AppLink";
 import CopyLink from "../../../components/CopyLink";
 import FlowingBalance from "../../../components/FlowingBalance";
 import FlowRate from "../../../components/FlowRate";
+import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import StreamPeriodDataGrid from "../../../components/StreamPeriodDataGrid";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
@@ -34,9 +36,6 @@ import IdContext from "../../../contexts/IdContext";
 import NetworkContext from "../../../contexts/NetworkContext";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
-import { gql } from "graphql-request";
-import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
-import AppLink from "../../../components/AppLink";
 
 const StreamPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -223,7 +222,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                   secondary={
                     <>
                       Current Flow Rate
-                      <InfoTooltipBtn title="The number of tokens being sent per day/month" />
+                      <InfoTooltipBtn title="Flow rate is the velocity of tokens being streamed." />
                     </>
                   }
                   primary={
@@ -267,15 +266,8 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
         </Grid>
 
         <Grid item xs={12}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ mb: 1, mr: 1 }}
-          >
-            <Typography variant="h5" component="h2">
-              Stream periods
-            </Typography>
+          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+            Stream periods
             <InfoTooltipBtn
               title={
                 <>
@@ -295,7 +287,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
               }
               size={22}
             />
-          </Stack>
+          </Typography>
 
           <Card elevation={2}>
             <StreamPeriodDataGrid

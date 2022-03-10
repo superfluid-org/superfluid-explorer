@@ -166,7 +166,26 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <ListItem divider>
                 <ListItemText
-                  secondary="Publisher"
+                  secondary={
+                    <>
+                      Publisher
+                      <InfoTooltipBtn
+                        title={
+                          <>
+                            The creator of an index using the IDA - publishers
+                            may update the index of subscribers and distribute
+                            funds to subscribers.{" "}
+                            <AppLink
+                              href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                              target="_blank"
+                            >
+                              Read more
+                            </AppLink>
+                          </>
+                        }
+                      />
+                    </>
+                  }
                   primary={
                     index ? (
                       <AccountAddress
@@ -322,16 +341,10 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
         </Grid>
 
         <Grid item xs={12}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ mb: 1, mr: 1 }}
-          >
-            <Typography variant="h5" component="h2">
-              Distributions
-            </Typography>
+          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+            Distributions
             <InfoTooltipBtn
+              size={22}
               title={
                 <>
                   An event in which super tokens are distributed to the entire
@@ -345,9 +358,8 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   </AppLink>
                 </>
               }
-              size={22}
             />
-          </Stack>
+          </Typography>
 
           <Card elevation={2}>
             <IndexUpdatedEventDataGrid
@@ -363,6 +375,22 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
         <Grid item xs={12}>
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Subscriptions
+            <InfoTooltipBtn
+              size={22}
+              title={
+                <>
+                  Accounts that have received units within the Index.
+                  Subscribers will receive distributed funds based on the
+                  portion of units they own in and index.{" "}
+                  <AppLink
+                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                    target="_blank"
+                  >
+                    Read more
+                  </AppLink>
+                </>
+              }
+            />
           </Typography>
           <Card elevation={2}>
             <IndexSubscriptionDataGrid

@@ -71,7 +71,7 @@ const AccountStreamsOutgoingDataGrid: FC<{
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
-              title="The number of tokens being sent per day/month"
+              title="Flow rate is the velocity of tokens being streamed."
               iconSx={{ mb: 0, mr: 0.5 }}
             />
           </>

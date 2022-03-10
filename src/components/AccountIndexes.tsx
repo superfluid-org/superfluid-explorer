@@ -5,6 +5,7 @@ import AccountIndexesDataGrid from "./AccountIndexesDataGrid";
 import AccountIndexSubscriptionsDataGrid from "./AccountIndexSubscriptionsDataGrid";
 import AppLink from "./AppLink";
 import HelpAlert from "./HelpAlert";
+import InfoTooltipBtn from "./InfoTooltipBtn";
 
 const AccountIndexes: FC<{
   network: Network;
@@ -36,6 +37,22 @@ const AccountIndexes: FC<{
       <Box data-cy={"subscriptions-box"}>
         <Typography variant="h6" component="h2" sx={{ mt: 3, ml: 1, mb: 1 }}>
           Subscriptions
+          <InfoTooltipBtn
+            size={22}
+            title={
+              <>
+                Accounts that have received units within the Index. Subscribers
+                will receive distributed funds based on the portion of units
+                they own in and index.{" "}
+                <AppLink
+                  href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                  target="_blank"
+                >
+                  Read more
+                </AppLink>
+              </>
+            }
+          />
         </Typography>
         <AccountIndexSubscriptionsDataGrid
           network={network}
