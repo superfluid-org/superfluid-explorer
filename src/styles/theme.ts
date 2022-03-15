@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { red } from "@mui/material/colors";
+import { grey, red } from "@mui/material/colors";
 
 // Create a theme instance.
 export const createSfTheme = (mode: "light" | "dark" = "light") =>
@@ -30,6 +30,26 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
         // The properties to apply
         defaultProps: {
           disableRipple: true, // No more ripple, on the whole application!
+        },
+      },
+      MuiTable: {
+        styleOverrides: {
+          root: {
+            borderRadius: "7px",
+            border:
+              mode === "light"
+                ? "1px solid rgba(224, 224, 224, 1)"
+                : "1px solid rgba(81, 81, 81, 1)",
+            borderCollapse: "initial",
+          },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          body: {
+            padding: "0 16px",
+            height: "48px",
+          },
         },
       },
     },

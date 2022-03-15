@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { FC, ReactElement } from "react";
 import { Network } from "../redux/networks";
+import AccountIncomingStreamsTable from "./AccountStream/AccountIncomingStreamsTable";
 import AccountStreamsIncomingDataGrid from "./AccountStreamsIncomingDataGrid";
 import AccountStreamsOutgoingDataGrid from "./AccountStreamsOutgoingDataGrid";
 import AppLink from "./AppLink";
@@ -26,6 +27,11 @@ const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
         </AppLink>
       </HelpAlert>
 
+      <AccountIncomingStreamsTable
+        network={network}
+        accountAddress={accountAddress}
+      />
+
       <Box data-cy={"incoming-box"}>
         <Typography variant="h6" component="h2" sx={{ mt: 3, ml: 1, mb: 1 }}>
           Incoming
@@ -35,6 +41,7 @@ const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
           accountAddress={accountAddress}
         />
       </Box>
+
       <Box data-cy={"outgoing-box"}>
         <Typography variant="h6" component="h2" sx={{ mt: 3, ml: 1, mb: 1 }}>
           Outgoing
