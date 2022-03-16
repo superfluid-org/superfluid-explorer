@@ -8,11 +8,13 @@ import {
   addressBookSelectors,
   createEntryId,
 } from "../redux/slices/addressBook.slice";
+import ellipsisAddress from "../utils/ellipsisAddress";
 
 const AccountAddress: FC<{
   network: Network;
   address: string;
-}> = ({ network, address, children }) => {
+  ellipsis?: number;
+}> = ({ network, address, ellipsis }) => {
   const prefetchAccountQuery = sfSubgraph.usePrefetch("account", {
     ifOlderThan: 45,
   });
@@ -44,7 +46,11 @@ const AccountAddress: FC<{
         }
       }}
     >
-      <AccountAddressFormatted network={network} address={address} />
+      <AccountAddressFormatted
+        network={network}
+        address={address}
+        ellipsis={ellipsis}
+      />
     </AppLink>
   );
 };
@@ -52,16 +58,21 @@ const AccountAddress: FC<{
 export const AccountAddressFormatted: FC<{
   network: Network;
   address: string;
-}> = ({ network, address }) => {
+  ellipsis?: number;
+}> = ({ network, address, ellipsis }) => {
   const addressBookEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
 
+  const parsedAddress = ellipsis
+    ? ellipsisAddress(ethers.utils.getAddress(address), ellipsis)
+    : ethers.utils.getAddress(address);
+
   return (
     <>
       {addressBookEntry?.nameTag
-        ? `${addressBookEntry.nameTag} (${ethers.utils.getAddress(address)})`
-        : ethers.utils.getAddress(address)}
+        ? `${addressBookEntry.nameTag} (${parsedAddress})`
+        : parsedAddress}
     </>
   );
 };

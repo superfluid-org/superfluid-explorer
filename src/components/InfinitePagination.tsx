@@ -1,74 +1,109 @@
-import { PaginationItem, Stack } from "@mui/material";
+import {
+  MenuItem,
+  PaginationItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  SxProps,
+  Theme,
+  Typography,
+} from "@mui/material";
 import times from "lodash/times";
 import { FC } from "react";
 
 const DEFAULT_SIBLING_COUNT = 1;
+const DEFAULT_PAGE_SIZE = 10;
 
 interface InfinitePaginationProps {
-  activePage: number;
+  page: number;
   hasNext: boolean;
-  siblings?: number;
-  onChange: (newPage: number) => void;
+  pageSize?: number;
+  siblingCount?: number;
+  sx?: SxProps<Theme>;
+  onPageChange: (newPage: number) => void;
+  onPageSizeChange?: (newPageSize: number) => void;
 }
 
 const InfinitePagination: FC<InfinitePaginationProps> = ({
-  activePage,
+  page,
   hasNext,
-  siblings = DEFAULT_SIBLING_COUNT,
-  onChange,
+  pageSize = DEFAULT_PAGE_SIZE,
+  siblingCount = DEFAULT_SIBLING_COUNT,
+  sx,
+  onPageChange,
+  onPageSizeChange,
 }) => {
-  const renderedPages = Math.max(Math.min(siblings + 1, activePage - 2), 0);
-  const lastHiddenPage = activePage - renderedPages;
+  const trailingSiblings = Math.min(siblingCount, page - 1);
+  const lastHiddenPage = page - trailingSiblings;
 
-  const onPageClick = (page: number) => () => onChange(page);
+  const onPageClick = (newPage: number) => () => onPageChange(newPage);
+
+  const handlePageSizeChange = (e: SelectChangeEvent<number>) =>
+    onPageSizeChange && onPageSizeChange(Number(e.target.value));
 
   return (
-    <Stack direction="row" alignItems="center">
-      <PaginationItem
-        type="previous"
-        disabled={activePage === 1}
-        onClick={onPageClick(activePage - 1)}
-      />
-
-      {lastHiddenPage >= 1 && (
-        <PaginationItem
-          page={1}
-          selected={activePage === 1}
-          onClick={onPageClick(1)}
-        />
+    <Stack direction="row" alignItems="center" sx={sx} spacing={2}>
+      {(pageSize || handlePageSizeChange) && (
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Typography variant="body2">Rows per page</Typography>
+          <Select
+            size="small"
+            value={pageSize}
+            onChange={handlePageSizeChange}
+            sx={{
+              "MuiSelect-select": {
+                padding: "8px 32px 8px 12px",
+              },
+            }}
+          >
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={25}>25</MenuItem>
+            <MenuItem value={50}>50</MenuItem>
+          </Select>
+        </Stack>
       )}
 
-      {lastHiddenPage === 2 && (
+      <Stack direction="row" alignItems="center">
         <PaginationItem
-          page={2}
-          selected={activePage === 2}
-          onClick={onPageClick(2)}
+          type="previous"
+          disabled={page === 1}
+          onClick={onPageClick(page - 1)}
         />
-      )}
 
-      {lastHiddenPage > 2 && <PaginationItem type="start-ellipsis" />}
+        {lastHiddenPage > 1 && (
+          <PaginationItem page={1} onClick={onPageClick(1)} />
+        )}
 
-      {times(renderedPages).map((i) => (
+        {lastHiddenPage === 3 && (
+          <PaginationItem page={2} onClick={onPageClick(2)} />
+        )}
+
+        {lastHiddenPage > 3 && <PaginationItem type="start-ellipsis" />}
+
+        {times(trailingSiblings).map((i) => (
+          <PaginationItem
+            key={i}
+            page={page - trailingSiblings + i}
+            onClick={onPageClick(page - trailingSiblings + i)}
+          />
+        ))}
+
+        <PaginationItem selected page={page} />
+
+        {hasNext && (
+          <>
+            <PaginationItem page={page + 1} onClick={onPageClick(page + 1)} />
+            <PaginationItem type="end-ellipsis" />
+          </>
+        )}
+
         <PaginationItem
-          key={lastHiddenPage + i + 1}
-          page={lastHiddenPage + i + 1}
-          selected={activePage === lastHiddenPage + i + 1}
-          onClick={onPageClick(lastHiddenPage + i + 1)}
+          type="next"
+          disabled={!hasNext}
+          onClick={onPageClick(page + 1)}
         />
-      ))}
-
-      {hasNext && (
-        <>
-          <PaginationItem key={activePage + 1} page={activePage + 1} />
-          <PaginationItem type="end-ellipsis" />
-        </>
-      )}
-
-      <PaginationItem
-        type="next"
-        disabled={!hasNext}
-        onClick={onPageClick(activePage + 1)}
-      />
+      </Stack>
     </Stack>
   );
 };

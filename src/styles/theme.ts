@@ -36,11 +36,29 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
         styleOverrides: {
           root: {
             borderRadius: "7px",
-            border:
+            border: `1px solid ${
               mode === "light"
-                ? "1px solid rgba(224, 224, 224, 1)"
-                : "1px solid rgba(81, 81, 81, 1)",
+                ? "rgba(224, 224, 224, 1)"
+                : "rgba(81, 81, 81, 1)"
+            }`,
             borderCollapse: "initial",
+          },
+        },
+      },
+      MuiTableHead: {
+        styleOverrides: {
+          root: {
+            "&:hover .MuiTableSortLabel-root:not(.Mui-active):not(:hover) .MuiTableSortLabel-icon":
+              {
+                opacity: 0.5,
+              },
+          },
+        },
+      },
+      MuiTableBody: {
+        styleOverrides: {
+          root: {
+            "tr:last-child td": { border: 0 },
           },
         },
       },
@@ -48,7 +66,17 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
         styleOverrides: {
           body: {
             padding: "0 16px",
-            height: "48px",
+            height: "52px",
+          },
+          footer: {
+            padding: "0 8px",
+            height: "56px",
+            borderTop: `1px solid ${
+              mode === "light"
+                ? "rgba(224, 224, 224, 1)"
+                : "rgba(81, 81, 81, 1)"
+            }`,
+            borderBottom: "initial",
           },
         },
       },

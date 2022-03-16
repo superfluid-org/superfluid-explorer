@@ -19,7 +19,7 @@ import SuperTokenAddress from "./SuperTokenAddress";
 import TimeAgo from "./TimeAgo";
 
 export const incomingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
-  orderBy: "createdAtTimestamp",
+  orderBy: "updatedAtTimestamp",
   orderDirection: "desc",
 };
 

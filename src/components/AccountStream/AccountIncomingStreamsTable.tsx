@@ -1,10 +1,12 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CloseIcon from "@mui/icons-material/Close";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Button,
+  Chip,
   CircularProgress,
   IconButton,
-  Pagination,
+  OutlinedInput,
   Popover,
   Stack,
   Table,
@@ -14,7 +16,6 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  TextField,
   Toolbar,
   Tooltip,
   Typography,
@@ -23,40 +24,22 @@ import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import {
   Ordering,
-  SkipPaging,
   Stream_Filter,
   Stream_OrderBy,
 } from "@superfluid-finance/sdk-core";
-import { BigNumber, ethers } from "ethers";
-import { formatUnits, parseEther } from "ethers/lib/utils";
+import { parseEther } from "ethers/lib/utils";
 import omit from "lodash/fp/omit";
-import { ChangeEvent, FC, useRef, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useRef, useState } from "react";
 import { Network } from "../../redux/networks";
 import { sfSubgraph } from "../../redux/store";
 import { timeAgo } from "../../utils/dateTime";
-import ellipsisAddress from "../../utils/ellipsisAddress";
-import {
-  incomingStreamOrderingDefault,
-  incomingStreamPagingDefault,
-} from "../AccountStreamsIncomingDataGrid";
+import AccountAddress from "../AccountAddress";
+import { incomingStreamOrderingDefault } from "../AccountStreamsIncomingDataGrid";
 import FlowingBalanceWithToken from "../FlowingBalanceWithToken";
 import FlowRate from "../FlowRate";
-import InfoTooltipBtn from "../InfoTooltipBtn";
 import InfinitePagination from "../InfinitePagination";
-
-const StyledRow = styled(TableRow)(({ theme }) => ({
-  transition: theme.transitions.create("background-color", {
-    duration: theme.transitions.duration.shortest,
-    easing: theme.transitions.easing.easeInOut,
-    delay: 0,
-  }),
-  "&:hover": {
-    backgroundColor:
-      theme.palette.mode === "light"
-        ? "rgba(0, 0, 0, 0.04)"
-        : "rgba(255, 255, 255, 0.08)",
-  },
-}));
+import InfoTooltipBtn from "../InfoTooltipBtn";
+import { StreamDetailsDialog } from "../StreamDetails";
 
 // const MAPPER = {
 //   currentFlowRate_gt: (value) => parseEther(value).toString(),
@@ -74,18 +57,16 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
   const filterAnchorRef = useRef(null);
 
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   const [showFilterMenu, setShowFilterMenu] = useState(false);
+
   const [incomingStreamFilter, setIncomingStreamFilter] =
     useState<Stream_Filter>({});
 
   const [incomingStreamOrdering, setIncomingStreamOrdering] = useState<
     Ordering<Stream_OrderBy> | undefined
   >(incomingStreamOrderingDefault);
-  const [incomingStreamPaging, setIncomingStreamPaging] = useState<SkipPaging>(
-    incomingStreamPagingDefault
-  );
 
   const incomingStreamsQuery = sfSubgraph.useStreamsQuery({
     chainId: network.chainId,
@@ -95,15 +76,13 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
       currentFlowRate_gte: incomingStreamFilter.currentFlowRate_gte
         ? parseEther(incomingStreamFilter.currentFlowRate_gte).toString()
         : undefined,
+      currentFlowRate_lte: incomingStreamFilter.currentFlowRate_lte
+        ? parseEther(incomingStreamFilter.currentFlowRate_lte).toString()
+        : undefined,
     },
-    pagination: incomingStreamPaging,
+    pagination: { take: pageSize, skip: (page - 1) * pageSize },
     order: incomingStreamOrdering,
   });
-
-  const openFilter = () => setShowFilterMenu(true);
-  const closeFilter = () => setShowFilterMenu(false);
-
-  const setPagination = (newPagination: any) => console.log(newPagination);
 
   const onSortClicked = (field: Stream_OrderBy) => () => {
     if (incomingStreamOrdering?.orderBy !== field) {
@@ -133,12 +112,26 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
       }
     };
 
-  const resetFilter = () => setIncomingStreamFilter({});
+  const clearFilterField =
+    (...fields: Array<keyof Stream_Filter>) =>
+    () =>
+      setIncomingStreamFilter(omit(fields, incomingStreamFilter));
+
+  const openFilter = () => setShowFilterMenu(true);
+  const closeFilter = () => setShowFilterMenu(false);
+
+  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    closeFilter();
+  };
+
+  const resetFilter = () => {
+    setIncomingStreamFilter({});
+    closeFilter();
+  };
 
   const tableRows = incomingStreamsQuery.data?.data || [];
   const hasNextPage = !!incomingStreamsQuery.data?.nextPaging;
-
-  console.log(hasNextPage);
 
   return (
     <>
@@ -146,6 +139,40 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
         <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
           Incoming streams
         </Typography>
+
+        <Stack direction="row" spacing={1} alignItems="center" sx={{ mx: 2 }}>
+          {incomingStreamFilter.sender_contains && (
+            <Chip
+              label={
+                <>
+                  Sender: <b>{incomingStreamFilter.sender_contains}</b>
+                </>
+              }
+              size="small"
+              onDelete={clearFilterField("sender_contains")}
+            />
+          )}
+          {(incomingStreamFilter.currentFlowRate_gte ||
+            incomingStreamFilter.currentFlowRate_lte) && (
+            <Chip
+              label={
+                <>
+                  Flow rate:{" "}
+                  <b>
+                    {`${incomingStreamFilter.currentFlowRate_gte || "..."} - ${
+                      incomingStreamFilter.currentFlowRate_lte || "..."
+                    }`}
+                  </b>
+                </>
+              }
+              size="small"
+              onDelete={clearFilterField(
+                "currentFlowRate_gte",
+                "currentFlowRate_lte"
+              )}
+            />
+          )}
+        </Stack>
 
         <Tooltip title="Filter">
           <IconButton ref={filterAnchorRef} onClick={openFilter}>
@@ -159,84 +186,112 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           transformOrigin={{ vertical: "top", horizontal: "right" }}
         >
-          <Box sx={{ p: 3, pb: 2 }}>
-            <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
-              Sender
-            </Typography>
-            <TextField
-              sx={{ width: "100%" }}
-              size="small"
-              placeholder="Sender address"
-              value={incomingStreamFilter.sender_contains || ""}
-              onChange={onFilterFieldChange("sender_contains")}
-            />
-            <Typography
-              variant="subtitle2"
-              component="div"
-              sx={{ mb: 1, mt: 2 }}
-            >
-              Token
-            </Typography>
-            <TextField
-              sx={{ width: "100%" }}
-              size="small"
-              placeholder="Token name"
-              value={incomingStreamFilter.token_contains || ""}
-              onChange={onFilterFieldChange("token_contains")}
-            />
-
-            <Typography
-              variant="subtitle2"
-              component="div"
-              sx={{ mb: 1, mt: 2 }}
-            >
-              Flow rate
-            </Typography>
-            <Stack direction="row" spacing={2}>
-              <TextField
+          <Stack
+            sx={{ p: 3, pb: 2 }}
+            component="form"
+            onSubmit={onFormSubmit}
+            noValidate
+            spacing={2}
+          >
+            <Box>
+              <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
+                Sender
+              </Typography>
+              <OutlinedInput
+                autoFocus
+                fullWidth
                 size="small"
-                label="Min"
-                type="number"
-                value={incomingStreamFilter.currentFlowRate_gte || ""}
-                onChange={onFilterFieldChange("currentFlowRate_gte")}
+                placeholder="Sender address"
+                value={incomingStreamFilter.sender_contains || ""}
+                onChange={onFilterFieldChange("sender_contains")}
+                endAdornment={
+                  incomingStreamFilter.sender_contains && (
+                    <IconButton
+                      size="small"
+                      sx={{ fontSize: "16px", p: 0.5 }}
+                      tabIndex={-1}
+                      onClick={clearFilterField("sender_contains")}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  )
+                }
               />
-              <TextField
-                size="small"
-                label="Max"
-                type="number"
-                value={incomingStreamFilter.currentFlowRate_lte || ""}
-                onChange={onFilterFieldChange("currentFlowRate_lte")}
-              />
-            </Stack>
-
-            <Typography
-              variant="subtitle2"
-              component="div"
-              sx={{ mb: 1, mt: 2 }}
-            >
-              Total Streamed
-            </Typography>
-            <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-              <TextField size="small" label="Min" type="number" />
-              <TextField size="small" label="Max" type="number" />
-            </Stack>
-
-            {Object.keys(incomingStreamFilter).length !== 0 && (
-              <Stack direction="row" justifyContent="flex-end" spacing={1}>
-                <Button onClick={resetFilter}>Reset</Button>
+            </Box>
+            <Box>
+              <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
+                Flow rate
+              </Typography>
+              <Stack direction="row" spacing={2}>
+                <OutlinedInput
+                  size="small"
+                  placeholder="Min"
+                  type="number"
+                  inputProps={{ min: 0 }}
+                  value={incomingStreamFilter.currentFlowRate_gte || ""}
+                  onChange={onFilterFieldChange("currentFlowRate_gte")}
+                  endAdornment={
+                    incomingStreamFilter.currentFlowRate_gte && (
+                      <IconButton
+                        size="small"
+                        sx={{ fontSize: "16px", p: 0.5 }}
+                        tabIndex={-1}
+                        onClick={clearFilterField("currentFlowRate_gte")}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    )
+                  }
+                />
+                <OutlinedInput
+                  size="small"
+                  placeholder="Max"
+                  type="number"
+                  inputProps={{ min: 0 }}
+                  value={incomingStreamFilter.currentFlowRate_lte || ""}
+                  onChange={onFilterFieldChange("currentFlowRate_lte")}
+                  endAdornment={
+                    incomingStreamFilter.currentFlowRate_lte && (
+                      <IconButton
+                        size="small"
+                        sx={{ fontSize: "16px", p: 0.5 }}
+                        tabIndex={-1}
+                        onClick={clearFilterField("currentFlowRate_lte")}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    )
+                  }
+                />
               </Stack>
-            )}
-          </Box>
+            </Box>
+
+            <Stack direction="row" justifyContent="flex-end" spacing={1}>
+              {Object.keys(incomingStreamFilter).length !== 0 && (
+                <Button onClick={resetFilter} tabIndex={-1}>
+                  Reset
+                </Button>
+              )}
+              <Button type="submit" tabIndex={-1}>
+                Apply
+              </Button>
+            </Stack>
+          </Stack>
         </Popover>
       </Toolbar>
       <Table sx={{ tableLayout: "fixed" }}>
         <TableHead>
           <TableRow>
-            <TableCell width="200px">Sender</TableCell>
+            <TableCell width="220px">Sender</TableCell>
             <TableCell>
               <TableSortLabel
-                active
-                direction={"desc"}
+                sx={{ transition: "all 200ms ease-in-out" }}
+                active={incomingStreamOrdering?.orderBy === "currentFlowRate"}
+                direction={
+                  incomingStreamOrdering?.orderBy === "currentFlowRate"
+                    ? incomingStreamOrdering?.orderDirection
+                    : "desc"
+                }
                 onClick={onSortClicked("currentFlowRate")}
               >
                 Flow Rate
@@ -249,11 +304,17 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
             <TableCell>Total Streamed</TableCell>
             <TableCell width="140px">
               <TableSortLabel
-                active
-                direction={"desc"}
-                onClick={onSortClicked("createdAtTimestamp")}
+                active={
+                  incomingStreamOrdering?.orderBy === "updatedAtTimestamp"
+                }
+                direction={
+                  incomingStreamOrdering?.orderBy === "updatedAtTimestamp"
+                    ? incomingStreamOrdering?.orderDirection
+                    : "desc"
+                }
+                onClick={onSortClicked("updatedAtTimestamp")}
               >
-                Created At
+                Updated
               </TableSortLabel>
             </TableCell>
             <TableCell width="60px"></TableCell>
@@ -261,13 +322,13 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
         </TableHead>
         <TableBody>
           {tableRows.map((stream) => (
-            <StyledRow
-              key={stream.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
+            <TableRow key={stream.id} hover>
               <TableCell>
-                {ellipsisAddress(stream.sender, 6)}
-                {/* <AccountAddress network={network} address={stream.sender} /> */}
+                <AccountAddress
+                  network={network}
+                  address={stream.sender}
+                  ellipsis={6}
+                />
               </TableCell>
               <TableCell>
                 <FlowRate flowRate={stream.currentFlowRate} />
@@ -282,16 +343,17 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 />
               </TableCell>
               <TableCell>
-                {timeAgo(new Date(stream.createdAtTimestamp * 1000).getTime())}
+                {timeAgo(new Date(stream.updatedAtTimestamp * 1000).getTime())}
               </TableCell>
 
               <TableCell align="right">
-                {/* rgba(255, 255, 255, 0.05) */}
-                <IconButton>
-                  <ArrowForwardIcon fontSize="small" />
-                </IconButton>
+                <StreamDetailsDialog network={network} streamId={stream.id}>
+                  <IconButton sx={{ background: "rgba(255, 255, 255, 0.05)" }}>
+                    <ArrowForwardIcon fontSize="small" />
+                  </IconButton>
+                </StreamDetailsDialog>
               </TableCell>
-            </StyledRow>
+            </TableRow>
           ))}
 
           {incomingStreamsQuery.isSuccess && tableRows.length === 0 && (
@@ -318,17 +380,22 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
             </TableRow>
           )}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={5} align="right">
-              <InfinitePagination
-                activePage={page}
-                hasNext={hasNextPage}
-                onChange={setPage}
-              />
-            </TableCell>
-          </TableRow>
-        </TableFooter>
+        {tableRows.length > 0 && (
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={5} align="right">
+                <InfinitePagination
+                  page={page}
+                  pageSize={pageSize}
+                  hasNext={hasNextPage}
+                  onPageChange={setPage}
+                  onPageSizeChange={setPageSize}
+                  sx={{ justifyContent: "flex-end" }}
+                />
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        )}
       </Table>
     </>
   );
