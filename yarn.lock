@@ -2147,10 +2147,10 @@
   dependencies:
     "@sentry/cli" "^1.73.0"
 
-"@superfluid-finance/sdk-core@0.3.1-dev.e75e426.0":
-  version "0.3.1-dev.e75e426.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.3.1-dev.e75e426.0.tgz#c42971f16ca1574b5b65873e54e9ca7e7624ee7b"
-  integrity sha512-nILHRIwmuAXoJvPDO3dTV6psleWd8xuy2ohECBZ3ww442QIulDqMcFtUIX6RCFcdscQFj5oIIpeS/F9amHfrKg==
+"@superfluid-finance/sdk-core@0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.3.2.tgz#cbf4d28399cfc9c15191f6a3aec3c9dde22110eb"
+  integrity sha512-t7xsqSJifsfl+DyroKXGG5awvkESEqN4Cg0cXglD/3RtGNFOTK+73YduX0+CgsTjXY3DJPHDrnhTxrZyt0VXzw==
   dependencies:
     "@ethersproject/providers" "^5.5.3"
     ajv "^8.9.0"
@@ -2160,10 +2160,10 @@
     lodash "^4.17.21"
     tsify "^5.0.4"
 
-"@superfluid-finance/sdk-redux@0.2.2-dev.97e6f3f.0":
-  version "0.2.2-dev.97e6f3f.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.2.2-dev.97e6f3f.0.tgz#ad2a3d71aa24028acd356ba3bea8a7a0fcd6a83e"
-  integrity sha512-XvhU69Z2HJO5OaHJfxQwR4BYajCWGkyjDFjK/0qszJpfh8m03aKLFhjncx1KhwREI4QqqDXZclfdPDDAIlXfTA==
+"@superfluid-finance/sdk-redux@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.2.2.tgz#f8e4f5de408e726960694144d528f20413328a01"
+  integrity sha512-hB9bhEXzKg8lPUdaZ9UP2w3elW21hTnLFTatJurX4P5jqxYmFJxNDsa+WenBpf+h+fhKKlG6ERYPfyvKhEtjEg==
   dependencies:
     ethers "^5.5.4"
     graphql-request "^3.7.0"
