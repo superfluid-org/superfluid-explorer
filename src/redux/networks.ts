@@ -112,6 +112,26 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string => `https://testnet.snowtrace.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://testnet.snowtrace.io/address/${address}`
   },
+  {
+    displayName: "Optimism",
+    slugName: "optimism-mainnet",
+    chainId: 10,
+    isTestnet: false,
+    rpcUrl: `https://rpc-endpoints.superfluid.dev/optimism-mainnet`,
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-optimism-mainnet",
+    getLinkForTransaction: (txHash: string): string => `https://optimistic.etherscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string => `https://optimistic.etherscan.io/address/${address}`
+  },
+  {
+    displayName: "Arbitrum One",
+    slugName: "arbitrum-one",
+    chainId: 42161,
+    isTestnet: false,
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/arbitrum-one",
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-arbitrum-one",
+    getLinkForTransaction: (txHash: string): string => `https://arbiscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string => `https://arbiscan.io/address/${address}`
+  },
 ];
 
 export const networksByName = new Map(networks.map(x => [x.slugName.toLowerCase(), x]))
