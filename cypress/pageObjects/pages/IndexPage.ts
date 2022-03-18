@@ -31,8 +31,7 @@ export class IndexPage extends BasePage {
         this.hasText(TOTAL_UNITS, index.totalUnits)
         this.hasText(TOTAL_UNITS_APPROVED, index.details.totalUnitsApproved)
         this.hasText(TOTAL_UNITS_PENDING, index.details.totalUnitsPending)
-        //Cypress assertions don't work with &nbsp very well , so removing it from the text before asserting
-        cy.get(TOTAL_AMOUNT_DISTRIBUTED).invoke("text").invoke("replace", /\u00a0/g, ' ').should("eq", index.totalDistributed)
+        this.replaceSpacesAndAssertText(TOTAL_AMOUNT_DISTRIBUTED, index.totalDistributed)
       })
     })
   }
@@ -40,8 +39,7 @@ export class IndexPage extends BasePage {
   static validateDistributionsTable(network: string) {
     cy.fixture("accountData").then(fixture => {
       fixture[network].superApp.indexes.publications[0].details.distributions.forEach((distribution: { distributionAmount: string }, index: number) => {
-        //Cypress assertions don't work with &nbsp very well , so removing it from the text before asserting
-        cy.get(DISTRIBUTION_AMOUNTS).eq(index).invoke("text").invoke("replace", /\u00a0/g, ' ').should("eq", distribution.distributionAmount)
+        this.replaceSpacesAndAssertText(DISTRIBUTION_AMOUNTS, distribution.distributionAmount, index)
       })
     })
   }
@@ -50,8 +48,7 @@ export class IndexPage extends BasePage {
     cy.fixture("accountData").then(fixture => {
       fixture[network].superApp.indexes.publications[0].details.subscriptions.forEach((subscription: any, index: number) => {
         cy.get(SUBSCRIPTIONS_APPROVED).eq(index).should("have.text", subscription.approved)
-        //Cypress assertions don't work with &nbsp very well , so removing it from the text before asserting
-        cy.get(SUBSCRIPTIONS_UNITS).eq(index).invoke("text").invoke("replace", /\u00a0/g, ' ').should("eq", subscription.subscriptionUnits)
+        this.replaceSpacesAndAssertText(SUBSCRIPTIONS_UNITS, subscription.subscriptionUnits, index)
         cy.get(SUBSCRIPTIONS_RECEIVED_AMOUNT).eq(index).should("contain.text", subscription.totalAmountReceived)
       })
     })

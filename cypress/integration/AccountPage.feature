@@ -11,6 +11,7 @@ Feature: Account page test cases
     And User switches to "events" tab
     Then The account events are shown correctly for "matic"
 
+  @WIP
   Scenario: Account with published indexes and the data shown in the index tab publications section
     Given User has opened the "super app" page on "goerli"
     And User switches to "indexes" tab

@@ -110,7 +110,7 @@ export class AccountPage extends BasePage {
       } else {
         account[network].superApp.indexes.publications.forEach((publication: any, index: number) => {
           cy.get(PUBLICATIONS_BOX).children().find(PUBLICATION_TOKEN).eq(index).should("contain.text", publication.token)
-          cy.get(PUBLICATIONS_BOX).children().find(PUBLICATION_TOTAL_DISTRIBUTED).eq(index).invoke("replace", /\u00a0/g, ' ').should("eq", publication.totalDistributed)
+          this.replaceSpacesAndAssertText(PUBLICATION_TOTAL_DISTRIBUTED, publication.totalDistributed, index, PUBLICATIONS_BOX)
           cy.get(PUBLICATIONS_BOX).children().find(PUBLICATION_TOTAL_UNITS).eq(index).should("contain.text", publication.totalUnits)
         })
       }
