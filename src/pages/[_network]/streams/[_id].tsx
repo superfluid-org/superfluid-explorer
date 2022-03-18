@@ -247,7 +247,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                             flowRate: stream.currentFlowRate,
                           }}
                         />
-                        &nbsp;
+                        {" "}
                         <SuperTokenAddress
                           network={network}
                           address={stream.token}

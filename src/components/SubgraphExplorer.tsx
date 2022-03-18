@@ -197,7 +197,7 @@ query MyQuery {
                 return data.json().catch(() => data.text());
               }}
             >
-              <GraphiQL.Logo>&nbsp;</GraphiQL.Logo>
+              <GraphiQL.Logo>{" "}</GraphiQL.Logo>
               <GraphiQL.Toolbar>
                 <GraphiQL.Button
                   onClick={handlePrettifyQuery}

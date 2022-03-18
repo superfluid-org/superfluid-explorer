@@ -322,7 +322,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                         <EtherFormatted
                           wei={index.totalAmountDistributedUntilUpdatedAt}
                         />
-                        &nbsp;
+                        {" "}
                         <SuperTokenAddress
                           network={network}
                           address={index.token}

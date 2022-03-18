@@ -127,7 +127,7 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
                 BigNumber.from(params.row.units)
               )}
             />
-            &nbsp;
+            {" "}
             <SuperTokenAddress
               network={network}
               address={params.row.token}
@@ -146,7 +146,7 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
         ) => {
           return (
             <>
-              {params.value}&nbsp;
+              {params.value}{" "}
               {`(${calculatePoolPercentage(
                 new Decimal(params.row.indexTotalUnits),
                 new Decimal(params.row.units)

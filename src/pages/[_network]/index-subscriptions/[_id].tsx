@@ -374,7 +374,7 @@ export const IndexSubscriptionPageContent: FC<{
                     indexSubscription && index && totalWeiAmountReceived ? (
                       <>
                         <EtherFormatted wei={totalWeiAmountReceived} />
-                        &nbsp;
+                        {" "}
                         <SuperTokenAddress
                           network={network}
                           address={index.token}
@@ -603,7 +603,7 @@ export const IndexSubscriptionDistributions: FC<{
           return (
             <>
               <EtherFormatted wei={subscriptionDistributionAmount} />
-              &nbsp;
+              {" "}
               <SuperTokenAddress
                 network={network}
                 address={index.token}

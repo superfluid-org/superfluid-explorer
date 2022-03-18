@@ -72,7 +72,7 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
         renderCell: (params) => {
           return (
             <>
-              <EtherFormatted wei={params.value} />&nbsp;
+              <EtherFormatted wei={params.value} />{" "}
               {index && (
                 <SuperTokenAddress
                   network={network}

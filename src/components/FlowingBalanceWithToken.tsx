@@ -15,7 +15,7 @@ const FlowingBalanceWithToken: FC<
   return (
     <>
       <FlowingBalance {...flowingBalanceProps} />
-      &nbsp;
+      {" "}
       {tokenQuery.data ? (
         <AppLink
           data-cy={"token-link"}

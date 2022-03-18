@@ -56,7 +56,7 @@ export const AccountIndexesDataGrid: FC<{
         renderCell: (params) => (
           <>
             <EtherFormatted wei={params.value} />
-            &nbsp;
+            {" "}
             <SuperTokenAddress
               network={network}
               address={(params.row as Index).token}
