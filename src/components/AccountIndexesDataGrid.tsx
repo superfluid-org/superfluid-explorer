@@ -77,6 +77,7 @@ export const AccountIndexesDataGrid: FC<{
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
+              dataCy={"total-units-tooltip"}
               title="The sum of total pending and approved units issued to subscribers."
               iconSx={{ mb: 0, mr: 0.5 }}
             />

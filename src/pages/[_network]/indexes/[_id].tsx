@@ -105,7 +105,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
   }
 
   return (
-    <Container component={Box} sx={{ my: 2, py: 2 }}>
+    <Container data-cy={"index-page-container"} component={Box} sx={{ my: 2, py: 2 }}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Breadcrumbs aria-label="breadcrumb">
@@ -148,7 +148,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
 
         <Grid item xs={12} lg={6}>
           <Card elevation={2}>
-            <List>
+            <List data-cy={"index-general-info"}>
               <ListItem divider>
                 <ListItemText
                   secondary="Token"
@@ -170,6 +170,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                     <>
                       Publisher
                       <InfoTooltipBtn
+                        dataCy={"publisher-tooltip"}
                         title={
                           <>
                             The creator of an index using the IDA - publishers
@@ -198,12 +199,13 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem data-cy={"index-id"} divider>
                 <ListItemText
                   secondary={
                     <>
                       Index ID
                       <InfoTooltipBtn
+                        dataCy={"index-id-tooltip"}
                         title={
                           <>
                             The ID which is associated with each index in the
@@ -262,12 +264,12 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
         <Grid item xs={12} lg={6}>
           <Card elevation={2}>
             <List>
-              <ListItem divider>
+              <ListItem data-cy={"total-units"} divider>
                 <ListItemText
                   secondary={
                     <>
                       Total Units
-                      <InfoTooltipBtn title="The sum of total pending and approved units issued to subscribers." />
+                      <InfoTooltipBtn dataCy={"total-units-tooltip"} title="The sum of total pending and approved units issued to subscribers." />
                     </>
                   }
                   primary={
@@ -279,12 +281,12 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem data-cy={"total-units-approved"} divider>
                 <ListItemText
                   secondary={
                     <>
                       Total Units Approved
-                      <InfoTooltipBtn title="Units that have claimed all past distributions and will automatically claim all future distributions." />
+                      <InfoTooltipBtn dataCy={"total-units-approved-tooltip"} title="Units that have claimed all past distributions and will automatically claim all future distributions." />
                     </>
                   }
                   primary={
@@ -296,12 +298,12 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem data-cy={"total-units-pending"} divider>
                 <ListItemText
                   secondary={
                     <>
                       Total Units Pending
-                      <InfoTooltipBtn title="Units that have not claimed their distribution yet." />
+                      < InfoTooltipBtn dataCy={"total-units-pending-tooltip"} title="Units that have not claimed their distribution yet." />
                     </>
                   }
                   primary={
@@ -313,7 +315,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem data-cy={"total-amount-distributed"} divider>
                 <ListItemText
                   secondary="Total Amount Distributed"
                   primary={
@@ -344,6 +346,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Distributions
             <InfoTooltipBtn
+              dataCy={"distributions-tooltip"}
               size={22}
               title={
                 <>
@@ -351,6 +354,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   pool of subscribers for a given index using the Superfluid
                   IDA.{" "}
                   <AppLink
+                    data-cy={"distributions-tooltip-link"}
                     href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                     target="_blank"
                   >
@@ -376,6 +380,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Subscriptions
             <InfoTooltipBtn
+              dataCy={"subscriptions-tooltip"}
               size={22}
               title={
                 <>
@@ -383,6 +388,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   Subscribers will receive distributed funds based on the
                   portion of units they own in and index.{" "}
                   <AppLink
+                    data-cy={"subscriptions-tooltip-link"}
                     href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                     target="_blank"
                   >

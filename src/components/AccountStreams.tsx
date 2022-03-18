@@ -12,13 +12,14 @@ const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
 }): ReactElement => {
   return (
     <>
-      <HelpAlert>
+      <HelpAlert dataCy={"streams-help-alert"}>
         Stream represents super token flow between a sender and a receiver.
         Sender accounts can create, update, and delete streams, while receiver
         accounts can delete streams. However, a pair of addresses may only have
         one stream open per token (but this stream may be updated at any time by
         the sender).{" "}
         <AppLink
+          data-cy={"streams-help-alert-link"}
           href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/money-streaming-1"
           target="_blank"
         >

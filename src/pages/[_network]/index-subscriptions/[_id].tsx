@@ -145,7 +145,7 @@ export const IndexSubscriptionPageContent: FC<{
   }
 
   return (
-    <Container component={Box} sx={{ my: 2, py: 2 }}>
+    <Container data-cy={"index-subscription-container"} component={Box} sx={{ my: 2, py: 2 }}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Breadcrumbs aria-label="breadcrumb">
@@ -189,7 +189,7 @@ export const IndexSubscriptionPageContent: FC<{
         <Grid item xs={12} lg={6}>
           <Card elevation={2}>
             <List>
-              <ListItem divider>
+              <ListItem data-cy={"index-subscription-short-hash"} divider>
                 <ListItemText
                   secondary="Index"
                   primary={
@@ -205,7 +205,7 @@ export const IndexSubscriptionPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem data-cy={"index-subscription-token"} divider>
                 <ListItemText
                   secondary="Token"
                   primary={
@@ -220,18 +220,20 @@ export const IndexSubscriptionPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem data-cy={"subscription-publisher"} divider>
                 <ListItemText
                   secondary={
                     <>
                       Publisher
                       <InfoTooltipBtn
+                        dataCy={"publisher-tooltip"}
                         title={
                           <>
                             The creator of an index using the IDA - publishers
                             may update the index of subscribers and distribute
                             funds to subscribers.{" "}
                             <AppLink
+                              data-cy={"publisher-tooltip-link"}
                               href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                               target="_blank"
                             >
@@ -254,7 +256,7 @@ export const IndexSubscriptionPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem data-cy={"subscription-subscriber"} divider>
                 <ListItemText
                   secondary="Subscriber"
                   primary={
@@ -310,18 +312,20 @@ export const IndexSubscriptionPageContent: FC<{
         <Grid item xs={12} lg={6}>
           <Card elevation={2}>
             <List>
-              <ListItem divider>
+              <ListItem data-cy={"subscription-units"} divider>
                 <ListItemText
                   secondary={
                     <>
                       Units (Pool %)
                       <InfoTooltipBtn
+                        dataCy={"units-tooltip"}
                         title={
                           <>
                             Amount of units compared to the total pool. Funds
                             will be distributed depending on the portion of
                             units an account has.{" "}
                             <AppLink
+                              data-cy={"units-tooltip-link"}
                               href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                               target="_blank"
                             >
@@ -346,12 +350,12 @@ export const IndexSubscriptionPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem data-cy={"subscription-approval"} divider>
                 <ListItemText
                   secondary={
                     <>
                       Approved
-                      <InfoTooltipBtn title="Indicates if account has claimed all past distributions and automatically claims all future distributions." />
+                      <InfoTooltipBtn dataCy={"approval-tooltip"} title="Indicates if account has claimed all past distributions and automatically claims all future distributions." />
                     </>
                   }
                   primary={
@@ -367,7 +371,7 @@ export const IndexSubscriptionPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem data-cy={"subscription-total-amount-received"} divider>
                 <ListItemText
                   secondary="Total Amount Received"
                   primary={
@@ -392,16 +396,18 @@ export const IndexSubscriptionPageContent: FC<{
           </Card>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid data-cy={"distributions-grid"} item xs={12}>
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Distributions
             <InfoTooltipBtn
+              dataCy={"distributions-tooltip"}
               title={
                 <>
                   An event in which super tokens are distributed to the entire
                   pool of subscribers for a given index using the Superfluid
                   IDA.{" "}
                   <AppLink
+                    data-cy={"distributions-tooltip-link"}
                     href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                     target="_blank"
                   >
@@ -421,7 +427,7 @@ export const IndexSubscriptionPageContent: FC<{
           </Card>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid data-cy={"units-updated-grid"} item xs={12}>
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Units Updated (i.e. Pool % Updated)
           </Typography>

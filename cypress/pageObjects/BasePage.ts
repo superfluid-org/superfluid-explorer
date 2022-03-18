@@ -86,5 +86,4 @@ export class BasePage {
   static wasOpenFunctionCalled() {
     cy.get("@newTab").should("be.called");
   }
-
 }

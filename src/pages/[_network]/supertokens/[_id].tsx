@@ -182,6 +182,7 @@ const SuperTokenPage: NextPage = () => {
                         <>
                           Listed
                           <InfoTooltipBtn
+                            dataCy={"listed-tooltip"}
                             title={
                               <>
                                 A token is listed & recognized by the Superfluid
@@ -190,6 +191,7 @@ const SuperTokenPage: NextPage = () => {
                                 symbol in our SDK, and listed by symbol in the
                                 Superfluid dashboard{" "}
                                 <AppLink
+                                  data-cy={"listed-tooltip-link"}
                                   href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
                                   target="_blank"
                                 >
@@ -231,11 +233,13 @@ const SuperTokenPage: NextPage = () => {
                         <>
                           Underlying Token Address
                           <InfoTooltipBtn
+                            dataCy={"underlying-token-tooltip"}
                             title={
                               <>
                                 Already existing ERC20 token&apos;s address that
                                 has been upgraded to super token.{" "}
                                 <AppLink
+                                  data-cy={"underlying-token-tooltip-link"}
                                   href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
                                   target="_blank"
                                 >

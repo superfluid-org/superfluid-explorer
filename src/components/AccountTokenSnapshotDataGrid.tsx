@@ -86,11 +86,13 @@ const AccountTokenSnapshotDataGrid: FC<Props> = ({
             />
 
             <InfoTooltipBtn
+              dataCy={"subscriptions-with-units-tooltip"}
               title={
                 <>
                   The amount of subscribers on an index that hold some number of
                   units.{" "}
                   <AppLink
+                    data-cy={"subscriptions-with-units-link"}
                     href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                     target="_blank"
                   >

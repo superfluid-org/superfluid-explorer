@@ -38,6 +38,7 @@ const AccountIndexes: FC<{
         <Typography variant="h6" component="h2" sx={{ mt: 3, ml: 1, mb: 1 }}>
           Subscriptions
           <InfoTooltipBtn
+            dataCy={"subscriptions-tooltip"}
             size={22}
             title={
               <>
@@ -45,6 +46,7 @@ const AccountIndexes: FC<{
                 will receive distributed funds based on the portion of units
                 they own in and index.{" "}
                 <AppLink
+                  data-cy={"subscriptions-tooltip-link"}
                   href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                   target="_blank"
                 >

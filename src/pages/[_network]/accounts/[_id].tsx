@@ -213,7 +213,7 @@ const AccountPage: NextPage = () => {
                       secondary={
                         <>
                           Account type
-                          <InfoTooltipBtn title="Either a regular account or a super app." />
+                          <InfoTooltipBtn dataCy={"account-type-tooltip"} title="Either a regular account or a super app." />
                         </>
                       }
                       primary={

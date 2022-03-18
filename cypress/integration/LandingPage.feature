@@ -29,3 +29,12 @@ Feature: Landing page
     Then The latest streams for "xdai" are shown
     And All of the hyperlinks lead to "xdai" pages
 
+  Scenario: Switching stream granularity
+    Given User has opened the "landing" page
+    And All of the streamed values are fixed to 18 decimals
+    And User opens the settings menu
+    And User changes the ether decimal places to 9
+    Then All of the streamed values are fixed to 9 decimals
+    And User changes the ether decimal places to 5
+    And All of the streamed values are fixed to 5 decimals
+

@@ -4,9 +4,10 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 interface HelpAlertProps {
   sx?: SxProps;
+  dataCy?: string;
 }
 
-const HelpAlert: FC<HelpAlertProps> = ({ sx = {}, children }) => {
+const HelpAlert: FC<HelpAlertProps> = ({ sx,dataCy = {}, children }) => {
   return (
     <Paper
       variant="outlined"
@@ -18,7 +19,7 @@ const HelpAlert: FC<HelpAlertProps> = ({ sx = {}, children }) => {
     >
       <Stack direction="row" columnGap={2} color="text.secondary">
         <HelpOutlineOutlinedIcon sx={{ fontSize: 22 }} />
-        <Typography variant="body2" sx={{ pt: "1px" }}>
+        <Typography data-cy={dataCy} variant="body2" sx={{ pt: "1px" }}>
           {children}
         </Typography>
       </Stack>

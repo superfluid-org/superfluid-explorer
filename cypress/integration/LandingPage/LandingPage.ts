@@ -1,6 +1,7 @@
 import {Given, Then} from 'cypress-cucumber-preprocessor/steps'
 import {LandingPage} from "../../pageObjects/pages/LandingPage";
 import {BasePage} from "../../pageObjects/BasePage";
+import {CommonElements} from "../../pageObjects/components/CommonElements";
 
 Then(`The latest streams for {string} are shown`, (network) => {
   LandingPage.latestStreamsAreVisible(network)
@@ -34,3 +35,18 @@ Then(`All of the hyperlinks lead to {string} pages`, (network) => {
   LandingPage.validateLatestStreamHyperlinks(network)
 });
 
+Given(`All of the streamed values are fixed to {int} decimals`, (num) => {
+  LandingPage.validateStreamedValueDecimalPlaces(num)
+});
+
+Then(`User closes the settings menu`, () => {
+  CommonElements.closeSettingsMenu()
+});
+
+Given(`User changes the ether decimal places to {int}`, (num) => {
+  CommonElements.changeDecimalPlaces(num)
+});
+
+Then(`User opens the settings menu`, () => {
+  CommonElements.openSettingsMenu()
+});

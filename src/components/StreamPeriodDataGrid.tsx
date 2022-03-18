@@ -43,6 +43,7 @@ const StreamPeriodDataGrid: FC<Props> = ({
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
+              dataCy={"flow-rate-tooltip"}
               title="Flow rate is the velocity of tokens being streamed."
               iconSx={{ mb: 0, mr: 0.5 }}
             />

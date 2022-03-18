@@ -69,6 +69,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
+              dataCy={"approved-tooltip"}
               title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
               iconSx={{ mb: 0, mr: 0.5 }}
             />

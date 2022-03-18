@@ -61,11 +61,13 @@ const PublishedIndexDataGrid: FC<Props> = ({
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
+              dataCy={"publisher-tooltip"}
               title={
                 <>
                   The creator of an index using the IDA - publishers may update
                   the index of subscribers and distribute funds to subscribers.{" "}
                   <AppLink
+                    data-cy={"publisher-tooltip-link"}
                     href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                     target="_blank"
                   >
@@ -88,12 +90,14 @@ const PublishedIndexDataGrid: FC<Props> = ({
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
+              dataCy={"index-id-tooltip"}
               title={
                 <>
                   The ID which is associated with each index in the instant
                   distribution agreement - this number is created when a
                   publisher creates an index.{" "}
                   <AppLink
+                    data-cy={"index-id-tooltip-link"}
                     href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                     target="_blank"
                   >

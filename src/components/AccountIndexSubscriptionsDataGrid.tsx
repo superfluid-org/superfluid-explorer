@@ -75,11 +75,13 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
+              dataCy={"publisher-tooltip"}
               title={
                 <>
                   The creator of an index using the IDA - publishers may update
                   the index of subscribers and distribute funds to subscribers.{" "}
                   <AppLink
+                    data-cy={"publisher-tooltip-link"}
                     href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                     target="_blank"
                   >
@@ -104,6 +106,7 @@ export const AccountIndexSubscriptionsDataGrid: FC<{
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
+              dataCy={"approved-tooltip"}
               title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
               iconSx={{ mb: 0, mr: 0.5 }}
             />

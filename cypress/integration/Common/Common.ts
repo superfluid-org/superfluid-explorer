@@ -4,6 +4,7 @@ import {CommonElements} from "../../pageObjects/components/CommonElements";
 import {LandingPage} from "../../pageObjects/pages/LandingPage";
 import {TokenPage} from "../../pageObjects/pages/TokenPage";
 import {AccountPage} from "../../pageObjects/pages/AccountPage";
+import {BasePage} from "../../pageObjects/BasePage";
 
 Given(`User has opened the {string} page`, (page) => {
   LandingPage.openPage(page)
@@ -73,3 +74,10 @@ Then(`Subgraph explorer page is opened`, () => {
   CommonElements.subgraphContainerIsVisible()
 });
 
+Given(`User has opened the {string} read more page`, (page) => {
+  CommonElements.openReadMePage(page)
+});
+
+Then(`There are no elements containing {string}`, (text) => {
+  BasePage.notContains(text)
+});
