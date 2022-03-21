@@ -34,8 +34,14 @@ export class StreamsPage extends BasePage {
       streamData[network].streamPeriods.forEach((period: any, index: number) => {
         cy.get(STREAM_PERIOD_FLOW_RATES).eq(index).should("have.text", period.flowRate)
         cy.get(STREAM_PERIOD_TOTAL_STREAMED).eq(index).should("have.text", period.totalStreamed)
-        cy.get(STREAM_PERIOD_FROM).eq(index).should("have.text", period.from)
-        cy.get(STREAM_PERIOD_TO).eq(index).should("have.text", period.to)
+        //Firefox uses different date formatting
+        if(Cypress.browser.name === "firefox") {
+          cy.get(STREAM_PERIOD_FROM).eq(index).should("have.text", period.firefoxFrom)
+          cy.get(STREAM_PERIOD_TO).eq(index).should("have.text", period.firefoxTo)
+        } else {
+          cy.get(STREAM_PERIOD_FROM).eq(index).should("have.text", period.from)
+          cy.get(STREAM_PERIOD_TO).eq(index).should("have.text", period.to)
+        }
       })
     })
   }
