@@ -24,7 +24,6 @@ const FlowingBalanceWithToken: FC<
           <Chip label={tokenQuery.data.symbol} size="small" sx={{ mr: 1 }} />
         </AppLink>
       ) : null}
-      {/* &nbsp; */}
       <FlowingBalance {...flowingBalanceProps} />
     </>
   );

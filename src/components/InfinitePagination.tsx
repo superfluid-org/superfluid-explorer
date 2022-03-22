@@ -17,6 +17,7 @@ const DEFAULT_PAGE_SIZE = 10;
 interface InfinitePaginationProps {
   page: number;
   hasNext: boolean;
+  isLoading?: boolean;
   pageSize?: number;
   siblingCount?: number;
   sx?: SxProps<Theme>;
@@ -27,6 +28,7 @@ interface InfinitePaginationProps {
 const InfinitePagination: FC<InfinitePaginationProps> = ({
   page,
   hasNext,
+  isLoading = false,
   pageSize = DEFAULT_PAGE_SIZE,
   siblingCount = DEFAULT_SIBLING_COUNT,
   sx,
@@ -93,14 +95,18 @@ const InfinitePagination: FC<InfinitePaginationProps> = ({
 
         {hasNext && (
           <>
-            <PaginationItem page={page + 1} onClick={onPageClick(page + 1)} />
+            <PaginationItem
+              page={page + 1}
+              onClick={onPageClick(page + 1)}
+              disabled={isLoading}
+            />
             <PaginationItem type="end-ellipsis" />
           </>
         )}
 
         <PaginationItem
           type="next"
-          disabled={!hasNext}
+          disabled={!hasNext || isLoading}
           onClick={onPageClick(page + 1)}
         />
       </Stack>

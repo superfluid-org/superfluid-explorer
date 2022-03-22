@@ -16,34 +16,47 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  ToggleButton,
+  ToggleButtonGroup,
   Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import {
   Ordering,
   Stream_Filter,
   Stream_OrderBy,
 } from "@superfluid-finance/sdk-core";
-import { parseEther } from "ethers/lib/utils";
+import { StreamsQuery } from "@superfluid-finance/sdk-redux";
 import omit from "lodash/fp/omit";
-import { ChangeEvent, FC, FormEvent, useRef, useState } from "react";
-import { Network } from "../../redux/networks";
-import { sfSubgraph } from "../../redux/store";
-import { timeAgo } from "../../utils/dateTime";
-import AccountAddress from "../AccountAddress";
-import { incomingStreamOrderingDefault } from "../AccountStreamsIncomingDataGrid";
-import FlowingBalanceWithToken from "../FlowingBalanceWithToken";
-import FlowRate from "../FlowRate";
-import InfinitePagination from "../InfinitePagination";
-import InfoTooltipBtn from "../InfoTooltipBtn";
-import { StreamDetailsDialog } from "../StreamDetails";
+import set from "lodash/fp/set";
+import isEqual from "lodash/isEqual";
+import {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import useDebounce from "../../../hooks/useDebounce";
+import { Network } from "../../../redux/networks";
+import { sfSubgraph } from "../../../redux/store";
+import { timeAgo } from "../../../utils/dateTime";
+import AccountAddress from "../../AccountAddress";
+import { incomingStreamOrderingDefault } from "../../AccountStreamsIncomingDataGrid";
+import FlowingBalanceWithToken from "../../FlowingBalanceWithToken";
+import FlowRate from "../../FlowRate";
+import InfinitePagination from "../../InfinitePagination";
+import InfoTooltipBtn from "../../InfoTooltipBtn";
+import { StreamDetailsDialog } from "../../StreamDetails";
 
-// const MAPPER = {
-//   currentFlowRate_gt: (value) => parseEther(value).toString(),
-// };
+export enum StreamStatus {
+  Active,
+  Inactive,
+}
 
 interface AccountIncomingStreamsTableProps {
   network: Network;
@@ -56,66 +69,136 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
 }) => {
   const filterAnchorRef = useRef(null);
 
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
-  const [incomingStreamFilter, setIncomingStreamFilter] =
-    useState<Stream_Filter>({});
+  const [streamStatus, setStreamStatus] = useState<StreamStatus | null>(null);
 
-  const [incomingStreamOrdering, setIncomingStreamOrdering] = useState<
-    Ordering<Stream_OrderBy> | undefined
-  >(incomingStreamOrderingDefault);
+  const defaultFilter = {
+    receiver: accountAddress,
+  };
 
-  const incomingStreamsQuery = sfSubgraph.useStreamsQuery({
+  const createDefaultArg = (): Required<StreamsQuery> => ({
     chainId: network.chainId,
-    filter: {
-      receiver: accountAddress,
-      ...incomingStreamFilter,
-      currentFlowRate_gte: incomingStreamFilter.currentFlowRate_gte
-        ? parseEther(incomingStreamFilter.currentFlowRate_gte).toString()
-        : undefined,
-      currentFlowRate_lte: incomingStreamFilter.currentFlowRate_lte
-        ? parseEther(incomingStreamFilter.currentFlowRate_lte).toString()
-        : undefined,
+    filter: defaultFilter,
+    pagination: {
+      take: 10,
+      skip: 0,
     },
-    pagination: { take: pageSize, skip: (page - 1) * pageSize },
-    order: incomingStreamOrdering,
+    order: incomingStreamOrderingDefault,
   });
 
+  const [streamsQueryArg, setStreamsQueryArg] = useState<
+    Required<StreamsQuery>
+  >(createDefaultArg());
+
+  const [streamsQueryTrigger, streamsQueryResult] =
+    sfSubgraph.useLazyStreamsQuery();
+
+  const streamsQueryTriggerDebounced = useDebounce(streamsQueryTrigger, 250);
+
+  const onStreamQueryArgsChanged = (newArgs: Required<StreamsQuery>) => {
+    setStreamsQueryArg(newArgs);
+
+    if (
+      streamsQueryResult.originalArgs &&
+      !isEqual(streamsQueryResult.originalArgs.filter, newArgs.filter)
+    ) {
+      streamsQueryTriggerDebounced(newArgs);
+    } else {
+      streamsQueryTrigger(newArgs);
+    }
+  };
+
+  useEffect(() => {
+    onStreamQueryArgsChanged(createDefaultArg());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [network, accountAddress]);
+
+  const setPage = (newPage: number) =>
+    onStreamQueryArgsChanged(
+      set(
+        "pagination.skip",
+        (newPage - 1) * streamsQueryArg.pagination.take,
+        streamsQueryArg
+      )
+    );
+
+  const setPageSize = (newPageSize: number) =>
+    onStreamQueryArgsChanged(
+      set("pagination.take", newPageSize, streamsQueryArg)
+    );
+
+  const onOrderingChanged = (newOrdering: Ordering<Stream_OrderBy>) =>
+    onStreamQueryArgsChanged({ ...streamsQueryArg, order: newOrdering });
+
   const onSortClicked = (field: Stream_OrderBy) => () => {
-    if (incomingStreamOrdering?.orderBy !== field) {
-      setIncomingStreamOrdering({
+    if (streamsQueryArg.order?.orderBy !== field) {
+      onOrderingChanged({
         orderBy: field,
         orderDirection: "desc",
       });
-    } else if (incomingStreamOrdering.orderDirection === "desc") {
-      setIncomingStreamOrdering({
+    } else if (streamsQueryArg.order.orderDirection === "desc") {
+      onOrderingChanged({
         orderBy: field,
         orderDirection: "asc",
       });
     } else {
-      setIncomingStreamOrdering(undefined);
+      onOrderingChanged(incomingStreamOrderingDefault);
     }
   };
 
-  const onFilterFieldChange =
-    (field: keyof Stream_Filter) => (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.value) {
-        setIncomingStreamFilter({
-          ...incomingStreamFilter,
-          [field]: e.target.value,
-        });
-      } else {
-        setIncomingStreamFilter(omit(field, incomingStreamFilter));
-      }
-    };
+  const onFilterChange = (newFilter: Stream_Filter) => {
+    onStreamQueryArgsChanged({
+      ...streamsQueryArg,
+      pagination: { ...streamsQueryArg.pagination, skip: 0 },
+      filter: newFilter,
+    });
+  };
+
+  const onSenderChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      onFilterChange({
+        ...streamsQueryArg.filter,
+        sender_contains: e.target.value.toLowerCase(),
+      });
+    } else {
+      onFilterChange(omit("sender_contains", streamsQueryArg.filter));
+    }
+  };
+
+  const getStreamStatusFilter = (
+    status: StreamStatus | null
+  ): Stream_Filter => {
+    switch (status) {
+      case StreamStatus.Active:
+        return { currentFlowRate_gt: "0" };
+      case StreamStatus.Inactive:
+        return { currentFlowRate: "0" };
+      default:
+        return {};
+    }
+  };
+
+  const changeStreamStatus = (newStatus: StreamStatus | null) => {
+    const { currentFlowRate_gt, currentFlowRate, ...newFilter } =
+      streamsQueryArg.filter;
+
+    setStreamStatus(newStatus);
+    onFilterChange({
+      ...newFilter,
+      ...getStreamStatusFilter(newStatus),
+    });
+  };
+
+  const onStreamStatusChange = (_event: unknown, newStatus: StreamStatus) =>
+    changeStreamStatus(newStatus);
+
+  const clearStreamStatusFilter = () => changeStreamStatus(null);
 
   const clearFilterField =
     (...fields: Array<keyof Stream_Filter>) =>
     () =>
-      setIncomingStreamFilter(omit(fields, incomingStreamFilter));
+      onFilterChange(omit(fields, streamsQueryArg.filter));
 
   const openFilter = () => setShowFilterMenu(true);
   const closeFilter = () => setShowFilterMenu(false);
@@ -126,50 +209,50 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
   };
 
   const resetFilter = () => {
-    setIncomingStreamFilter({});
+    onFilterChange(defaultFilter);
+    setStreamStatus(null);
     closeFilter();
   };
 
-  const tableRows = incomingStreamsQuery.data?.data || [];
-  const hasNextPage = !!incomingStreamsQuery.data?.nextPaging;
+  const tableRows = streamsQueryResult.data?.data || [];
+  const hasNextPage = !!streamsQueryResult.data?.nextPaging;
+
+  const { filter, order, pagination } = streamsQueryArg;
 
   return (
-    <>
+    <Fragment>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
         <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
           Incoming streams
         </Typography>
 
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mx: 2 }}>
-          {incomingStreamFilter.sender_contains && (
+          {filter.sender_contains && (
             <Chip
               label={
                 <>
-                  Sender: <b>{incomingStreamFilter.sender_contains}</b>
+                  Sender: <b>{filter.sender_contains}</b>
                 </>
               }
               size="small"
               onDelete={clearFilterField("sender_contains")}
             />
           )}
-          {(incomingStreamFilter.currentFlowRate_gte ||
-            incomingStreamFilter.currentFlowRate_lte) && (
+
+          {streamStatus !== null && (
             <Chip
               label={
                 <>
-                  Flow rate:{" "}
+                  Stream status:{" "}
                   <b>
-                    {`${incomingStreamFilter.currentFlowRate_gte || "..."} - ${
-                      incomingStreamFilter.currentFlowRate_lte || "..."
-                    }`}
+                    {streamStatus === StreamStatus.Active
+                      ? "Active"
+                      : "Inactive"}
                   </b>
                 </>
               }
               size="small"
-              onDelete={clearFilterField(
-                "currentFlowRate_gte",
-                "currentFlowRate_lte"
-              )}
+              onDelete={clearStreamStatusFilter}
             />
           )}
         </Stack>
@@ -187,7 +270,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
           transformOrigin={{ vertical: "top", horizontal: "right" }}
         >
           <Stack
-            sx={{ p: 3, pb: 2 }}
+            sx={{ p: 3, pb: 2, minWidth: "300px" }}
             component="form"
             onSubmit={onFormSubmit}
             noValidate
@@ -195,17 +278,16 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
           >
             <Box>
               <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
-                Sender
+                Sender address
               </Typography>
               <OutlinedInput
                 autoFocus
                 fullWidth
                 size="small"
-                placeholder="Sender address"
-                value={incomingStreamFilter.sender_contains || ""}
-                onChange={onFilterFieldChange("sender_contains")}
+                value={filter.sender_contains || ""}
+                onChange={onSenderChange}
                 endAdornment={
-                  incomingStreamFilter.sender_contains && (
+                  filter.sender_contains && (
                     <IconButton
                       size="small"
                       sx={{ fontSize: "16px", p: 0.5 }}
@@ -218,56 +300,26 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 }
               />
             </Box>
+
             <Box>
               <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
-                Flow rate
+                Is stream active?
               </Typography>
-              <Stack direction="row" spacing={2}>
-                <OutlinedInput
-                  size="small"
-                  placeholder="Min"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={incomingStreamFilter.currentFlowRate_gte || ""}
-                  onChange={onFilterFieldChange("currentFlowRate_gte")}
-                  endAdornment={
-                    incomingStreamFilter.currentFlowRate_gte && (
-                      <IconButton
-                        size="small"
-                        sx={{ fontSize: "16px", p: 0.5 }}
-                        tabIndex={-1}
-                        onClick={clearFilterField("currentFlowRate_gte")}
-                      >
-                        <CloseIcon fontSize="inherit" />
-                      </IconButton>
-                    )
-                  }
-                />
-                <OutlinedInput
-                  size="small"
-                  placeholder="Max"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={incomingStreamFilter.currentFlowRate_lte || ""}
-                  onChange={onFilterFieldChange("currentFlowRate_lte")}
-                  endAdornment={
-                    incomingStreamFilter.currentFlowRate_lte && (
-                      <IconButton
-                        size="small"
-                        sx={{ fontSize: "16px", p: 0.5 }}
-                        tabIndex={-1}
-                        onClick={clearFilterField("currentFlowRate_lte")}
-                      >
-                        <CloseIcon fontSize="inherit" />
-                      </IconButton>
-                    )
-                  }
-                />
-              </Stack>
+
+              <ToggleButtonGroup
+                exclusive
+                fullWidth
+                size="small"
+                value={streamStatus}
+                onChange={onStreamStatusChange}
+              >
+                <ToggleButton value={StreamStatus.Active}>Yes</ToggleButton>
+                <ToggleButton value={StreamStatus.Inactive}>No</ToggleButton>
+              </ToggleButtonGroup>
             </Box>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {Object.keys(incomingStreamFilter).length !== 0 && (
+              {Object.keys(filter).length !== 0 && (
                 <Button onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
@@ -286,10 +338,10 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
             <TableCell>
               <TableSortLabel
                 sx={{ transition: "all 200ms ease-in-out" }}
-                active={incomingStreamOrdering?.orderBy === "currentFlowRate"}
+                active={order?.orderBy === "currentFlowRate"}
                 direction={
-                  incomingStreamOrdering?.orderBy === "currentFlowRate"
-                    ? incomingStreamOrdering?.orderDirection
+                  order?.orderBy === "currentFlowRate"
+                    ? order?.orderDirection
                     : "desc"
                 }
                 onClick={onSortClicked("currentFlowRate")}
@@ -304,12 +356,10 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
             <TableCell>Total Streamed</TableCell>
             <TableCell width="140px">
               <TableSortLabel
-                active={
-                  incomingStreamOrdering?.orderBy === "updatedAtTimestamp"
-                }
+                active={order?.orderBy === "updatedAtTimestamp"}
                 direction={
-                  incomingStreamOrdering?.orderBy === "updatedAtTimestamp"
-                    ? incomingStreamOrdering?.orderDirection
+                  order?.orderBy === "updatedAtTimestamp"
+                    ? order?.orderDirection
                     : "desc"
                 }
                 onClick={onSortClicked("updatedAtTimestamp")}
@@ -317,7 +367,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 Updated
               </TableSortLabel>
             </TableCell>
-            <TableCell width="60px"></TableCell>
+            <TableCell width="60px" />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -348,15 +398,20 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
 
               <TableCell align="right">
                 <StreamDetailsDialog network={network} streamId={stream.id}>
-                  <IconButton sx={{ background: "rgba(255, 255, 255, 0.05)" }}>
-                    <ArrowForwardIcon fontSize="small" />
-                  </IconButton>
+                  {(onClicked) => (
+                    <IconButton
+                      sx={{ background: "rgba(255, 255, 255, 0.05)" }}
+                      onClick={onClicked}
+                    >
+                      <ArrowForwardIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </StreamDetailsDialog>
               </TableCell>
             </TableRow>
           ))}
 
-          {incomingStreamsQuery.isSuccess && tableRows.length === 0 && (
+          {streamsQueryResult.isSuccess && tableRows.length === 0 && (
             <TableRow>
               <TableCell
                 colSpan={5}
@@ -368,7 +423,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
             </TableRow>
           )}
 
-          {incomingStreamsQuery.isLoading && (
+          {streamsQueryResult.isLoading && (
             <TableRow>
               <TableCell
                 colSpan={5}
@@ -385,8 +440,9 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
             <TableRow>
               <TableCell colSpan={5} align="right">
                 <InfinitePagination
-                  page={page}
-                  pageSize={pageSize}
+                  page={(pagination.skip ?? 0) / pagination.take + 1}
+                  pageSize={pagination.take}
+                  isLoading={streamsQueryResult.isFetching}
                   hasNext={hasNextPage}
                   onPageChange={setPage}
                   onPageSizeChange={setPageSize}
@@ -397,7 +453,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
           </TableFooter>
         )}
       </Table>
-    </>
+    </Fragment>
   );
 };
 

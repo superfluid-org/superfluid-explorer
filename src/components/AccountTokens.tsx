@@ -10,6 +10,7 @@ import { sfSubgraph } from "../redux/store";
 import AccountTokenSnapshotDataGrid from "./AccountTokenSnapshotDataGrid";
 import AppLink from "./AppLink";
 import HelpAlert from "./HelpAlert";
+import AccountTokenSnapshotTable from "./Tables/Account/AccountTokenSnapshotTable";
 
 const AccountTokens: FC<{
   network: Network;
@@ -48,13 +49,19 @@ const AccountTokens: FC<{
           Read more
         </AppLink>
       </HelpAlert>
-      <AccountTokenSnapshotDataGrid
+
+      <AccountTokenSnapshotTable
+        network={network}
+        accountAddress={accountAddress}
+      />
+
+      {/* <AccountTokenSnapshotDataGrid
         network={network}
         queryResult={accountTokenSnapshotsQuery}
         setPaging={setAccountTokenSnapshotPaging}
         ordering={accountTokenSnapshotOrdering}
         setOrdering={setAccountTokenSnapshotOrdering}
-      />
+      /> */}
     </>
   );
 };

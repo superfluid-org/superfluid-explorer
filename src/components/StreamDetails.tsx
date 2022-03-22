@@ -1,18 +1,19 @@
+import { Button } from "@mui/material";
 import React, {
-  DetailedReactHTMLElement,
   FC,
+  ReactChild,
   ReactElement,
+  ReactNode,
   useState,
 } from "react";
-import { Box, Button } from "@mui/material";
-import DetailsDialog from "./DetailsDialog";
-import { Network } from "../redux/networks";
 import { StreamPageContent } from "../pages/[_network]/streams/[_id]";
+import { Network } from "../redux/networks";
+import DetailsDialog from "./DetailsDialog";
 
 export const StreamDetailsDialog: FC<{
   streamId: string;
   network: Network;
-  children?: ReactElement<any>;
+  children: (onClick: () => void) => ReactNode;
 }> = ({ children, ...props }) => {
   const [open, setOpen] = useState(false);
 
@@ -21,7 +22,8 @@ export const StreamDetailsDialog: FC<{
 
   return (
     <>
-      {children ? (
+      {children(handleClickOpen)}
+      {/* {children ? (
         React.cloneElement(children as ReactElement<any>, {
           onClick: handleClickOpen,
         })
@@ -29,7 +31,7 @@ export const StreamDetailsDialog: FC<{
         <Button variant="outlined" onClick={handleClickOpen}>
           Details
         </Button>
-      )}
+      )} */}
       <DetailsDialog open={open} handleClose={handleClose}>
         <StreamPageContent {...props} />
       </DetailsDialog>

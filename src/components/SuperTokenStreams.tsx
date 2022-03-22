@@ -16,6 +16,7 @@ import FlowRate from "./FlowRate";
 import HelpAlert from "./HelpAlert";
 import InfoTooltipBtn from "./InfoTooltipBtn";
 import { StreamDetailsDialog } from "./StreamDetails";
+import SuperTokenStreamsTable from "./Tables/SuperToken/SuperTokenStreamsTable";
 
 interface Props {
   network: Network;
@@ -123,14 +124,15 @@ const SuperTokenStreams: FC<Props> = ({
         </AppLink>
       </HelpAlert>
 
-      <AppDataGrid
+      <SuperTokenStreamsTable network={network} tokenAddress={tokenAddress} />
+      {/* <AppDataGrid
         columns={streamColumns}
         rows={rows}
         queryResult={streamQuery}
         setPaging={setStreamPaging}
         ordering={streamOrdering}
         setOrdering={(x: any) => setStreamOrdering(x)}
-      />
+      /> */}
     </>
   );
 };

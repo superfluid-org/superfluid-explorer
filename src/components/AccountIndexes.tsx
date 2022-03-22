@@ -1,6 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { FC, ReactElement } from "react";
 import { Network } from "../redux/networks";
+import AccountIndexSubscriptionsTable from "./Tables/Account/AccountIndexSubscriptionsTable";
+import AccountPublishedIndexesTable from "./Tables/Account/AccountPublishedIndexesTable";
 import AccountIndexesDataGrid from "./AccountIndexesDataGrid";
 import AccountIndexSubscriptionsDataGrid from "./AccountIndexSubscriptionsDataGrid";
 import AppLink from "./AppLink";
@@ -25,7 +27,13 @@ const AccountIndexes: FC<{
           Read more
         </AppLink>
       </HelpAlert>
-      <Box data-cy={"publications-box"}>
+
+      <AccountPublishedIndexesTable
+        network={network}
+        accountAddress={accountAddress}
+      />
+
+      {/* <Box data-cy={"publications-box"}>
         <Typography variant="h6" component="h2" sx={{ mt: 3, ml: 1, mb: 1 }}>
           Publications
         </Typography>
@@ -33,8 +41,14 @@ const AccountIndexes: FC<{
           network={network}
           accountAddress={accountAddress}
         />
-      </Box>
-      <Box data-cy={"subscriptions-box"}>
+      </Box> */}
+
+      <AccountIndexSubscriptionsTable
+        network={network}
+        accountAddress={accountAddress}
+      />
+
+      {/* <Box data-cy={"subscriptions-box"}>
         <Typography variant="h6" component="h2" sx={{ mt: 3, ml: 1, mb: 1 }}>
           Subscriptions
           <InfoTooltipBtn
@@ -58,7 +72,7 @@ const AccountIndexes: FC<{
           network={network}
           accountAddress={accountAddress}
         />
-      </Box>
+      </Box> */}
     </>
   );
 };

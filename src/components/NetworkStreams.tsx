@@ -1,9 +1,6 @@
 import { FC, useMemo, useState } from "react";
 import { Network } from "../redux/networks";
-import {
-  GridColDef,
-  GridRenderCellParams,
-} from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import AccountAddress from "./AccountAddress";
 import {
   createSkipPaging,
@@ -14,7 +11,14 @@ import {
 } from "@superfluid-finance/sdk-core";
 import { sfSubgraph } from "../redux/store";
 import { AppDataGrid } from "./AppDataGrid";
-import { Grid, Typography } from "@mui/material";
+import {
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import TimeAgo from "./TimeAgo";
 import FlowingBalanceWithToken from "./FlowingBalanceWithToken";
 
@@ -84,6 +88,9 @@ export const NetworkStreams: FC<{ network: Network }> = ({ network }) => {
   return (
     <AppDataGrid
       dataGridProps={{
+        sx: {
+          minHeight: "600px",
+        },
         headerHeight: 0,
         components: {
           Header: () => (
@@ -152,7 +159,7 @@ const TotalStreamed: FC<{
         Total streamed:
       </Grid>
       <Grid item xs={12}>
-        <FlowingBalanceWithToken {...props}  />
+        <FlowingBalanceWithToken {...props} />
       </Grid>
     </Grid>
   );

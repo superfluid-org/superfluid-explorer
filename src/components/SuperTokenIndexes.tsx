@@ -10,6 +10,7 @@ import PublishedIndexDataGrid from "./PublishedIndexDataGrid";
 import { Network } from "../redux/networks";
 import AppLink from "./AppLink";
 import HelpAlert from "./HelpAlert";
+import SuperTokenIndexesTable from "./Tables/SuperToken/SuperTokenIndexesTable";
 
 interface Props {
   network: Network;
@@ -55,13 +56,15 @@ const SuperTokenIndexes: FC<Props> = ({
         </AppLink>
       </HelpAlert>
 
-      <PublishedIndexDataGrid
+      <SuperTokenIndexesTable network={network} tokenAddress={tokenAddress} />
+
+      {/* <PublishedIndexDataGrid
         network={network}
         queryResult={publishedIndexQuery}
         setPaging={setPublishedIndexPaging}
         ordering={publishedIndexOrdering}
         setOrdering={setPublishedIndexOrdering}
-      />
+      /> */}
     </>
   );
 };
