@@ -304,7 +304,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
           transformOrigin={{ vertical: "top", horizontal: "right" }}
         >
           <Stack
-            sx={{ p: 3, pb: 2 }}
+            sx={{ p: 3, pb: 2, minWidth: "300px" }}
             component="form"
             onSubmit={onFormSubmit}
             noValidate
@@ -381,7 +381,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 </Button>
               )}
               <Button type="submit" tabIndex={-1}>
-                Apply
+                Close
               </Button>
             </Stack>
           </Stack>
@@ -436,7 +436,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 Created
               </TableSortLabel>
             </TableCell>
-            <TableCell width="60px" />
+            <TableCell width="68px" />
           </TableRow>
         </TableHead>
         <TableBody>

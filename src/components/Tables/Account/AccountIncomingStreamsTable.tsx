@@ -331,7 +331,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 </Button>
               )}
               <Button type="submit" tabIndex={-1}>
-                Apply
+                Close
               </Button>
             </Stack>
           </Stack>
@@ -373,7 +373,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 Updated
               </TableSortLabel>
             </TableCell>
-            <TableCell width="60px" />
+            <TableCell width="68px" />
           </TableRow>
         </TableHead>
         <TableBody>

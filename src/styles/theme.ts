@@ -67,6 +67,8 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
           body: {
             padding: "0 16px",
             height: "52px",
+            textOverflow: "ellipsis",
+            overflow: "hidden",
           },
           footer: {
             padding: "0 8px",

@@ -385,7 +385,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 </Button>
               )}
               <Button type="submit" tabIndex={-1}>
-                Apply
+                Close
               </Button>
             </Stack>
           </Stack>

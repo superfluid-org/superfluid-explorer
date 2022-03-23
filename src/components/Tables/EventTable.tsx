@@ -184,7 +184,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
           transformOrigin={{ vertical: "top", horizontal: "right" }}
         >
           <Stack
-            sx={{ p: 3, pb: 2 }}
+            sx={{ p: 3, pb: 2, minWidth: "300px" }}
             component="form"
             onSubmit={onFormSubmit}
             noValidate
@@ -246,7 +246,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                 </Button>
               )}
               <Button type="submit" tabIndex={-1}>
-                Apply
+                Close
               </Button>
             </Stack>
           </Stack>
