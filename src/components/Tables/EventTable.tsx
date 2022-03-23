@@ -220,7 +220,6 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                 Transaction hash
               </Typography>
               <OutlinedInput
-                autoFocus
                 fullWidth
                 size="small"
                 value={filter.transactionHash_contains || ""}

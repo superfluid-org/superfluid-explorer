@@ -318,7 +318,6 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
                 Receiver address
               </Typography>
               <OutlinedInput
-                autoFocus
                 fullWidth
                 size="small"
                 value={filter.receiver_contains || ""}
