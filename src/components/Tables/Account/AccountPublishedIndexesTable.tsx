@@ -38,6 +38,7 @@ import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import { timeAgo } from "../../../utils/dateTime";
+import BalanceWithToken from "../../BalanceWithToken";
 import EtherFormatted from "../../EtherFormatted";
 import { IndexPublicationDetailsDialog } from "../../IndexPublicationDetails";
 import InfinitePagination from "../../InfinitePagination";
@@ -443,15 +444,10 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
             <TableRow key={index.id} hover>
               <TableCell>{index.indexId}</TableCell>
               <TableCell>
-                <EtherFormatted
+                <BalanceWithToken
                   wei={index.totalAmountDistributedUntilUpdatedAt}
-                />
-                &nbsp;
-                <SuperTokenAddress
                   network={network}
-                  address={index.token}
-                  format={(token) => token.symbol}
-                  formatLoading={() => ""}
+                  tokenAddress={index.token}
                 />
               </TableCell>
               <TableCell>{index.totalUnits}</TableCell>

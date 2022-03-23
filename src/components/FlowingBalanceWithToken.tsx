@@ -1,39 +1,17 @@
-import { Chip, Stack } from "@mui/material";
-import _ from "lodash";
+import { Stack } from "@mui/material";
 import { FC } from "react";
-import { Network } from "../redux/networks";
-import { sfSubgraph } from "../redux/store";
-import AppLink from "./AppLink";
 import FlowingBalance, { FlowingBalanceProps } from "./FlowingBalance";
+import TokenChip, { TokenChipProps } from "./TokenChip";
 
-const FlowingBalanceWithToken: FC<
-  FlowingBalanceProps & { network: Network; tokenAddress: string }
-> = ({ network, tokenAddress, ...flowingBalanceProps }) => {
-  const tokenQuery = sfSubgraph.useTokenQuery({
-    chainId: network.chainId,
-    id: tokenAddress,
-  });
-
-  return (
-    <Stack direction="row" alignItems="center">
-      {tokenQuery.data ? (
-        <AppLink
-          data-cy={"token-link"}
-          className="address"
-          href={`/${network.slugName}/supertokens/${tokenAddress}`}
-          sx={{ textDecoration: "none" }}
-        >
-          <Chip
-            clickable
-            size="small"
-            label={tokenQuery.data.symbol}
-            sx={{ mr: 1, cursor: "pointer" }}
-          />
-        </AppLink>
-      ) : null}
-      <FlowingBalance {...flowingBalanceProps} />
-    </Stack>
-  );
-};
+const FlowingBalanceWithToken: FC<FlowingBalanceProps & TokenChipProps> = ({
+  network,
+  tokenAddress,
+  ...flowingBalanceProps
+}) => (
+  <Stack direction="row" alignItems="center" gap={1}>
+    <TokenChip network={network} tokenAddress={tokenAddress} />
+    <FlowingBalance {...flowingBalanceProps} />
+  </Stack>
+);
 
 export default FlowingBalanceWithToken;

@@ -41,11 +41,10 @@ import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import AccountAddress from "../../AccountAddress";
 import AppLink from "../../AppLink";
-import EtherFormatted from "../../EtherFormatted";
+import BalanceWithToken from "../../BalanceWithToken";
 import { IndexSubscriptionDetailsDialog } from "../../IndexSubscriptionDetails";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
-import SuperTokenAddress from "../../SuperTokenAddress";
 import { UnitsStatus } from "./AccountPublishedIndexesTable";
 
 enum SubscriptionStatus {
@@ -500,7 +499,9 @@ const AccountIndexSubscriptionsTable: FC<
               </TableCell>
               <TableCell>{subscription.approved ? "Yes" : "No"}</TableCell>
               <TableCell>
-                <EtherFormatted
+                <BalanceWithToken
+                  network={network}
+                  tokenAddress={subscription.token}
                   wei={calculateWeiAmountReceived(
                     BigNumber.from(subscription.indexValueCurrent),
                     BigNumber.from(
@@ -509,13 +510,6 @@ const AccountIndexSubscriptionsTable: FC<
                     BigNumber.from(subscription.indexValueUntilUpdatedAt),
                     BigNumber.from(subscription.units)
                   )}
-                />
-                &nbsp;
-                <SuperTokenAddress
-                  network={network}
-                  address={subscription.token}
-                  format={(token) => token.symbol}
-                  formatLoading={() => ""}
                 />
               </TableCell>
               <TableCell>
