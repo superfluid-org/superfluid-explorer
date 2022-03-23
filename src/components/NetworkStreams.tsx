@@ -1,114 +1,27 @@
-import { FC, useMemo, useState } from "react";
-import { Network } from "../redux/networks";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import AccountAddress from "./AccountAddress";
+import {
+  Box,
+  CircularProgress,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import {
   createSkipPaging,
   Ordering,
   SkipPaging,
-  Stream,
   Stream_OrderBy,
 } from "@superfluid-finance/sdk-core";
+import { FC, useState } from "react";
+import { Network } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
-import { AppDataGrid } from "./AppDataGrid";
-import {
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import TimeAgo from "./TimeAgo";
+import AccountAddress from "./AccountAddress";
 import FlowingBalanceWithToken from "./FlowingBalanceWithToken";
-
-export const NetworkStreams: FC<{ network: Network }> = ({ network }) => {
-  const columns: GridColDef[] = useMemo(
-    () => [
-      { field: "id", type: "string", hide: true, sortable: false },
-      {
-        field: "createdAtTimestamp",
-        headerName: "Created At",
-        sortable: true,
-        flex: 2,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
-      },
-      {
-        field: "from-to",
-        headerName: "Sender & Receiver",
-        sortable: false,
-        flex: 5,
-        renderCell: (params: GridRenderCellParams<any, Stream>) => (
-          <SenderReceiver
-            network={network}
-            fromAddress={params.row.sender}
-            toAddress={params.row.receiver}
-          />
-        ),
-      },
-      {
-        field: "token",
-        headerName: "Token",
-        flex: 5,
-        sortable: false,
-        renderCell: ({
-          row: {
-            token,
-            streamedUntilUpdatedAt,
-            updatedAtTimestamp,
-            currentFlowRate,
-          },
-        }: GridRenderCellParams<any, Stream>) => (
-          <TotalStreamed
-            network={network}
-            tokenAddress={token}
-            balance={streamedUntilUpdatedAt}
-            balanceTimestamp={updatedAtTimestamp}
-            flowRate={currentFlowRate}
-          />
-        ),
-      },
-    ],
-    [network]
-  );
-
-  const [ordering, setOrdering] = useState<
-    Ordering<Stream_OrderBy> | undefined
-  >(defaultStreamQueryOrdering);
-  const [paging, setPaging] = useState<SkipPaging>(defaultStreamQueryPaging);
-
-  const query = sfSubgraph.useStreamsQuery({
-    chainId: network.chainId,
-    order: ordering,
-    pagination: paging,
-  });
-
-  const rows: Stream[] = query.data ? query.data.data : [];
-
-  return (
-    <AppDataGrid
-      dataGridProps={{
-        sx: {
-          minHeight: "600px",
-        },
-        headerHeight: 0,
-        components: {
-          Header: () => (
-            <Typography variant="subtitle2" sx={{ m: 1 }}>
-              Latest Streams
-            </Typography>
-          ),
-        },
-      }}
-      columns={columns}
-      rows={rows}
-      queryResult={query}
-      setPaging={setPaging}
-      ordering={ordering}
-      setOrdering={(x: any) => setOrdering(x)}
-    />
-  );
-};
+import InfinitePagination from "./InfinitePagination";
+import TimeAgo from "./TimeAgo";
 
 export const defaultStreamQueryOrdering: Ordering<Stream_OrderBy> = {
   orderBy: "createdAtTimestamp",
@@ -119,48 +32,124 @@ export const defaultStreamQueryPaging: SkipPaging = createSkipPaging({
   take: 10,
 });
 
-const SenderReceiver: FC<{
+interface NetworkStreamsProps {
   network: Network;
-  fromAddress: string;
-  toAddress: string;
-}> = ({ network, fromAddress, toAddress }) => {
+}
+
+export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
+  const [paging, setPaging] = useState<SkipPaging>(defaultStreamQueryPaging);
+
+  const query = sfSubgraph.useStreamsQuery({
+    chainId: network.chainId,
+    order: defaultStreamQueryOrdering,
+    pagination: paging,
+  });
+
+  const onPageChange = (newPage: number) =>
+    setPaging({
+      ...paging,
+      skip: (newPage - 1) * paging.take,
+    });
+
+  const streams = query.data?.data ?? [];
+
   return (
-    <Grid container spacing={0} sx={{ lineHeight: "1.5" }}>
-      <Grid container item xs={2}>
-        <Grid item xs={12}>
-          Sender:
-        </Grid>
-        <Grid item xs={12}>
-          Receiver:
-        </Grid>
-      </Grid>
-      <Grid container item xs={10}>
-        <Grid item xs={12}>
-          <AccountAddress network={network} address={fromAddress} />
-        </Grid>
-        <Grid item xs={12}>
-          <AccountAddress network={network} address={toAddress} />
-        </Grid>
-      </Grid>
-    </Grid>
+    <Table sx={{ tableLayout: "fixed" }}>
+      <TableBody>
+        {streams.map((stream) => (
+          <TableRow key={stream.id}>
+            <TableCell width="60%">
+              <SenderReceiver
+                network={network}
+                fromAddress={stream.sender}
+                toAddress={stream.receiver}
+              />
+            </TableCell>
+            <TableCell width="50%">
+              <TotalStreamed
+                network={network}
+                tokenAddress={stream.token}
+                balance={stream.streamedUntilUpdatedAt}
+                balanceTimestamp={stream.updatedAtTimestamp}
+                flowRate={stream.currentFlowRate}
+              />
+            </TableCell>
+            <TableCell width="20%">
+              <TimeAgo
+                subgraphTime={stream.createdAtTimestamp}
+                typographyProps={{ typography: "body2" }}
+              />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+
+      {streams.length > 0 && (
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={3} align="right">
+              <InfinitePagination
+                page={(paging.skip ?? 0) / paging.take + 1}
+                isLoading={query.isFetching}
+                hasNext={!!query.data?.nextPaging}
+                onPageChange={onPageChange}
+                sx={{ justifyContent: "flex-end" }}
+              />
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      )}
+
+      {query.isLoading && (
+        <TableRow>
+          <TableCell
+            colSpan={5}
+            sx={{ border: 0, height: "96px" }}
+            align="center"
+          >
+            <CircularProgress size={40} />
+          </TableCell>
+        </TableRow>
+      )}
+    </Table>
   );
 };
 
-const TotalStreamed: FC<{
+interface SenderReceiverProps {
+  network: Network;
+  fromAddress: string;
+  toAddress: string;
+}
+
+const SenderReceiver: FC<SenderReceiverProps> = ({
+  network,
+  fromAddress,
+  toAddress,
+}) => (
+  <Box
+    display="grid"
+    gridTemplateColumns="60px 1fr"
+    columnGap={1}
+    sx={{ lineHeight: "1.5" }}
+  >
+    <Typography variant="body2">Sender:</Typography>
+    <AccountAddress network={network} address={fromAddress} />
+    <Typography variant="body2">Receiver:</Typography>
+    <AccountAddress network={network} address={toAddress} />
+  </Box>
+);
+
+interface TotalStreamedProps {
   network: Network;
   tokenAddress: string;
   balance: string;
   balanceTimestamp: number;
   flowRate: string;
-}> = (props) => {
-  return (
-    <Grid container spacing={0} sx={{ lineHeight: "1.5" }}>
-      <Grid item xs={12}>
-        Total streamed:
-      </Grid>
-      <Grid item xs={12}>
-        <FlowingBalanceWithToken {...props} />
-      </Grid>
-    </Grid>
-  );
-};
+}
+
+const TotalStreamed: FC<TotalStreamedProps> = (props) => (
+  <Stack sx={{ lineHeight: "1.5" }}>
+    <Typography variant="body2">Total streamed:</Typography>
+    <FlowingBalanceWithToken {...props} />
+  </Stack>
+);

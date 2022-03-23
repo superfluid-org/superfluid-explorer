@@ -75,8 +75,8 @@ const Home: NextPage = () => {
       </Box>
       <Container maxWidth="lg">
         <Card data-cy={"landing-page-card"}>
-          <Typography variant="h5" sx={{ m: 2 }}>
-            Network Data
+          <Typography variant="h5" sx={{ my: 2, mx: 3 }}>
+            Network Streams
           </Typography>
           <Divider />
           <TabContext value={value}>

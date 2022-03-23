@@ -24,6 +24,7 @@ import TimeAgo from "./TimeAgo";
 import EtherFormatted from "./EtherFormatted";
 import AppLink from "./AppLink";
 import InfoTooltipBtn from "./InfoTooltipBtn";
+import { Button } from "@mui/material";
 
 interface Props {
   network: Network;
@@ -131,7 +132,13 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
           <IndexSubscriptionDetailsDialog
             network={network}
             indexSubscriptionId={cellParams.id.toString()}
-          />
+          >
+            {(onClick) => (
+              <Button variant="outlined" onClick={onClick}>
+                Details
+              </Button>
+            )}
+          </IndexSubscriptionDetailsDialog>
         ),
       },
     ],

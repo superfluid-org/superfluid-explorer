@@ -1,4 +1,4 @@
-import { Chip } from "@mui/material";
+import { Chip, Stack } from "@mui/material";
 import _ from "lodash";
 import { FC } from "react";
 import { Network } from "../redux/networks";
@@ -13,19 +13,26 @@ const FlowingBalanceWithToken: FC<
     chainId: network.chainId,
     id: tokenAddress,
   });
+
   return (
-    <>
+    <Stack direction="row" alignItems="center">
       {tokenQuery.data ? (
         <AppLink
           data-cy={"token-link"}
           className="address"
           href={`/${network.slugName}/supertokens/${tokenAddress}`}
+          sx={{ textDecoration: "none" }}
         >
-          <Chip label={tokenQuery.data.symbol} size="small" sx={{ mr: 1 }} />
+          <Chip
+            clickable
+            size="small"
+            label={tokenQuery.data.symbol}
+            sx={{ mr: 1, cursor: "pointer" }}
+          />
         </AppLink>
       ) : null}
       <FlowingBalance {...flowingBalanceProps} />
-    </>
+    </Stack>
   );
 };
 

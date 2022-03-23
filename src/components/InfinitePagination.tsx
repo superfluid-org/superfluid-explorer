@@ -43,9 +43,10 @@ const InfinitePagination: FC<InfinitePaginationProps> = ({
   const handlePageSizeChange = (e: SelectChangeEvent<number>) =>
     onPageSizeChange && onPageSizeChange(Number(e.target.value));
 
+  console.log("PAGE SIZE CHANGE?", onPageSizeChange);
   return (
     <Stack direction="row" alignItems="center" sx={sx} spacing={2}>
-      {(pageSize || handlePageSizeChange) && (
+      {onPageSizeChange && (
         <Stack direction="row" alignItems="center" spacing={1}>
           <Typography variant="body2">Rows per page</Typography>
           <Select
