@@ -24,6 +24,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import {
+  createSkipPaging,
   Ordering,
   Stream_Filter,
   Stream_OrderBy,
@@ -46,12 +47,20 @@ import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import { timeAgo } from "../../../utils/dateTime";
 import AccountAddress from "../../AccountAddress";
-import { incomingStreamOrderingDefault } from "../../AccountStreamsIncomingDataGrid";
 import FlowingBalanceWithToken from "../../FlowingBalanceWithToken";
 import FlowRate from "../../FlowRate";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import { StreamDetailsDialog } from "../../StreamDetails";
+
+export const incomingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
+  orderBy: "updatedAtTimestamp",
+  orderDirection: "desc",
+};
+
+export const incomingStreamPagingDefault = createSkipPaging({
+  take: 10,
+});
 
 export enum StreamStatus {
   Active,
@@ -80,10 +89,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
   const createDefaultArg = (): Required<StreamsQuery> => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: {
-      take: 10,
-      skip: 0,
-    },
+    pagination: incomingStreamPagingDefault,
     order: incomingStreamOrderingDefault,
   });
 
@@ -398,10 +404,10 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
 
               <TableCell align="right">
                 <StreamDetailsDialog network={network} streamId={stream.id}>
-                  {(onClicked) => (
+                  {(onClick) => (
                     <IconButton
                       sx={{ background: "rgba(255, 255, 255, 0.05)" }}
-                      onClick={onClicked}
+                      onClick={onClick}
                     >
                       <ArrowForwardIcon fontSize="small" />
                     </IconButton>

@@ -456,9 +456,14 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                   network={network}
                   indexId={index.id.toString()}
                 >
-                  <IconButton sx={{ background: "rgba(255, 255, 255, 0.05)" }}>
-                    <ArrowForwardIcon fontSize="small" />
-                  </IconButton>
+                  {(onClick) => (
+                    <IconButton
+                      sx={{ background: "rgba(255, 255, 255, 0.05)" }}
+                      onClick={onClick}
+                    >
+                      <ArrowForwardIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </IndexPublicationDetailsDialog>
               </TableCell>
             </TableRow>

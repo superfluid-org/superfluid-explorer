@@ -24,6 +24,7 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  createSkipPaging,
   Index_Filter,
   Index_OrderBy,
   Ordering,
@@ -53,6 +54,15 @@ export enum UnitsStatus {
   NotIssued,
 }
 
+export const publishedIndexOrderingDefault: Ordering<Index_OrderBy> = {
+  orderBy: "createdAtTimestamp",
+  orderDirection: "desc",
+};
+
+export const publishedIndexPagingDefault = createSkipPaging({
+  take: 10,
+});
+
 interface AccountPublishedIndexesTableProps {
   network: Network;
   accountAddress: string;
@@ -69,11 +79,6 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
     useState<DistributionStatus | null>(null);
   const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null);
 
-  const defaultOrdering = {
-    orderBy: "createdAtTimestamp",
-    orderDirection: "desc",
-  } as Ordering<Index_OrderBy>;
-
   const defaultFilter = {
     publisher: accountAddress,
   };
@@ -81,11 +86,8 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
   const createDefaultArg = (): Required<IndexesQuery> => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: {
-      take: 10,
-      skip: 0,
-    },
-    order: defaultOrdering,
+    pagination: publishedIndexPagingDefault,
+    order: publishedIndexOrderingDefault,
   });
 
   const [queryArg, setQueryArg] = useState<Required<IndexesQuery>>(
@@ -137,7 +139,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
         orderDirection: "asc",
       });
     } else {
-      onOrderingChanged(defaultOrdering);
+      onOrderingChanged(publishedIndexOrderingDefault);
     }
   };
 
@@ -462,9 +464,14 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                   network={network}
                   indexId={index.id.toString()}
                 >
-                  <IconButton sx={{ background: "rgba(255, 255, 255, 0.05)" }}>
-                    <ArrowForwardIcon fontSize="small" />
-                  </IconButton>
+                  {(onClick) => (
+                    <IconButton
+                      sx={{ background: "rgba(255, 255, 255, 0.05)" }}
+                      onClick={onClick}
+                    >
+                      <ArrowForwardIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </IndexPublicationDetailsDialog>
               </TableCell>
             </TableRow>

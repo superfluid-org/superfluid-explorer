@@ -7,11 +7,8 @@ import {
   Chip,
   CircularProgress,
   IconButton,
-  MenuItem,
   OutlinedInput,
   Popover,
-  Select,
-  SelectChangeEvent,
   Stack,
   Table,
   TableBody,
@@ -78,10 +75,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
   const createDefaultArg = (): Required<StreamsQuery> => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: {
-      take: 10,
-      skip: 0,
-    },
+    pagination: outgoingStreamPagingDefault,
     order: outgoingStreamOrderingDefault,
   });
 

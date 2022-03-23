@@ -1,14 +1,12 @@
-import { FC, ReactElement, useState } from "react";
-import { Box, Button } from "@mui/material";
-import DetailsDialog from "./DetailsDialog";
-import { Network } from "../redux/networks";
+import React, { FC, ReactNode, useState } from "react";
 import { IndexSubscriptionPageContent } from "../pages/[_network]/index-subscriptions/[_id]";
-import React from "react";
+import { Network } from "../redux/networks";
+import DetailsDialog from "./DetailsDialog";
 
 export const IndexSubscriptionDetailsDialog: FC<{
   indexSubscriptionId: string;
   network: Network;
-  children?: ReactElement<any>;
+  children: (onClick: () => void) => ReactNode;
 }> = ({ children, ...props }) => {
   const [open, setOpen] = useState(false);
 
@@ -17,15 +15,7 @@ export const IndexSubscriptionDetailsDialog: FC<{
 
   return (
     <>
-      {children ? (
-        React.cloneElement(children as ReactElement<any>, {
-          onClick: handleClickOpen,
-        })
-      ) : (
-        <Button variant="outlined" onClick={handleClickOpen}>
-          Details
-        </Button>
-      )}
+      {children(handleClickOpen)}
       <DetailsDialog open={open} handleClose={handleClose}>
         <IndexSubscriptionPageContent {...props} />
       </DetailsDialog>

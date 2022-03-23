@@ -1,5 +1,4 @@
-import { Button } from "@mui/material";
-import React, { FC, ReactElement, useState } from "react";
+import React, { FC, ReactNode, useState } from "react";
 import { IndexPageContent } from "../pages/[_network]/indexes/[_id]";
 import { Network } from "../redux/networks";
 import DetailsDialog from "./DetailsDialog";
@@ -7,7 +6,7 @@ import DetailsDialog from "./DetailsDialog";
 export const IndexPublicationDetailsDialog: FC<{
   network: Network;
   indexId: string;
-  children?: ReactElement<any>;
+  children: (onClick: () => void) => ReactNode;
 }> = ({ children, ...props }) => {
   const [open, setOpen] = useState(false);
 
@@ -16,16 +15,7 @@ export const IndexPublicationDetailsDialog: FC<{
 
   return (
     <>
-      {children ? (
-        React.cloneElement(children as ReactElement<any>, {
-          onClick: handleClickOpen,
-        })
-      ) : (
-        <Button variant="outlined" onClick={handleClickOpen}>
-          Details
-        </Button>
-      )}
-
+      {children(handleClickOpen)}
       <DetailsDialog open={open} handleClose={handleClose}>
         <IndexPageContent {...props} />
       </DetailsDialog>

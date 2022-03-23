@@ -22,6 +22,7 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  createSkipPaging,
   IndexSubscription_Filter,
   IndexSubscription_OrderBy,
   Ordering,
@@ -57,6 +58,11 @@ enum DistributionStatus {
   HasNotReceived,
 }
 
+export const indexSubscriptionOrderingDefault: Ordering<IndexSubscription_OrderBy> =
+  { orderBy: "createdAtTimestamp", orderDirection: "desc" };
+
+export const indexSubscriptionPagingDefault = createSkipPaging({ take: 10 });
+
 interface AccountIndexSubscriptionsTableProps {
   network: Network;
   accountAddress: string;
@@ -75,11 +81,6 @@ const AccountIndexSubscriptionsTable: FC<
     useState<DistributionStatus | null>(null);
   const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null);
 
-  const defaultOrdering = {
-    orderBy: "createdAtTimestamp",
-    orderDirection: "desc",
-  } as Ordering<IndexSubscription_OrderBy>;
-
   const defaultFilter = {
     subscriber: accountAddress,
   };
@@ -87,8 +88,8 @@ const AccountIndexSubscriptionsTable: FC<
   const createDefaultArg = (): Required<IndexSubscriptionsQuery> => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: { take: 10, skip: 0 },
-    order: defaultOrdering,
+    pagination: indexSubscriptionPagingDefault,
+    order: indexSubscriptionOrderingDefault,
   });
 
   const [queryArg, setQueryArg] = useState<Required<IndexSubscriptionsQuery>>(
@@ -142,7 +143,7 @@ const AccountIndexSubscriptionsTable: FC<
         orderDirection: "asc",
       });
     } else {
-      onOrderingChanged(defaultOrdering);
+      onOrderingChanged(indexSubscriptionOrderingDefault);
     }
   };
 
@@ -532,9 +533,14 @@ const AccountIndexSubscriptionsTable: FC<
                   network={network}
                   indexSubscriptionId={subscription.id.toString()}
                 >
-                  <IconButton sx={{ background: "rgba(255, 255, 255, 0.05)" }}>
-                    <ArrowForwardIcon fontSize="small" />
-                  </IconButton>
+                  {(onClick) => (
+                    <IconButton
+                      sx={{ background: "rgba(255, 255, 255, 0.05)" }}
+                      onClick={onClick}
+                    >
+                      <ArrowForwardIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </IndexSubscriptionDetailsDialog>
               </TableCell>
             </TableRow>

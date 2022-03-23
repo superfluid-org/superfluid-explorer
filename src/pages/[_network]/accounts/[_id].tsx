@@ -22,23 +22,7 @@ import Error from "next/error";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import AccountIndexes from "../../../components/AccountIndexes";
-import {
-  publishedIndexOrderingDefault,
-  publishedIndexPagingDefault,
-} from "../../../components/AccountIndexesDataGrid";
-import {
-  indexSubscriptionOrderingDefault,
-  indexSubscriptionPagingDefault,
-} from "../../../components/AccountIndexSubscriptionsDataGrid";
 import AccountStreams from "../../../components/AccountStreams";
-import {
-  incomingStreamOrderingDefault,
-  incomingStreamPagingDefault,
-} from "../../../components/AccountStreamsIncomingDataGrid";
-import {
-  outgoingStreamOrderingDefault,
-  outgoingStreamPagingDefault,
-} from "../../../components/AccountStreamsOutgoingDataGrid";
 import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
 import CopyClipboard from "../../../components/CopyClipboard";
@@ -49,6 +33,22 @@ import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetwo
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
+import {
+  incomingStreamOrderingDefault,
+  incomingStreamPagingDefault,
+} from "../../../components/Tables/Account/AccountIncomingStreamsTable";
+import {
+  indexSubscriptionOrderingDefault,
+  indexSubscriptionPagingDefault,
+} from "../../../components/Tables/Account/AccountIndexSubscriptionsTable";
+import {
+  outgoingStreamOrderingDefault,
+  outgoingStreamPagingDefault,
+} from "../../../components/Tables/Account/AccountOutgoingStreamsTable";
+import {
+  publishedIndexOrderingDefault,
+  publishedIndexPagingDefault,
+} from "../../../components/Tables/Account/AccountPublishedIndexesTable";
 import IdContext from "../../../contexts/IdContext";
 import NetworkContext from "../../../contexts/NetworkContext";
 import { useAppSelector } from "../../../redux/hooks";
