@@ -20,6 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  createSkipPaging,
   EventListQuery,
   Event_Filter,
   Event_OrderBy,
@@ -45,6 +46,10 @@ const defaultOrdering = {
   orderDirection: "desc",
 } as Ordering<Event_OrderBy>;
 
+export const defaultPaging = createSkipPaging({
+  take: 10,
+});
+
 interface EventTableProps {
   network: Network;
   accountAddress: string;
@@ -62,10 +67,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
   const createDefaultArg = (): Required<EventsQuery> => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: {
-      take: 10,
-      skip: 0,
-    },
+    pagination: defaultPaging,
     order: defaultOrdering,
   });
 
@@ -164,6 +166,9 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
   const hasNextPage = !!queryResult.data?.nextPaging;
 
   const { filter, order, pagination } = queryArg;
+
+  const { skip = defaultPaging.skip, take = defaultPaging.take } =
+    queryResult.data?.paging || {};
 
   return (
     <>
@@ -320,7 +325,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
             <TableRow>
               <TableCell colSpan={4} align="right">
                 <InfinitePagination
-                  page={(pagination.skip ?? 0) / pagination.take + 1}
+                  page={skip / take + 1}
                   pageSize={pagination.take}
                   isLoading={queryResult.isFetching}
                   hasNext={hasNextPage}

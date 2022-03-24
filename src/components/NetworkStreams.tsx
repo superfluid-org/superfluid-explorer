@@ -133,9 +133,9 @@ const SenderReceiver: FC<SenderReceiverProps> = ({
     sx={{ lineHeight: "1.5" }}
   >
     <Typography variant="body2">Sender:</Typography>
-    <AccountAddress network={network} address={fromAddress} />
+    <AccountAddress network={network} address={fromAddress} ellipsis={10} />
     <Typography variant="body2">Receiver:</Typography>
-    <AccountAddress network={network} address={toAddress} />
+    <AccountAddress network={network} address={toAddress} ellipsis={10} />
   </Box>
 );
 

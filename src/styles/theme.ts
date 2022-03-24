@@ -32,6 +32,13 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
           disableRipple: true, // No more ripple, on the whole application!
         },
       },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            borderRadius: "8px",
+          },
+        },
+      },
       MuiTable: {
         styleOverrides: {
           root: {

@@ -269,7 +269,11 @@ const AccountIndexSubscriptionsTable: FC<
 
   const { filter, order, pagination } = queryArg;
 
-  console.log(order);
+  const {
+    skip = indexSubscriptionPagingDefault.skip,
+    take = indexSubscriptionPagingDefault.take,
+  } = queryResult.data?.paging || {};
+
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
@@ -570,7 +574,7 @@ const AccountIndexSubscriptionsTable: FC<
             <TableRow>
               <TableCell colSpan={5} align="right">
                 <InfinitePagination
-                  page={(pagination.skip ?? 0) / pagination.take + 1}
+                  page={skip / take + 1}
                   pageSize={pagination.take}
                   isLoading={queryResult.isFetching}
                   hasNext={hasNextPage}

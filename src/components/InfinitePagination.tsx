@@ -43,19 +43,20 @@ const InfinitePagination: FC<InfinitePaginationProps> = ({
   const handlePageSizeChange = (e: SelectChangeEvent<number>) =>
     onPageSizeChange && onPageSizeChange(Number(e.target.value));
 
-  console.log("PAGE SIZE CHANGE?", onPageSizeChange);
   return (
     <Stack direction="row" alignItems="center" sx={sx} spacing={2}>
       {onPageSizeChange && (
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Typography variant="body2">Rows per page</Typography>
+          <Typography variant="body2">Per page:</Typography>
           <Select
+            disableUnderline
+            variant="standard"
             size="small"
             value={pageSize}
             onChange={handlePageSizeChange}
             sx={{
-              "MuiSelect-select": {
-                padding: "8px 32px 8px 12px",
+              ".MuiSelect-select": {
+                padding: "4px 32px 4px 4px",
               },
             }}
           >

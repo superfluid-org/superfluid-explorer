@@ -26,6 +26,7 @@ const AccountAddress: FC<{
       data-cy={"account-address"}
       className="address"
       href={`/${network.slugName}/accounts/${address}`}
+      sx={{ fontFamily: "Roboto Mono" }}
       onMouseEnter={() => {
         // It's fine to have duplicate setTimeout's as duplicate _queries_ will not get fired.
         setPrefetchTimeoutId(
@@ -68,13 +69,7 @@ export const AccountAddressFormatted: FC<{
     ? ellipsisAddress(ethers.utils.getAddress(address), ellipsis)
     : ethers.utils.getAddress(address);
 
-  return (
-    <>
-      {addressBookEntry?.nameTag
-        ? `${addressBookEntry.nameTag} (${parsedAddress})`
-        : parsedAddress}
-    </>
-  );
+  return <>{addressBookEntry?.nameTag || parsedAddress}</>;
 };
 
 export default AccountAddress;

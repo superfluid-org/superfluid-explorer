@@ -23,6 +23,7 @@ import {
 import {
   AccountTokenSnapshot_Filter,
   AccountTokenSnapshot_OrderBy,
+  createSkipPaging,
   Ordering,
 } from "@superfluid-finance/sdk-core";
 import { AccountTokenSnapshotsQuery } from "@superfluid-finance/sdk-redux";
@@ -40,10 +41,14 @@ import SuperTokenAddress from "../../SuperTokenAddress";
 import { StreamStatus } from "./AccountIncomingStreamsTable";
 import { UnitsStatus } from "./AccountPublishedIndexesTable";
 
-const DEFAULT_ORDERING = {
+const defaultOrdering = {
   orderBy: "balanceUntilUpdatedAt",
   orderDirection: "desc",
 } as Ordering<AccountTokenSnapshot_OrderBy>;
+
+export const defaultPaging = createSkipPaging({
+  take: 10,
+});
 
 interface AccountTokenSnapshotTableProps {
   network: Network;
@@ -72,11 +77,8 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   const createDefaultArg = (): Required<AccountTokenSnapshotsQuery> => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: {
-      take: 10,
-      skip: 0,
-    },
-    order: DEFAULT_ORDERING,
+    pagination: defaultPaging,
+    order: defaultOrdering,
   });
 
   const [queryArg, setQueryArg] = useState<
@@ -130,7 +132,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
         orderDirection: "asc",
       });
     } else {
-      onOrderingChanged(DEFAULT_ORDERING);
+      onOrderingChanged(defaultOrdering);
     }
   };
 
@@ -262,6 +264,8 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   const hasNextPage = !!queryResult.data?.nextPaging;
 
   const { filter, order, pagination } = queryArg;
+  const { skip = defaultPaging.skip, take = defaultPaging.take } =
+    queryResult.data?.paging || {};
 
   return (
     <>
@@ -503,7 +507,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
             <TableRow>
               <TableCell colSpan={5} align="right">
                 <InfinitePagination
-                  page={(pagination.skip ?? 0) / pagination.take + 1}
+                  page={skip / take + 1}
                   pageSize={pagination.take}
                   isLoading={queryResult.isFetching}
                   hasNext={hasNextPage}

@@ -24,12 +24,15 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  createSkipPaging,
   Index_Filter,
   Index_OrderBy,
   Ordering,
 } from "@superfluid-finance/sdk-core";
 import { IndexesQuery } from "@superfluid-finance/sdk-redux";
 import omit from "lodash/fp/omit";
+import set from "lodash/fp/set";
+import isEqual from "lodash/isEqual";
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
 import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
@@ -41,17 +44,16 @@ import { IndexPublicationDetailsDialog } from "../../IndexPublicationDetails";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import SuperTokenAddress from "../../SuperTokenAddress";
-import isEqual from "lodash/isEqual";
-import set from "lodash/fp/set";
-import {
-  DistributionStatus,
-  UnitsStatus,
-} from "../Account/AccountPublishedIndexesTable";
+import { DistributionStatus } from "../Account/AccountPublishedIndexesTable";
 
-const DEFAULT_ORDERING = {
+const defaultOrdering = {
   orderBy: "createdAtTimestamp",
   orderDirection: "desc",
 } as Ordering<Index_OrderBy>;
+
+export const defaultPaging = createSkipPaging({
+  take: 10,
+});
 
 interface SuperTokenIndexesTableProps {
   network: Network;
@@ -75,11 +77,8 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
   const createDefaultArg = (): Required<IndexesQuery> => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: {
-      take: 10,
-      skip: 0,
-    },
-    order: DEFAULT_ORDERING,
+    pagination: defaultPaging,
+    order: defaultOrdering,
   });
 
   const [queryArg, setQueryArg] = useState<Required<IndexesQuery>>(
@@ -108,16 +107,6 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network, tokenAddress]);
 
-  // const publishedIndexQuery = sfSubgraph.useIndexesQuery({
-  //   chainId: network.chainId,
-  //   filter: {
-  //     token: tokenAddress,
-  //     ...publishedIndexFilter,
-  //   },
-  //   pagination: { take: pageSize, skip: (page - 1) * pageSize },
-  //   order: publishedIndexOrdering,
-  // });
-
   const setPage = (newPage: number) =>
     onQueryArgChanged(
       set("pagination.skip", (newPage - 1) * queryArg.pagination.take, queryArg)
@@ -141,7 +130,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
         orderDirection: "asc",
       });
     } else {
-      onOrderingChanged(DEFAULT_ORDERING);
+      onOrderingChanged(defaultOrdering);
     }
   };
 
@@ -220,6 +209,9 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
   const hasNextPage = !!queryResult.data?.nextPaging;
 
   const { filter, order, pagination } = queryArg;
+
+  const { skip = defaultPaging.skip, take = defaultPaging.take } =
+    queryResult.data?.paging || {};
 
   return (
     <>
@@ -499,7 +491,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
             <TableRow>
               <TableCell colSpan={5} align="right">
                 <InfinitePagination
-                  page={(pagination.skip ?? 0) / pagination.take + 1}
+                  page={skip / take + 1}
                   pageSize={pagination.take}
                   isLoading={queryResult.isFetching}
                   hasNext={hasNextPage}

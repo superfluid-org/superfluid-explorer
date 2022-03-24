@@ -210,6 +210,11 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
 
   const { filter, order, pagination } = streamsQueryArg;
 
+  const {
+    skip = outgoingStreamPagingDefault.skip,
+    take = outgoingStreamPagingDefault.take,
+  } = streamsQueryResult.data?.paging || {};
+
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
@@ -433,7 +438,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
             <TableRow>
               <TableCell colSpan={5} align="right">
                 <InfinitePagination
-                  page={(pagination.skip ?? 0) / pagination.take + 1}
+                  page={skip / take + 1}
                   pageSize={pagination.take}
                   isLoading={streamsQueryResult.isFetching}
                   hasNext={hasNextPage}

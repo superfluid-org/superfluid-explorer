@@ -244,6 +244,11 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
 
   const { filter, order, pagination } = queryArg;
 
+  const {
+    skip = publishedIndexPagingDefault.skip,
+    take = publishedIndexPagingDefault.take,
+  } = queryResult.data?.paging || {};
+
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
@@ -504,7 +509,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
             <TableRow>
               <TableCell colSpan={5} align="right">
                 <InfinitePagination
-                  page={(pagination.skip ?? 0) / pagination.take + 1}
+                  page={skip / take + 1}
                   pageSize={pagination.take}
                   isLoading={queryResult.isFetching}
                   hasNext={hasNextPage}

@@ -24,12 +24,12 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import {
+  createSkipPaging,
   Ordering,
   Stream_Filter,
   Stream_OrderBy,
 } from "@superfluid-finance/sdk-core";
 import { StreamsQuery } from "@superfluid-finance/sdk-redux";
-import { parseEther } from "ethers/lib/utils";
 import omit from "lodash/fp/omit";
 import set from "lodash/fp/set";
 import isEqual from "lodash/isEqual";
@@ -44,17 +44,14 @@ import InfoTooltipBtn from "../../InfoTooltipBtn";
 import { StreamDetailsDialog } from "../../StreamDetails";
 import { StreamStatus } from "../Account/AccountIncomingStreamsTable";
 
-const MAPPER = {
-  currentFlowRate_gte: (value?: string) =>
-    value ? parseEther(value).toString() : undefined,
-  currentFlowRate_lte: (value?: string) =>
-    value ? parseEther(value).toString() : undefined,
-};
-
-const DEFAULT_STREAMS_ORDERING = {
+const defaultOrdering = {
   orderBy: "createdAtTimestamp",
   orderDirection: "desc",
 } as Ordering<Stream_OrderBy>;
+
+export const defaultPaging = createSkipPaging({
+  take: 10,
+});
 
 interface SuperTokenStreamsTableProps {
   network: Network;
@@ -78,11 +75,8 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
   const createDefaultArg = (): Required<StreamsQuery> => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: {
-      take: 10,
-      skip: 0,
-    },
-    order: DEFAULT_STREAMS_ORDERING,
+    pagination: defaultPaging,
+    order: defaultOrdering,
   });
 
   const [queryArg, setQueryArg] = useState<Required<StreamsQuery>>(
@@ -134,7 +128,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
         orderDirection: "asc",
       });
     } else {
-      onOrderingChanged(DEFAULT_STREAMS_ORDERING);
+      onOrderingChanged(defaultOrdering);
     }
   };
 
@@ -218,6 +212,9 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
   const hasNextPage = !!queryResult.data?.nextPaging;
 
   const { filter, order, pagination } = queryArg;
+
+  const { skip = defaultPaging.skip, take = defaultPaging.take } =
+    queryResult.data?.paging || {};
 
   return (
     <>
@@ -474,7 +471,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
             <TableRow>
               <TableCell colSpan={5} align="right">
                 <InfinitePagination
-                  page={(pagination.skip ?? 0) / pagination.take + 1}
+                  page={skip / take + 1}
                   pageSize={pagination.take}
                   isLoading={queryResult.isFetching}
                   hasNext={hasNextPage}
