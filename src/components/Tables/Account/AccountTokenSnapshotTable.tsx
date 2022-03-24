@@ -38,6 +38,7 @@ import FlowingBalance from "../../FlowingBalance";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import SuperTokenAddress from "../../SuperTokenAddress";
+import TableLoader from "../../TableLoader";
 import { StreamStatus } from "./AccountIncomingStreamsTable";
 import { UnitsStatus } from "./AccountPublishedIndexesTable";
 
@@ -256,6 +257,9 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   };
 
   const resetFilter = () => {
+    setActiveStreamsStatus(null);
+    setInactiveStreamsStatus(null);
+    setSubsWithUnitsStatus(null);
     onFilterChange(defaultFilter);
     closeFilter();
   };
@@ -383,7 +387,9 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
             </Box>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {Object.keys(filter).length !== 0 && (
+              {(activeStreamsStatus !== null ||
+                inactiveStreamsStatus !== null ||
+                subsWithUnitsStatus !== null) && (
                 <Button onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
@@ -490,17 +496,10 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
             </TableRow>
           )}
 
-          {queryResult.isLoading && (
-            <TableRow>
-              <TableCell
-                colSpan={5}
-                sx={{ border: 0, height: "96px" }}
-                align="center"
-              >
-                <CircularProgress size={40} />
-              </TableCell>
-            </TableRow>
-          )}
+          <TableLoader
+            isLoading={queryResult.isLoading || queryResult.isFetching}
+            showSpacer={tableRows.length === 0}
+          />
         </TableBody>
         {tableRows.length > 0 && (
           <TableFooter>

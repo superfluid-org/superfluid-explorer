@@ -34,6 +34,7 @@ import useDebounce from "../../hooks/useDebounce";
 import { Network } from "../../redux/networks";
 import { sfSubgraph } from "../../redux/store";
 import InfinitePagination from "../InfinitePagination";
+import TableLoader from "../TableLoader";
 import TimeAgo from "../TimeAgo";
 import { TransactionHash } from "../TransactionHash";
 
@@ -245,7 +246,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
             </Box>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {Object.keys(filter || {}).length !== 0 && (
+              {(filter.name_contains || filter.transactionHash_contains) && (
                 <Button onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
@@ -308,17 +309,11 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
               </TableCell>
             </TableRow>
           )}
-          {queryResult.isLoading && (
-            <TableRow>
-              <TableCell
-                colSpan={4}
-                sx={{ border: 0, height: "96px" }}
-                align="center"
-              >
-                <CircularProgress size={40} />
-              </TableCell>
-            </TableRow>
-          )}
+
+          <TableLoader
+            isLoading={queryResult.isLoading || queryResult.isFetching}
+            showSpacer={tableRows.length === 0}
+          />
         </TableBody>
         {tableRows.length > 0 && (
           <TableFooter>

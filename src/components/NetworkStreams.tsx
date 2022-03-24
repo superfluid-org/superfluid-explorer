@@ -21,6 +21,7 @@ import { sfSubgraph } from "../redux/store";
 import AccountAddress from "./AccountAddress";
 import FlowingBalanceWithToken from "./FlowingBalanceWithToken";
 import InfinitePagination from "./InfinitePagination";
+import TableLoader from "./TableLoader";
 import TimeAgo from "./TimeAgo";
 
 export const defaultStreamQueryOrdering: Ordering<Stream_OrderBy> = {
@@ -82,6 +83,12 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
             </TableCell>
           </TableRow>
         ))}
+
+        <TableLoader
+          isLoading={query.isLoading || query.isFetching}
+          showSpacer={streams.length === 0}
+          minHeight="520px"
+        />
       </TableBody>
 
       {streams.length > 0 && (
@@ -98,18 +105,6 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
             </TableCell>
           </TableRow>
         </TableFooter>
-      )}
-
-      {query.isLoading && (
-        <TableRow>
-          <TableCell
-            colSpan={5}
-            sx={{ border: 0, height: "96px" }}
-            align="center"
-          >
-            <CircularProgress size={40} />
-          </TableCell>
-        </TableRow>
       )}
     </Table>
   );

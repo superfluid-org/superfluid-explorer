@@ -1,10 +1,8 @@
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Box,
   Button,
   Chip,
-  CircularProgress,
   IconButton,
   Popover,
   Stack,
@@ -42,9 +40,11 @@ import { sfSubgraph } from "../../../redux/store";
 import AccountAddress from "../../AccountAddress";
 import AppLink from "../../AppLink";
 import BalanceWithToken from "../../BalanceWithToken";
+import DetailsButton from "../../DetailsButton";
 import { IndexSubscriptionDetailsDialog } from "../../IndexSubscriptionDetails";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
+import TableLoader from "../../TableLoader";
 import { UnitsStatus } from "./AccountPublishedIndexesTable";
 
 enum SubscriptionStatus {
@@ -260,6 +260,9 @@ const AccountIndexSubscriptionsTable: FC<
   };
 
   const resetFilter = () => {
+    setUnitsStatus(null);
+    setDistributionStatus(null);
+    setSubscriptionStatus(null);
     onFilterChange(defaultFilter);
     closeFilter();
   };
@@ -267,7 +270,7 @@ const AccountIndexSubscriptionsTable: FC<
   const tableRows = queryResult.data?.data || [];
   const hasNextPage = !!queryResult.data?.nextPaging;
 
-  const { filter, order, pagination } = queryArg;
+  const { order, pagination } = queryArg;
 
   const {
     skip = indexSubscriptionPagingDefault.skip,
@@ -415,7 +418,9 @@ const AccountIndexSubscriptionsTable: FC<
               </ToggleButtonGroup>
             </Box>
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {Object.keys(filter).length !== 0 && (
+              {(subscriptionStatus !== null ||
+                distributionStatus !== null ||
+                unitsStatus !== null) && (
                 <Button onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
@@ -531,15 +536,7 @@ const AccountIndexSubscriptionsTable: FC<
                   network={network}
                   indexSubscriptionId={subscription.id.toString()}
                 >
-                  {(onClick) => (
-                    <IconButton
-                      title="Details"
-                      sx={{ background: "rgba(255, 255, 255, 0.05)" }}
-                      onClick={onClick}
-                    >
-                      <ArrowForwardIcon fontSize="small" />
-                    </IconButton>
-                  )}
+                  {(onClick) => <DetailsButton onClick={onClick} />}
                 </IndexSubscriptionDetailsDialog>
               </TableCell>
             </TableRow>
@@ -557,17 +554,10 @@ const AccountIndexSubscriptionsTable: FC<
             </TableRow>
           )}
 
-          {queryResult.isLoading && (
-            <TableRow>
-              <TableCell
-                colSpan={5}
-                sx={{ border: 0, height: "96px" }}
-                align="center"
-              >
-                <CircularProgress size={40} />
-              </TableCell>
-            </TableRow>
-          )}
+          <TableLoader
+            isLoading={queryResult.isLoading || queryResult.isFetching}
+            showSpacer={tableRows.length === 0}
+          />
         </TableBody>
         {tableRows.length > 0 && (
           <TableFooter>

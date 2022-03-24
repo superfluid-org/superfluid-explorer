@@ -65,6 +65,7 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
       MuiTableBody: {
         styleOverrides: {
           root: {
+            position: "relative",
             "tr:last-child td": { border: 0 },
           },
         },

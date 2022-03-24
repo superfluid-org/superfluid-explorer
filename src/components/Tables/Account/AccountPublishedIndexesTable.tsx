@@ -1,11 +1,9 @@
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Box,
   Button,
   Chip,
-  CircularProgress,
   IconButton,
   OutlinedInput,
   Popover,
@@ -38,9 +36,11 @@ import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import BalanceWithToken from "../../BalanceWithToken";
+import DetailsButton from "../../DetailsButton";
 import { IndexPublicationDetailsDialog } from "../../IndexPublicationDetails";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
+import TableLoader from "../../TableLoader";
 import TimeAgo from "../../TimeAgo";
 
 export enum DistributionStatus {
@@ -235,6 +235,8 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
   };
 
   const resetFilter = () => {
+    setDistributionStatus(null);
+    setUnitsStatus(null);
     onFilterChange(defaultFilter);
     closeFilter();
   };
@@ -378,7 +380,9 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
             </Box>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {Object.keys(filter).length !== 0 && (
+              {(filter.indexId ||
+                distributionStatus !== null ||
+                unitsStatus !== null) && (
                 <Button onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
@@ -466,15 +470,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                   network={network}
                   indexId={index.id.toString()}
                 >
-                  {(onClick) => (
-                    <IconButton
-                      title="Details"
-                      sx={{ background: "rgba(255, 255, 255, 0.05)" }}
-                      onClick={onClick}
-                    >
-                      <ArrowForwardIcon fontSize="small" />
-                    </IconButton>
-                  )}
+                  {(onClick) => <DetailsButton onClick={onClick} />}
                 </IndexPublicationDetailsDialog>
               </TableCell>
             </TableRow>
@@ -492,17 +488,10 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
             </TableRow>
           )}
 
-          {queryResult.isLoading && (
-            <TableRow>
-              <TableCell
-                colSpan={5}
-                sx={{ border: 0, height: "96px" }}
-                align="center"
-              >
-                <CircularProgress size={40} />
-              </TableCell>
-            </TableRow>
-          )}
+          <TableLoader
+            isLoading={queryResult.isLoading || queryResult.isFetching}
+            showSpacer={tableRows.length === 0}
+          />
         </TableBody>
         {tableRows.length > 0 && (
           <TableFooter>

@@ -1,10 +1,8 @@
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Button,
   Chip,
-  CircularProgress,
   IconButton,
   OutlinedInput,
   Popover,
@@ -46,11 +44,13 @@ import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import AccountAddress from "../../AccountAddress";
+import DetailsButton from "../../DetailsButton";
 import FlowingBalanceWithToken from "../../FlowingBalanceWithToken";
 import FlowRate from "../../FlowRate";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import { StreamDetailsDialog } from "../../StreamDetails";
+import TableLoader from "../../TableLoader";
 import TimeAgo from "../../TimeAgo";
 
 export const incomingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
@@ -215,8 +215,8 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
   };
 
   const resetFilter = () => {
-    onFilterChange(defaultFilter);
     setStreamStatus(null);
+    onFilterChange(defaultFilter);
     closeFilter();
   };
 
@@ -330,7 +330,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
             </Box>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {Object.keys(filter).length !== 0 && (
+              {(filter.sender_contains || streamStatus !== null) && (
                 <Button onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
@@ -412,15 +412,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
 
               <TableCell align="right">
                 <StreamDetailsDialog network={network} streamId={stream.id}>
-                  {(onClick) => (
-                    <IconButton
-                      title="Details"
-                      sx={{ background: "rgba(255, 255, 255, 0.05)" }}
-                      onClick={onClick}
-                    >
-                      <ArrowForwardIcon fontSize="small" />
-                    </IconButton>
-                  )}
+                  {(onClick) => <DetailsButton onClick={onClick} />}
                 </StreamDetailsDialog>
               </TableCell>
             </TableRow>
@@ -438,17 +430,12 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
             </TableRow>
           )}
 
-          {streamsQueryResult.isLoading && (
-            <TableRow>
-              <TableCell
-                colSpan={5}
-                sx={{ border: 0, height: "96px" }}
-                align="center"
-              >
-                <CircularProgress size={40} />
-              </TableCell>
-            </TableRow>
-          )}
+          <TableLoader
+            isLoading={
+              streamsQueryResult.isLoading || streamsQueryResult.isFetching
+            }
+            showSpacer={tableRows.length === 0}
+          />
         </TableBody>
         {tableRows.length > 0 && (
           <TableFooter>
