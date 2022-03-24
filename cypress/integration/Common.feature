@@ -11,6 +11,9 @@ Feature: Test cases for common elements and functionalities
       | network          |
       | matic            |
       | xdai             |
+      #TODO Uncomment this once the test account is set on the new networks
+      #| arbitrum-one  |
+      #| optimism-mainnet  |
       | arbitrum-rinkeby |
       | avalanche-fuji   |
       | goerli           |
@@ -48,3 +51,17 @@ Feature: Test cases for common elements and functionalities
     Given User has opened the "landing" page
     And User clicks on the subgraph explorer button
     Then Subgraph explorer page is opened
+
+  Scenario Outline: Opening all tooltip read more link and making sure they are valid
+    Given User has opened the "<page>" read more page
+    Then There are no elements containing "404"
+    And There are no elements containing "not found"
+    Examples:
+      | page                   |
+      #Cypress waits for the code sandbox to fully load,
+      #Will leave for now, but takes some time for a check if the link is not dead
+      | subscriptions-tooltip  |
+      | streams-help-alert     |
+      | super-token-help-alert |
+      | stream-periods-tooltip |
+      | events-help-alert      |

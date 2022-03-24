@@ -56,7 +56,7 @@ export class LandingPage extends BasePage {
         })
         break;
       }
-      case "onbgoing streams account": {
+      case "ongoing streams account": {
         cy.fixture("commonData").then(fixture => {
           cy.visit("/" + network + "/accounts/" + fixture.ongoingStreamsAccount)
         })
@@ -65,6 +65,30 @@ export class LandingPage extends BasePage {
       case "listed token": {
         cy.fixture("tokenData").then(fixture => {
           cy.visit("/" + network + "/supertokens/" + fixture[network].address)
+        })
+        break;
+      }
+      case "ended stream": {
+        cy.fixture("streamData").then(fixture => {
+          cy.visit("/" + network + "/streams/" + fixture[network].hash)
+        })
+        break;
+      }
+      case "super app": {
+        cy.fixture("accountData").then(fixture => {
+          cy.visit("/" + network + "/accounts/" + fixture[network].superApp.address)
+        })
+        break;
+      }
+      case "index": {
+        cy.fixture("accountData").then(fixture => {
+          cy.visit("/" + network + "/indexes/" + fixture[network].superApp.indexes.publications[0].hash)
+        })
+        break;
+      }
+      case "index subscription": {
+        cy.fixture("accountData").then(fixture => {
+          cy.visit("/" + network + "/index-subscriptions/" + fixture[network].superApp.indexes.publications[0].details.subscriptions[0].details.hash)
         })
         break;
       }
@@ -130,5 +154,17 @@ export class LandingPage extends BasePage {
   static validateLatestStreamHyperlinks(network: string) {
     cy.get(ADDRESS_LINKS).should("have.attr", "href").and("contain", network + "/accounts/")
     cy.get(TOKEN_LINKS).should("have.attr", "href").and("contain", network + "/supertokens/")
+  }
+
+  static validateStreamedValueDecimalPlaces(num: number) {
+    cy.get(TOTAL_STREAMED).each(el => {
+      let decimalCount
+      if (el.text().split(".")[1] === undefined) {
+        decimalCount = 0
+      } else {
+        decimalCount = el.text().split(".")[1].length
+      }
+      expect(decimalCount).to.lte(num)
+    })
   }
 }

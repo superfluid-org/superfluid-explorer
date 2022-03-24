@@ -1,0 +1,21 @@
+{
+  "matic": {
+    "hash": "0x8ac9c6d444d12d20bc96786243abaae8960d27e2-0xf9ce34dfcd3cc92804772f3022af27bcd5e43ff2-0xcaa7349cea390f89641fe306d93591f87595dc1f-0.0",
+    "token": "Super USDC (PoS) (USDCx)",
+    "sender": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
+    "receiver": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
+    "currentFlowRate": "0",
+    "totalAmountStreamed": "0.0000972222222221",
+    "streamedTokenSymbol": "USDCx",
+    "streamPeriods": [
+      {
+        "flowRate": "0.033333333333264/day",
+        "totalStreamed": "0.00003549382716042"
+      },
+      {
+        "flowRate": "0.0666666666666144/day",
+        "totalStreamed": "0.00006172839506168"
+      }
+    ]
+  }
+}

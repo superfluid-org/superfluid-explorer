@@ -1,5 +1,121 @@
 {
+  "goerli": {
+    "superApp": {
+      "address": "0x39aA80Fc05eD0b3549be279589Fc67f06b7e35EE",
+      "indexes": {
+        "publications": [
+          {
+            "token": "Super fDAI Fake Token (fDAIx)",
+            "totalDistributed": "2400 fDAIx",
+            "totalUnits": "1000000",
+            "hash": "0x39aa80fc05ed0b3549be279589fc67f06b7e35ee-0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00-0",
+            "details": {
+              "publisher": "0x39aA80Fc05eD0b3549be279589Fc67f06b7e35EE",
+              "totalUnitsApproved": "899999",
+              "totalUnitsPending": "100001",
+              "indexId": "0",
+              "distributions": [
+                {
+                  "distributionAmount": "100 fDAIx"
+                },
+                {
+                  "distributionAmount": "100 fDAIx"
+                },
+                {
+                  "distributionAmount": "100 fDAIx"
+                },
+                {
+                  "distributionAmount": "100 fDAIx"
+                },
+                {
+                  "distributionAmount": "500 fDAIx"
+                },
+                {
+                  "distributionAmount": "1000 fDAIx"
+                },
+                {
+                  "distributionAmount": "100 fDAIx"
+                },
+                {
+                  "distributionAmount": "100 fDAIx"
+                },
+                {
+                  "distributionAmount": "100 fDAIx"
+                },
+                {
+                  "distributionAmount": "100 fDAIx"
+                }
+              ],
+              "subscriptions": [
+                {
+                  "approved": "Yes",
+                  "totalAmountReceived": "945",
+                  "subscriptionUnits": "450000 (45%)",
+                  "details": {
+                    "hash": "0x02d950bd246a3152e47615a16b34630d41565c29-0x39aa80fc05ed0b3549be279589fc67f06b7e35ee-0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00-0",
+                    "shortIndex": "0x39aa... (0)",
+                    "token": "Super fDAI Fake Token (fDAIx)",
+                    "publisher": "0x39aA80Fc05eD0b3549be279589Fc67f06b7e35EE",
+                    "subscriber": "0x02d950bd246A3152E47615a16B34630D41565c29",
+                    "units": "450000 / 1000000 (45 %)",
+                    "approved": "Yes",
+                    "totalAmountReceived": "945",
+                    "distributions": [
+                      {
+                        "amountReceived": "45"
+                      },
+                      {
+                        "amountReceived": "45"
+                      },
+                      {
+                        "amountReceived": "45"
+                      },
+                      {
+                        "amountReceived": "45"
+                      },
+                      {
+                        "amountReceived": "225"
+                      },
+                      {
+                        "amountReceived": "450"
+                      },
+                      {
+                        "amountReceived": "45"
+                      },
+                      {
+                        "amountReceived": "45"
+                      }
+                    ],
+                    "unitsUpdated": [
+                      {
+                        "units": "450000"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
   "matic": {
+    "ongoingStreamAccount": {
+      "address": "0xEb85888b31FADF79CB264d065EdcB4a14551c28d",
+      "streams": {
+        "incoming": [
+          {
+            "flowRate": "0.000000001929012345"
+          }
+        ],
+        "outgoing": [
+          {
+            "flowRate": "0.000000003858024691"
+          }
+        ]
+      }
+    },
     "address": "0x8ac9C6D444D12d20BC96786243Abaae8960D27e2",
     "networkFancyName": "Polygon",
     "accountType": "Regular account",

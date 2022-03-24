@@ -107,9 +107,10 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
 
         <Heading gutterBottom>
           Stream Granularity
-          <InfoTooltipBtn title="Representation of calculated stream flow in selected time span." />
+          <InfoTooltipBtn dataCy={"stream-granularity-tooltip"} title="Representation of calculated stream flow in selected time span." />
         </Heading>
         <ToggleButtonGroup
+          data-cy={"stream-granularity-button-group"}
           exclusive
           value={currentStreamGranularity}
           color="primary"
@@ -140,6 +141,7 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
 
         <Heading gutterBottom>Ether Decimal Places</Heading>
         <ToggleButtonGroup
+          data-cy={"ether-decimal-button-group"}
           exclusive
           value={currentEtherDecimalPlaces.toString()}
           color="primary"

@@ -10,9 +10,14 @@ const ADDRESS_BOOK_REMOVE = "[data-cy=address-remove]"
 const ALL_ACCOUNT_SEARCH_RESULTS = "[data-cy*=account-search-result]"
 const SUBGRAPH_BUTTON = "#search-button"
 const SUBGRAPH_CONTAINER = ".graphiql-container"
+const INDEX_PAGE_CONTAINER = "[data-cy=index-page-container]"
+const INDEX_SUBSCRIPTION_CONTAINER = "[data-cy=index-subscription-container]"
+const SETTINGS_CLOSE_BUTTON = "[data-testid=CloseIcon]"
+const ETHER_DECIMAL_GROUP = "[data-cy=ether-decimal-button-group]"
+const STREAM_GRANULARITY_GROUP = "[data-cy=stream-granularity-button-group]"
+const SETTINGS_BUTTON = "[data-testid=SettingsOutlinedIcon]"
 
 export class CommonElements extends BasePage {
-
 
   static clickHeaderSearchBar() {
     cy.get(HEADER_SEARCH_BAR).parent().click()
@@ -80,4 +85,33 @@ export class CommonElements extends BasePage {
     this.click("[data-cy=" + tab.replaceAll(" ", "-") + "-tab")
   }
 
+  static indexPageContainerIsVisible() {
+    this.isVisible(INDEX_PAGE_CONTAINER)
+  }
+
+  static subscriptionContainerVisible() {
+    this.isVisible(INDEX_SUBSCRIPTION_CONTAINER)
+  }
+
+  static closeSettingsMenu() {
+    this.click(SETTINGS_CLOSE_BUTTON)
+  }
+
+  static changeDecimalPlaces(num: number) {
+    cy.get(ETHER_DECIMAL_GROUP).children().contains(num).click()
+  }
+
+  static openSettingsMenu() {
+    this.click(SETTINGS_BUTTON)
+  }
+
+  static changeGranularity(granularity: string) {
+    cy.get(STREAM_GRANULARITY_GROUP).children().contains(granularity).click()
+  }
+
+  static openReadMePage(page: string) {
+    cy.fixture("toolTipStringsAndLinks").then(fixture => {
+      cy.visit(fixture[page + "-link"])
+    })
+  }
 }

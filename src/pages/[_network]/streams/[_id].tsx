@@ -137,6 +137,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
             <List>
               <ListItem divider>
                 <ListItemText
+                  data-cy={"streamed-token"}
                   secondary="Token"
                   primary={
                     stream ? (
@@ -216,13 +217,13 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
 
         <Grid item xs={12}>
           <Card elevation={2}>
-            <List>
+            <List data-cy={"flow-rate-list"}>
               <ListItem divider>
-                <ListItemText
+                <ListItemText data-cy={"current-flow-rate"}
                   secondary={
                     <>
                       Current Flow Rate
-                      <InfoTooltipBtn title="Flow rate is the velocity of tokens being streamed." />
+                      <InfoTooltipBtn dataCy={"current-flow-rate-tooltip"} title="Flow rate is the velocity of tokens being streamed." />
                     </>
                   }
                   primary={
@@ -269,6 +270,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
           <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
             Stream periods
             <InfoTooltipBtn
+              dataCy={"stream-periods-tooltip"}
               title={
                 <>
                   The amount of tokens sent from sender to receiver in a stream
@@ -278,6 +280,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                   creation and update, and another between the update and
                   deletion.{" "}
                   <AppLink
+                    data-cy={"stream-periods-tooltip-link"}
                     href="https://docs.superfluid.finance/superfluid/protocol-developers/subgraph#higher-order-level-entities"
                     target="_blank"
                   >
@@ -289,7 +292,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
             />
           </Typography>
 
-          <Card elevation={2}>
+          <Card elevation={2} data-cy={"stream-period-grid"}>
             <StreamPeriodDataGrid
               queryResult={streamPeriodListQuery}
               setPaging={setStreamPeriodPaging}

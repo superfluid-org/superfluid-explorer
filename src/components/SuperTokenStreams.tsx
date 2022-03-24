@@ -22,6 +22,7 @@ const SuperTokenStreams: FC<Props> = ({
         one stream open per token (but this stream may be updated at any time by
         the sender).{" "}
         <AppLink
+          data-cy={"streams-help-alert-link"}
           href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/money-streaming-1"
           target="_blank"
         >

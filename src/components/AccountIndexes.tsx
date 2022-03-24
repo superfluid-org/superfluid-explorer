@@ -1,11 +1,9 @@
-import { Box, Typography } from "@mui/material";
 import { FC, ReactElement } from "react";
 import { Network } from "../redux/networks";
-import AccountIndexSubscriptionsTable from "./Tables/Account/AccountIndexSubscriptionsTable";
-import AccountPublishedIndexesTable from "./Tables/Account/AccountPublishedIndexesTable";
 import AppLink from "./AppLink";
 import HelpAlert from "./HelpAlert";
-import InfoTooltipBtn from "./InfoTooltipBtn";
+import AccountIndexSubscriptionsTable from "./Tables/Account/AccountIndexSubscriptionsTable";
+import AccountPublishedIndexesTable from "./Tables/Account/AccountPublishedIndexesTable";
 
 const AccountIndexes: FC<{
   network: Network;

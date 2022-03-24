@@ -1,4 +1,5 @@
 import {BasePage} from "../BasePage";
+import Decimal from "decimal.js";
 
 const ACCOUNT_TYPE = "[data-cy=account-type] span"
 const BORDER_ADD_TO_ADDRESS_BOOK_BUTTON = "[data-testid=StarBorderIcon]"
@@ -16,6 +17,10 @@ const SUBSCRIPTIONS_BOX = "[data-cy=subscriptions-box]"
 const TOTAL_DISTRIBUTED = "[data-field=totalAmountDistributedUntilUpdatedAt]"
 const TOTAL_UNITS = "[data-field=totalUnits]"
 const TOKEN_ADDRESSES = "[data-cy=token-address]"
+const PUBLICATION_TOKEN = "[data-field=token][role=cell] > *"
+const PUBLICATION_TOTAL_DISTRIBUTED = "[data-field=totalAmountDistributedUntilUpdatedAt][role=cell]"
+const PUBLICATION_TOTAL_UNITS = "[data-field=totalUnits][role=cell]"
+const PUBLICATION_DETAILS_BUTTONS = "[data-field=details][role=cell] button"
 const APPROVED_STATUSES = "[data-field=approved]"
 const TOTAL_AMOUNT_RECEIVED = "[data-field=totalAmountReceivedUntilUpdatedAt]"
 const SUBSCRIPTION_UNITS = "[data-field=units]"
@@ -98,6 +103,24 @@ export class AccountPage extends BasePage {
     })
   }
 
+  static validateSuperAppPublicationEntries(network: string) {
+    cy.fixture("accountData").then(account => {
+      if ((account[network].superApp.indexes.publications).length === 0) {
+        this.validateNoRowsInBox(PUBLICATIONS_BOX)
+      } else {
+        account[network].superApp.indexes.publications.forEach((publication: any, index: number) => {
+          cy.get(PUBLICATIONS_BOX).children().find(PUBLICATION_TOKEN).eq(index).should("contain.text", publication.token)
+          this.replaceSpacesAndAssertText(PUBLICATION_TOTAL_DISTRIBUTED, publication.totalDistributed, index, PUBLICATIONS_BOX)
+          cy.get(PUBLICATIONS_BOX).children().find(PUBLICATION_TOTAL_UNITS).eq(index).should("contain.text", publication.totalUnits)
+        })
+      }
+    })
+  }
+
+  static openFirstPublicationDetails() {
+    cy.get(PUBLICATIONS_BOX).children().find(PUBLICATION_DETAILS_BUTTONS).eq(0).click()
+  }
+
   static validateTokensTabEntries(network: string) {
     cy.fixture("accountData").then(account => {
       account[network].superTokens.forEach((token: any, index: number) => {
@@ -117,7 +140,59 @@ export class AccountPage extends BasePage {
         cy.get(EVENT_BLOCK_NUMBER).eq(index).should("contain.text", event.blockNumber)
         cy.get(EVENT_SHORT_TX_HASH).eq(index).should("contain.text", event.shortTransactionHash)
       })
+    })
+  }
 
+  static validateChangedFlowGranularity(granularity: string, network: string) {
+    let granularityMultiplier: number
+    switch (granularity) {
+      case "second":
+        granularityMultiplier = 1
+        break;
+      case "minute":
+        granularityMultiplier = 60
+        break;
+      case "hour":
+        granularityMultiplier = 3600
+        break;
+      case "day":
+        granularityMultiplier = 86400
+        break;
+      case "week":
+        granularityMultiplier = 604800
+        break;
+      case "month":
+        granularityMultiplier = 2592000
+        break;
+    }
+
+    cy.fixture("accountData").then(fixture => {
+      fixture[network].ongoingStreamAccount.streams.incoming.forEach((stream: { flowRate: string }, index: number) => {
+        cy.get(INCOMING_BOX).find(FLOW_RATES).eq(index).then(el => {
+          let expectedFlowAmount = ((parseFloat(stream.flowRate) * granularityMultiplier)).toFixed(18).toString()
+          let flowWithoutZeros = new Decimal(expectedFlowAmount).toDP(18).toFixed()
+          let expectedString = flowWithoutZeros + "/" + granularity
+          cy.wrap(el.text()).should("eq", expectedString)
+        })
+      })
+    })
+  }
+
+  static validateHelpAlertAndLink(alert: string) {
+    cy.fixture("toolTipStringsAndLinks").then(fixture => {
+      this.hasText("[data-cy=" + alert + "-help-alert]", fixture[alert + "-help-alert"])
+      this.hasAttributeWithValue("[data-cy=" + alert + "-help-alert-link]", "href", fixture[alert + "-help-alert-link"])
+    })
+  }
+
+  static hoverTooltipAndValidateLink(tooltip: string) {
+    cy.fixture("toolTipStringsAndLinks").then(fixture => {
+      cy.get("[data-cy=" + tooltip + "-tooltip]").trigger("mouseover").then(el => {
+        cy.wrap(el).should("have.attr", "aria-labelledby").then(attr => {
+          this.hasText("#" + attr, fixture[tooltip + "-tooltip"])
+          this.hasAttributeWithValue("[data-cy=" + tooltip + "-tooltip-link]", "href", fixture[tooltip + "-tooltip-link"])
+        })
+      })
     })
   }
 }

@@ -87,4 +87,11 @@ export class BasePage {
     cy.get("@newTab").should("be.called");
   }
 
+  static replaceSpacesAndAssertText(selector: string, text: string, index = 0, boxSelector?: string) {
+    if (boxSelector) {
+      cy.get(boxSelector).children().find(selector).eq(index).invoke("text").invoke("replace", /\u00a0/g, ' ').should("eq", text)
+    } else {
+      cy.get(selector).eq(index).invoke("text").invoke("replace", /\u00a0/g, ' ').should("eq", text)
+    }
+  }
 }
