@@ -529,6 +529,7 @@ const AccountIndexSubscriptionsTable: FC<
                 >
                   {(onClick) => (
                     <IconButton
+                      title="Details"
                       sx={{ background: "rgba(255, 255, 255, 0.05)" }}
                       onClick={onClick}
                     >

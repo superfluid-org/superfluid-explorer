@@ -37,13 +37,11 @@ import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
 import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
-import { timeAgo } from "../../../utils/dateTime";
 import BalanceWithToken from "../../BalanceWithToken";
-import EtherFormatted from "../../EtherFormatted";
 import { IndexPublicationDetailsDialog } from "../../IndexPublicationDetails";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
-import SuperTokenAddress from "../../SuperTokenAddress";
+import TimeAgo from "../../TimeAgo";
 
 export enum DistributionStatus {
   Distributed,
@@ -452,7 +450,10 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
               </TableCell>
               <TableCell>{index.totalUnits}</TableCell>
               <TableCell>
-                {timeAgo(new Date(index.createdAtTimestamp * 1000).getTime())}
+                <TimeAgo
+                  subgraphTime={index.createdAtTimestamp}
+                  typographyProps={{ typography: "body2" }}
+                />
               </TableCell>
 
               <TableCell align="right">
@@ -462,6 +463,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 >
                   {(onClick) => (
                     <IconButton
+                      title="Details"
                       sx={{ background: "rgba(255, 255, 255, 0.05)" }}
                       onClick={onClick}
                     >

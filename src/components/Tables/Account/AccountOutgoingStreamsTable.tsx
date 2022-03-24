@@ -37,13 +37,13 @@ import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
 import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
-import { timeAgo } from "../../../utils/dateTime";
 import AccountAddress from "../../AccountAddress";
 import FlowingBalanceWithToken from "../../FlowingBalanceWithToken";
 import FlowRate from "../../FlowRate";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import { StreamDetailsDialog } from "../../StreamDetails";
+import TimeAgo from "../../TimeAgo";
 import { StreamStatus } from "./AccountIncomingStreamsTable";
 
 export const outgoingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
@@ -382,13 +382,17 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 />
               </TableCell>
               <TableCell>
-                {timeAgo(new Date(stream.updatedAtTimestamp * 1000).getTime())}
+                <TimeAgo
+                  subgraphTime={stream.updatedAtTimestamp}
+                  typographyProps={{ typography: "body2" }}
+                />
               </TableCell>
 
               <TableCell align="right">
                 <StreamDetailsDialog network={network} streamId={stream.id}>
                   {(onClick) => (
                     <IconButton
+                      title="Details"
                       sx={{ background: "rgba(255, 255, 255, 0.05)" }}
                       onClick={onClick}
                     >

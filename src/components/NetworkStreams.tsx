@@ -57,7 +57,7 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
     <Table sx={{ tableLayout: "fixed" }}>
       <TableBody>
         {streams.map((stream) => (
-          <TableRow key={stream.id}>
+          <TableRow key={stream.id} hover>
             <TableCell width="60%">
               <SenderReceiver
                 network={network}
@@ -74,7 +74,7 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
                 flowRate={stream.currentFlowRate}
               />
             </TableCell>
-            <TableCell width="20%">
+            <TableCell width="20%" align="right">
               <TimeAgo
                 subgraphTime={stream.createdAtTimestamp}
                 typographyProps={{ typography: "body2" }}

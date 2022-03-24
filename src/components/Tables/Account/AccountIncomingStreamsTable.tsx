@@ -45,13 +45,13 @@ import {
 import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
-import { timeAgo } from "../../../utils/dateTime";
 import AccountAddress from "../../AccountAddress";
 import FlowingBalanceWithToken from "../../FlowingBalanceWithToken";
 import FlowRate from "../../FlowRate";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import { StreamDetailsDialog } from "../../StreamDetails";
+import TimeAgo from "../../TimeAgo";
 
 export const incomingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
   orderBy: "updatedAtTimestamp",
@@ -399,13 +399,17 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 />
               </TableCell>
               <TableCell>
-                {timeAgo(new Date(stream.updatedAtTimestamp * 1000).getTime())}
+                <TimeAgo
+                  subgraphTime={stream.updatedAtTimestamp}
+                  typographyProps={{ typography: "body2" }}
+                />
               </TableCell>
 
               <TableCell align="right">
                 <StreamDetailsDialog network={network} streamId={stream.id}>
                   {(onClick) => (
                     <IconButton
+                      title="Details"
                       sx={{ background: "rgba(255, 255, 255, 0.05)" }}
                       onClick={onClick}
                     >

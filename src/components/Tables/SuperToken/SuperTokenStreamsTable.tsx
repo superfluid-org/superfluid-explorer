@@ -433,6 +433,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
                 <StreamDetailsDialog network={network} streamId={stream.id}>
                   {(onClick) => (
                     <IconButton
+                      title="Details"
                       sx={{ background: "rgba(255, 255, 255, 0.05)" }}
                       onClick={onClick}
                     >

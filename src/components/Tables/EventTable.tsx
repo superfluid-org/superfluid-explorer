@@ -32,8 +32,8 @@ import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import { Network } from "../../redux/networks";
 import { sfSubgraph } from "../../redux/store";
-import { timeAgo } from "../../utils/dateTime";
 import InfinitePagination from "../InfinitePagination";
+import TimeAgo from "../TimeAgo";
 import { TransactionHash } from "../TransactionHash";
 
 interface EventsQuery extends EventListQuery {
@@ -285,7 +285,10 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                 />
               </TableCell>
               <TableCell>
-                {timeAgo(new Date(event.timestamp * 1000).getTime())}
+                <TimeAgo
+                  subgraphTime={event.timestamp}
+                  typographyProps={{ typography: "body2" }}
+                />
               </TableCell>
             </TableRow>
           ))}
