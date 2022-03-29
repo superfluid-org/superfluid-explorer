@@ -368,17 +368,17 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
         <TableBody>
           {tableRows.map((stream) => (
             <TableRow key={stream.id} hover>
-              <TableCell>
+              <TableCell data-cy={"outgoing-receiver"}>
                 <AccountAddress
                   network={network}
                   address={stream.receiver}
                   ellipsis={6}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell data-cy={"outgoing-flow-rate"}>
                 <FlowRate flowRate={stream.currentFlowRate} />
               </TableCell>
-              <TableCell>
+              <TableCell data-cy={"outgoing-total-streamed"}>
                 <FlowingBalanceWithToken
                   balance={stream.streamedUntilUpdatedAt}
                   balanceTimestamp={stream.updatedAtTimestamp}
@@ -394,7 +394,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 />
               </TableCell>
 
-              <TableCell align="right">
+              <TableCell data-cy={"outgoing-details"} align="right">
                 <StreamDetailsDialog network={network} streamId={stream.id}>
                   {(onClick) => <DetailsButton onClick={onClick} />}
                 </StreamDetailsDialog>

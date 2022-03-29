@@ -5,8 +5,8 @@
       "indexes": {
         "publications": [
           {
-            "token": "Super fDAI Fake Token (fDAIx)",
-            "totalDistributed": "2400 fDAIx",
+            "token": "fDAIx",
+            "totalDistributed": "2400",
             "totalUnits": "1000000",
             "hash": "0x39aa80fc05ed0b3549be279589fc67f06b7e35ee-0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00-0",
             "details": {
@@ -123,7 +123,7 @@
       "incoming": [],
       "outgoing": [
         {
-          "token": "Super USDC (PoS) (USDCx)",
+          "token": "USDCx",
           "receiver": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
           "flowRate": 0,
           "totalStreamed": 0.0000972222222221
@@ -136,17 +136,17 @@
     },
     "superTokens": [
       {
-        "tokenName": "Super MATIC (MATICx)",
-        "balance": "4",
-        "activeStreamCount": 0,
-        "closedStreamCount": 0,
-        "subscriptionWithUnitsCount": 0
-      },
-      {
         "tokenName": "Super USDC (PoS) (USDCx)",
         "balance": "4.9999027777927779",
         "activeStreamCount": 0,
         "closedStreamCount": 1,
+        "subscriptionWithUnitsCount": 0
+      },
+      {
+        "tokenName": "Super MATIC (MATICx)",
+        "balance": "4",
+        "activeStreamCount": 0,
+        "closedStreamCount": 0,
         "subscriptionWithUnitsCount": 0
       }
     ],

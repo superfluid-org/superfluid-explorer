@@ -478,9 +478,9 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                   flowRate={tokenSnapshot.totalNetFlowRate}
                 />
               </TableCell>
-              <TableCell>{tokenSnapshot.totalNumberOfActiveStreams}</TableCell>
-              <TableCell>{tokenSnapshot.totalNumberOfClosedStreams}</TableCell>
-              <TableCell>{tokenSnapshot.totalSubscriptionsWithUnits}</TableCell>
+              <TableCell data-cy={"active-streams"}>{tokenSnapshot.totalNumberOfActiveStreams}</TableCell>
+              <TableCell data-cy={"closed-streams"}>{tokenSnapshot.totalNumberOfClosedStreams}</TableCell>
+              <TableCell data-cy={"subscriptions-with-units"}>{tokenSnapshot.totalSubscriptionsWithUnits}</TableCell>
             </TableRow>
           ))}
 

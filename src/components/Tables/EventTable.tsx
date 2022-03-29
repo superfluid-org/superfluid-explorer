@@ -282,9 +282,9 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
         <TableBody>
           {tableRows.map((event) => (
             <TableRow key={event.id} hover>
-              <TableCell>{event.name}</TableCell>
-              <TableCell>{event.blockNumber}</TableCell>
-              <TableCell>
+              <TableCell data-cy={"event-name"}>{event.name}</TableCell>
+              <TableCell data-cy={"event-block-number"}>{event.blockNumber}</TableCell>
+              <TableCell data-cy={"transaction-hash"}>
                 <TransactionHash
                   network={network}
                   transactionHash={event.transactionHash}

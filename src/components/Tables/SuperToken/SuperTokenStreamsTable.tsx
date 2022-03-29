@@ -412,6 +412,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
             <TableRow key={stream.id} hover>
               <TableCell>
                 <AccountAddress
+                  dataCy={"sender"}
                   network={network}
                   address={stream.sender}
                   ellipsis={6}
@@ -419,6 +420,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
               </TableCell>
               <TableCell>
                 <AccountAddress
+                  dataCy={"receiver"}
                   network={network}
                   address={stream.receiver}
                   ellipsis={6}

@@ -384,17 +384,17 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
         <TableBody>
           {tableRows.map((stream) => (
             <TableRow key={stream.id} hover>
-              <TableCell>
+              <TableCell data-cy={"incoming-sender"}>
                 <AccountAddress
                   network={network}
                   address={stream.sender}
                   ellipsis={6}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell data-cy={"incoming-flow-rate"}>
                 <FlowRate flowRate={stream.currentFlowRate} />
               </TableCell>
-              <TableCell>
+              <TableCell data-cy={"incoming-total-streamed"}>
                 <FlowingBalanceWithToken
                   balance={stream.streamedUntilUpdatedAt}
                   balanceTimestamp={stream.updatedAtTimestamp}
@@ -410,7 +410,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 />
               </TableCell>
 
-              <TableCell align="right">
+              <TableCell data-cy={"incoming-details-button"} align="right">
                 <StreamDetailsDialog network={network} streamId={stream.id}>
                   {(onClick) => <DetailsButton onClick={onClick} />}
                 </StreamDetailsDialog>
@@ -425,7 +425,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography variant="body1">No results</Typography>
+                <Typography data-cy={"incoming-no-results"} variant="body1">No results</Typography>
               </TableCell>
             </TableRow>
           )}

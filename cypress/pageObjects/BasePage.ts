@@ -87,11 +87,11 @@ export class BasePage {
     cy.get("@newTab").should("be.called");
   }
 
-  static replaceSpacesAndAssertText(selector: string, text: string, index = 0, boxSelector?: string) {
-    if (boxSelector) {
-      cy.get(boxSelector).children().find(selector).eq(index).invoke("text").invoke("replace", /\u00a0/g, ' ').should("eq", text)
-    } else {
+  static replaceSpacesAndAssertText(selector: string, text: string, index = 0) {
       cy.get(selector).eq(index).invoke("text").invoke("replace", /\u00a0/g, ' ').should("eq", text)
-    }
+  }
+
+  static getShortenedAddress(address:string,chars = 6) {
+    return address.slice(0,chars + 2) + "..." + address.slice(address.length - chars , address.length)
   }
 }

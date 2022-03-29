@@ -424,15 +424,16 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
         <TableBody>
           {tableRows.map((index) => (
             <TableRow key={index.id} hover>
-              <TableCell>{index.indexId}</TableCell>
+              <TableCell data-cy={"index-id"}>{index.indexId}</TableCell>
               <TableCell>
                 <AccountAddress
+                  dataCy={"publisher"}
                   network={network}
                   address={index.publisher}
                   ellipsis={6}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell data-cy={"total-distributed"}>
                 <EtherFormatted
                   wei={index.totalAmountDistributedUntilUpdatedAt}
                 />

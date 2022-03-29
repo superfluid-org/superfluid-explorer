@@ -14,7 +14,8 @@ const AccountAddress: FC<{
   network: Network;
   address: string;
   ellipsis?: number;
-}> = ({ network, address, ellipsis }) => {
+  dataCy?: string;
+}> = ({ network, address, ellipsis , dataCy}) => {
   const prefetchAccountQuery = sfSubgraph.usePrefetch("account", {
     ifOlderThan: 45,
   });
@@ -23,7 +24,7 @@ const AccountAddress: FC<{
 
   return (
     <AppLink
-      data-cy={"account-address"}
+      data-cy={dataCy}
       className="address"
       href={`/${network.slugName}/accounts/${address}`}
       sx={{ fontFamily: "Roboto Mono" }}

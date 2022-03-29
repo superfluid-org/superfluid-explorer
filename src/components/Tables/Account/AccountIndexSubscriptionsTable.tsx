@@ -283,6 +283,7 @@ const AccountIndexSubscriptionsTable: FC<
         <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
           Subscriptions
           <InfoTooltipBtn
+            dataCy={"subscriptions-tooltip"}
             size={22}
             title={
               <>
@@ -549,7 +550,7 @@ const AccountIndexSubscriptionsTable: FC<
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography variant="body1">No results</Typography>
+                <Typography data-cy={"subscriptions-no-results"} variant="body1">No results</Typography>
               </TableCell>
             </TableRow>
           )}

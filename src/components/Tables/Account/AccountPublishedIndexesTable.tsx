@@ -449,15 +449,15 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
         <TableBody>
           {tableRows.map((index) => (
             <TableRow key={index.id} hover>
-              <TableCell>{index.indexId}</TableCell>
-              <TableCell>
+              <TableCell data-cy={"publications-index-id"}>{index.indexId}</TableCell>
+              <TableCell data-cy={"publications-total-distributed"}>
                 <BalanceWithToken
                   wei={index.totalAmountDistributedUntilUpdatedAt}
                   network={network}
                   tokenAddress={index.token}
                 />
               </TableCell>
-              <TableCell>{index.totalUnits}</TableCell>
+              <TableCell data-cy={"publications-units"}>{index.totalUnits}</TableCell>
               <TableCell>
                 <TimeAgo
                   subgraphTime={index.createdAtTimestamp}
@@ -465,7 +465,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 />
               </TableCell>
 
-              <TableCell align="right">
+              <TableCell data-cy={"publications-details-buttons"} align="right">
                 <IndexPublicationDetailsDialog
                   network={network}
                   indexId={index.id.toString()}
@@ -483,7 +483,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography variant="body1">No results</Typography>
+                <Typography data-cy={"publications-no-results"} variant="body1">No results</Typography>
               </TableCell>
             </TableRow>
           )}

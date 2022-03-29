@@ -5,15 +5,15 @@ const TOKEN_SYMBOL = "[data-cy=token-symbol] span"
 const TOKEN_ADDRESS = "[data-cy=token-address] span"
 const TOKEN_FANCY_NAME = "[data-cy=token-fancy-network] span"
 const TOKEN_UNDERLYING_ADDRESS = "[data-cy=underlying-token-address] span div"
-const STREAMS_SENDER = "[data-field=sender]"
-const STREAMS_RECEIVER = "[data-field=receiver]"
+const STREAMS_SENDER = "[data-cy=sender]"
+const STREAMS_RECEIVER = "[data-cy=receiver]"
 const STREAMS_FLOW_RATES = "[data-cy=flowrate]"
-const INDEX_PUBLISHERS = "[data-field=publisher] a"
-const INDEX_ID = "[data-field=indexId]"
-const TOTAL_AMOUNT_DISTRIBUTED = "[data-field=totalAmountDistributedUntilUpdatedAt]"
-const EVENT_NAMES = "[data-field=name][role=cell]"
-const EVENT_BLOCKNUMBERS = "[data-field=blockNumber][role=cell]"
-const EVENT_SHORT_TX_HASH = "[data-field=transactionHash] a div"
+const INDEX_PUBLISHERS = "[data-cy=publisher]"
+const INDEX_ID = "[data-cy=index-id]"
+const TOTAL_AMOUNT_DISTRIBUTED = "[data-cy=total-distributed]"
+const EVENT_NAMES = "[data-cy=event-name]"
+const EVENT_BLOCK_NUMBERS = "[data-cy=event-block-number]"
+const EVENT_SHORT_TX_HASH = "[data-cy=transaction-hash]"
 
 
 export class TokenPage extends BasePage {
@@ -45,7 +45,7 @@ export class TokenPage extends BasePage {
 
   static validateLoadedEventsData() {
     this.isVisible(EVENT_NAMES)
-    this.isVisible(EVENT_BLOCKNUMBERS)
+    this.isVisible(EVENT_BLOCK_NUMBERS)
     this.isVisible(EVENT_SHORT_TX_HASH)
   }
 }

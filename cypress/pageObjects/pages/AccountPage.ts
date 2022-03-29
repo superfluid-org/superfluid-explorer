@@ -4,32 +4,41 @@ import Decimal from "decimal.js";
 const ACCOUNT_TYPE = "[data-cy=account-type] span"
 const BORDER_ADD_TO_ADDRESS_BOOK_BUTTON = "[data-testid=StarBorderIcon]"
 const FILLED_ADD_TO_ADDRESS_BOOK_BUTTON = "[data-testid=StarIcon]"
-const TOKEN_NAMES = "[data-field=token] a"
 const NETWORK_NAME = "[data-cy=network-name] div"
 const ACCOUNT_ADDRESS = "[data-cy=address] span"
-const INCOMING_BOX = "[data-cy=incoming-box]"
-const OUTGOING_BOX = "[data-cy=outgoing-box]"
 const OTHER_PARTY_ADDRESS = "[data-cy=account-address]"
 const FLOW_RATES = "[data-field=currentFlowRate] span"
 const TOTAL_STREAMED = "[data-cy=total-streamed]"
 const PUBLICATIONS_BOX = "[data-cy=publications-box]"
-const SUBSCRIPTIONS_BOX = "[data-cy=subscriptions-box]"
 const TOTAL_DISTRIBUTED = "[data-field=totalAmountDistributedUntilUpdatedAt]"
 const TOTAL_UNITS = "[data-field=totalUnits]"
 const TOKEN_ADDRESSES = "[data-cy=token-address]"
 const PUBLICATION_TOKEN = "[data-field=token][role=cell] > *"
-const PUBLICATION_TOTAL_DISTRIBUTED = "[data-field=totalAmountDistributedUntilUpdatedAt][role=cell]"
-const PUBLICATION_TOTAL_UNITS = "[data-field=totalUnits][role=cell]"
-const PUBLICATION_DETAILS_BUTTONS = "[data-field=details][role=cell] button"
+const PUBLICATION_TOTAL_DISTRIBUTED = "[data-cy=publications-total-distributed]"
+const PUBLICATION_TOTAL_UNITS = "[data-cy=publications-units]"
+const PUBLICATION_DETAILS_BUTTONS = "[data-cy=publications-details-buttons]"
 const APPROVED_STATUSES = "[data-field=approved]"
-const TOTAL_AMOUNT_RECEIVED = "[data-field=totalAmountReceivedUntilUpdatedAt]"
 const SUBSCRIPTION_UNITS = "[data-field=units]"
-const ACTIVE_STREAM_COUNT = "[data-field=totalNumberOfActiveStreams][role=cell]"
-const CLOSED_STREAM_COUNT = "[data-field=totalNumberOfClosedStreams][role=cell]"
-const SUBSCRIPTIONS_WITH_UNITS_COUNT = "[data-field=totalSubscriptionsWithUnits][role=cell]"
-const EVENT_NAMES = "[data-field=name][role=cell]"
-const EVENT_BLOCK_NUMBER = "[data-field=blockNumber][role=cell]"
-const EVENT_SHORT_TX_HASH = "[data-field=transactionHash] a div"
+const ACTIVE_STREAM_COUNT = "[data-cy=active-streams]"
+const CLOSED_STREAM_COUNT = "[data-cy=closed-streams]"
+const SUBSCRIPTIONS_WITH_UNITS_COUNT = "[data-cy=subscriptions-with-units]"
+const EVENT_NAMES = "[data-cy=event-name]"
+const EVENT_BLOCK_NUMBER = "[data-cy=event-block-number]"
+const EVENT_SHORT_TX_HASH = "[data-cy=transaction-hash]"
+const INCOMING_TOKEN_NAMES = "[data-cy=incoming-total-streamed] [data-cy=token-link] span"
+const OUTGOING_TOKEN_NAMES = "[data-cy=outgoing-total-streamed] [data-cy=token-link] span"
+const SENDER_ADDRESS = "[data-cy=incoming-sender]"
+const RECEIVER_ADDRESS = "[data-cy=outgoing-receiver]"
+const INCOMING_FLOW_RATES = "[data-cy=incoming-flow-rate]"
+const OUTGOING_FLOW_RATES = "[data-cy=outgoing-flow-rate]"
+const INCOMING_TOTAL_STREAMED = "[data-cy=incoming-total-streamed] [data-cy=total-streamed]"
+const OUTGOING_TOTAL_STREAMED = "[data-cy=outgoing-total-streamed] [data-cy=total-streamed]"
+const INCOMING_NO_RESULTS = "[data-cy=incoming-no-results]"
+const OUTGOING_NO_RESULTS = "[data-cy=outgoing-no-results]"
+const PUBLICATIONS_NO_RESULTS = "[data-cy=publications-no-results]"
+const SUBSCRIPTIONS_NO_RESULTS = "[data-cy=subscriptions-no-results]"
+const PUBLICATION_TOKEN_NAMES = "[data-cy=publications-total-distributed] [data-cy=token-link] span"
+const SUBSCRIPTION_TOKEN_NAMES = "[data-cy=subscriptions-total-distributed] [data-cy=token-link] span"
 
 
 export class AccountPage extends BasePage {
@@ -51,41 +60,63 @@ export class AccountPage extends BasePage {
     })
   }
 
-  static validateStreamsInBox(boxSelector: string, index: number, stream: any) {
-    cy.get(boxSelector).children().find(TOKEN_NAMES).eq(index).should("contain.text", stream.token)
-    cy.get(boxSelector).children().find(OTHER_PARTY_ADDRESS).eq(index).should("contain.text", stream.receiver)
-    cy.get(boxSelector).children().find(FLOW_RATES).eq(index).should("contain.text", stream.flowRate)
-    cy.get(boxSelector).children().find(TOTAL_STREAMED).eq(index).should("contain.text", stream.totalStreamed)
+  static validateStreamsIncomingStreams( index: number, stream: any) {
+    cy.get(INCOMING_TOKEN_NAMES).eq(index).should("contain.text", stream.token)
+    cy.get(SENDER_ADDRESS).eq(index).should("contain.text", this.getShortenedAddress(stream.receiver))
+    cy.get(INCOMING_FLOW_RATES).eq(index).should("contain.text", stream.flowRate)
+    cy.get(INCOMING_TOTAL_STREAMED).eq(index).should("contain.text", stream.totalStreamed)
+  }
+
+  static validateStreamsOutgoingStreams( index: number, stream: any) {
+    cy.get(OUTGOING_TOKEN_NAMES).eq(index).should("contain.text", stream.token)
+    cy.get(RECEIVER_ADDRESS).eq(index).should("contain.text", this.getShortenedAddress(stream.receiver))
+    cy.get(OUTGOING_FLOW_RATES).eq(index).should("contain.text", stream.flowRate)
+    cy.get(OUTGOING_TOTAL_STREAMED).eq(index).should("contain.text", stream.totalStreamed)
   }
 
   static validateStreamsTabEntries(network: string) {
     cy.fixture("accountData").then(account => {
       if ((account[network].streams.incoming).length === 0) {
-        this.validateNoRowsInBox(INCOMING_BOX)
+        this.validateNoIncomingStreams()
       } else {
         account[network].streams.incoming.forEach((stream: any, index: number) => {
-          this.validateStreamsInBox(INCOMING_BOX, index, stream)
+          this.validateStreamsIncomingStreams(index, stream)
         })
       }
       if ((account[network].streams.outgoing).length === 0) {
-        this.validateNoRowsInBox(OUTGOING_BOX)
+        this.validateNoOutgoingStreams()
       } else {
         account[network].streams.outgoing.forEach((stream: any, index: number) => {
-          this.validateStreamsInBox(OUTGOING_BOX, index, stream)
+          this.validateStreamsOutgoingStreams(index, stream)
         })
       }
     })
   }
 
-  static validateNoRowsInBox(boxSelector: string) {
-    cy.get(boxSelector).children().contains("No rows").should("be.visible")
-    cy.get(boxSelector).children().find(TOKEN_NAMES).should("not.exist")
+  static validateNoIncomingStreams() {
+    cy.get(INCOMING_NO_RESULTS).should("be.visible")
+    cy.get(INCOMING_TOKEN_NAMES).should("not.exist")
+  }
+
+  static validateNoOutgoingStreams() {
+    cy.get(OUTGOING_NO_RESULTS).should("be.visible")
+    cy.get(OUTGOING_TOKEN_NAMES).should("not.exist")
+  }
+
+  static validateNoPublications() {
+    cy.get(PUBLICATIONS_NO_RESULTS).should("be.visible")
+    cy.get(PUBLICATION_TOKEN_NAMES).should("not.exist")
+  }
+
+  static validateNoSubscriptions() {
+    cy.get(SUBSCRIPTIONS_NO_RESULTS).should("be.visible")
+    cy.get(SUBSCRIPTION_TOKEN_NAMES).should("not.exist")
   }
 
   static validateIndexTabEntries(network: string) {
     cy.fixture("accountData").then(account => {
       if ((account[network].indexes.publications).length === 0) {
-        this.validateNoRowsInBox(PUBLICATIONS_BOX)
+        this.validateNoPublications()
       } else {
         account[network].indexes.publications.forEach((ida: any, index: number) => {
           //Currently not checking account with distributions, should actually deploy an IDA for testing purposes on matic too
@@ -93,7 +124,7 @@ export class AccountPage extends BasePage {
         })
       }
       if ((account[network].indexes.subscriptions).length === 0) {
-        this.validateNoRowsInBox(SUBSCRIPTIONS_BOX)
+        this.validateNoSubscriptions()
       } else {
         account[network].indexes.subscriptions.forEach((ida: any, index: number) => {
           //Currently not checking account with distributions, should actually deploy an IDA for testing purposes on matic too
@@ -106,19 +137,19 @@ export class AccountPage extends BasePage {
   static validateSuperAppPublicationEntries(network: string) {
     cy.fixture("accountData").then(account => {
       if ((account[network].superApp.indexes.publications).length === 0) {
-        this.validateNoRowsInBox(PUBLICATIONS_BOX)
+        this.validateNoPublications()
       } else {
         account[network].superApp.indexes.publications.forEach((publication: any, index: number) => {
-          cy.get(PUBLICATIONS_BOX).children().find(PUBLICATION_TOKEN).eq(index).should("contain.text", publication.token)
-          this.replaceSpacesAndAssertText(PUBLICATION_TOTAL_DISTRIBUTED, publication.totalDistributed, index, PUBLICATIONS_BOX)
-          cy.get(PUBLICATIONS_BOX).children().find(PUBLICATION_TOTAL_UNITS).eq(index).should("contain.text", publication.totalUnits)
+          cy.get(PUBLICATION_TOKEN_NAMES).eq(index).should("contain.text", publication.token)
+          this.replaceSpacesAndAssertText(PUBLICATION_TOTAL_DISTRIBUTED, publication.token + publication.totalDistributed, index)
+          cy.get(PUBLICATION_TOTAL_UNITS).eq(index).should("contain.text", publication.totalUnits)
         })
       }
     })
   }
 
   static openFirstPublicationDetails() {
-    cy.get(PUBLICATIONS_BOX).children().find(PUBLICATION_DETAILS_BUTTONS).eq(0).click()
+    cy.get(PUBLICATION_DETAILS_BUTTONS).eq(0).click()
   }
 
   static validateTokensTabEntries(network: string) {
@@ -168,7 +199,7 @@ export class AccountPage extends BasePage {
 
     cy.fixture("accountData").then(fixture => {
       fixture[network].ongoingStreamAccount.streams.incoming.forEach((stream: { flowRate: string }, index: number) => {
-        cy.get(INCOMING_BOX).find(FLOW_RATES).eq(index).then(el => {
+        cy.get(INCOMING_FLOW_RATES).eq(index).then(el => {
           let expectedFlowAmount = ((parseFloat(stream.flowRate) * granularityMultiplier)).toFixed(18).toString()
           let flowWithoutZeros = new Decimal(expectedFlowAmount).toDP(18).toFixed()
           let expectedString = flowWithoutZeros + "/" + granularity
