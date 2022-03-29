@@ -291,6 +291,7 @@ const AccountIndexSubscriptionsTable: FC<
                 will receive distributed funds based on the portion of units
                 they own in and index.{" "}
                 <AppLink
+                  data-cy={"subscriptions-tooltip-link"}
                   href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                   target="_blank"
                 >

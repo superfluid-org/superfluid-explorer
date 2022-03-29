@@ -9,14 +9,16 @@ const STREAM_PERIOD_FLOW_RATES = "[data-cy=flowrate]"
 const STREAM_PERIOD_FROM = "[data-field=startedAtTimestamp][role=cell]"
 const STREAM_PERIOD_TO = "[data-field=stoppedAtTimestamp][role=cell]"
 const STREAM_PERIOD_TOTAL_STREAMED = "[data-cy=stream-period-grid] [data-cy=total-streamed]"
+const STREAM_SENDER = "[data-cy=sender-address]"
+const STREAM_RECEIVER = "[data-cy=receiver-address]"
 
 export class StreamsPage extends BasePage {
 
   static validateTokenSenderReceiver(network: string) {
     cy.fixture("streamData").then(streamData => {
       this.hasText(TOKEN_NAME, streamData[network].token)
-      cy.get(ACCOUNT_ADDRESSES).eq(0).should("have.text", streamData[network].sender)
-      cy.get(ACCOUNT_ADDRESSES).eq(1).should("have.text", streamData[network].receiver)
+      cy.get(STREAM_SENDER).should("have.text", streamData[network].sender)
+      cy.get(STREAM_RECEIVER).should("have.text", streamData[network].receiver)
     })
   }
 

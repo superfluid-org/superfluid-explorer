@@ -18,7 +18,7 @@ export class IndexPage extends BasePage {
   static validateIndexGeneralInformation(network: string) {
     cy.fixture("accountData").then(fixture => {
       cy.wrap(fixture[network].superApp.indexes.publications[0]).then((index: any) => {
-        this.hasText(INDEX_TOKEN, index.token)
+        this.containsText(INDEX_TOKEN, index.token)
         this.hasText(PUBLISHER_ADDRESS, index.details.publisher)
         this.hasText(INDEX_ID, index.details.indexId)
       })

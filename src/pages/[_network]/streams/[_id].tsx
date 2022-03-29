@@ -157,6 +157,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                   primary={
                     stream ? (
                       <AccountAddress
+                        dataCy={"sender-address"}
                         network={network}
                         address={stream.sender}
                       />
@@ -172,6 +173,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                   primary={
                     stream ? (
                       <AccountAddress
+                        dataCy={"receiver-address"}
                         network={network}
                         address={stream.receiver}
                       />
