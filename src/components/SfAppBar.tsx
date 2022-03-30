@@ -25,17 +25,15 @@ export const SfAppBar = () => {
     <>
       <AppBar position="sticky">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <AppLink href="/">
-            <Box>
-              <Image
-                data-cy={"superfluid-logo"}
-                src="/superfluid-logo.svg"
-                width={150}
-                height={36}
-                layout="fixed"
-                alt="Superfluid logo"
-              />
-            </Box>
+          <AppLink href="/" sx={{ display: "flex" }}>
+            <Image
+              data-cy={"superfluid-logo"}
+              src="/superfluid-logo.svg"
+              width={150}
+              height={36}
+              layout="fixed"
+              alt="Superfluid logo"
+            />
           </AppLink>
 
           <Container
@@ -81,7 +79,11 @@ export const SfAppBar = () => {
               </Button>
             </AppLink>
             <Tooltip title="Settings" enterDelay={100}>
-              <IconButton sx={{ml: 1}} color="inherit" onClick={() => setSettingsOpen(true)}>
+              <IconButton
+                sx={{ ml: 1 }}
+                color="inherit"
+                onClick={() => setSettingsOpen(true)}
+              >
                 <SettingsIcon />
               </IconButton>
             </Tooltip>

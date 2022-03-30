@@ -5,7 +5,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import createEmotionCache from "../utils/createEmotionCache";
 import { wrapper } from "../redux/store";
 import SfAppBar from "../components/SfAppBar";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import "../styles/graphiql.min.css";
 import "../styles/app.css";
@@ -13,7 +13,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import useSfTheme from "../styles/useSfTheme";
 import { hotjar } from "react-hotjar";
 import Footer from "../components/Footer";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { tryGetNetwork, tryGetString } from "../redux/networks";
 import { isDynamicRoute } from "../utils/isDynamicRoute";
 import Error from "next/error";
@@ -30,6 +30,7 @@ interface MyAppProps extends AppProps {
 function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const theme = useSfTheme();
+  const scrollableContentRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_HJID && process.env.NEXT_PUBLIC_HJSV) {
@@ -40,7 +41,18 @@ function MyApp(props: MyAppProps) {
     } else {
       console.log("Hotjar not initialized.");
     }
-  });
+
+    /**
+     * Nextjs is scrolling window on route changes but because
+     * we are using another scrollable content wrapper,
+     * we have to handle scrolling separately.
+     */
+    Router.events.on("routeChangeComplete", () => {
+      if (scrollableContentRef.current) {
+        scrollableContentRef.current.scrollTo({ top: 0 });
+      }
+    });
+  }, []);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -58,15 +70,19 @@ function MyApp(props: MyAppProps) {
           sx={{
             display: "flex",
             flexFlow: "column",
-            height: "100vh"
+            maxHeight: "100vh",
           }}
         >
           <SfAppBar />
-          <Box component="main" sx={{ height: "100vh" }}>
+          <Box
+            ref={scrollableContentRef}
+            component="main"
+            sx={{ height: "100vh", overflow: "auto" }}
+          >
             <Layout>
               <Component {...pageProps} />
             </Layout>
-            <Footer  />
+            <Footer />
           </Box>
         </Box>
       </ThemeProvider>
@@ -101,7 +117,7 @@ const Layout: FC = ({ children }) => {
         // Prefer to show blank page here instead of a loader (less flickering).
         <Box
           sx={{
-            height: "100vh",
+            // height: "100vh",
             width: "100vw",
           }}
         ></Box>

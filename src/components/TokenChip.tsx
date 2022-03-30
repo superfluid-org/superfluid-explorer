@@ -22,7 +22,7 @@ const TokenChip: FC<TokenChipProps> = ({ network, tokenAddress }) => {
       data-cy={"token-link"}
       className="address"
       href={`/${network.slugName}/supertokens/${tokenAddress}`}
-      sx={{ textDecoration: "none" }}
+      sx={{ textDecoration: "none", flexShrink: 0 }}
     >
       <Chip
         clickable

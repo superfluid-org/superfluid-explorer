@@ -68,7 +68,7 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
           root: {
             position: "relative",
             // This removes border bottom from last row of the table.
-            "tr:last-child td": { border: 0 },
+            "tr:last-of-type td": { border: 0 },
           },
         },
       },

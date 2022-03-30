@@ -25,6 +25,7 @@ import AccountAddress from "../../../components/AccountAddress";
 import AppLink from "../../../components/AppLink";
 import CopyLink from "../../../components/CopyLink";
 import FlowingBalance from "../../../components/FlowingBalance";
+import FlowingBalanceWithToken from "../../../components/FlowingBalanceWithToken";
 import FlowRate from "../../../components/FlowRate";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
@@ -185,7 +186,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
               </ListItem>
               <Grid container>
                 <Grid item xs={6}>
-                  <ListItem divider>
+                  <ListItem>
                     <ListItemText
                       secondary="Last Updated At"
                       primary={
@@ -199,7 +200,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                   </ListItem>
                 </Grid>
                 <Grid item xs={6}>
-                  <ListItem divider>
+                  <ListItem>
                     <ListItemText
                       secondary="Created At"
                       primary={
@@ -219,13 +220,26 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
 
         <Grid item xs={12}>
           <Card elevation={2}>
-            <List data-cy={"flow-rate-list"}>
-              <ListItem divider>
-                <ListItemText data-cy={"current-flow-rate"}
+            <List
+              data-cy={"flow-rate-list"}
+              sx={{
+                display: "grid",
+                gridTemplateColumns: {
+                  sm: "1fr",
+                  md: "1fr 1fr",
+                },
+              }}
+            >
+              <ListItem>
+                <ListItemText
+                  data-cy={"current-flow-rate"}
                   secondary={
                     <>
                       Current Flow Rate
-                      <InfoTooltipBtn dataCy={"current-flow-rate-tooltip"} title="Flow rate is the velocity of tokens being streamed." />
+                      <InfoTooltipBtn
+                        dataCy={"current-flow-rate-tooltip"}
+                        title="Flow rate is the velocity of tokens being streamed."
+                      />
                     </>
                   }
                   primary={
@@ -237,25 +251,18 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                   }
                 />
               </ListItem>
-              <ListItem divider>
+              <ListItem>
                 <ListItemText
                   secondary="Total Amount Streamed"
                   primary={
                     stream ? (
                       <>
-                        <FlowingBalance
-                          {...{
-                            balance: stream.streamedUntilUpdatedAt,
-                            balanceTimestamp: stream.updatedAtTimestamp,
-                            flowRate: stream.currentFlowRate,
-                          }}
-                        />
-                        &nbsp;
-                        <SuperTokenAddress
+                        <FlowingBalanceWithToken
                           network={network}
-                          address={stream.token}
-                          format={(token) => token.symbol}
-                          formatLoading={() => ""}
+                          tokenAddress={stream.token}
+                          balance={stream.streamedUntilUpdatedAt}
+                          balanceTimestamp={stream.updatedAtTimestamp}
+                          flowRate={stream.currentFlowRate}
                         />
                       </>
                     ) : (

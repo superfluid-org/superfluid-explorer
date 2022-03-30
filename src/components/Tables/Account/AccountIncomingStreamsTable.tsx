@@ -268,7 +268,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
           )}
         </Stack>
 
-        <Tooltip title="Filter">
+        <Tooltip disableFocusListener title="Filter">
           <IconButton ref={filterAnchorRef} onClick={openFilter}>
             <FilterListIcon />
           </IconButton>

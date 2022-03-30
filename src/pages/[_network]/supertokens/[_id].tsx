@@ -138,153 +138,153 @@ const SuperTokenPage: NextPage = () => {
 
         <Grid item xs={12}>
           <Card elevation={2}>
-            <Grid container>
-              <Grid item md={6}>
-                <List>
-                  <ListItem divider>
-                    <ListItemText
-                      data-cy={"token-symbol"}
-                      secondary="Symbol"
-                      primary={
-                        superToken ? superToken.symbol : <SkeletonTokenSymbol />
-                      }
-                    />
-                  </ListItem>
-                  <ListItem divider>
-                    <ListItemText
-                      data-cy={"token-address"}
-                      secondary="Address"
-                      primary={
-                        superToken ? (
-                          <Tooltip title="View on blockchain explorer">
+            <List
+              sx={{
+                display: "grid",
+                gridTemplateColumns: {
+                  sm: "1fr",
+                  md: "1fr 1fr",
+                },
+              }}
+            >
+              <ListItem divider>
+                <ListItemText
+                  data-cy={"token-symbol"}
+                  secondary="Symbol"
+                  primary={
+                    superToken ? superToken.symbol : <SkeletonTokenSymbol />
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  data-cy={"token-fancy-network"}
+                  secondary="Network"
+                  primary={<NetworkDisplay network={network} />}
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  data-cy={"token-address"}
+                  secondary="Address"
+                  primary={
+                    superToken ? (
+                      <Tooltip title="View on blockchain explorer">
+                        <AppLink
+                          href={network.getLinkForAddress(superToken.id)}
+                          target="_blank"
+                        >
+                          <Grid container alignItems="center">
+                            {ethers.utils.getAddress(superToken.id)}
+                            <OpenInNewIcon
+                              sx={{ ml: 0.5, fontSize: "inherit" }}
+                            />
+                          </Grid>
+                        </AppLink>
+                      </Tooltip>
+                    ) : (
+                      <SkeletonAddress />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem divider>
+                <ListItemText
+                  data-cy={"underlying-token-address"}
+                  secondary={
+                    <>
+                      Underlying Token Address
+                      <InfoTooltipBtn
+                        dataCy={"underlying-token-tooltip"}
+                        title={
+                          <>
+                            Already existing ERC20 token&apos;s address that has
+                            been upgraded to super token.{" "}
                             <AppLink
-                              href={network.getLinkForAddress(superToken.id)}
+                              data-cy={"underlying-token-tooltip-link"}
+                              href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
                               target="_blank"
                             >
-                              <Grid container alignItems="center">
-                                {ethers.utils.getAddress(superToken.id)}
-                                <OpenInNewIcon
-                                  sx={{ ml: 0.5, fontSize: "inherit" }}
-                                />
-                              </Grid>
+                              Read more
                             </AppLink>
-                          </Tooltip>
-                        ) : (
-                          <SkeletonAddress />
-                        )
-                      }
-                    />
-                  </ListItem>
-                  <ListItem divider>
-                    <ListItemText
-                      data-cy={"token-listed-status"}
-                      secondary={
-                        <>
-                          Listed
-                          <InfoTooltipBtn
-                            dataCy={"listed-tooltip"}
-                            title={
-                              <>
-                                A token is listed & recognized by the Superfluid
-                                protocol. Benefits of deploying a listed super
-                                token include that it may be instantiated by
-                                symbol in our SDK, and listed by symbol in the
-                                Superfluid dashboard{" "}
-                                <AppLink
-                                  data-cy={"listed-tooltip-link"}
-                                  href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
-                                  target="_blank"
-                                >
-                                  Read more
-                                </AppLink>
-                              </>
-                            }
-                          />
-                        </>
-                      }
-                      primary={
-                        superToken ? (
-                          superToken.isListed ? (
-                            "Yes"
-                          ) : (
-                            "No"
-                          )
-                        ) : (
-                          <Skeleton sx={{ width: "20px" }} />
-                        )
-                      }
-                    />
-                  </ListItem>
-                </List>
-              </Grid>
-              <Grid item md={6}>
-                <List>
-                  <ListItem divider>
-                    <ListItemText
-                      data-cy={"token-fancy-network"}
-                      secondary="Network"
-                      primary={<NetworkDisplay network={network} />}
-                    />
-                  </ListItem>
-                  <ListItem divider>
-                    <ListItemText
-                      data-cy={"underlying-token-address"}
-                      secondary={
-                        <>
-                          Underlying Token Address
-                          <InfoTooltipBtn
-                            dataCy={"underlying-token-tooltip"}
-                            title={
-                              <>
-                                Already existing ERC20 token&apos;s address that
-                                has been upgraded to super token.{" "}
-                                <AppLink
-                                  data-cy={"underlying-token-tooltip-link"}
-                                  href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
-                                  target="_blank"
-                                >
-                                  Read more
-                                </AppLink>
-                              </>
-                            }
-                            size={16}
-                          />
-                        </>
-                      }
-                      primary={
-                        superToken ? (
-                          superToken.underlyingAddress ===
-                            "0x0000000000000000000000000000000000000000" ||
-                          superToken.underlyingAddress === "0x" ? (
-                            <>None</>
-                          ) : (
-                            <Tooltip title="View on blockchain explorer">
-                              <AppLink
-                                href={network.getLinkForAddress(
-                                  superToken.underlyingAddress
-                                )}
-                                target="_blank"
-                              >
-                                <Grid container alignItems="center">
-                                  {ethers.utils.getAddress(
-                                    superToken.underlyingAddress
-                                  )}
-                                  <OpenInNewIcon
-                                    sx={{ ml: 0.5, fontSize: "inherit" }}
-                                  />
-                                </Grid>
-                              </AppLink>
-                            </Tooltip>
-                          )
-                        ) : (
-                          <SkeletonAddress />
-                        )
-                      }
-                    />
-                  </ListItem>
-                </List>
-              </Grid>
-            </Grid>
+                          </>
+                        }
+                        size={16}
+                      />
+                    </>
+                  }
+                  primary={
+                    superToken ? (
+                      superToken.underlyingAddress ===
+                        "0x0000000000000000000000000000000000000000" ||
+                      superToken.underlyingAddress === "0x" ? (
+                        <>None</>
+                      ) : (
+                        <Tooltip title="View on blockchain explorer">
+                          <AppLink
+                            href={network.getLinkForAddress(
+                              superToken.underlyingAddress
+                            )}
+                            target="_blank"
+                          >
+                            <Grid container alignItems="center">
+                              {ethers.utils.getAddress(
+                                superToken.underlyingAddress
+                              )}
+                              <OpenInNewIcon
+                                sx={{ ml: 0.5, fontSize: "inherit" }}
+                              />
+                            </Grid>
+                          </AppLink>
+                        </Tooltip>
+                      )
+                    ) : (
+                      <SkeletonAddress />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  data-cy={"token-listed-status"}
+                  secondary={
+                    <>
+                      Listed
+                      <InfoTooltipBtn
+                        dataCy={"listed-tooltip"}
+                        title={
+                          <>
+                            A token is listed & recognized by the Superfluid
+                            protocol. Benefits of deploying a listed super token
+                            include that it may be instantiated by symbol in our
+                            SDK, and listed by symbol in the Superfluid
+                            dashboard{" "}
+                            <AppLink
+                              data-cy={"listed-tooltip-link"}
+                              href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
+                              target="_blank"
+                            >
+                              Read more
+                            </AppLink>
+                          </>
+                        }
+                      />
+                    </>
+                  }
+                  primary={
+                    superToken ? (
+                      superToken.isListed ? (
+                        "Yes"
+                      ) : (
+                        "No"
+                      )
+                    ) : (
+                      <Skeleton sx={{ width: "20px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+            </List>
           </Card>
         </Grid>
 

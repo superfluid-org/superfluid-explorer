@@ -23,9 +23,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
   const [weiValue, setWeiValue] = useState<BigNumberish>(balance);
 
   const balanceTimestampMs = useMemo(
-    () =>
-      ethers.BigNumber.from(balanceTimestamp)
-        .mul(1000),
+    () => ethers.BigNumber.from(balanceTimestamp).mul(1000),
     [balanceTimestamp]
   );
 
@@ -64,7 +62,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
 
         lastAnimationTimestamp = currentAnimationTimestamp;
       }
-      
+
       window.requestAnimationFrame(animationStep);
     };
 
@@ -73,6 +71,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
     return () => {
       stopAnimation = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balance, balanceTimestamp, flowRate]);
 
   return (

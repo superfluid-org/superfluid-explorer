@@ -25,6 +25,7 @@ import EtherFormatted from "./EtherFormatted";
 import AppLink from "./AppLink";
 import InfoTooltipBtn from "./InfoTooltipBtn";
 import { Button } from "@mui/material";
+import BalanceWithToken from "./BalanceWithToken";
 
 interface Props {
   network: Network;
@@ -85,23 +86,16 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
         renderCell: (
           params: GridRenderCellParams<string, IndexSubscription>
         ) => (
-          <>
-            <EtherFormatted
-              wei={calculateWeiAmountReceived(
-                BigNumber.from(params.row.indexValueCurrent),
-                BigNumber.from(params.row.totalAmountReceivedUntilUpdatedAt),
-                BigNumber.from(params.row.indexValueUntilUpdatedAt),
-                BigNumber.from(params.row.units)
-              )}
-            />
-            &nbsp;
-            <SuperTokenAddress
-              network={network}
-              address={params.row.token}
-              format={(token) => token.symbol}
-              formatLoading={() => ""}
-            />
-          </>
+          <BalanceWithToken
+            wei={calculateWeiAmountReceived(
+              BigNumber.from(params.row.indexValueCurrent),
+              BigNumber.from(params.row.totalAmountReceivedUntilUpdatedAt),
+              BigNumber.from(params.row.indexValueUntilUpdatedAt),
+              BigNumber.from(params.row.units)
+            )}
+            network={network}
+            tokenAddress={params.row.token}
+          />
         ),
       },
       {

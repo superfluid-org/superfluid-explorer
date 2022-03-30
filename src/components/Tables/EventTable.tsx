@@ -177,7 +177,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
         <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
           Events
         </Typography>
-        <Tooltip title="Filter">
+        <Tooltip disableFocusListener title="Filter">
           <IconButton ref={filterAnchorRef} onClick={openFilter}>
             <FilterListIcon />
           </IconButton>

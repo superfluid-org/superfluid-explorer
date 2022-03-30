@@ -25,6 +25,7 @@ import Error from "next/error";
 import { FC, useContext, useState } from "react";
 import AccountAddress from "../../../components/AccountAddress";
 import AppLink from "../../../components/AppLink";
+import BalanceWithToken from "../../../components/BalanceWithToken";
 import CopyLink from "../../../components/CopyLink";
 import EtherFormatted from "../../../components/EtherFormatted";
 import IndexSubscriptionDataGrid from "../../../components/IndexSubscriptionDataGrid";
@@ -105,7 +106,11 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
   }
 
   return (
-    <Container data-cy={"index-page-container"} component={Box} sx={{ my: 2, py: 2 }}>
+    <Container
+      data-cy={"index-page-container"}
+      component={Box}
+      sx={{ my: 2, py: 2 }}
+    >
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Breadcrumbs aria-label="breadcrumb">
@@ -230,7 +235,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
               </ListItem>
               <Grid container>
                 <Grid item xs={6}>
-                  <ListItem divider>
+                  <ListItem>
                     <ListItemText
                       secondary="Last Updated At"
                       primary={
@@ -244,7 +249,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   </ListItem>
                 </Grid>
                 <Grid item xs={6}>
-                  <ListItem divider>
+                  <ListItem>
                     <ListItemText
                       secondary="Created At"
                       primary={
@@ -270,7 +275,10 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   secondary={
                     <>
                       Total Units
-                      <InfoTooltipBtn dataCy={"total-units-tooltip"} title="The sum of total pending and approved units issued to subscribers." />
+                      <InfoTooltipBtn
+                        dataCy={"total-units-tooltip"}
+                        title="The sum of total pending and approved units issued to subscribers."
+                      />
                     </>
                   }
                   primary={
@@ -287,7 +295,10 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   secondary={
                     <>
                       Total Units Approved
-                      <InfoTooltipBtn dataCy={"total-units-approved-tooltip"} title="Units that have claimed all past distributions and will automatically claim all future distributions." />
+                      <InfoTooltipBtn
+                        dataCy={"total-units-approved-tooltip"}
+                        title="Units that have claimed all past distributions and will automatically claim all future distributions."
+                      />
                     </>
                   }
                   primary={
@@ -304,7 +315,10 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   secondary={
                     <>
                       Total Units Pending
-                      < InfoTooltipBtn dataCy={"total-units-pending-tooltip"} title="Units that have not claimed their distribution yet." />
+                      <InfoTooltipBtn
+                        dataCy={"total-units-pending-tooltip"}
+                        title="Units that have not claimed their distribution yet."
+                      />
                     </>
                   }
                   primary={
@@ -316,23 +330,16 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   }
                 />
               </ListItem>
-              <ListItem data-cy={"total-amount-distributed"} divider>
+              <ListItem data-cy={"total-amount-distributed"}>
                 <ListItemText
                   secondary="Total Amount Distributed"
                   primary={
                     index ? (
-                      <>
-                        <EtherFormatted
-                          wei={index.totalAmountDistributedUntilUpdatedAt}
-                        />
-                        &nbsp;
-                        <SuperTokenAddress
-                          network={network}
-                          address={index.token}
-                          format={(token) => token.symbol}
-                          formatLoading={() => ""}
-                        />
-                      </>
+                      <BalanceWithToken
+                        wei={index.totalAmountDistributedUntilUpdatedAt}
+                        network={network}
+                        tokenAddress={index.token}
+                      />
                     ) : (
                       <Skeleton sx={{ width: "75px" }} />
                     )

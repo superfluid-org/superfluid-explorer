@@ -33,6 +33,7 @@ import { FC, useContext, useEffect, useMemo, useState } from "react";
 import AccountAddress from "../../../components/AccountAddress";
 import { AppDataGrid } from "../../../components/AppDataGrid";
 import AppLink from "../../../components/AppLink";
+import BalanceWithToken from "../../../components/BalanceWithToken";
 import CopyLink from "../../../components/CopyLink";
 import EtherFormatted from "../../../components/EtherFormatted";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
@@ -145,7 +146,11 @@ export const IndexSubscriptionPageContent: FC<{
   }
 
   return (
-    <Container data-cy={"index-subscription-container"} component={Box} sx={{ my: 2, py: 2 }}>
+    <Container
+      data-cy={"index-subscription-container"}
+      component={Box}
+      sx={{ my: 2, py: 2 }}
+    >
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Breadcrumbs aria-label="breadcrumb">
@@ -273,7 +278,7 @@ export const IndexSubscriptionPageContent: FC<{
               </ListItem>
               <Grid container>
                 <Grid item xs={6}>
-                  <ListItem divider>
+                  <ListItem>
                     <ListItemText
                       secondary="Last Updated At"
                       primary={
@@ -289,7 +294,7 @@ export const IndexSubscriptionPageContent: FC<{
                   </ListItem>
                 </Grid>
                 <Grid item xs={6}>
-                  <ListItem divider>
+                  <ListItem>
                     <ListItemText
                       secondary="Created At"
                       primary={
@@ -355,7 +360,10 @@ export const IndexSubscriptionPageContent: FC<{
                   secondary={
                     <>
                       Approved
-                      <InfoTooltipBtn dataCy={"approval-tooltip"} title="Indicates if account has claimed all past distributions and automatically claims all future distributions." />
+                      <InfoTooltipBtn
+                        dataCy={"approval-tooltip"}
+                        title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
+                      />
                     </>
                   }
                   primary={
@@ -371,19 +379,16 @@ export const IndexSubscriptionPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem data-cy={"subscription-total-amount-received"} divider>
+              <ListItem data-cy={"subscription-total-amount-received"}>
                 <ListItemText
                   secondary="Total Amount Received"
                   primary={
                     indexSubscription && index && totalWeiAmountReceived ? (
                       <>
-                        <EtherFormatted wei={totalWeiAmountReceived} />
-                        &nbsp;
-                        <SuperTokenAddress
+                        <BalanceWithToken
+                          wei={totalWeiAmountReceived}
                           network={network}
-                          address={index.token}
-                          format={(token) => token.symbol}
-                          formatLoading={() => ""}
+                          tokenAddress={index.token}
                         />
                       </>
                     ) : (
@@ -607,16 +612,11 @@ export const IndexSubscriptionDistributions: FC<{
             indexDistributionAmount.mul(subscriptionUnits);
 
           return (
-            <>
-              <EtherFormatted wei={subscriptionDistributionAmount} />
-              &nbsp;
-              <SuperTokenAddress
-                network={network}
-                address={index.token}
-                format={(token) => token.symbol}
-                formatLoading={() => ""}
-              />
-            </>
+            <BalanceWithToken
+              wei={subscriptionDistributionAmount}
+              network={network}
+              tokenAddress={index.token}
+            />
           );
         },
       },

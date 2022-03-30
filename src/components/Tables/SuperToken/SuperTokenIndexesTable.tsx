@@ -261,7 +261,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
           )}
         </Stack>
 
-        <Tooltip title="Filter">
+        <Tooltip disableFocusListener title="Filter">
           <IconButton ref={filterAnchorRef} onClick={openFilter}>
             <FilterListIcon />
           </IconButton>

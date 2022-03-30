@@ -87,7 +87,7 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
         <TableLoader
           isLoading={query.isLoading || query.isFetching}
           showSpacer={streams.length === 0}
-          minHeight="520px"
+          minHeight="576px"
         />
       </TableBody>
 

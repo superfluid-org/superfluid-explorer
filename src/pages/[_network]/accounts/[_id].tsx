@@ -11,6 +11,7 @@ import {
   ListItem,
   ListItemText,
   Skeleton,
+  Stack,
   Tab,
   Tooltip,
   Typography,
@@ -26,6 +27,7 @@ import AccountStreams from "../../../components/AccountStreams";
 import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
 import CopyClipboard from "../../../components/CopyClipboard";
+import CopyIconBtn from "../../../components/CopyIconBtn";
 import CopyLink from "../../../components/CopyLink";
 import EventList from "../../../components/EventList";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
@@ -57,6 +59,7 @@ import {
   createEntryId,
 } from "../../../redux/slices/addressBook.slice";
 import { sfApi, sfSubgraph } from "../../../redux/store";
+import ellipsisAddress from "../../../utils/ellipsisAddress";
 
 const AccountPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -121,227 +124,210 @@ const AccountPage: NextPage = () => {
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Typography color="text.secondary">
-              {network && network.displayName}
-            </Typography>
-            <Typography color="text.secondary">Accounts</Typography>
-            <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
-              {accountQuery.data && accountQuery.data.id}
-            </Typography>
-          </Breadcrumbs>
-        </Grid>
+      <Stack direction="row" alignItems="center" gap={1}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Typography color="text.secondary">
+            {network && network.displayName}
+          </Typography>
+          <Typography color="text.secondary">Accounts</Typography>
+          <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
+            {accountQuery.data && accountQuery.data.id}
+          </Typography>
+        </Breadcrumbs>
+        <CopyLink localPath={`/${network.slugName}/accounts/${address}`} />
+      </Stack>
 
-        <Grid item xs={12}>
-          {network && accountQuery.data ? (
-            <Typography variant="h4" component="h1">
-              <Grid container alignItems="center">
-                <AddressBookButton
-                  network={network}
-                  address={accountQuery.data.id}
-                />
-                <Grid item sx={{ mx: 0.5 }}>
-                  {addressBookEntry
-                    ? addressBookEntry.nameTag
-                    : accountQuery.data.isSuperApp
-                    ? "Super App"
-                    : "Account"}
-                </Grid>
-                <CopyLink
-                  localPath={`/${network.slugName}/accounts/${address}`}
-                />
-                <SubgraphQueryLink
-                  network={network}
-                  query={gql`
-                    query ($id: ID = "") {
-                      account(id: $id) {
-                        createdAtTimestamp
-                        createdAtBlockNumber
-                        isSuperApp
-                        updatedAtBlockNumber
-                        updatedAtTimestamp
-                      }
+      <Box sx={{ mt: 1 }}>
+        {network && accountQuery.data ? (
+          <Typography variant="h4" component="h1">
+            <Stack direction="row" alignItems="center">
+              <AddressBookButton
+                network={network}
+                address={accountQuery.data.id}
+              />
+              <Box sx={{ mr: 1 }}>
+                {addressBookEntry
+                  ? addressBookEntry.nameTag
+                  : ellipsisAddress(
+                      ethers.utils.getAddress(accountQuery.data.id),
+                      8
+                    )}
+              </Box>
+              <CopyIconBtn
+                copyText={ethers.utils.getAddress(accountQuery.data.id)}
+              />
+              <SubgraphQueryLink
+                network={network}
+                query={gql`
+                  query ($id: ID = "") {
+                    account(id: $id) {
+                      createdAtTimestamp
+                      createdAtBlockNumber
+                      isSuperApp
+                      updatedAtBlockNumber
+                      updatedAtTimestamp
                     }
-                  `}
-                  variables={`{ "id": "${address.toLowerCase()}" }`}
-                />
-                <Tooltip title="View on blockchain Explorer">
-                  <IconButton
-                    href={network.getLinkForAddress(accountQuery.data.id)}
-                    target="_blank"
-                  >
-                    <OpenInNewIcon />
-                  </IconButton>
-                </Tooltip>
-              </Grid>
-            </Typography>
-          ) : (
-            <SkeletonAddress />
-          )}
-        </Grid>
-
-        <Grid item xs={12}>
-          <Card elevation={2}>
-            <Grid container>
-              <Grid item md={6}>
-                <List>
-                  <ListItem divider>
-                    <ListItemText
-                      data-cy={"address"}
-                      secondary="Address"
-                      primary={
-                        accountQuery.data ? (
-                          <>
-                            {ethers.utils.getAddress(accountQuery.data.id)}
-                            <CopyClipboard
-                              copyText={ethers.utils.getAddress(
-                                accountQuery.data.id
-                              )}
-                            />
-                          </>
-                        ) : (
-                          <SkeletonAddress />
-                        )
-                      }
-                    />
-                  </ListItem>
-                  <ListItem divider>
-                    <ListItemText
-                      data-cy={"account-type"}
-                      secondary={
-                        <>
-                          Account type
-                          <InfoTooltipBtn dataCy={"account-type-tooltip"} title="Either a regular account or a super app." />
-                        </>
-                      }
-                      primary={
-                        accountQuery.data ? (
-                          accountQuery.data.isSuperApp ? (
-                            "Super App"
-                          ) : (
-                            "Regular account"
-                          )
-                        ) : (
-                          <Skeleton sx={{ width: "40px" }} />
-                        )
-                      }
-                    />
-                  </ListItem>
-                </List>
-              </Grid>
-              <Grid item md={6}>
-                <List>
-                  <ListItem divider>
-                    <ListItemText
-                      data-cy={"network-name"}
-                      secondary="Network"
-                      primary={
-                        network ? (
-                          <AccountNetworkSelect
-                            activeNetwork={network}
-                            address={address}
-                          />
-                        ) : (
-                          <SkeletonNetwork />
-                        )
-                      }
-                    />
-                  </ListItem>
-                </List>
-              </Grid>
-            </Grid>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Card elevation={2}>
-            <TabContext value={tabValue}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <TabList
-                  variant="scrollable"
-                  scrollButtons="auto"
-                  onChange={(_event, newValue: string) => setTabValue(newValue)}
-                  aria-label="tabs"
+                  }
+                `}
+                variables={`{ "id": "${address.toLowerCase()}" }`}
+              />
+              <Tooltip title="View on blockchain Explorer">
+                <IconButton
+                  href={network.getLinkForAddress(accountQuery.data.id)}
+                  target="_blank"
                 >
-                  <Tab
-                    label="Streams"
-                    data-cy={"streams-tab"}
-                    value="streams"
-                    onMouseEnter={() => {
-                      if (network) {
-                        prefetchStreamsQuery({
-                          chainId: network.chainId,
-                          filter: {
-                            receiver: address,
-                          },
-                          order: incomingStreamOrderingDefault,
-                          pagination: incomingStreamPagingDefault,
-                        });
-                        prefetchStreamsQuery({
-                          chainId: network.chainId,
-                          filter: {
-                            sender: address,
-                          },
-                          order: outgoingStreamOrderingDefault,
-                          pagination: outgoingStreamPagingDefault,
-                        });
-                      }
-                    }}
-                  />
-                  <Tab
-                    data-cy={"indexes-tab"}
-                    label="Indexes"
-                    value="indexes"
-                    onMouseEnter={() => {
-                      if (network) {
-                        prefetchIndexesQuery({
-                          chainId: network.chainId,
-                          filter: {
-                            publisher: address,
-                          },
-                          order: publishedIndexOrderingDefault,
-                          pagination: publishedIndexPagingDefault,
-                        });
-                        prefetchIndexSubscriptionsQuery({
-                          chainId: network.chainId,
-                          filter: {
-                            subscriber: address,
-                          },
-                          order: indexSubscriptionOrderingDefault,
-                          pagination: indexSubscriptionPagingDefault,
-                        });
-                      }
-                    }}
-                  />
-                  <Tab
-                    data-cy={"super-tokens-tab"}
-                    label="Super Tokens"
-                    value="tokens"
-                  />
-                  <Tab data-cy={"events-tab"} label="Events" value="events" />
-                </TabList>
-              </Box>
+                  <OpenInNewIcon />
+                </IconButton>
+              </Tooltip>
+            </Stack>
+          </Typography>
+        ) : (
+          <SkeletonAddress />
+        )}
+      </Box>
 
-              <Box>
-                <TabPanel value="events">
-                  <EventList network={network} address={address} />
-                </TabPanel>
-                <TabPanel value="tokens">
-                  <AccountTokens network={network} accountAddress={address} />
-                </TabPanel>
-                <TabPanel value="streams">
-                  <AccountStreams network={network} accountAddress={address} />
-                </TabPanel>
-                <TabPanel value="indexes">
-                  <AccountIndexes network={network} accountAddress={address} />
-                </TabPanel>
-              </Box>
-            </TabContext>
-          </Card>
-        </Grid>
-      </Grid>
+      <Box sx={{ mt: 3 }}>
+        <Card elevation={2}>
+          <List
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                sm: "1fr",
+                md: "1fr 1fr",
+              },
+            }}
+          >
+            <ListItem>
+              <ListItemText
+                data-cy={"account-type"}
+                secondary={
+                  <>
+                    Account type
+                    <InfoTooltipBtn
+                      dataCy={"account-type-tooltip"}
+                      title="Either a regular account or a super app."
+                    />
+                  </>
+                }
+                primary={
+                  accountQuery.data ? (
+                    accountQuery.data.isSuperApp ? (
+                      "Super App"
+                    ) : (
+                      "Regular account"
+                    )
+                  ) : (
+                    <Skeleton sx={{ width: "40px" }} />
+                  )
+                }
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                data-cy={"network-name"}
+                secondary="Network"
+                primary={
+                  network ? (
+                    <AccountNetworkSelect
+                      activeNetwork={network}
+                      address={address}
+                    />
+                  ) : (
+                    <SkeletonNetwork />
+                  )
+                }
+              />
+            </ListItem>
+          </List>
+        </Card>
+      </Box>
+
+      <Box sx={{ mt: 3 }}>
+        <Card elevation={2}>
+          <TabContext value={tabValue}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                variant="scrollable"
+                scrollButtons="auto"
+                onChange={(_event, newValue: string) => setTabValue(newValue)}
+                aria-label="tabs"
+              >
+                <Tab
+                  label="Streams"
+                  data-cy={"streams-tab"}
+                  value="streams"
+                  onMouseEnter={() => {
+                    if (network) {
+                      prefetchStreamsQuery({
+                        chainId: network.chainId,
+                        filter: {
+                          receiver: address,
+                        },
+                        order: incomingStreamOrderingDefault,
+                        pagination: incomingStreamPagingDefault,
+                      });
+                      prefetchStreamsQuery({
+                        chainId: network.chainId,
+                        filter: {
+                          sender: address,
+                        },
+                        order: outgoingStreamOrderingDefault,
+                        pagination: outgoingStreamPagingDefault,
+                      });
+                    }
+                  }}
+                />
+                <Tab
+                  data-cy={"indexes-tab"}
+                  label="Indexes"
+                  value="indexes"
+                  onMouseEnter={() => {
+                    if (network) {
+                      prefetchIndexesQuery({
+                        chainId: network.chainId,
+                        filter: {
+                          publisher: address,
+                        },
+                        order: publishedIndexOrderingDefault,
+                        pagination: publishedIndexPagingDefault,
+                      });
+                      prefetchIndexSubscriptionsQuery({
+                        chainId: network.chainId,
+                        filter: {
+                          subscriber: address,
+                        },
+                        order: indexSubscriptionOrderingDefault,
+                        pagination: indexSubscriptionPagingDefault,
+                      });
+                    }
+                  }}
+                />
+                <Tab
+                  data-cy={"super-tokens-tab"}
+                  label="Super Tokens"
+                  value="tokens"
+                />
+                <Tab data-cy={"events-tab"} label="Events" value="events" />
+              </TabList>
+            </Box>
+
+            <Box>
+              <TabPanel value="events">
+                <EventList network={network} address={address} />
+              </TabPanel>
+              <TabPanel value="tokens">
+                <AccountTokens network={network} accountAddress={address} />
+              </TabPanel>
+              <TabPanel value="streams">
+                <AccountStreams network={network} accountAddress={address} />
+              </TabPanel>
+              <TabPanel value="indexes">
+                <AccountIndexes network={network} accountAddress={address} />
+              </TabPanel>
+            </Box>
+          </TabContext>
+        </Card>
+      </Box>
     </Container>
   );
 };
