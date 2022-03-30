@@ -104,9 +104,9 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      queryTriggerDebounced(newArgs);
+      queryTriggerDebounced(newArgs, true);
     } else {
-      queryTrigger(newArgs);
+      queryTrigger(newArgs, true);
     }
   };
 
@@ -449,7 +449,9 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
         <TableBody>
           {tableRows.map((index) => (
             <TableRow key={index.id} hover>
-              <TableCell data-cy={"publications-index-id"}>{index.indexId}</TableCell>
+              <TableCell data-cy={"publications-index-id"}>
+                {index.indexId}
+              </TableCell>
               <TableCell data-cy={"publications-total-distributed"}>
                 <BalanceWithToken
                   wei={index.totalAmountDistributedUntilUpdatedAt}
@@ -457,7 +459,9 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                   tokenAddress={index.token}
                 />
               </TableCell>
-              <TableCell data-cy={"publications-units"}>{index.totalUnits}</TableCell>
+              <TableCell data-cy={"publications-units"}>
+                {index.totalUnits}
+              </TableCell>
               <TableCell>
                 <TimeAgo
                   subgraphTime={index.createdAtTimestamp}
@@ -483,7 +487,9 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography data-cy={"publications-no-results"} variant="body1">No results</Typography>
+                <Typography data-cy={"publications-no-results"} variant="body1">
+                  No results
+                </Typography>
               </TableCell>
             </TableRow>
           )}

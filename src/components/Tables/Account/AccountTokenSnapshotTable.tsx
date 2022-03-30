@@ -98,9 +98,9 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      queryTriggerDebounced(newArgs);
+      queryTriggerDebounced(newArgs, true);
     } else {
-      queryTrigger(newArgs);
+      queryTrigger(newArgs, true);
     }
   };
 
@@ -478,9 +478,15 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                   flowRate={tokenSnapshot.totalNetFlowRate}
                 />
               </TableCell>
-              <TableCell data-cy={"active-streams"}>{tokenSnapshot.totalNumberOfActiveStreams}</TableCell>
-              <TableCell data-cy={"closed-streams"}>{tokenSnapshot.totalNumberOfClosedStreams}</TableCell>
-              <TableCell data-cy={"subscriptions-with-units"}>{tokenSnapshot.totalSubscriptionsWithUnits}</TableCell>
+              <TableCell data-cy={"active-streams"}>
+                {tokenSnapshot.totalNumberOfActiveStreams}
+              </TableCell>
+              <TableCell data-cy={"closed-streams"}>
+                {tokenSnapshot.totalNumberOfClosedStreams}
+              </TableCell>
+              <TableCell data-cy={"subscriptions-with-units"}>
+                {tokenSnapshot.totalSubscriptionsWithUnits}
+              </TableCell>
             </TableRow>
           ))}
 

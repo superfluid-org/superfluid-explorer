@@ -87,9 +87,9 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      queryTriggerDebounced(newArgs);
+      queryTriggerDebounced(newArgs, true);
     } else {
-      queryTrigger(newArgs);
+      queryTrigger(newArgs, true);
     }
   };
 
@@ -283,7 +283,9 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
           {tableRows.map((event) => (
             <TableRow key={event.id} hover>
               <TableCell data-cy={"event-name"}>{event.name}</TableCell>
-              <TableCell data-cy={"event-block-number"}>{event.blockNumber}</TableCell>
+              <TableCell data-cy={"event-block-number"}>
+                {event.blockNumber}
+              </TableCell>
               <TableCell data-cy={"transaction-hash"}>
                 <TransactionHash
                   network={network}

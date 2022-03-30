@@ -55,6 +55,7 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
       MuiTableHead: {
         styleOverrides: {
           root: {
+            // This makes sortable column headings visible when table header is hovered:
             "&:hover .MuiTableSortLabel-root:not(.Mui-active):not(:hover) .MuiTableSortLabel-icon":
               {
                 opacity: 0.5,
@@ -66,6 +67,7 @@ export const createSfTheme = (mode: "light" | "dark" = "light") =>
         styleOverrides: {
           root: {
             position: "relative",
+            // This removes border bottom from last row of the table.
             "tr:last-child td": { border: 0 },
           },
         },

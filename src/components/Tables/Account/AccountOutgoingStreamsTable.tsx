@@ -95,9 +95,9 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
       streamsQueryResult.originalArgs &&
       !isEqual(streamsQueryResult.originalArgs.filter, newArgs.filter)
     ) {
-      streamsQueryTriggerDebounced(newArgs);
+      streamsQueryTriggerDebounced(newArgs, true);
     } else {
-      streamsQueryTrigger(newArgs);
+      streamsQueryTrigger(newArgs, true);
     }
   };
 

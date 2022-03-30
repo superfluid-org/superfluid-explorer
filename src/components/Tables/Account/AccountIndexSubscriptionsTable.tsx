@@ -107,9 +107,9 @@ const AccountIndexSubscriptionsTable: FC<
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      queryTriggerDebounced(newArgs);
+      queryTriggerDebounced(newArgs, true);
     } else {
-      queryTrigger(newArgs);
+      queryTrigger(newArgs, true);
     }
   };
 
@@ -551,7 +551,12 @@ const AccountIndexSubscriptionsTable: FC<
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography data-cy={"subscriptions-no-results"} variant="body1">No results</Typography>
+                <Typography
+                  data-cy={"subscriptions-no-results"}
+                  variant="body1"
+                >
+                  No results
+                </Typography>
               </TableCell>
             </TableRow>
           )}

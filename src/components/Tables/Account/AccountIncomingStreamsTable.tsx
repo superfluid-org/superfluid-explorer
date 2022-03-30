@@ -109,9 +109,9 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
       streamsQueryResult.originalArgs &&
       !isEqual(streamsQueryResult.originalArgs.filter, newArgs.filter)
     ) {
-      streamsQueryTriggerDebounced(newArgs);
+      streamsQueryTriggerDebounced(newArgs, true);
     } else {
-      streamsQueryTrigger(newArgs);
+      streamsQueryTrigger(newArgs, true);
     }
   };
 
@@ -425,7 +425,9 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography data-cy={"incoming-no-results"} variant="body1">No results</Typography>
+                <Typography data-cy={"incoming-no-results"} variant="body1">
+                  No results
+                </Typography>
               </TableCell>
             </TableRow>
           )}
