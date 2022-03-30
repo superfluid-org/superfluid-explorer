@@ -190,6 +190,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
                   primary={
                     index ? (
                       <AccountAddress
+                        dataCy={"account-address"}
                         network={network}
                         address={index.publisher}
                       />
