@@ -102,7 +102,11 @@ const SuperTokenPage: NextPage = () => {
 
       <Box sx={{ mt: 1 }}>
         {superToken ? (
-          <Stack direction="row" alignItems="center">
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Typography variant="h4" component="h1" sx={{ mr: 1 }}>
               {superToken.name}
             </Typography>

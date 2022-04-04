@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
 import Link from "next/link";
 import { FC, useState } from "react";
 import { Network } from "../redux/networks";
@@ -9,10 +9,8 @@ const SubgraphQueryLink: FC<{
   query: string;
   variables?: string;
 }> = ({ network, query, variables }) => {
-  const [queryCompressed] = useState(btoa(query));
-  const [variablesCompressed] = useState(
-    variables ? btoa(variables) : undefined
-  );
+  const queryCompressed = btoa(query);
+  const variablesCompressed = variables ? btoa(variables) : undefined;
 
   return (
     <Link
@@ -22,9 +20,9 @@ const SubgraphQueryLink: FC<{
       }`}
     >
       <Tooltip title="View on Subgraph Explorer">
-        <IconButton>
-          <SubgraphIcon />
-        </IconButton>
+        <Button size="small" variant="outlined" startIcon={<SubgraphIcon />}>
+          Subgraph
+        </Button>
       </Tooltip>
     </Link>
   );

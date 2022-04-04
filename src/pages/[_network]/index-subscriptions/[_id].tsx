@@ -167,8 +167,13 @@ export const IndexSubscriptionPageContent: FC<{
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" sx={{ mt: 1 }}>
-        <Typography variant="h4" component="h1" sx={{ mr: 1 }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mt: 1 }}
+      >
+        <Typography variant="h4" component="h1">
           Index Subscription
         </Typography>
         <SubgraphQueryLink

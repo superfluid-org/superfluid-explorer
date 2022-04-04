@@ -5,9 +5,14 @@ import copyTextToClipboard from "../utils/copyTextToClipboard";
 
 interface CopyIconBtnProps {
   copyText: string;
+  description?: string;
   TooltipProps?: Partial<TooltipProps>;
 }
-const CopyIconBtn: FC<CopyIconBtnProps> = ({ copyText, TooltipProps }) => {
+const CopyIconBtn: FC<CopyIconBtnProps> = ({
+  copyText,
+  description = "Copy to clipboard",
+  TooltipProps,
+}) => {
   const [isCopied, setIsCopied] = useState(false);
 
   /**
@@ -25,10 +30,7 @@ const CopyIconBtn: FC<CopyIconBtnProps> = ({ copyText, TooltipProps }) => {
       .catch(console.log);
 
   return (
-    <Tooltip
-      title={isCopied ? "Copied!" : "Copy to clipboard"}
-      {...TooltipProps}
-    >
+    <Tooltip title={isCopied ? "Copied!" : description} {...TooltipProps}>
       <IconButton onClick={handleCopyClick}>
         <ContentCopyIcon />
       </IconButton>

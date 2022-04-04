@@ -3,10 +3,9 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Box,
   Breadcrumbs,
+  Button,
   Card,
   Container,
-  Grid,
-  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -26,7 +25,6 @@ import AccountIndexes from "../../../components/AccountIndexes";
 import AccountStreams from "../../../components/AccountStreams";
 import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
-import CopyClipboard from "../../../components/CopyClipboard";
 import CopyIconBtn from "../../../components/CopyIconBtn";
 import CopyLink from "../../../components/CopyLink";
 import EventList from "../../../components/EventList";
@@ -154,30 +152,36 @@ const AccountPage: NextPage = () => {
             </Typography>
             <CopyIconBtn
               copyText={ethers.utils.getAddress(accountQuery.data.id)}
+              description="Copy address to clipboard"
             />
-            <SubgraphQueryLink
-              network={network}
-              query={gql`
-                query ($id: ID = "") {
-                  account(id: $id) {
-                    createdAtTimestamp
-                    createdAtBlockNumber
-                    isSuperApp
-                    updatedAtBlockNumber
-                    updatedAtTimestamp
+            <Stack direction="row" justifyContent="flex-end" flex={1} gap={1}>
+              <SubgraphQueryLink
+                network={network}
+                query={gql`
+                  query ($id: ID = "") {
+                    account(id: $id) {
+                      createdAtTimestamp
+                      createdAtBlockNumber
+                      isSuperApp
+                      updatedAtBlockNumber
+                      updatedAtTimestamp
+                    }
                   }
-                }
-              `}
-              variables={`{ "id": "${address.toLowerCase()}" }`}
-            />
-            <Tooltip title="View on blockchain Explorer">
-              <IconButton
-                href={network.getLinkForAddress(accountQuery.data.id)}
-                target="_blank"
-              >
-                <OpenInNewIcon />
-              </IconButton>
-            </Tooltip>
+                `}
+                variables={`{ "id": "${address.toLowerCase()}" }`}
+              />
+              <Tooltip title="View on blockchain Explorer">
+                <Button
+                  size="small"
+                  variant="outlined"
+                  href={network.getLinkForAddress(accountQuery.data.id)}
+                  target="_blank"
+                  startIcon={<OpenInNewIcon />}
+                >
+                  Blockchain
+                </Button>
+              </Tooltip>
+            </Stack>
           </Stack>
         ) : (
           <SkeletonAddress />

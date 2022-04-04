@@ -122,8 +122,13 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
         <CopyLink localPath={`/${network.slugName}/indexes/${indexId}`} />
       </Stack>
 
-      <Stack direction="row" alignItems="center" sx={{ mt: 1 }}>
-        <Typography variant="h4" component="h1" sx={{ mr: 1 }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mt: 1 }}
+      >
+        <Typography variant="h4" component="h1">
           Index
         </Typography>
         <SubgraphQueryLink

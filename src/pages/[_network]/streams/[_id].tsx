@@ -99,8 +99,13 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
         <CopyLink localPath={`/${network.slugName}/streams/${streamId}`} />
       </Stack>
 
-      <Stack direction="row" alignItems="center" sx={{ mt: 1 }}>
-        <Typography variant="h4" component="h1" sx={{ mr: 1 }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mt: 1 }}
+      >
+        <Typography variant="h4" component="h1">
           Stream
         </Typography>
         <SubgraphQueryLink
