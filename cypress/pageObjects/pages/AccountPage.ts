@@ -5,7 +5,7 @@ const ACCOUNT_TYPE = "[data-cy=account-type] span"
 const BORDER_ADD_TO_ADDRESS_BOOK_BUTTON = "[data-testid=StarBorderIcon]"
 const FILLED_ADD_TO_ADDRESS_BOOK_BUTTON = "[data-testid=StarIcon]"
 const NETWORK_NAME = "[data-cy=network-name] div"
-const ACCOUNT_ADDRESS = "[data-cy=address] span"
+const ACCOUNT_ADDRESS = "[data-cy=address]"
 const OTHER_PARTY_ADDRESS = "[data-cy=account-address]"
 const FLOW_RATES = "[data-field=currentFlowRate] span"
 const TOTAL_STREAMED = "[data-cy=total-streamed]"
@@ -55,7 +55,7 @@ export class AccountPage extends BasePage {
   static validateAccountAddressTypeAndNetwork(network: string) {
     cy.fixture("accountData").then(account => {
       this.hasText(ACCOUNT_TYPE, account[network].accountType)
-      this.hasText(ACCOUNT_ADDRESS, account[network].address)
+      this.hasText(ACCOUNT_ADDRESS, this.getShortenedAddress(account[network].address))
       this.hasText(NETWORK_NAME, account[network].networkFancyName)
     })
   }

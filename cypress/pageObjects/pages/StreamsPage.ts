@@ -26,7 +26,6 @@ export class StreamsPage extends BasePage {
     cy.fixture("streamData").then(streamData => {
       this.hasText(CURRENT_FLOW_RATE, streamData[network].currentFlowRate)
       this.hasText(TOTAL_STREAMED, streamData[network].totalAmountStreamed)
-      this.hasText(FLOW_RATE_TOKEN_NAME, streamData[network].streamedTokenSymbol)
     })
   }
 

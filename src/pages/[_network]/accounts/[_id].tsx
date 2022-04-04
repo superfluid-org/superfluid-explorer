@@ -142,7 +142,7 @@ const AccountPage: NextPage = () => {
               network={network}
               address={accountQuery.data.id}
             />
-            <Typography variant="h4" component="h1" sx={{ mx: 1 }}>
+            <Typography data-cy={"address"} variant="h4" component="h1" sx={{ mx: 1 }}>
               {addressBookEntry
                 ? addressBookEntry.nameTag
                 : ellipsisAddress(
