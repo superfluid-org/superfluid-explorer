@@ -139,48 +139,46 @@ const AccountPage: NextPage = () => {
 
       <Box sx={{ mt: 1 }}>
         {network && accountQuery.data ? (
-          <Typography variant="h4" component="h1">
-            <Stack direction="row" alignItems="center">
-              <AddressBookButton
-                network={network}
-                address={accountQuery.data.id}
-              />
-              <Box sx={{ mr: 1 }}>
-                {addressBookEntry
-                  ? addressBookEntry.nameTag
-                  : ellipsisAddress(
-                      ethers.utils.getAddress(accountQuery.data.id),
-                      8
-                    )}
-              </Box>
-              <CopyIconBtn
-                copyText={ethers.utils.getAddress(accountQuery.data.id)}
-              />
-              <SubgraphQueryLink
-                network={network}
-                query={gql`
-                  query ($id: ID = "") {
-                    account(id: $id) {
-                      createdAtTimestamp
-                      createdAtBlockNumber
-                      isSuperApp
-                      updatedAtBlockNumber
-                      updatedAtTimestamp
-                    }
+          <Stack direction="row" alignItems="center">
+            <AddressBookButton
+              network={network}
+              address={accountQuery.data.id}
+            />
+            <Typography variant="h4" component="h1" sx={{ mr: 2, ml: 1 }}>
+              {addressBookEntry
+                ? addressBookEntry.nameTag
+                : ellipsisAddress(
+                    ethers.utils.getAddress(accountQuery.data.id),
+                    6
+                  )}
+            </Typography>
+            <CopyIconBtn
+              copyText={ethers.utils.getAddress(accountQuery.data.id)}
+            />
+            <SubgraphQueryLink
+              network={network}
+              query={gql`
+                query ($id: ID = "") {
+                  account(id: $id) {
+                    createdAtTimestamp
+                    createdAtBlockNumber
+                    isSuperApp
+                    updatedAtBlockNumber
+                    updatedAtTimestamp
                   }
-                `}
-                variables={`{ "id": "${address.toLowerCase()}" }`}
-              />
-              <Tooltip title="View on blockchain Explorer">
-                <IconButton
-                  href={network.getLinkForAddress(accountQuery.data.id)}
-                  target="_blank"
-                >
-                  <OpenInNewIcon />
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          </Typography>
+                }
+              `}
+              variables={`{ "id": "${address.toLowerCase()}" }`}
+            />
+            <Tooltip title="View on blockchain Explorer">
+              <IconButton
+                href={network.getLinkForAddress(accountQuery.data.id)}
+                target="_blank"
+              >
+                <OpenInNewIcon />
+              </IconButton>
+            </Tooltip>
+          </Stack>
         ) : (
           <SkeletonAddress />
         )}
