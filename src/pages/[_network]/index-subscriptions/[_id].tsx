@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
   Skeleton,
+  Stack,
   Typography,
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
@@ -151,47 +152,43 @@ export const IndexSubscriptionPageContent: FC<{
       component={Box}
       sx={{ my: 2, py: 2 }}
     >
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Typography color="text.secondary">
-              {network && network.displayName}
-            </Typography>
-            <Typography color="text.secondary">Index Subscriptions</Typography>
-            <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
-              {indexSubscriptionId.substring(0, 6) + "..."}
-            </Typography>
-          </Breadcrumbs>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="h4" component="h1">
-            <Grid container alignItems="center">
-              <Grid item sx={{ mx: 0.5 }}>
-                Index Subscription
-              </Grid>
-              <CopyLink
-                localPath={`/${network.slugName}/index-subscriptions/${indexSubscriptionId}`}
-              />
-              <SubgraphQueryLink
-                network={network}
-                query={gql`
-                  query ($id: ID!) {
-                    indexSubscription(id: $id) {
-                      indexValueUntilUpdatedAt
-                      approved
-                      totalAmountReceivedUntilUpdatedAt
-                      units
-                    }
-                  }
-                `}
-                variables={`{ "id": "${indexSubscriptionId.toLowerCase()}" }`}
-              />
-            </Grid>
+      <Stack direction="row" alignItems="center" gap={1}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Typography color="text.secondary">
+            {network && network.displayName}
           </Typography>
-        </Grid>
+          <Typography color="text.secondary">Index Subscriptions</Typography>
+          <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
+            {indexSubscriptionId.substring(0, 6) + "..."}
+          </Typography>
+        </Breadcrumbs>
+        <CopyLink
+          localPath={`/${network.slugName}/index-subscriptions/${indexSubscriptionId}`}
+        />
+      </Stack>
 
-        <Grid item xs={12} lg={6}>
+      <Stack direction="row" alignItems="center" sx={{ mt: 1 }}>
+        <Typography variant="h4" component="h1" sx={{ mr: 1 }}>
+          Index Subscription
+        </Typography>
+        <SubgraphQueryLink
+          network={network}
+          query={gql`
+            query ($id: ID!) {
+              indexSubscription(id: $id) {
+                indexValueUntilUpdatedAt
+                approved
+                totalAmountReceivedUntilUpdatedAt
+                units
+              }
+            }
+          `}
+          variables={`{ "id": "${indexSubscriptionId.toLowerCase()}" }`}
+        />
+      </Stack>
+
+      <Grid container spacing={3} sx={{ pt: 3 }}>
+        <Grid item xs={12} md={6}>
           <Card elevation={2}>
             <List>
               <ListItem data-cy={"index-subscription-short-hash"} divider>
@@ -400,52 +397,51 @@ export const IndexSubscriptionPageContent: FC<{
             </List>
           </Card>
         </Grid>
-
-        <Grid data-cy={"distributions-grid"} item xs={12}>
-          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-            Distributions
-            <InfoTooltipBtn
-              dataCy={"distributions-tooltip"}
-              title={
-                <>
-                  An event in which super tokens are distributed to the entire
-                  pool of subscribers for a given index using the Superfluid
-                  IDA.{" "}
-                  <AppLink
-                    data-cy={"distributions-tooltip-link"}
-                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
-                    target="_blank"
-                  >
-                    Read more
-                  </AppLink>
-                </>
-              }
-              size={22}
-            />
-          </Typography>
-
-          <Card elevation={2}>
-            <IndexSubscriptionDistributions
-              network={network}
-              indexSubscriptionId={indexSubscriptionId}
-            />
-          </Card>
-        </Grid>
-
-        <Grid data-cy={"units-updated-grid"} item xs={12}>
-          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-            Units Updated (i.e. Pool % Updated)
-          </Typography>
-          <Card elevation={2}>
-            <SubscriptionUnitsUpdatedEventDataGrid
-              queryResult={subscriptionUnitsUpdatedEventQuery}
-              setPaging={setSubscriptionUnitsUpdatedEventPaging}
-              ordering={subscriptionUnitsUpdatedEventPagingOrdering}
-              setOrdering={setSubscriptionUnitsUpdatedEventOrdering}
-            />
-          </Card>
-        </Grid>
       </Grid>
+
+      <Box data-cy={"distributions-grid"} sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Distributions
+          <InfoTooltipBtn
+            dataCy={"distributions-tooltip"}
+            title={
+              <>
+                An event in which super tokens are distributed to the entire
+                pool of subscribers for a given index using the Superfluid IDA.{" "}
+                <AppLink
+                  data-cy={"distributions-tooltip-link"}
+                  href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                  target="_blank"
+                >
+                  Read more
+                </AppLink>
+              </>
+            }
+            size={22}
+          />
+        </Typography>
+
+        <Card elevation={2}>
+          <IndexSubscriptionDistributions
+            network={network}
+            indexSubscriptionId={indexSubscriptionId}
+          />
+        </Card>
+      </Box>
+
+      <Box data-cy={"units-updated-grid"} sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Units Updated (i.e. Pool % Updated)
+        </Typography>
+        <Card elevation={2}>
+          <SubscriptionUnitsUpdatedEventDataGrid
+            queryResult={subscriptionUnitsUpdatedEventQuery}
+            setPaging={setSubscriptionUnitsUpdatedEventPaging}
+            ordering={subscriptionUnitsUpdatedEventPagingOrdering}
+            setOrdering={setSubscriptionUnitsUpdatedEventOrdering}
+          />
+        </Card>
+      </Box>
     </Container>
   );
 };

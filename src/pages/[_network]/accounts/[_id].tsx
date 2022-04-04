@@ -144,7 +144,7 @@ const AccountPage: NextPage = () => {
               network={network}
               address={accountQuery.data.id}
             />
-            <Typography variant="h4" component="h1" sx={{ mr: 2, ml: 1 }}>
+            <Typography variant="h4" component="h1" sx={{ mx: 1 }}>
               {addressBookEntry
                 ? addressBookEntry.nameTag
                 : ellipsisAddress(
@@ -184,148 +184,144 @@ const AccountPage: NextPage = () => {
         )}
       </Box>
 
-      <Box sx={{ mt: 3 }}>
-        <Card elevation={2}>
-          <List
-            sx={{
-              display: "grid",
-              gridTemplateColumns: {
-                sm: "1fr",
-                md: "1fr 1fr",
-              },
-            }}
-          >
-            <ListItem>
-              <ListItemText
-                data-cy={"account-type"}
-                secondary={
-                  <>
-                    Account type
-                    <InfoTooltipBtn
-                      dataCy={"account-type-tooltip"}
-                      title="Either a regular account or a super app."
-                    />
-                  </>
-                }
-                primary={
-                  accountQuery.data ? (
-                    accountQuery.data.isSuperApp ? (
-                      "Super App"
-                    ) : (
-                      "Regular account"
-                    )
+      <Card elevation={2} sx={{ mt: 3 }}>
+        <List
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              sm: "1fr",
+              md: "1fr 1fr",
+            },
+          }}
+        >
+          <ListItem>
+            <ListItemText
+              data-cy={"account-type"}
+              secondary={
+                <>
+                  Account type
+                  <InfoTooltipBtn
+                    dataCy={"account-type-tooltip"}
+                    title="Either a regular account or a super app."
+                  />
+                </>
+              }
+              primary={
+                accountQuery.data ? (
+                  accountQuery.data.isSuperApp ? (
+                    "Super App"
                   ) : (
-                    <Skeleton sx={{ width: "40px" }} />
+                    "Regular account"
                   )
-                }
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                data-cy={"network-name"}
-                secondary="Network"
-                primary={
-                  network ? (
-                    <AccountNetworkSelect
-                      activeNetwork={network}
-                      address={address}
-                    />
-                  ) : (
-                    <SkeletonNetwork />
-                  )
-                }
-              />
-            </ListItem>
-          </List>
-        </Card>
-      </Box>
+                ) : (
+                  <Skeleton sx={{ width: "40px" }} />
+                )
+              }
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              data-cy={"network-name"}
+              secondary="Network"
+              primary={
+                network ? (
+                  <AccountNetworkSelect
+                    activeNetwork={network}
+                    address={address}
+                  />
+                ) : (
+                  <SkeletonNetwork />
+                )
+              }
+            />
+          </ListItem>
+        </List>
+      </Card>
 
-      <Box sx={{ mt: 3 }}>
-        <Card elevation={2}>
-          <TabContext value={tabValue}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <TabList
-                variant="scrollable"
-                scrollButtons="auto"
-                onChange={(_event, newValue: string) => setTabValue(newValue)}
-                aria-label="tabs"
-              >
-                <Tab
-                  label="Streams"
-                  data-cy={"streams-tab"}
-                  value="streams"
-                  onMouseEnter={() => {
-                    if (network) {
-                      prefetchStreamsQuery({
-                        chainId: network.chainId,
-                        filter: {
-                          receiver: address,
-                        },
-                        order: incomingStreamOrderingDefault,
-                        pagination: incomingStreamPagingDefault,
-                      });
-                      prefetchStreamsQuery({
-                        chainId: network.chainId,
-                        filter: {
-                          sender: address,
-                        },
-                        order: outgoingStreamOrderingDefault,
-                        pagination: outgoingStreamPagingDefault,
-                      });
-                    }
-                  }}
-                />
-                <Tab
-                  data-cy={"indexes-tab"}
-                  label="Indexes"
-                  value="indexes"
-                  onMouseEnter={() => {
-                    if (network) {
-                      prefetchIndexesQuery({
-                        chainId: network.chainId,
-                        filter: {
-                          publisher: address,
-                        },
-                        order: publishedIndexOrderingDefault,
-                        pagination: publishedIndexPagingDefault,
-                      });
-                      prefetchIndexSubscriptionsQuery({
-                        chainId: network.chainId,
-                        filter: {
-                          subscriber: address,
-                        },
-                        order: indexSubscriptionOrderingDefault,
-                        pagination: indexSubscriptionPagingDefault,
-                      });
-                    }
-                  }}
-                />
-                <Tab
-                  data-cy={"super-tokens-tab"}
-                  label="Super Tokens"
-                  value="tokens"
-                />
-                <Tab data-cy={"events-tab"} label="Events" value="events" />
-              </TabList>
-            </Box>
+      <Card elevation={2} sx={{ mt: 3 }}>
+        <TabContext value={tabValue}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <TabList
+              variant="scrollable"
+              scrollButtons="auto"
+              onChange={(_event, newValue: string) => setTabValue(newValue)}
+              aria-label="tabs"
+            >
+              <Tab
+                label="Streams"
+                data-cy={"streams-tab"}
+                value="streams"
+                onMouseEnter={() => {
+                  if (network) {
+                    prefetchStreamsQuery({
+                      chainId: network.chainId,
+                      filter: {
+                        receiver: address,
+                      },
+                      order: incomingStreamOrderingDefault,
+                      pagination: incomingStreamPagingDefault,
+                    });
+                    prefetchStreamsQuery({
+                      chainId: network.chainId,
+                      filter: {
+                        sender: address,
+                      },
+                      order: outgoingStreamOrderingDefault,
+                      pagination: outgoingStreamPagingDefault,
+                    });
+                  }
+                }}
+              />
+              <Tab
+                data-cy={"indexes-tab"}
+                label="Indexes"
+                value="indexes"
+                onMouseEnter={() => {
+                  if (network) {
+                    prefetchIndexesQuery({
+                      chainId: network.chainId,
+                      filter: {
+                        publisher: address,
+                      },
+                      order: publishedIndexOrderingDefault,
+                      pagination: publishedIndexPagingDefault,
+                    });
+                    prefetchIndexSubscriptionsQuery({
+                      chainId: network.chainId,
+                      filter: {
+                        subscriber: address,
+                      },
+                      order: indexSubscriptionOrderingDefault,
+                      pagination: indexSubscriptionPagingDefault,
+                    });
+                  }
+                }}
+              />
+              <Tab
+                data-cy={"super-tokens-tab"}
+                label="Super Tokens"
+                value="tokens"
+              />
+              <Tab data-cy={"events-tab"} label="Events" value="events" />
+            </TabList>
+          </Box>
 
-            <Box>
-              <TabPanel value="events">
-                <EventList network={network} address={address} />
-              </TabPanel>
-              <TabPanel value="tokens">
-                <AccountTokens network={network} accountAddress={address} />
-              </TabPanel>
-              <TabPanel value="streams">
-                <AccountStreams network={network} accountAddress={address} />
-              </TabPanel>
-              <TabPanel value="indexes">
-                <AccountIndexes network={network} accountAddress={address} />
-              </TabPanel>
-            </Box>
-          </TabContext>
-        </Card>
-      </Box>
+          <Box>
+            <TabPanel value="events">
+              <EventList network={network} address={address} />
+            </TabPanel>
+            <TabPanel value="tokens">
+              <AccountTokens network={network} accountAddress={address} />
+            </TabPanel>
+            <TabPanel value="streams">
+              <AccountStreams network={network} accountAddress={address} />
+            </TabPanel>
+            <TabPanel value="indexes">
+              <AccountIndexes network={network} accountAddress={address} />
+            </TabPanel>
+          </Box>
+        </TabContext>
+      </Card>
     </Container>
   );
 };

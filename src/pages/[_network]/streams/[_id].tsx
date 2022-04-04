@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
   Skeleton,
+  Stack,
   Typography,
 } from "@mui/material";
 import {
@@ -37,6 +38,7 @@ import IdContext from "../../../contexts/IdContext";
 import NetworkContext from "../../../contexts/NetworkContext";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
+import ellipsisAddress from "../../../utils/ellipsisAddress";
 
 const StreamPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -86,231 +88,214 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Typography color="text.secondary">
-              {network.displayName}
-            </Typography>
-            <Typography color="text.secondary">Streams</Typography>
-            <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
-              {streamId.substring(0, 6) + "..."}
-            </Typography>
-          </Breadcrumbs>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="h4" component="h1">
-            <Grid container alignItems="center">
-              <Grid item sx={{ mx: 0.5 }}>
-                Stream
-              </Grid>
-              <CopyLink
-                localPath={`/${network.slugName}/streams/${streamId}`}
-              />
-              <SubgraphQueryLink
-                network={network}
-                query={gql`
-                  query ($id: ID!) {
-                    stream(id: $id) {
-                      currentFlowRate
-                      sender {
-                        id
-                      }
-                      receiver {
-                        id
-                      }
-                      token {
-                        symbol
-                      }
-                      streamedUntilUpdatedAt
-                    }
-                  }
-                `}
-                variables={`{ "id": "${streamId.toLowerCase()}" }`}
-              />
-            </Grid>
+      <Stack direction="row" alignItems="center" gap={1}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Typography color="text.secondary">{network.displayName}</Typography>
+          <Typography color="text.secondary">Streams</Typography>
+          <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
+            {streamId.substring(0, 6) + "..."}
           </Typography>
-        </Grid>
+        </Breadcrumbs>
+        <CopyLink localPath={`/${network.slugName}/streams/${streamId}`} />
+      </Stack>
 
-        <Grid item xs={12}>
-          <Card elevation={2}>
-            <List>
-              <ListItem divider>
-                <ListItemText
-                  data-cy={"streamed-token"}
-                  secondary="Token"
-                  primary={
-                    stream ? (
-                      <SuperTokenAddress
-                        network={network}
-                        address={stream.token}
-                      />
-                    ) : (
-                      <SkeletonAddress />
-                    )
-                  }
-                />
-              </ListItem>
-              <ListItem divider>
-                <ListItemText
-                  secondary="Sender"
-                  primary={
-                    stream ? (
-                      <AccountAddress
-                        dataCy={"sender-address"}
-                        network={network}
-                        address={stream.sender}
-                      />
-                    ) : (
-                      <SkeletonAddress />
-                    )
-                  }
-                />
-              </ListItem>
-              <ListItem divider>
-                <ListItemText
-                  secondary="Receiver"
-                  primary={
-                    stream ? (
-                      <AccountAddress
-                        dataCy={"receiver-address"}
-                        network={network}
-                        address={stream.receiver}
-                      />
-                    ) : (
-                      <SkeletonAddress />
-                    )
-                  }
-                />
-              </ListItem>
-              <Grid container>
-                <Grid item xs={6}>
-                  <ListItem>
-                    <ListItemText
-                      secondary="Last Updated At"
-                      primary={
-                        stream ? (
-                          <TimeAgo subgraphTime={stream.updatedAtTimestamp} />
-                        ) : (
-                          <Skeleton sx={{ width: "80px" }} />
-                        )
-                      }
-                    />
-                  </ListItem>
-                </Grid>
-                <Grid item xs={6}>
-                  <ListItem>
-                    <ListItemText
-                      secondary="Created At"
-                      primary={
-                        stream ? (
-                          <TimeAgo subgraphTime={stream.createdAtTimestamp} />
-                        ) : (
-                          <Skeleton sx={{ width: "80px" }} />
-                        )
-                      }
-                    />
-                  </ListItem>
-                </Grid>
-              </Grid>
-            </List>
-          </Card>
-        </Grid>
+      <Stack direction="row" alignItems="center" sx={{ mt: 1 }}>
+        <Typography variant="h4" component="h1" sx={{ mr: 1 }}>
+          Stream
+        </Typography>
+        <SubgraphQueryLink
+          network={network}
+          query={gql`
+            query ($id: ID!) {
+              stream(id: $id) {
+                currentFlowRate
+                sender {
+                  id
+                }
+                receiver {
+                  id
+                }
+                token {
+                  symbol
+                }
+                streamedUntilUpdatedAt
+              }
+            }
+          `}
+          variables={`{ "id": "${streamId.toLowerCase()}" }`}
+        />
+      </Stack>
 
-        <Grid item xs={12}>
-          <Card elevation={2}>
-            <List
-              data-cy={"flow-rate-list"}
-              sx={{
-                display: "grid",
-                gridTemplateColumns: {
-                  sm: "1fr",
-                  md: "1fr 1fr",
-                },
-              }}
-            >
+      <Card elevation={2} sx={{ mt: 3 }}>
+        <List>
+          <ListItem divider>
+            <ListItemText
+              data-cy={"streamed-token"}
+              secondary="Token"
+              primary={
+                stream ? (
+                  <SuperTokenAddress network={network} address={stream.token} />
+                ) : (
+                  <SkeletonAddress />
+                )
+              }
+            />
+          </ListItem>
+          <ListItem divider>
+            <ListItemText
+              secondary="Sender"
+              primary={
+                stream ? (
+                  <AccountAddress
+                    dataCy={"sender-address"}
+                    network={network}
+                    address={stream.sender}
+                  />
+                ) : (
+                  <SkeletonAddress />
+                )
+              }
+            />
+          </ListItem>
+          <ListItem divider>
+            <ListItemText
+              secondary="Receiver"
+              primary={
+                stream ? (
+                  <AccountAddress
+                    dataCy={"receiver-address"}
+                    network={network}
+                    address={stream.receiver}
+                  />
+                ) : (
+                  <SkeletonAddress />
+                )
+              }
+            />
+          </ListItem>
+          <Grid container>
+            <Grid item xs={6}>
               <ListItem>
                 <ListItemText
-                  data-cy={"current-flow-rate"}
-                  secondary={
-                    <>
-                      Current Flow Rate
-                      <InfoTooltipBtn
-                        dataCy={"current-flow-rate-tooltip"}
-                        title="Flow rate is the velocity of tokens being streamed."
-                      />
-                    </>
-                  }
+                  secondary="Last Updated At"
                   primary={
                     stream ? (
-                      <FlowRate flowRate={stream.currentFlowRate} />
+                      <TimeAgo subgraphTime={stream.updatedAtTimestamp} />
                     ) : (
-                      <Skeleton sx={{ width: "125px" }} />
+                      <Skeleton sx={{ width: "80px" }} />
                     )
                   }
                 />
               </ListItem>
+            </Grid>
+            <Grid item xs={6}>
               <ListItem>
                 <ListItemText
-                  secondary="Total Amount Streamed"
+                  secondary="Created At"
                   primary={
                     stream ? (
-                      <>
-                        <FlowingBalanceWithToken
-                          network={network}
-                          tokenAddress={stream.token}
-                          balance={stream.streamedUntilUpdatedAt}
-                          balanceTimestamp={stream.updatedAtTimestamp}
-                          flowRate={stream.currentFlowRate}
-                        />
-                      </>
+                      <TimeAgo subgraphTime={stream.createdAtTimestamp} />
                     ) : (
-                      <Skeleton sx={{ width: "125px" }} />
+                      <Skeleton sx={{ width: "80px" }} />
                     )
                   }
                 />
               </ListItem>
-            </List>
-          </Card>
-        </Grid>
+            </Grid>
+          </Grid>
+        </List>
+      </Card>
 
-        <Grid item xs={12}>
-          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-            Stream periods
-            <InfoTooltipBtn
-              dataCy={"stream-periods-tooltip"}
-              title={
+      <Card elevation={2} sx={{ mt: 3 }}>
+        <List
+          data-cy={"flow-rate-list"}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              sm: "1fr",
+              md: "1fr 1fr",
+            },
+          }}
+        >
+          <ListItem>
+            <ListItemText
+              data-cy={"current-flow-rate"}
+              secondary={
                 <>
-                  The amount of tokens sent from sender to receiver in a stream
-                  until it is updated or deleted. For example, if I create a
-                  stream on day 1, update it on day 3, and delete it on day 5, I
-                  will have generated 2 distinct stream periods: one between
-                  creation and update, and another between the update and
-                  deletion.{" "}
-                  <AppLink
-                    data-cy={"stream-periods-tooltip-link"}
-                    href="https://docs.superfluid.finance/superfluid/protocol-developers/subgraph#higher-order-level-entities"
-                    target="_blank"
-                  >
-                    Read more
-                  </AppLink>
+                  Current Flow Rate
+                  <InfoTooltipBtn
+                    dataCy={"current-flow-rate-tooltip"}
+                    title="Flow rate is the velocity of tokens being streamed."
+                  />
                 </>
               }
-              size={22}
+              primary={
+                stream ? (
+                  <FlowRate flowRate={stream.currentFlowRate} />
+                ) : (
+                  <Skeleton sx={{ width: "125px" }} />
+                )
+              }
             />
-          </Typography>
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              secondary="Total Amount Streamed"
+              primary={
+                stream ? (
+                  <>
+                    <FlowingBalanceWithToken
+                      network={network}
+                      tokenAddress={stream.token}
+                      balance={stream.streamedUntilUpdatedAt}
+                      balanceTimestamp={stream.updatedAtTimestamp}
+                      flowRate={stream.currentFlowRate}
+                    />
+                  </>
+                ) : (
+                  <Skeleton sx={{ width: "125px" }} />
+                )
+              }
+            />
+          </ListItem>
+        </List>
+      </Card>
 
-          <Card elevation={2} data-cy={"stream-period-grid"}>
-            <StreamPeriodDataGrid
-              queryResult={streamPeriodListQuery}
-              setPaging={setStreamPeriodPaging}
-              ordering={streamPeriodOrdering}
-              setOrdering={setStreamPeriodOrdering}
-            />
-          </Card>
-        </Grid>
-      </Grid>
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Stream periods
+          <InfoTooltipBtn
+            dataCy={"stream-periods-tooltip"}
+            title={
+              <>
+                The amount of tokens sent from sender to receiver in a stream
+                until it is updated or deleted. For example, if I create a
+                stream on day 1, update it on day 3, and delete it on day 5, I
+                will have generated 2 distinct stream periods: one between
+                creation and update, and another between the update and
+                deletion.{" "}
+                <AppLink
+                  data-cy={"stream-periods-tooltip-link"}
+                  href="https://docs.superfluid.finance/superfluid/protocol-developers/subgraph#higher-order-level-entities"
+                  target="_blank"
+                >
+                  Read more
+                </AppLink>
+              </>
+            }
+            size={22}
+          />
+        </Typography>
+
+        <Card elevation={2} data-cy={"stream-period-grid"}>
+          <StreamPeriodDataGrid
+            queryResult={streamPeriodListQuery}
+            setPaging={setStreamPeriodPaging}
+            ordering={streamPeriodOrdering}
+            setOrdering={setStreamPeriodOrdering}
+          />
+        </Card>
+      </Box>
     </Container>
   );
 };

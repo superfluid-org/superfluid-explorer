@@ -111,47 +111,42 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
       component={Box}
       sx={{ my: 2, py: 2 }}
     >
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Typography color="text.secondary">
-              {network.displayName}
-            </Typography>
-            <Typography color="text.secondary">Indexes</Typography>
-            <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
-              {indexId.substring(0, 6) + "..."}
-            </Typography>
-          </Breadcrumbs>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h4" component="h1">
-            <Grid container alignItems="center">
-              <Grid item sx={{ mx: 0.5 }}>
-                Index
-              </Grid>
-              <CopyLink localPath={`/${network.slugName}/indexes/${indexId}`} />
-              <SubgraphQueryLink
-                network={network}
-                query={gql`
-                  query ($id: ID!) {
-                    index(id: $id) {
-                      indexId
-                      indexValue
-                      totalAmountDistributedUntilUpdatedAt
-                      totalSubscriptionsWithUnits
-                      totalUnits
-                      totalUnitsApproved
-                      totalUnitsPending
-                    }
-                  }
-                `}
-                variables={`{ "id": "${indexId.toLowerCase()}" }`}
-              />
-            </Grid>
+      <Stack direction="row" alignItems="center" gap={1}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Typography color="text.secondary">{network.displayName}</Typography>
+          <Typography color="text.secondary">Indexes</Typography>
+          <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
+            {indexId.substring(0, 6) + "..."}
           </Typography>
-        </Grid>
+        </Breadcrumbs>
+        <CopyLink localPath={`/${network.slugName}/indexes/${indexId}`} />
+      </Stack>
 
-        <Grid item xs={12} lg={6}>
+      <Stack direction="row" alignItems="center" sx={{ mt: 1 }}>
+        <Typography variant="h4" component="h1" sx={{ mr: 1 }}>
+          Index
+        </Typography>
+        <SubgraphQueryLink
+          network={network}
+          query={gql`
+            query ($id: ID!) {
+              index(id: $id) {
+                indexId
+                indexValue
+                totalAmountDistributedUntilUpdatedAt
+                totalSubscriptionsWithUnits
+                totalUnits
+                totalUnitsApproved
+                totalUnitsPending
+              }
+            }
+          `}
+          variables={`{ "id": "${indexId.toLowerCase()}" }`}
+        />
+      </Stack>
+
+      <Grid container spacing={3} sx={{ pt: 3 }}>
+        <Grid item md={6} sm={12}>
           <Card elevation={2}>
             <List data-cy={"index-general-info"}>
               <ListItem divider>
@@ -266,8 +261,7 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
             </List>
           </Card>
         </Grid>
-
-        <Grid item xs={12} lg={6}>
+        <Grid item md={6} sm={12}>
           <Card elevation={2}>
             <List>
               <ListItem data-cy={"total-units"} divider>
@@ -349,74 +343,73 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
             </List>
           </Card>
         </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-            Distributions
-            <InfoTooltipBtn
-              dataCy={"distributions-tooltip"}
-              size={22}
-              title={
-                <>
-                  An event in which super tokens are distributed to the entire
-                  pool of subscribers for a given index using the Superfluid
-                  IDA.{" "}
-                  <AppLink
-                    data-cy={"distributions-tooltip-link"}
-                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
-                    target="_blank"
-                  >
-                    Read more
-                  </AppLink>
-                </>
-              }
-            />
-          </Typography>
-
-          <Card elevation={2}>
-            <IndexUpdatedEventDataGrid
-              index={index}
-              queryResult={indexUpdatedEventQuery}
-              setPaging={setIndexUpdatedEventPaging}
-              ordering={indexUpdatedEventPagingOrdering}
-              setOrdering={setIndexUpdatedEventOrdering}
-            />
-          </Card>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-            Subscriptions
-            <InfoTooltipBtn
-              dataCy={"subscriptions-tooltip"}
-              size={22}
-              title={
-                <>
-                  Accounts that have received units within the Index.
-                  Subscribers will receive distributed funds based on the
-                  portion of units they own in and index.{" "}
-                  <AppLink
-                    data-cy={"subscriptions-tooltip-link"}
-                    href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
-                    target="_blank"
-                  >
-                    Read more
-                  </AppLink>
-                </>
-              }
-            />
-          </Typography>
-          <Card elevation={2}>
-            <IndexSubscriptionDataGrid
-              network={network}
-              queryResult={indexSubscriptionEventQuery}
-              setPaging={setIndexSubscriptionPaging}
-              ordering={indexSubscriptionPagingOrdering}
-              setOrdering={setIndexSubscriptionOrdering}
-            />
-          </Card>
-        </Grid>
       </Grid>
+
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Distributions
+          <InfoTooltipBtn
+            dataCy={"distributions-tooltip"}
+            size={22}
+            title={
+              <>
+                An event in which super tokens are distributed to the entire
+                pool of subscribers for a given index using the Superfluid IDA.{" "}
+                <AppLink
+                  data-cy={"distributions-tooltip-link"}
+                  href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                  target="_blank"
+                >
+                  Read more
+                </AppLink>
+              </>
+            }
+          />
+        </Typography>
+
+        <Card elevation={2}>
+          <IndexUpdatedEventDataGrid
+            index={index}
+            queryResult={indexUpdatedEventQuery}
+            setPaging={setIndexUpdatedEventPaging}
+            ordering={indexUpdatedEventPagingOrdering}
+            setOrdering={setIndexUpdatedEventOrdering}
+          />
+        </Card>
+      </Box>
+
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Subscriptions
+          <InfoTooltipBtn
+            dataCy={"subscriptions-tooltip"}
+            size={22}
+            title={
+              <>
+                Accounts that have received units within the Index. Subscribers
+                will receive distributed funds based on the portion of units
+                they own in and index.{" "}
+                <AppLink
+                  data-cy={"subscriptions-tooltip-link"}
+                  href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                  target="_blank"
+                >
+                  Read more
+                </AppLink>
+              </>
+            }
+          />
+        </Typography>
+        <Card elevation={2}>
+          <IndexSubscriptionDataGrid
+            network={network}
+            queryResult={indexSubscriptionEventQuery}
+            setPaging={setIndexSubscriptionPaging}
+            ordering={indexSubscriptionPagingOrdering}
+            setOrdering={setIndexSubscriptionOrdering}
+          />
+        </Card>
+      </Box>
     </Container>
   );
 };
