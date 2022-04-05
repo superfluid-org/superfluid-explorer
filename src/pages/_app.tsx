@@ -115,12 +115,7 @@ const Layout: FC = ({ children }) => {
     } else {
       return (
         // Prefer to show blank page here instead of a loader (less flickering).
-        <Box
-          sx={{
-            // height: "100vh",
-            width: "100vw",
-          }}
-        ></Box>
+        <Box sx={{ width: "100vw" }} />
       );
     }
   }
