@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import GraphiQL from "graphiql";
+import React, { SyntheticEvent, useEffect, useState } from "react";
+import GraphiQL, { Fetcher, FetcherParams } from "graphiql";
 import {
   buildClientSchema,
   getIntrospectionQuery,
@@ -12,11 +12,12 @@ import useSfTheme from "../styles/useSfTheme";
 import "graphiql/graphiql.min.css";
 // @ts-ignore
 import GraphiQLExplorer from "graphiql-explorer";
-import { Box } from "@mui/material";
+import { Box, IconButton, Snackbar, SnackbarCloseReason } from "@mui/material";
 import FullPageLoader from "./FullPageLoader";
 import _ from "lodash";
 import { networks, networksByName } from "../redux/networks";
 import { useRouter } from "next/router";
+import CloseIcon from "@mui/icons-material/Close";
 
 const DocumentationLinks = [
   {
@@ -76,6 +77,23 @@ const ExampleQueries = [
   },
 ];
 
+const DEFAULT_QUERY = `# Hi! Welcome to Superfluid's GraphiQL instance for querying Superfluid's Subgraphs (powered by The Graph).
+
+# Try the Explorer on the left to build up queries by just by clicking.
+# Try the Documentation Explorer on the right to browse the schema with comments.
+# Try the Examples button on the toolbar to select pre-made GraphQL queries.
+
+query MyQuery {
+  __typename # Placeholder value
+}
+`;
+
+const DEFAULT_VARIABLES = `{
+  "variableName": "value"
+}`;
+
+const ADDRESS_REGEX = /^(.*?)((0x)?[0-9a-fA-F]{40})(.*?)$/gm;
+
 const getGraphQLIntrospectionClientSchemaMemoized = _.memoize(
   (_subgraphUrl: string) =>
     request(_subgraphUrl, getIntrospectionQuery()).then((introspectionResult) =>
@@ -115,21 +133,12 @@ const SubgraphExplorer: React.FC = () => {
   const [isInitializing, setIsInitializing] = useState(true);
   const [isNetworkLoading, setIsNetworkLoading] = useState(false);
   const [fetchedFromUrl, setFetchedFromUrl] = useState<string | null>(null);
-  const [query, setQuery] =
-    useState(`# Hi! Welcome to Superfluid's GraphiQL instance for querying Superfluid's Subgraphs (powered by The Graph).
+  const [query, setQuery] = useState(DEFAULT_QUERY);
+  const [variables, setVariables] = useState<string | undefined>(
+    DEFAULT_VARIABLES
+  );
+  const [showAddressToast, setShowAddressToast] = useState(false);
 
-# Try the Explorer on the left to build up queries by just by clicking.
-# Try the Documentation Explorer on the right to browse the schema with comments.
-# Try the Examples button on the toolbar to select pre-made GraphQL queries.
-
-query MyQuery {
-  __typename # Placeholder value
-}
-`);
-
-  const [variables, setVariables] = useState<string | undefined>(`{
-  "variableName": "value"
-}`);
   const graphiql = React.createRef<GraphiQL>();
 
   useEffect(() => {
@@ -155,12 +164,75 @@ query MyQuery {
     }
   };
 
-  const updateQuery = (query: string | undefined) => {
-    setQuery(query ?? "");
+  const updateQuery = (query: string | undefined) => setQuery(query ?? "");
+
+  const graphiQLFetcher = async (graphQLParams: FetcherParams) => {
+    const parsedParams = parseGraphQLParams(graphQLParams);
+
+    const data = await fetch(subgraphUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parsedParams),
+      credentials: "same-origin",
+    });
+    setFetchedFromUrl(subgraphUrl);
+    return data.json().catch(() => data.text());
+  };
+
+  const parseGraphQLParams = (graphQLParams: FetcherParams): FetcherParams => {
+    const { query } = graphQLParams;
+
+    const parsedQuery = lowercaseAddress(query);
+    const parsedVariables = lowercaseAddress(variables || "");
+
+    if (parsedQuery !== query) setQuery(parsedQuery);
+    if (parsedVariables !== variables) setVariables(parsedVariables);
+
+    if (parsedQuery !== query || parsedVariables !== variables) {
+      setShowAddressToast(true);
+    }
+
+    return {
+      ...graphQLParams,
+      query: parsedQuery,
+      variables: JSON.parse(parsedVariables),
+    };
+  };
+
+  const lowercaseAddress = (str: string) =>
+    str.replace(ADDRESS_REGEX, (v, _p1, p2) => v.replace(p2, p2.toLowerCase()));
+
+  const handleCloseToast = (
+    _e: SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") return;
+    setShowAddressToast(false);
   };
 
   return (
     <>
+      <Snackbar
+        open={showAddressToast}
+        autoHideDuration={8000}
+        onClose={handleCloseToast}
+        message="Automatically lower cased addresses in your query and variables"
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleCloseToast}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
+
       {isInitializing ? (
         <FullPageLoader />
       ) : (
@@ -183,19 +255,8 @@ query MyQuery {
               query={query}
               variables={variables}
               onEditQuery={updateQuery}
-              fetcher={async (graphQLParams) => {
-                const data = await fetch(subgraphUrl, {
-                  method: "POST",
-                  headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(graphQLParams),
-                  credentials: "same-origin",
-                });
-                setFetchedFromUrl(subgraphUrl);
-                return data.json().catch(() => data.text());
-              }}
+              onEditVariables={setVariables}
+              fetcher={graphiQLFetcher}
             >
               <GraphiQL.Logo>&nbsp;</GraphiQL.Logo>
               <GraphiQL.Toolbar>
