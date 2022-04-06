@@ -89,7 +89,7 @@ query MyQuery {
 `;
 
 const DEFAULT_VARIABLES = `{
-  "variableName": "value"
+  "your_variable_name": "your_variable_value"
 }`;
 
 const ADDRESS_REGEX = /^(.*?)((0x)?[0-9a-fA-F]{40})(.*?)$/gm;
@@ -185,8 +185,8 @@ const SubgraphExplorer: React.FC = () => {
   const parseGraphQLParams = (graphQLParams: FetcherParams): FetcherParams => {
     const { query } = graphQLParams;
 
-    const parsedQuery = lowercaseAddress(query);
-    const parsedVariables = lowercaseAddress(variables || "");
+    const parsedQuery = lowercaseAddresses(query);
+    const parsedVariables = lowercaseAddresses(variables || "");
 
     if (parsedQuery !== query) setQuery(parsedQuery);
     if (parsedVariables !== variables) setVariables(parsedVariables);
@@ -202,7 +202,7 @@ const SubgraphExplorer: React.FC = () => {
     };
   };
 
-  const lowercaseAddress = (str: string) =>
+  const lowercaseAddresses = (str: string) =>
     str.replace(ADDRESS_REGEX, (v, _p1, p2) => v.replace(p2, p2.toLowerCase()));
 
   const handleCloseToast = (
@@ -219,7 +219,7 @@ const SubgraphExplorer: React.FC = () => {
         open={showAddressToast}
         autoHideDuration={8000}
         onClose={handleCloseToast}
-        message="Automatically lower cased addresses in your query and variables"
+        message="Addresses in your query and variables automatically converted to lower case"
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         action={
           <IconButton
