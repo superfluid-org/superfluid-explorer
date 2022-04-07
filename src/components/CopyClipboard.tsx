@@ -4,14 +4,21 @@ import _ from "lodash";
 import { FC, useState } from "react";
 import copyTextToClipboard from "../utils/copyTextToClipboard";
 
+interface CopyClipboardProps {
+  copyText: string;
+  description?: string;
+  TooltipProps?: Partial<TooltipProps>;
+  IconProps?: Partial<SvgIconProps>;
+}
 /**
  * Inspired by: https://blog.logrocket.com/implementing-copy-to-clipboard-in-react-with-clipboard-api/
  */
-const CopyClipboard: FC<{
-  copyText: string;
-  TooltipProps?: Partial<TooltipProps>;
-  IconProps?: Partial<SvgIconProps>;
-}> = ({ copyText, TooltipProps, IconProps }) => {
+const CopyClipboard: FC<CopyClipboardProps> = ({
+  copyText,
+  description = "Copy to clipboard",
+  TooltipProps,
+  IconProps,
+}) => {
   const [isCopied, setIsCopied] = useState(false);
 
   // onClick handler function for the copy button
@@ -31,10 +38,7 @@ const CopyClipboard: FC<{
   };
 
   return (
-    <Tooltip
-      title={isCopied ? "Copied!" : "Copy to clipboard"}
-      {...TooltipProps}
-    >
+    <Tooltip title={isCopied ? "Copied!" : description} {...TooltipProps}>
       <SvgIcon
         component={ContentCopyIcon}
         onClick={handleCopyClick}
