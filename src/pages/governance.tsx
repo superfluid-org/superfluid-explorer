@@ -39,6 +39,7 @@ const Governance: FC<GovernanceProps> = ({}) => {
             ))}
           </TabList>
         </Card>
+
         {networksOrdered.map((network) => (
           <TabPanel
             key={network.slugName}

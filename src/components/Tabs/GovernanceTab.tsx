@@ -63,11 +63,25 @@ const GovernanceTab: FC<GovernanceTabProps> = ({ network }) => {
   return (
     <>
       <Card>
+        <Typography
+          variant="h6"
+          component="h2"
+          sx={{
+            p: 2,
+            pb: 0,
+          }}
+        >
+          Contract addresses
+        </Typography>
         <List sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
           {FRAMEWORKS.map((framework, i) => (
             <ListItem
               key={framework.address}
-              divider={FRAMEWORKS.length > i + 1}
+              sx={
+                i < 2
+                  ? { borderTop: "1px solid rgba(255, 255, 255, 0.12)" }
+                  : {}
+              }
             >
               <ListItemText
                 primary={framework.name}
