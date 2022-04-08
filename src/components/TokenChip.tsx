@@ -28,7 +28,7 @@ const TokenChip: FC<TokenChipProps> = ({ network, tokenAddress }) => {
         clickable
         size="small"
         label={tokenQuery.data.symbol}
-        sx={{ cursor: "pointer" }}
+        sx={{ cursor: "pointer", lineHeight: "24px" }}
       />
     </AppLink>
   );

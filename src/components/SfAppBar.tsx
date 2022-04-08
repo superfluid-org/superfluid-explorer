@@ -7,6 +7,7 @@ import {
   Stack,
   Tooltip,
   IconButton,
+  Typography,
 } from "@mui/material";
 import AppLink from "./AppLink";
 import SearchDialog from "./SearchDialog";
@@ -65,9 +66,37 @@ export const SfAppBar = () => {
             direction="row"
             justifyContent="center"
             alignItems="center"
-            spacing={2}
+            spacing={6}
           >
-            <AppLink href="/subgraph">
+            <Stack direction="row" alignItems="center" spacing={4}>
+              <AppLink href="/subgraph" sx={{ textDecoration: "none" }}>
+                <Typography
+                  variant="button"
+                  sx={{
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    color: "white",
+                    textTransform: "none",
+                  }}
+                >
+                  Subgraph Explorer
+                </Typography>
+              </AppLink>
+              <AppLink href="/governance" sx={{ textDecoration: "none" }}>
+                <Typography
+                  variant="button"
+                  sx={{
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    color: "white",
+                    textTransform: "none",
+                  }}
+                >
+                  Governance
+                </Typography>
+              </AppLink>
+            </Stack>
+            {/* <AppLink href="/subgraph">
               <Button
                 sx={{ ml: 1, whiteSpace: "nowrap" }}
                 id="search-button"
@@ -77,7 +106,7 @@ export const SfAppBar = () => {
                 <SubgraphIcon sx={{ mr: 1 }} />
                 Subgraph Explorer
               </Button>
-            </AppLink>
+            </AppLink> */}
             <Tooltip title="Settings" enterDelay={100}>
               <IconButton
                 sx={{ ml: 1 }}
