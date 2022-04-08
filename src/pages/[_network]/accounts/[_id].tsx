@@ -19,6 +19,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableFooter,
   TableHead,
   TableRow,
@@ -108,11 +109,15 @@ const AccountPage: NextPage = () => {
 
   const tokenSnapshotQuery = sfSubgraph.useAccountTokenSnapshotsQuery({
     chainId: network.chainId,
+    order: {
+      orderBy: "balanceUntilUpdatedAt",
+      orderDirection: "desc",
+    },
     filter: {
       account: address,
     },
     pagination: {
-      take: 10,
+      take: 50,
       skip: 0,
     },
   });
@@ -223,97 +228,104 @@ const AccountPage: NextPage = () => {
         )}
       </Box>
 
-      <Card elevation={2} sx={{ mt: 3 }}>
-        <List sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-          <ListItem>
-            <ListItemText
-              data-cy={"account-type"}
-              secondary={
-                <>
-                  Account type
-                  <InfoTooltipBtn
-                    dataCy={"account-type-tooltip"}
-                    title="Either a regular account or a super app."
-                  />
-                </>
-              }
-              primary={
-                accountQuery.data ? (
-                  accountQuery.data.isSuperApp ? (
-                    "Super App"
-                  ) : (
-                    "Regular account"
-                  )
-                ) : (
-                  <Skeleton sx={{ width: "40px" }} />
-                )
-              }
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              data-cy={"network-name"}
-              secondary="Network"
-              primary={
-                network ? (
-                  <AccountNetworkSelect
-                    activeNetwork={network}
-                    address={address}
-                  />
-                ) : (
-                  <SkeletonNetwork />
-                )
-              }
-            />
-          </ListItem>
-        </List>
-      </Card>
-
-      <Card elevation={2} sx={{ mt: 3 }}>
-        <Table sx={{ border: 0, py: 1 }}>
-          <TableBody>
-            {tokens.map((tokenSnapshot) => (
-              <TableRow key={tokenSnapshot.id}>
-                <TableCell width="50%">
-                  <ListItemText
-                    primary={
-                      <FlowingBalance
-                        balance={tokenSnapshot.balanceUntilUpdatedAt}
-                        balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
-                        flowRate={tokenSnapshot.totalNetFlowRate}
+      <Grid container spacing={3} sx={{ mt: 3 }}>
+        <Grid item sm={4}>
+          <Card elevation={2}>
+            {/* sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }} */}
+            <List>
+              <ListItem divider>
+                <ListItemText
+                  data-cy={"network-name"}
+                  secondary="Network"
+                  primary={
+                    network ? (
+                      <AccountNetworkSelect
+                        activeNetwork={network}
+                        address={address}
                       />
-                    }
-                    secondary={
-                      <SuperTokenAddress
-                        network={network}
-                        address={tokenSnapshot.token}
-                      />
-                    }
-                  />
-                </TableCell>
-                <TableCell align="right">
-                  <Stack>
-                    <FlowRate flowRate={tokenSnapshot.totalNetFlowRate} />
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={2} align="right">
-                <InfinitePagination
-                  page={1}
-                  isLoading={false}
-                  hasNext={true}
-                  onPageChange={() => {}}
-                  sx={{ justifyContent: "flex-end" }}
+                    ) : (
+                      <SkeletonNetwork />
+                    )
+                  }
                 />
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </Card>
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  data-cy={"account-type"}
+                  secondary={
+                    <>
+                      Account type
+                      <InfoTooltipBtn
+                        dataCy={"account-type-tooltip"}
+                        title="Either a regular account or a super app."
+                      />
+                    </>
+                  }
+                  primary={
+                    accountQuery.data ? (
+                      accountQuery.data.isSuperApp ? (
+                        "Super App"
+                      ) : (
+                        "Regular account"
+                      )
+                    ) : (
+                      <Skeleton sx={{ width: "40px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+            </List>
+          </Card>
+        </Grid>
+        <Grid item sm={8}>
+          <Card elevation={2}>
+            <TableContainer sx={{ maxHeight: "172px" }}>
+              <Table sx={{ border: 0, py: 1 }}>
+                <TableBody>
+                  {tokens.map((tokenSnapshot) => (
+                    <TableRow key={tokenSnapshot.id}>
+                      <TableCell align="right" sx={{ pr: 1 }}>
+                        <TokenChip
+                          network={network}
+                          tokenAddress={tokenSnapshot.token}
+                        />
+                      </TableCell>
+                      <TableCell width="100%" sx={{ pl: 0 }}>
+                        <FlowingBalance
+                          balance={tokenSnapshot.balanceUntilUpdatedAt}
+                          balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
+                          flowRate={tokenSnapshot.totalNetFlowRate}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* <Card elevation={2} sx={{ mt: 3 }}>
+        <Grid container spacing={1}>
+          {tokens.map((tokenSnapshot) => (
+            <Grid item sm={4} key={tokenSnapshot.id}>
+              <ListItem>
+                <ListItemText>
+                  <FlowingBalanceWithToken
+                    network={network}
+                    tokenAddress={tokenSnapshot.token}
+                    balance={tokenSnapshot.balanceUntilUpdatedAt}
+                    balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
+                    flowRate={tokenSnapshot.totalNetFlowRate}
+                  />
+                </ListItemText>
+              </ListItem>
+            </Grid>
+          ))}
+        </Grid>
+      </Card> */}
+
       <Card elevation={2} sx={{ mt: 3 }}>
         <TabContext value={tabValue}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
