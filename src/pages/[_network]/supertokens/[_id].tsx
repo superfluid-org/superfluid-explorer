@@ -41,6 +41,7 @@ import CopyIconBtn from "../../../components/CopyIconBtn";
 import CopyClipboard from "../../../components/CopyClipboard";
 import BalanceWithToken from "../../../components/BalanceWithToken";
 import EtherFormatted from "../../../components/EtherFormatted";
+import FlowingBalance from "../../../components/FlowingBalance";
 
 const SuperTokenPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -314,7 +315,7 @@ const SuperTokenPage: NextPage = () => {
                       tokenStatistics.totalNumberOfActiveStreams +
                       tokenStatistics.totalNumberOfClosedStreams
                     ) : (
-                      <Skeleton sx={{ width: "20px" }} />
+                      <Skeleton sx={{ width: "100px" }} />
                     )
                   }
                 />
@@ -327,7 +328,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalNumberOfIndexes
                     ) : (
-                      <Skeleton sx={{ width: "20px" }} />
+                      <Skeleton sx={{ width: "100px" }} />
                     )
                   }
                 />
@@ -340,7 +341,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalNumberOfActiveStreams
                     ) : (
-                      <Skeleton sx={{ width: "20px" }} />
+                      <Skeleton sx={{ width: "100px" }} />
                     )
                   }
                 />
@@ -353,7 +354,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalNumberOfActiveIndexes
                     ) : (
-                      <Skeleton sx={{ width: "20px" }} />
+                      <Skeleton sx={{ width: "100px" }} />
                     )
                   }
                 />
@@ -366,7 +367,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalNumberOfClosedStreams
                     ) : (
-                      <Skeleton sx={{ width: "20px" }} />
+                      <Skeleton sx={{ width: "100px" }} />
                     )
                   }
                 />
@@ -379,7 +380,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalApprovedSubscriptions
                     ) : (
-                      <Skeleton sx={{ width: "20px" }} />
+                      <Skeleton sx={{ width: "100px" }} />
                     )
                   }
                 />
@@ -404,11 +405,16 @@ const SuperTokenPage: NextPage = () => {
               secondary="Total amount streamed"
               primary={
                 tokenStatistics ? (
-                  <EtherFormatted
-                    wei={tokenStatistics.totalAmountStreamedUntilUpdatedAt}
+                  <FlowingBalance
+                    balance={tokenStatistics.totalAmountStreamedUntilUpdatedAt}
+                    balanceTimestamp={tokenStatistics.updatedAtTimestamp}
+                    flowRate={tokenStatistics.totalOutflowRate}
                   />
                 ) : (
-                  <Skeleton sx={{ width: "20px" }} />
+                  // <EtherFormatted
+                  //   wei={tokenStatistics.totalAmountStreamedUntilUpdatedAt}
+                  // />
+                  <Skeleton sx={{ width: "200px" }} />
                 )
               }
             />
@@ -423,7 +429,7 @@ const SuperTokenPage: NextPage = () => {
                     wei={tokenStatistics.totalAmountDistributedUntilUpdatedAt}
                   />
                 ) : (
-                  <Skeleton sx={{ width: "20px" }} />
+                  <Skeleton sx={{ width: "200px" }} />
                 )
               }
             />
@@ -438,7 +444,7 @@ const SuperTokenPage: NextPage = () => {
                     wei={tokenStatistics.totalAmountTransferredUntilUpdatedAt}
                   />
                 ) : (
-                  <Skeleton sx={{ width: "20px" }} />
+                  <Skeleton sx={{ width: "200px" }} />
                 )
               }
             />
@@ -451,7 +457,7 @@ const SuperTokenPage: NextPage = () => {
                 tokenStatistics ? (
                   <EtherFormatted wei={tokenStatistics.totalSupply} />
                 ) : (
-                  <Skeleton sx={{ width: "20px" }} />
+                  <Skeleton sx={{ width: "200px" }} />
                 )
               }
             />
