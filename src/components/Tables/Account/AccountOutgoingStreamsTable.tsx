@@ -36,6 +36,7 @@ import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import AccountAddress from "../../AccountAddress";
+import ClearInputAdornment from "../../ClearInputAdornment";
 import DetailsButton from "../../DetailsButton";
 import FlowingBalanceWithToken from "../../FlowingBalanceWithToken";
 import FlowRate from "../../FlowRate";
@@ -284,14 +285,9 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 onChange={onReceiverChange}
                 endAdornment={
                   filter.receiver_contains && (
-                    <IconButton
-                      size="small"
-                      sx={{ fontSize: "16px", p: 0.5 }}
-                      tabIndex={-1}
+                    <ClearInputAdornment
                       onClick={clearFilterField("receiver_contains")}
-                    >
-                      <CloseIcon fontSize="inherit" />
-                    </IconButton>
+                    />
                   )
                 }
               />

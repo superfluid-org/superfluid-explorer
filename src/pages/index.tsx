@@ -1,29 +1,22 @@
-import * as React from "react";
-import type { NextPage } from "next";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { Card, Divider, Stack, Tab } from "@mui/material";
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import { Button, Card, Divider, Grid, Stack, Tab } from "@mui/material";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { networks } from "../redux/networks";
+import type { NextPage } from "next";
+import * as React from "react";
+import AppLink from "../components/AppLink";
 import {
   defaultStreamQueryOrdering,
   defaultStreamQueryPaging,
   NetworkStreams,
 } from "../components/NetworkStreams";
-import _ from "lodash";
-import SearchBar from "../components/SearchBar";
-import AppLink from "../components/AppLink";
+import { networksByTestAndName } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
 
 const Home: NextPage = () => {
   const [value, setValue] = React.useState("matic");
 
-  const networksOrdered = _.sortBy(
-    networks,
-    (x) => x.isTestnet,
-    (x) => x.slugName
-  );
   const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams", {
     ifOlderThan: 45,
   });
@@ -87,7 +80,7 @@ const Home: NextPage = () => {
                 data-cy={"landing-page-networks"}
                 onChange={(_event, newValue: string) => setValue(newValue)}
               >
-                {networksOrdered.map((network) => (
+                {networksByTestAndName.map((network) => (
                   <Tab
                     data-cy={`${network.slugName}-landing-button`}
                     key={`Tab_${network.slugName}`}
@@ -104,7 +97,7 @@ const Home: NextPage = () => {
                 ))}
               </TabList>
             </Box>
-            {networksOrdered.map((network) => (
+            {networksByTestAndName.map((network) => (
               <TabPanel
                 key={`TabPanel_${network.slugName}`}
                 value={network.slugName}

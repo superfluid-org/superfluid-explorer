@@ -39,6 +39,7 @@ import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import AccountAddress from "../../AccountAddress";
 import AppLink from "../../AppLink";
+import ClearInputAdornment from "../../ClearInputAdornment";
 import DetailsButton from "../../DetailsButton";
 import EtherFormatted from "../../EtherFormatted";
 import { IndexPublicationDetailsDialog } from "../../IndexPublicationDetails";
@@ -293,14 +294,9 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 onChange={onStringFilterChange("indexId")}
                 endAdornment={
                   filter.indexId && (
-                    <IconButton
-                      size="small"
-                      sx={{ fontSize: "16px", p: 0.5 }}
-                      tabIndex={-1}
+                    <ClearInputAdornment
                       onClick={clearFilterField("indexId")}
-                    >
-                      <CloseIcon fontSize="inherit" />
-                    </IconButton>
+                    />
                   )
                 }
               />
@@ -317,15 +313,10 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 value={filter.publisher_contains || ""}
                 onChange={onStringFilterChange("publisher_contains")}
                 endAdornment={
-                  filter.indexId && (
-                    <IconButton
-                      size="small"
-                      sx={{ fontSize: "16px", p: 0.5 }}
-                      tabIndex={-1}
-                      onClick={clearFilterField("indexId")}
-                    >
-                      <CloseIcon fontSize="inherit" />
-                    </IconButton>
+                  filter.publisher_contains && (
+                    <ClearInputAdornment
+                      onClick={clearFilterField("publisher_contains")}
+                    />
                   )
                 }
               />

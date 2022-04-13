@@ -69,6 +69,32 @@ export const SfAppBar = () => {
             spacing={6}
           >
             <Stack direction="row" alignItems="center" spacing={4}>
+              <AppLink href="/super-tokens" sx={{ textDecoration: "none" }}>
+                <Typography
+                  variant="button"
+                  sx={{
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    color: "white",
+                    textTransform: "none",
+                  }}
+                >
+                  Tokens
+                </Typography>
+              </AppLink>
+              <AppLink href="/protocol" sx={{ textDecoration: "none" }}>
+                <Typography
+                  variant="button"
+                  sx={{
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    color: "white",
+                    textTransform: "none",
+                  }}
+                >
+                  Protocol
+                </Typography>
+              </AppLink>
               <AppLink href="/subgraph" sx={{ textDecoration: "none" }}>
                 <Typography
                   variant="button"
@@ -79,34 +105,10 @@ export const SfAppBar = () => {
                     textTransform: "none",
                   }}
                 >
-                  Subgraph Explorer
-                </Typography>
-              </AppLink>
-              <AppLink href="/governance" sx={{ textDecoration: "none" }}>
-                <Typography
-                  variant="button"
-                  sx={{
-                    fontWeight: 500,
-                    fontSize: "16px",
-                    color: "white",
-                    textTransform: "none",
-                  }}
-                >
-                  Governance
+                  Subgraph
                 </Typography>
               </AppLink>
             </Stack>
-            {/* <AppLink href="/subgraph">
-              <Button
-                sx={{ ml: 1, whiteSpace: "nowrap" }}
-                id="search-button"
-                size="medium"
-                variant="contained"
-              >
-                <SubgraphIcon sx={{ mr: 1 }} />
-                Subgraph Explorer
-              </Button>
-            </AppLink> */}
             <Tooltip title="Settings" enterDelay={100}>
               <IconButton
                 sx={{ ml: 1 }}

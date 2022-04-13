@@ -1,23 +1,17 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Card, Container, Tab } from "@mui/material";
-import sortBy from "lodash/fp/sortBy";
+import { Box, Card, CardContent, Container, Tab } from "@mui/material";
 import { FC, SyntheticEvent, useState } from "react";
-import GovernanceTab from "../components/Tabs/GovernanceTab";
-import { networks } from "../redux/networks";
+import SuperTokensTable from "../components/Tables/SuperTokensTable";
+import { networksByTestAndName } from "../redux/networks";
 
-interface GovernanceProps {}
+interface SuperTokensProps {}
 
-// TODO: Governance data prefetching logic
-const Governance: FC<GovernanceProps> = ({}) => {
+// TODO: SuperTokens data prefetching logic
+const SuperTokens: FC<SuperTokensProps> = ({}) => {
   const [activeTab, setActiveTab] = useState("matic");
 
   const onTabChange = (_event: SyntheticEvent, newValue: string) =>
     setActiveTab(newValue);
-
-  const networksOrdered = sortBy(
-    [(x) => x.isTestnet, (x) => x.slugName],
-    networks
-  );
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
@@ -29,7 +23,7 @@ const Governance: FC<GovernanceProps> = ({}) => {
             data-cy={"landing-page-networks"}
             onChange={onTabChange}
           >
-            {networksOrdered.map((network) => (
+            {networksByTestAndName.map((network) => (
               <Tab
                 data-cy={`${network.slugName}-landing-button`}
                 key={`Tab_${network.slugName}`}
@@ -40,13 +34,17 @@ const Governance: FC<GovernanceProps> = ({}) => {
           </TabList>
         </Card>
 
-        {networksOrdered.map((network) => (
+        {networksByTestAndName.map((network) => (
           <TabPanel
             key={network.slugName}
             value={network.slugName}
             sx={{ px: 0 }}
           >
-            <GovernanceTab network={network} />
+            <Card>
+              <CardContent>
+                <SuperTokensTable network={network} />
+              </CardContent>
+            </Card>
           </TabPanel>
         ))}
       </TabContext>
@@ -54,4 +52,4 @@ const Governance: FC<GovernanceProps> = ({}) => {
   );
 };
 
-export default Governance;
+export default SuperTokens;

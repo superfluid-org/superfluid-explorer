@@ -1,4 +1,4 @@
-import { ensureEnvironmentVariable } from "../utils/getEnvironmentVariableOrThrow";
+import sortBy from 'lodash/fp/sortBy';
 
 export type Network = {
   displayName: string,
@@ -138,6 +138,11 @@ export const networksByName = new Map(networks.map(x => [x.slugName.toLowerCase(
 
 export const networksByChainId = new Map(networks.map(x => [x.chainId, x]))
 
+export const networksByTestAndName = sortBy(
+  [(x) => x.isTestnet, (x) => x.slugName],
+  networks
+);
+
 export const tryGetNetwork = (x: unknown): Network | undefined => {
   let network: Network | undefined = undefined;
 
@@ -156,4 +161,4 @@ export const tryGetString = (x: unknown): string | undefined => {
   if (typeof x === "string") {
     return x;
   }
-} 
+}

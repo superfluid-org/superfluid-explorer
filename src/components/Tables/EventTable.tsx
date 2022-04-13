@@ -33,6 +33,7 @@ import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import { Network } from "../../redux/networks";
 import { sfSubgraph } from "../../redux/store";
+import ClearInputAdornment from "../ClearInputAdornment";
 import InfinitePagination from "../InfinitePagination";
 import TableLoader from "../TableLoader";
 import TimeAgo from "../TimeAgo";
@@ -208,14 +209,9 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                 onChange={onFilterFieldChange("name_contains")}
                 endAdornment={
                   filter.name_contains && (
-                    <IconButton
-                      size="small"
-                      sx={{ fontSize: "16px", p: 0.5 }}
-                      tabIndex={-1}
+                    <ClearInputAdornment
                       onClick={clearFilterField("name_contains")}
-                    >
-                      <CloseIcon fontSize="inherit" />
-                    </IconButton>
+                    />
                   )
                 }
               />
@@ -232,14 +228,9 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                 onChange={onFilterFieldChange("transactionHash_contains")}
                 endAdornment={
                   filter.transactionHash_contains && (
-                    <IconButton
-                      size="small"
-                      sx={{ fontSize: "16px", p: 0.5 }}
-                      tabIndex={-1}
+                    <ClearInputAdornment
                       onClick={clearFilterField("transactionHash_contains")}
-                    >
-                      <CloseIcon fontSize="inherit" />
-                    </IconButton>
+                    />
                   )
                 }
               />
