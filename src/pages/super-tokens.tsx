@@ -6,7 +6,6 @@ import { networksByTestAndName } from "../redux/networks";
 
 interface SuperTokensProps {}
 
-// TODO: SuperTokens data prefetching logic
 const SuperTokens: FC<SuperTokensProps> = ({}) => {
   const [activeTab, setActiveTab] = useState("matic");
 

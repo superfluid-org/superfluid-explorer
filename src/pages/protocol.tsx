@@ -11,55 +11,45 @@ import {
   Tab,
   Typography,
 } from "@mui/material";
-import sortBy from "lodash/fp/sortBy";
 import { FC, SyntheticEvent, useState } from "react";
 import CopyClipboard from "../components/CopyClipboard";
-import { networks } from "../redux/networks";
+import { networksByTestAndName } from "../redux/networks";
+import protocolContracts from "../redux/protocolContracts";
 
-const FRAMEWORKS = [
-  {
-    name: "Resolver",
-    address: "0xe0cc76334405ee8b39213e620587d815967af39c",
-  },
-  {
-    name: "Host",
-    address: "0x3e14dc1b13c488a8d5d310918780c983bd5982e7",
-  },
-  {
-    name: "CFAv1",
-    address: "0x6eee6060f715257b970700bc2656de21dedf074c",
-  },
-  {
-    name: "IDAv1",
-    address: "0xb0aabba4b2783a72c52956cdef62d438eca2d7a1",
-  },
-  {
-    name: "SuperTokenFactory",
-    address: "0x2c90719f25b10fc5646c82da3240c76fa5bccf34",
-  },
-  {
-    name: "SuperfluidLoader v1",
-    address: "0x15f0ca26781c3852f8166ed2ebce5d18265cceb7",
-  },
-  {
-    name: "TOGA",
-    address: "0x6aeaee5fd4d05a741723d752d30ee4d72690a8f7",
-  },
-];
+interface AddressListItemProps {
+  title: string;
+  address?: string;
+}
 
-interface ProtocolProps {}
+const AddressListItem: FC<AddressListItemProps> = ({ title, address }) => (
+  <ListItem>
+    <ListItemText
+      primary={title}
+      secondary={
+        <Stack direction="row" alignItems="center">
+          {address || "-"}
+          {address && <CopyClipboard copyText={address} />}
+        </Stack>
+      }
+    />
+  </ListItem>
+);
 
-// TODO: Protocol data prefetching logic
-const Protocol: FC<ProtocolProps> = ({}) => {
+const Protocol: FC = () => {
   const [activeTab, setActiveTab] = useState("matic");
 
   const onTabChange = (_event: SyntheticEvent, newValue: string) =>
     setActiveTab(newValue);
 
-  const networksOrdered = sortBy(
-    [(x) => x.isTestnet, (x) => x.slugName],
-    networks
-  );
+  const {
+    resolver,
+    host,
+    CFAv1,
+    IDAv1,
+    superTokenFactory,
+    superfluidLoaderv1,
+    TOGA,
+  } = protocolContracts[activeTab] || {};
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
@@ -71,7 +61,7 @@ const Protocol: FC<ProtocolProps> = ({}) => {
             data-cy={"landing-page-networks"}
             onChange={onTabChange}
           >
-            {networksOrdered.map((network) => (
+            {networksByTestAndName.map((network) => (
               <Tab
                 data-cy={`${network.slugName}-landing-button`}
                 key={`Tab_${network.slugName}`}
@@ -82,7 +72,7 @@ const Protocol: FC<ProtocolProps> = ({}) => {
           </TabList>
         </Card>
 
-        {networksOrdered.map((network) => (
+        {networksByTestAndName.map((network) => (
           <TabPanel
             key={network.slugName}
             value={network.slugName}
@@ -164,19 +154,19 @@ const Protocol: FC<ProtocolProps> = ({}) => {
               <List
                 sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", pb: 2 }}
               >
-                {FRAMEWORKS.map((framework, i) => (
-                  <ListItem key={framework.address}>
-                    <ListItemText
-                      primary={framework.name}
-                      secondary={
-                        <Stack direction="row" alignItems="center">
-                          {framework.address}
-                          <CopyClipboard copyText={framework.address} />
-                        </Stack>
-                      }
-                    />
-                  </ListItem>
-                ))}
+                <AddressListItem title="Resolver" address={resolver} />
+                <AddressListItem title="Host" address={host} />
+                <AddressListItem title="CFAv1" address={CFAv1} />
+                <AddressListItem title="IDAv1" address={IDAv1} />
+                <AddressListItem
+                  title="SuperTokenFactory"
+                  address={superTokenFactory}
+                />
+                <AddressListItem
+                  title="SuperfluidLoader v1"
+                  address={superfluidLoaderv1}
+                />
+                <AddressListItem title="TOGA" address={TOGA} />
               </List>
             </Card>
           </TabPanel>
