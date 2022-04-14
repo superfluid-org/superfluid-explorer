@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { FC, SyntheticEvent, useState } from "react";
 import CopyClipboard from "../components/CopyClipboard";
+import InfoTooltipBtn from "../components/InfoTooltipBtn";
 import { networksByTestAndName } from "../redux/networks";
 import protocolContracts from "../redux/protocolContracts";
 
@@ -103,15 +104,30 @@ const Protocol: FC = () => {
                 >
                   <ListItemText
                     primary={`${network.isTestnet ? 1 : 4} hour flowrate`}
-                    secondary="Deposit size"
+                    secondary={
+                      <>
+                        Deposit size
+                        <InfoTooltipBtn title="The amount of tokens that an account must temporarily lock up when a stream is started." />
+                      </>
+                    }
                   />
                   <ListItemText
                     primary={`${network.isTestnet ? 1 : 4} hour flowrate`}
-                    secondary="Owed deposit size"
+                    secondary={
+                      <>
+                        Owed deposit size
+                        <InfoTooltipBtn title="Extra deposit that super apps can lock for opening new streams." />
+                      </>
+                    }
                   />
                   <ListItemText
                     primary={`${network.isTestnet ? 12 : 30} minutes`}
-                    secondary="Patrician period"
+                    secondary={
+                      <>
+                        Patrician period
+                        <InfoTooltipBtn title="Time period before streamer runs out of tokens and stream can be closed by Patricians." />
+                      </>
+                    }
                   />
                 </Box>
               </CardContent>
@@ -128,11 +144,21 @@ const Protocol: FC = () => {
                 >
                   <ListItemText
                     primary="1 week"
-                    secondary="Minimum exit period"
+                    secondary={
+                      <>
+                        Minimum exit period
+                        <InfoTooltipBtn title="Lower bound for how long it would take a PIC to stream out the stake." />
+                      </>
+                    }
                   />
                   <ListItemText
                     primary="4 weeks"
-                    secondary="Default exit period"
+                    secondary={
+                      <>
+                        Default exit period
+                        <InfoTooltipBtn title="Default amount of time for PIC to stream out the stake." />
+                      </>
+                    }
                   />
                 </Box>
               </CardContent>
