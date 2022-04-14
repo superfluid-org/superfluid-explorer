@@ -228,86 +228,54 @@ const AccountPage: NextPage = () => {
         )}
       </Box>
 
-      <Grid container spacing={3} sx={{ mt: 3 }}>
-        <Grid item sm={4}>
-          <Card elevation={2}>
-            {/* sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }} */}
-            <List>
-              <ListItem divider>
-                <ListItemText
-                  data-cy={"network-name"}
-                  secondary="Network"
-                  primary={
-                    network ? (
-                      <AccountNetworkSelect
-                        activeNetwork={network}
-                        address={address}
-                      />
-                    ) : (
-                      <SkeletonNetwork />
-                    )
-                  }
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  data-cy={"account-type"}
-                  secondary={
-                    <>
-                      Account type
-                      <InfoTooltipBtn
-                        dataCy={"account-type-tooltip"}
-                        title="Either a regular account or a super app."
-                      />
-                    </>
-                  }
-                  primary={
-                    accountQuery.data ? (
-                      accountQuery.data.isSuperApp ? (
-                        "Super App"
-                      ) : (
-                        "Regular account"
-                      )
-                    ) : (
-                      <Skeleton sx={{ width: "40px" }} />
-                    )
-                  }
-                />
-              </ListItem>
-            </List>
-          </Card>
-        </Grid>
-        <Grid item sm={8}>
-          <Card elevation={2}>
-            <TableContainer sx={{ maxHeight: "172px" }}>
-              <Table sx={{ border: 0, py: 1 }}>
-                <TableBody>
-                  {tokens.map((tokenSnapshot) => (
-                    <TableRow key={tokenSnapshot.id}>
-                      <TableCell align="right" sx={{ pr: 1 }}>
-                        <TokenChip
-                          network={network}
-                          tokenAddress={tokenSnapshot.token}
-                        />
-                      </TableCell>
-                      <TableCell width="100%" sx={{ pl: 0 }}>
-                        <FlowingBalance
-                          balance={tokenSnapshot.balanceUntilUpdatedAt}
-                          balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
-                          flowRate={tokenSnapshot.totalNetFlowRate}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Card>
-        </Grid>
-      </Grid>
+      <Card elevation={2} sx={{ mt: 3 }}>
+        <List sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+          <ListItem>
+            <ListItemText
+              data-cy={"network-name"}
+              secondary="Network"
+              primary={
+                network ? (
+                  <AccountNetworkSelect
+                    activeNetwork={network}
+                    address={address}
+                  />
+                ) : (
+                  <SkeletonNetwork />
+                )
+              }
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              data-cy={"account-type"}
+              secondary={
+                <>
+                  Account type
+                  <InfoTooltipBtn
+                    dataCy={"account-type-tooltip"}
+                    title="Either a regular account or a super app."
+                  />
+                </>
+              }
+              primary={
+                accountQuery.data ? (
+                  accountQuery.data.isSuperApp ? (
+                    "Super App"
+                  ) : (
+                    "Regular account"
+                  )
+                ) : (
+                  <Skeleton sx={{ width: "40px" }} />
+                )
+              }
+            />
+          </ListItem>
+        </List>
+      </Card>
 
-      {/* <Card elevation={2} sx={{ mt: 3 }}>
-        <Grid container spacing={1}>
+      <Card elevation={2} sx={{ mt: 3 }}>
+        <Grid container columnSpacing={2} component={List}>
           {tokens.map((tokenSnapshot) => (
             <Grid item sm={4} key={tokenSnapshot.id}>
               <ListItem>
@@ -324,7 +292,7 @@ const AccountPage: NextPage = () => {
             </Grid>
           ))}
         </Grid>
-      </Card> */}
+      </Card>
 
       <Card elevation={2} sx={{ mt: 3 }}>
         <TabContext value={tabValue}>
