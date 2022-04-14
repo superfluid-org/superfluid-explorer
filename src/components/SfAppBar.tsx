@@ -95,7 +95,11 @@ export const SfAppBar = () => {
                   Protocol
                 </Typography>
               </AppLink>
-              <AppLink href="/subgraph" sx={{ textDecoration: "none" }}>
+              <AppLink
+                id="subgraph-button"
+                href="/subgraph"
+                sx={{ textDecoration: "none" }}
+              >
                 <Typography
                   variant="button"
                   sx={{
