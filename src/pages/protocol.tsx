@@ -125,7 +125,7 @@ const Protocol: FC = () => {
                     secondary={
                       <>
                         Patrician period
-                        <InfoTooltipBtn title="Time period before streamer runs out of tokens and stream can be closed by Patricians." />
+                        <InfoTooltipBtn title="Time after the streamer runs out of tokens and stream can be closed by anyone, but reward goes to Patrician" />
                       </>
                     }
                   />
