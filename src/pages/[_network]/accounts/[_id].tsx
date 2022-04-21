@@ -154,7 +154,9 @@ const AccountPage: NextPage = () => {
   }
 
   const tokens = tokenSnapshotQuery.data?.data || [];
-
+  const tokensWithBalance = tokens.filter(
+    (snapshot) => Number(snapshot.balanceUntilUpdatedAt) !== 0
+  );
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
       <Stack direction="row" alignItems="center" gap={1}>
@@ -275,8 +277,11 @@ const AccountPage: NextPage = () => {
       </Card>
 
       <Card elevation={2} sx={{ mt: 3 }}>
+        <Typography variant="h6" component="h2" sx={{ mx: 2, mt: 2 }}>
+          Balances
+        </Typography>
         <Grid container columnSpacing={2} component={List}>
-          {tokens.map((tokenSnapshot) => (
+          {tokensWithBalance.map((tokenSnapshot) => (
             <Grid item sm={4} key={tokenSnapshot.id}>
               <ListItem>
                 <ListItemText>
