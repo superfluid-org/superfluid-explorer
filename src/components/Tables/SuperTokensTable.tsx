@@ -14,6 +14,7 @@ import {
   TableFooter,
   TableHead,
   TableRow,
+  TableSortLabel,
   ToggleButton,
   ToggleButtonGroup,
   Toolbar,
@@ -37,6 +38,7 @@ import { sfSubgraph } from "../../redux/store";
 import AppLink from "../AppLink";
 import ClearInputAdornment from "../ClearInputAdornment";
 import InfinitePagination from "../InfinitePagination";
+import InfoTooltipBtn from "../InfoTooltipBtn";
 import TableLoader from "../TableLoader";
 
 export enum ListedStatus {
@@ -102,6 +104,25 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const setPageSize = (newPageSize: number) =>
     onQueryArgsChanged(set("pagination.take", newPageSize, queryArg));
+
+  const onOrderingChanged = (newOrdering: Ordering<Token_OrderBy>) =>
+    onQueryArgsChanged({ ...queryArg, order: newOrdering });
+
+  const onSortClicked = (field: Token_OrderBy) => () => {
+    if (queryArg.order?.orderBy !== field) {
+      onOrderingChanged({
+        orderBy: field,
+        orderDirection: "desc",
+      });
+    } else if (queryArg.order.orderDirection === "desc") {
+      onOrderingChanged({
+        orderBy: field,
+        orderDirection: "asc",
+      });
+    } else {
+      onOrderingChanged(defaultOrdering);
+    }
+  };
 
   const onFilterChange = (newFilter: Token_Filter) => {
     onQueryArgsChanged({
@@ -325,9 +346,45 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell width="40%">Token name</TableCell>
+            <TableCell width="40%">
+              <TableSortLabel
+                active={order?.orderBy === "name"}
+                direction={
+                  order?.orderBy === "name" ? order?.orderDirection : "desc"
+                }
+                onClick={onSortClicked("name")}
+              >
+                Token name
+              </TableSortLabel>
+            </TableCell>
             <TableCell width="20%">Symbol</TableCell>
-            <TableCell width="20%">Listed</TableCell>
+            <TableCell width="20%">
+              <TableSortLabel
+                active={order?.orderBy === "isListed"}
+                direction={
+                  order?.orderBy === "isListed" ? order?.orderDirection : "desc"
+                }
+                onClick={onSortClicked("isListed")}
+              >
+                Listed
+                <InfoTooltipBtn
+                  title={
+                    <>
+                      A token is listed & recognized by the Superfluid protocol.
+                      Benefits of deploying a listed super token include that it
+                      may be instantiated by symbol in our SDK, and listed by
+                      symbol in the Superfluid dashboard{" "}
+                      <AppLink
+                        href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
+                        target="_blank"
+                      >
+                        Read more
+                      </AppLink>
+                    </>
+                  }
+                />
+              </TableSortLabel>
+            </TableCell>
             <TableCell width="40%">Address</TableCell>
           </TableRow>
         </TableHead>

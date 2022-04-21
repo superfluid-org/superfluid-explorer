@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   Container,
+  Divider,
   List,
   ListItem,
   ListItemText,
@@ -131,7 +132,7 @@ const Protocol: FC = () => {
                   />
                 </Box>
               </CardContent>
-
+              <Divider />
               <CardContent>
                 <Typography variant="h6" component="h2" sx={{ mb: 1 }}>
                   TOGA
