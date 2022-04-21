@@ -12,7 +12,7 @@ interface NetworkContracts {
   [any: string]: ContractAddresses;
 }
 
-const protocolContracts = {
+const protocolContracts: NetworkContracts = {
   matic: {
     resolver: "0xE0cc76334405EE8b39213E620587d815967af39C",
     host: "0x3E14dC1b13c488a8d5D310918780c983bD5982E7",
@@ -114,6 +114,6 @@ const protocolContracts = {
     superTokenFactory: "0xA25dbEa94C5824892006b30a629213E7Bf238624",
     superfluidLoaderv1: "0x777Be25F9fdcA87e8a0E06Ad4be93d65429FCb9f",
   },
-} as NetworkContracts;
+};
 
 export default protocolContracts;
