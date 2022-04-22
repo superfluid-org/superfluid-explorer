@@ -5,13 +5,25 @@ import {
   Breadcrumbs,
   Button,
   Card,
+  CardContent,
+  CardHeader,
   Container,
+  Grid,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemText,
   Skeleton,
   Stack,
   Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TableRow,
+  Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -28,11 +40,16 @@ import { AddressBookButton } from "../../../components/AddressBook";
 import CopyIconBtn from "../../../components/CopyIconBtn";
 import CopyLink from "../../../components/CopyLink";
 import EventList from "../../../components/EventList";
+import FlowingBalance from "../../../components/FlowingBalance";
+import FlowingBalanceWithToken from "../../../components/FlowingBalanceWithToken";
+import FlowRate from "../../../components/FlowRate";
+import InfinitePagination from "../../../components/InfinitePagination";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
+import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import {
   incomingStreamOrderingDefault,
   incomingStreamPagingDefault,
@@ -49,6 +66,7 @@ import {
   publishedIndexOrderingDefault,
   publishedIndexPagingDefault,
 } from "../../../components/Tables/Account/AccountPublishedIndexesTable";
+import TokenChip from "../../../components/TokenChip";
 import IdContext from "../../../contexts/IdContext";
 import NetworkContext from "../../../contexts/NetworkContext";
 import { useAppSelector } from "../../../redux/hooks";
@@ -89,6 +107,21 @@ const AccountPage: NextPage = () => {
   const prefetchTokensQuery = sfSubgraph.usePrefetch("accountTokenSnapshots");
   const prefetchEventsQuery = sfSubgraph.usePrefetch("events");
 
+  const tokenSnapshotQuery = sfSubgraph.useAccountTokenSnapshotsQuery({
+    chainId: network.chainId,
+    order: {
+      orderBy: "balanceUntilUpdatedAt",
+      orderDirection: "desc",
+    },
+    filter: {
+      account: address,
+    },
+    pagination: {
+      take: 50,
+      skip: 0,
+    },
+  });
+
   const router = useRouter();
   const { tab } = router.query;
   const [tabValue, setTabValue] = useState<string>(
@@ -120,6 +153,10 @@ const AccountPage: NextPage = () => {
     return <Error statusCode={404} />;
   }
 
+  const tokens = tokenSnapshotQuery.data?.data || [];
+  const tokensWithBalance = tokens.filter(
+    (snapshot) => Number(snapshot.balanceUntilUpdatedAt) !== 0
+  );
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
       <Stack direction="row" alignItems="center" gap={1}>
@@ -142,7 +179,12 @@ const AccountPage: NextPage = () => {
               network={network}
               address={accountQuery.data.id}
             />
-            <Typography data-cy={"address"} variant="h4" component="h1" sx={{ mx: 1 }}>
+            <Typography
+              data-cy={"address"}
+              variant="h4"
+              component="h1"
+              sx={{ mx: 1 }}
+            >
               {addressBookEntry
                 ? addressBookEntry.nameTag
                 : ellipsisAddress(
@@ -189,15 +231,23 @@ const AccountPage: NextPage = () => {
       </Box>
 
       <Card elevation={2} sx={{ mt: 3 }}>
-        <List
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              sm: "1fr",
-              md: "1fr 1fr",
-            },
-          }}
-        >
+        <List sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+          <ListItem>
+            <ListItemText
+              data-cy={"network-name"}
+              secondary="Network"
+              primary={
+                network ? (
+                  <AccountNetworkSelect
+                    activeNetwork={network}
+                    address={address}
+                  />
+                ) : (
+                  <SkeletonNetwork />
+                )
+              }
+            />
+          </ListItem>
           <ListItem>
             <ListItemText
               data-cy={"account-type"}
@@ -223,23 +273,30 @@ const AccountPage: NextPage = () => {
               }
             />
           </ListItem>
-          <ListItem>
-            <ListItemText
-              data-cy={"network-name"}
-              secondary="Network"
-              primary={
-                network ? (
-                  <AccountNetworkSelect
-                    activeNetwork={network}
-                    address={address}
-                  />
-                ) : (
-                  <SkeletonNetwork />
-                )
-              }
-            />
-          </ListItem>
         </List>
+      </Card>
+
+      <Card elevation={2} sx={{ mt: 3 }}>
+        <Typography variant="h6" component="h2" sx={{ mx: 2, mt: 2 }}>
+          Balances
+        </Typography>
+        <Grid container columnSpacing={2} component={List}>
+          {tokensWithBalance.map((tokenSnapshot) => (
+            <Grid item sm={4} key={tokenSnapshot.id}>
+              <ListItem>
+                <ListItemText>
+                  <FlowingBalanceWithToken
+                    network={network}
+                    tokenAddress={tokenSnapshot.token}
+                    balance={tokenSnapshot.balanceUntilUpdatedAt}
+                    balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
+                    flowRate={tokenSnapshot.totalNetFlowRate}
+                  />
+                </ListItemText>
+              </ListItem>
+            </Grid>
+          ))}
+        </Grid>
       </Card>
 
       <Card elevation={2} sx={{ mt: 3 }}>

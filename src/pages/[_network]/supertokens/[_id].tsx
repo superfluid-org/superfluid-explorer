@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { sfSubgraph, sfApi } from "../../../redux/store";
 import {
   Breadcrumbs,
+  Button,
   Card,
   Container,
   Grid,
@@ -36,12 +37,22 @@ import { ethers } from "ethers";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import { gql } from "graphql-request";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
+import CopyIconBtn from "../../../components/CopyIconBtn";
+import CopyClipboard from "../../../components/CopyClipboard";
+import BalanceWithToken from "../../../components/BalanceWithToken";
+import EtherFormatted from "../../../components/EtherFormatted";
+import FlowingBalance from "../../../components/FlowingBalance";
 
 const SuperTokenPage: NextPage = () => {
   const network = useContext(NetworkContext);
   const address = useContext(IdContext);
 
   const tokenQuery = sfSubgraph.useTokenQuery({
+    chainId: network.chainId,
+    id: address,
+  });
+
+  const tokenStatisticsQuery = sfSubgraph.useTokenStatisticQuery({
     chainId: network.chainId,
     id: address,
   });
@@ -87,6 +98,10 @@ const SuperTokenPage: NextPage = () => {
     return <Error statusCode={404} />;
   }
 
+  const tokenStatistics = tokenStatisticsQuery.data;
+
+  console.log("tokenStatistics", tokenStatistics);
+
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
       <Stack direction="row" alignItems="center" gap={1}>
@@ -110,29 +125,270 @@ const SuperTokenPage: NextPage = () => {
             <Typography variant="h4" component="h1" sx={{ mr: 1 }}>
               {superToken.name}
             </Typography>
-            <SubgraphQueryLink
-              network={network}
-              query={gql`
-                query ($id: ID!) {
-                  token(id: $id) {
-                    name
-                    symbol
-                    isSuperToken
-                    isListed
-                    underlyingAddress
-                    decimals
-                    createdAtTimestamp
-                    createdAtBlockNumber
+            <Stack direction="row" justifyContent="flex-end" flex={1} gap={1}>
+              <SubgraphQueryLink
+                network={network}
+                query={gql`
+                  query ($id: ID!) {
+                    token(id: $id) {
+                      name
+                      symbol
+                      isSuperToken
+                      isListed
+                      underlyingAddress
+                      decimals
+                      createdAtTimestamp
+                      createdAtBlockNumber
+                    }
                   }
-                }
-              `}
-              variables={`{ "id": "${address.toLowerCase()}" }`}
-            />
+                `}
+                variables={`{ "id": "${address.toLowerCase()}" }`}
+              />
+              <Tooltip title="View on blockchain Explorer">
+                <Button
+                  size="small"
+                  variant="outlined"
+                  href={network.getLinkForAddress(superToken.id)}
+                  target="_blank"
+                  startIcon={<OpenInNewIcon />}
+                >
+                  Blockchain
+                </Button>
+              </Tooltip>
+            </Stack>
           </Stack>
         ) : (
           <SkeletonTokenName />
         )}
       </Box>
+
+      <Grid container spacing={3} sx={{ pt: 3 }}>
+        <Grid item sm={6}>
+          <Card elevation={2}>
+            <List>
+              <Stack direction="row">
+                <ListItem divider>
+                  <ListItemText
+                    data-cy={"token-symbol"}
+                    secondary="Symbol"
+                    primary={
+                      superToken ? superToken.symbol : <SkeletonTokenSymbol />
+                    }
+                  />
+                </ListItem>
+                <ListItem divider>
+                  <ListItemText
+                    data-cy={"token-fancy-network"}
+                    secondary="Network"
+                    primary={<NetworkDisplay network={network} />}
+                  />
+                </ListItem>
+                <ListItem divider>
+                  <ListItemText
+                    data-cy={"token-listed-status"}
+                    secondary={
+                      <>
+                        Listed
+                        <InfoTooltipBtn
+                          dataCy={"listed-tooltip"}
+                          title={
+                            <>
+                              A token is listed & recognized by the Superfluid
+                              protocol. Benefits of deploying a listed super
+                              token include that it may be instantiated by
+                              symbol in our SDK, and listed by symbol in the
+                              Superfluid dashboard{" "}
+                              <AppLink
+                                data-cy={"listed-tooltip-link"}
+                                href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
+                                target="_blank"
+                              >
+                                Read more
+                              </AppLink>
+                            </>
+                          }
+                        />
+                      </>
+                    }
+                    primary={
+                      superToken ? (
+                        superToken.isListed ? (
+                          "Yes"
+                        ) : (
+                          "No"
+                        )
+                      ) : (
+                        <Skeleton sx={{ width: "20px" }} />
+                      )
+                    }
+                  />
+                </ListItem>
+              </Stack>
+
+              <ListItem divider>
+                <ListItemText
+                  data-cy={"token-address"}
+                  secondary="Address"
+                  primary={
+                    superToken ? (
+                      <Stack direction="row" alignItems="center">
+                        {ethers.utils.getAddress(superToken.id)}
+                        <CopyClipboard
+                          copyText={ethers.utils.getAddress(superToken.id)}
+                          description="Copy address to clipboard"
+                        />
+                      </Stack>
+                    ) : (
+                      <SkeletonAddress />
+                    )
+                  }
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  data-cy={"underlying-token-address"}
+                  secondary={
+                    <>
+                      Underlying Token Address
+                      <InfoTooltipBtn
+                        dataCy={"underlying-token-tooltip"}
+                        title={
+                          <>
+                            Already existing ERC20 token&apos;s address that has
+                            been upgraded to super token.{" "}
+                            <AppLink
+                              data-cy={"underlying-token-tooltip-link"}
+                              href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
+                              target="_blank"
+                            >
+                              Read more
+                            </AppLink>
+                          </>
+                        }
+                        size={16}
+                      />
+                    </>
+                  }
+                  primary={
+                    superToken ? (
+                      superToken.underlyingAddress ===
+                        "0x0000000000000000000000000000000000000000" ||
+                      superToken.underlyingAddress === "0x" ? (
+                        <>None</>
+                      ) : (
+                        <Tooltip title="View on blockchain explorer">
+                          <AppLink
+                            href={network.getLinkForAddress(
+                              superToken.underlyingAddress
+                            )}
+                            target="_blank"
+                          >
+                            <Grid container alignItems="center">
+                              {ethers.utils.getAddress(
+                                superToken.underlyingAddress
+                              )}
+                              <OpenInNewIcon
+                                sx={{ ml: 0.5, fontSize: "inherit" }}
+                              />
+                            </Grid>
+                          </AppLink>
+                        </Tooltip>
+                      )
+                    ) : (
+                      <SkeletonAddress />
+                    )
+                  }
+                />
+              </ListItem>
+            </List>
+          </Card>
+        </Grid>
+
+        <Grid item sm={6}>
+          <Card elevation={2}>
+            <List sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+              <ListItem divider>
+                <ListItemText
+                  secondary="Total streams"
+                  primary={
+                    tokenStatistics ? (
+                      tokenStatistics.totalNumberOfActiveStreams +
+                      tokenStatistics.totalNumberOfClosedStreams
+                    ) : (
+                      <Skeleton sx={{ width: "100px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+
+              <ListItem divider>
+                <ListItemText
+                  secondary="Indexes"
+                  primary={
+                    tokenStatistics ? (
+                      tokenStatistics.totalNumberOfIndexes
+                    ) : (
+                      <Skeleton sx={{ width: "100px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+
+              <ListItem divider>
+                <ListItemText
+                  secondary="Active streams"
+                  primary={
+                    tokenStatistics ? (
+                      tokenStatistics.totalNumberOfActiveStreams
+                    ) : (
+                      <Skeleton sx={{ width: "100px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+
+              <ListItem divider>
+                <ListItemText
+                  secondary="Active indexes"
+                  primary={
+                    tokenStatistics ? (
+                      tokenStatistics.totalNumberOfActiveIndexes
+                    ) : (
+                      <Skeleton sx={{ width: "100px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemText
+                  secondary="Closed streams"
+                  primary={
+                    tokenStatistics ? (
+                      tokenStatistics.totalNumberOfClosedStreams
+                    ) : (
+                      <Skeleton sx={{ width: "100px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemText
+                  secondary="Approved subscriptions"
+                  primary={
+                    tokenStatistics ? (
+                      tokenStatistics.totalApprovedSubscriptions
+                    ) : (
+                      <Skeleton sx={{ width: "100px" }} />
+                    )
+                  }
+                />
+              </ListItem>
+            </List>
+          </Card>
+        </Grid>
+      </Grid>
 
       <Card elevation={2} sx={{ mt: 3 }}>
         <List
@@ -146,132 +402,62 @@ const SuperTokenPage: NextPage = () => {
         >
           <ListItem divider>
             <ListItemText
-              data-cy={"token-symbol"}
-              secondary="Symbol"
-              primary={superToken ? superToken.symbol : <SkeletonTokenSymbol />}
-            />
-          </ListItem>
-          <ListItem divider>
-            <ListItemText
-              data-cy={"token-fancy-network"}
-              secondary="Network"
-              primary={<NetworkDisplay network={network} />}
-            />
-          </ListItem>
-          <ListItem divider>
-            <ListItemText
-              data-cy={"token-address"}
-              secondary="Address"
+              secondary="Total amount streamed"
               primary={
-                superToken ? (
-                  <Tooltip title="View on blockchain explorer">
-                    <AppLink
-                      href={network.getLinkForAddress(superToken.id)}
-                      target="_blank"
-                    >
-                      <Grid container alignItems="center">
-                        {ethers.utils.getAddress(superToken.id)}
-                        <OpenInNewIcon sx={{ ml: 0.5, fontSize: "inherit" }} />
-                      </Grid>
-                    </AppLink>
-                  </Tooltip>
-                ) : (
-                  <SkeletonAddress />
-                )
-              }
-            />
-          </ListItem>
-          <ListItem divider>
-            <ListItemText
-              data-cy={"underlying-token-address"}
-              secondary={
-                <>
-                  Underlying Token Address
-                  <InfoTooltipBtn
-                    dataCy={"underlying-token-tooltip"}
-                    title={
-                      <>
-                        Already existing ERC20 token&apos;s address that has
-                        been upgraded to super token.{" "}
-                        <AppLink
-                          data-cy={"underlying-token-tooltip-link"}
-                          href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
-                          target="_blank"
-                        >
-                          Read more
-                        </AppLink>
-                      </>
-                    }
-                    size={16}
+                tokenStatistics ? (
+                  <FlowingBalance
+                    balance={tokenStatistics.totalAmountStreamedUntilUpdatedAt}
+                    balanceTimestamp={tokenStatistics.updatedAtTimestamp}
+                    flowRate={tokenStatistics.totalOutflowRate}
                   />
-                </>
-              }
-              primary={
-                superToken ? (
-                  superToken.underlyingAddress ===
-                    "0x0000000000000000000000000000000000000000" ||
-                  superToken.underlyingAddress === "0x" ? (
-                    <>None</>
-                  ) : (
-                    <Tooltip title="View on blockchain explorer">
-                      <AppLink
-                        href={network.getLinkForAddress(
-                          superToken.underlyingAddress
-                        )}
-                        target="_blank"
-                      >
-                        <Grid container alignItems="center">
-                          {ethers.utils.getAddress(
-                            superToken.underlyingAddress
-                          )}
-                          <OpenInNewIcon
-                            sx={{ ml: 0.5, fontSize: "inherit" }}
-                          />
-                        </Grid>
-                      </AppLink>
-                    </Tooltip>
-                  )
                 ) : (
-                  <SkeletonAddress />
+                  // <EtherFormatted
+                  //   wei={tokenStatistics.totalAmountStreamedUntilUpdatedAt}
+                  // />
+                  <Skeleton sx={{ width: "200px" }} />
                 )
               }
             />
           </ListItem>
+
+          <ListItem divider>
+            <ListItemText
+              secondary="Total amount distributed"
+              primary={
+                tokenStatistics ? (
+                  <EtherFormatted
+                    wei={tokenStatistics.totalAmountDistributedUntilUpdatedAt}
+                  />
+                ) : (
+                  <Skeleton sx={{ width: "200px" }} />
+                )
+              }
+            />
+          </ListItem>
+
           <ListItem>
             <ListItemText
-              data-cy={"token-listed-status"}
-              secondary={
-                <>
-                  Listed
-                  <InfoTooltipBtn
-                    dataCy={"listed-tooltip"}
-                    title={
-                      <>
-                        A token is listed & recognized by the Superfluid
-                        protocol. Benefits of deploying a listed super token
-                        include that it may be instantiated by symbol in our
-                        SDK, and listed by symbol in the Superfluid dashboard{" "}
-                        <AppLink
-                          data-cy={"listed-tooltip-link"}
-                          href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
-                          target="_blank"
-                        >
-                          Read more
-                        </AppLink>
-                      </>
-                    }
-                  />
-                </>
-              }
+              secondary="Total amount transferred"
               primary={
-                superToken ? (
-                  superToken.isListed ? (
-                    "Yes"
-                  ) : (
-                    "No"
-                  )
+                tokenStatistics ? (
+                  <EtherFormatted
+                    wei={tokenStatistics.totalAmountTransferredUntilUpdatedAt}
+                  />
                 ) : (
-                  <Skeleton sx={{ width: "20px" }} />
+                  <Skeleton sx={{ width: "200px" }} />
+                )
+              }
+            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              secondary="Total supply"
+              primary={
+                tokenStatistics ? (
+                  <EtherFormatted wei={tokenStatistics.totalSupply} />
+                ) : (
+                  <Skeleton sx={{ width: "200px" }} />
                 )
               }
             />

@@ -1,11 +1,8 @@
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import CloseIcon from "@mui/icons-material/Close";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Box,
   Button,
   Chip,
-  CircularProgress,
   IconButton,
   OutlinedInput,
   Popover,
@@ -21,13 +18,13 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
 import {
   createSkipPaging,
   Index_Filter,
   Index_OrderBy,
-  Ordering,
+  Ordering
 } from "@superfluid-finance/sdk-core";
 import { IndexesQuery } from "@superfluid-finance/sdk-redux";
 import omit from "lodash/fp/omit";
@@ -39,13 +36,12 @@ import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import AccountAddress from "../../AccountAddress";
 import AppLink from "../../AppLink";
+import BalanceWithToken from "../../BalanceWithToken";
 import ClearInputAdornment from "../../ClearInputAdornment";
 import DetailsButton from "../../DetailsButton";
-import EtherFormatted from "../../EtherFormatted";
 import { IndexPublicationDetailsDialog } from "../../IndexPublicationDetails";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
-import SuperTokenAddress from "../../SuperTokenAddress";
 import TableLoader from "../../TableLoader";
 import { DistributionStatus } from "../Account/AccountPublishedIndexesTable";
 
@@ -425,15 +421,10 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 />
               </TableCell>
               <TableCell data-cy={"total-distributed"}>
-                <EtherFormatted
+                <BalanceWithToken
                   wei={index.totalAmountDistributedUntilUpdatedAt}
-                />
-                &nbsp;
-                <SuperTokenAddress
                   network={network}
-                  address={index.token}
-                  format={(token) => token.symbol}
-                  formatLoading={() => ""}
+                  tokenAddress={index.token}
                 />
               </TableCell>
               <TableCell>
