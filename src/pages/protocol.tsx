@@ -1,3 +1,4 @@
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Box,
@@ -5,32 +6,59 @@ import {
   CardContent,
   Container,
   Divider,
+  Link,
   List,
   ListItem,
   ListItemText,
   Stack,
   Tab,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { FC, SyntheticEvent, useState } from "react";
 import CopyClipboard from "../components/CopyClipboard";
 import InfoTooltipBtn from "../components/InfoTooltipBtn";
-import { networksByTestAndName } from "../redux/networks";
+import { Network, networksByTestAndName } from "../redux/networks";
 import protocolContracts from "../redux/protocolContracts";
 
 interface AddressListItemProps {
   title: string;
+  network: Network;
   address?: string;
 }
 
-const AddressListItem: FC<AddressListItemProps> = ({ title, address }) => (
+const AddressListItem: FC<AddressListItemProps> = ({
+  network,
+  title,
+  address,
+}) => (
   <ListItem>
     <ListItemText
       primary={title}
       secondary={
-        <Stack direction="row" alignItems="center">
+        <Stack
+          direction="row"
+          alignItems="center"
+          sx={{ fontFamily: "Roboto Mono" }}
+        >
           {address || "-"}
-          {address && <CopyClipboard copyText={address} />}
+          {address && (
+            <Stack direction="row" alignItems="center" gap={1}>
+              <CopyClipboard
+                copyText={address}
+                IconProps={{ sx: { fontSize: "16px" } }}
+              />
+              <Tooltip title="View on blockchain Explorer">
+                <Link
+                  href={network.getLinkForAddress(address)}
+                  target="_blank"
+                  sx={{ color: "inherit" }}
+                >
+                  <OpenInNewIcon sx={{ fontSize: "16px", display: "block" }} />
+                </Link>
+              </Tooltip>
+            </Stack>
+          )}
         </Stack>
       }
     />
@@ -181,19 +209,41 @@ const Protocol: FC = () => {
               <List
                 sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", pb: 2 }}
               >
-                <AddressListItem title="Resolver" address={resolver} />
-                <AddressListItem title="Host" address={host} />
-                <AddressListItem title="CFAv1" address={CFAv1} />
-                <AddressListItem title="IDAv1" address={IDAv1} />
+                <AddressListItem
+                  title="Resolver"
+                  network={network}
+                  address={resolver}
+                />
+                <AddressListItem
+                  title="Host"
+                  network={network}
+                  address={host}
+                />
+                <AddressListItem
+                  title="CFAv1"
+                  network={network}
+                  address={CFAv1}
+                />
+                <AddressListItem
+                  title="IDAv1"
+                  network={network}
+                  address={IDAv1}
+                />
                 <AddressListItem
                   title="SuperTokenFactory"
+                  network={network}
                   address={superTokenFactory}
                 />
                 <AddressListItem
                   title="SuperfluidLoader v1"
+                  network={network}
                   address={superfluidLoaderv1}
                 />
-                <AddressListItem title="TOGA" address={TOGA} />
+                <AddressListItem
+                  title="TOGA"
+                  network={network}
+                  address={TOGA}
+                />
               </List>
             </Card>
           </TabPanel>
