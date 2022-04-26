@@ -1,0 +1,31 @@
+{
+  "matic": {
+    "DepositSize": "4 hour flowrate",
+    "OwedDepositSize": "4 hour flowrate",
+    "PatricianPeriod": "30 minutes",
+    "MinimumExitPeriod": "1 week",
+    "DefaultExitPeriod": "4 weeks",
+    "Resolver": "0xE0cc76334405EE8b39213E620587d815967af39C",
+    "CFAv1": "0x6EeE6060f715257b970700bc2656De21dEdF074C",
+    "SuperTokenFactory": "0x2C90719f25B10Fc5646c82DA3240C76Fa5BcCF34",
+    "TOGA": "0x6AEAeE5Fd4D05A741723D752D30EE4D72690A8f7",
+    "Host": "0x3E14dC1b13c488a8d5D310918780c983bD5982E7",
+    "IDAv1": "0xB0aABBA4B2783A72C52956CDEF62d438ecA2d7a1",
+    "SuperfluidLoaderV1": "0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7"
+  },
+
+  "optimism-mainnet": {
+    "DepositSize": "4 hour flowrate",
+    "OwedDepositSize": "4 hour flowrate",
+    "PatricianPeriod": "30 minutes",
+    "MinimumExitPeriod": "1 week",
+    "DefaultExitPeriod": "4 weeks",
+    "Resolver": "0x743B5f46BC86caF41bE4956d9275721E0531B186",
+    "CFAv1": "0x204C6f131bb7F258b2Ea1593f5309911d8E458eD",
+    "SuperTokenFactory": "0x8276469A443D5C6B7146BED45e2abCaD3B6adad9",
+    "TOGA": "0xA3c8502187fD7a7118eAD59dc811281448946C8f",
+    "Host": "0x567c4B141ED61923967cA25Ef4906C8781069a10",
+    "IDAv1": "0xc4ce5118C3B20950ee288f086cb7FC166d222D4c",
+    "SuperfluidLoaderV1": "0x8E310ce29Ab7Fa2878944A65BB0eaF97B1853d40"
+  }
+}

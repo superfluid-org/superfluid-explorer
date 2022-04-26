@@ -1,0 +1,13 @@
+{
+  "matic": {
+    "TokenName": "SupermiMATIC",
+    "TokenSymbol": "miMATICx",
+    "TokenAddress": "0x00169fe3fb1a8a044ac1c1849e6bda3c22a6d2fe"
+  },
+
+  "optimism-mainnet": {
+    "TokenName": "Super ETH",
+    "TokenSymbol": "ETHx",
+    "TokenAddress": "0x4ac8bd1bdae47beef2d1c6aa62229509b962aa0d"
+  }
+}
