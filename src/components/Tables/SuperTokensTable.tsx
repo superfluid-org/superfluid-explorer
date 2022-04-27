@@ -52,7 +52,9 @@ interface SuperTokensTableProps {
 
 const defaultOrdering = {} as Ordering<Token_OrderBy>;
 
-const defaultFilter: Token_Filter = {};
+const defaultFilter: Token_Filter = {
+  isSuperToken: true,
+};
 
 export const defaultPaging = createSkipPaging({
   take: 10,

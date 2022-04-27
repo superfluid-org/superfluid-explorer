@@ -276,28 +276,36 @@ const AccountPage: NextPage = () => {
         </List>
       </Card>
 
-      <Card elevation={2} sx={{ mt: 3 }}>
-        <Typography variant="h6" component="h2" sx={{ mx: 2, mt: 2 }}>
-          Balances
-        </Typography>
-        <Grid container columnSpacing={2} component={List}>
-          {tokensWithBalance.map((tokenSnapshot) => (
-            <Grid item sm={4} key={tokenSnapshot.id}>
-              <ListItem>
-                <ListItemText>
-                  <FlowingBalanceWithToken
-                    network={network}
-                    tokenAddress={tokenSnapshot.token}
-                    balance={tokenSnapshot.balanceUntilUpdatedAt}
-                    balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
-                    flowRate={tokenSnapshot.totalNetFlowRate}
-                  />
-                </ListItemText>
-              </ListItem>
-            </Grid>
-          ))}
-        </Grid>
-      </Card>
+      {(tokenSnapshotQuery.isFetching || tokenSnapshotQuery.isLoading) && (
+        <Skeleton
+          sx={{ height: 112, width: "100%", transform: "scale(1)", mt: 3 }}
+        />
+      )}
+
+      {tokensWithBalance.length > 0 && (
+        <Card elevation={2} sx={{ mt: 3 }}>
+          <Typography variant="h6" component="h2" sx={{ mx: 2, mt: 2 }}>
+            Balances
+          </Typography>
+          <Grid container columnSpacing={2} component={List}>
+            {tokensWithBalance.map((tokenSnapshot) => (
+              <Grid item sm={4} key={tokenSnapshot.id}>
+                <ListItem>
+                  <ListItemText>
+                    <FlowingBalanceWithToken
+                      network={network}
+                      tokenAddress={tokenSnapshot.token}
+                      balance={tokenSnapshot.balanceUntilUpdatedAt}
+                      balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
+                      flowRate={tokenSnapshot.totalNetFlowRate}
+                    />
+                  </ListItemText>
+                </ListItem>
+              </Grid>
+            ))}
+          </Grid>
+        </Card>
+      )}
 
       <Card elevation={2} sx={{ mt: 3 }}>
         <TabContext value={tabValue}>

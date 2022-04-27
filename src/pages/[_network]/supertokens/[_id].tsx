@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { sfSubgraph, sfApi } from "../../../redux/store";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Breadcrumbs,
   Button,
@@ -16,32 +16,29 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import NetworkDisplay from "../../../components/NetworkDisplay";
 import { Token } from "@superfluid-finance/sdk-core";
+import { ethers } from "ethers";
+import { gql } from "graphql-request";
 import { NextPage } from "next";
-import SuperTokenIndexes from "../../../components/SuperTokenIndexes";
-import SuperTokenStreams from "../../../components/SuperTokenStreams";
-import SkeletonTokenSymbol from "../../../components/skeletons/SkeletonTokenSymbol";
+import Error from "next/error";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import AppLink from "../../../components/AppLink";
+import CopyClipboard from "../../../components/CopyClipboard";
+import CopyLink from "../../../components/CopyLink";
+import EtherFormatted from "../../../components/EtherFormatted";
+import EventList from "../../../components/EventList";
+import FlowingBalance from "../../../components/FlowingBalance";
+import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
+import NetworkDisplay from "../../../components/NetworkDisplay";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonTokenName from "../../../components/skeletons/SkeletonTokenName";
-import EventList from "../../../components/EventList";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import Error from "next/error";
-import NetworkContext from "../../../contexts/NetworkContext";
-import IdContext from "../../../contexts/IdContext";
-import CopyLink from "../../../components/CopyLink";
-import { useRouter } from "next/router";
-import AppLink from "../../../components/AppLink";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { ethers } from "ethers";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
-import { gql } from "graphql-request";
-import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
-import CopyIconBtn from "../../../components/CopyIconBtn";
-import CopyClipboard from "../../../components/CopyClipboard";
-import BalanceWithToken from "../../../components/BalanceWithToken";
-import EtherFormatted from "../../../components/EtherFormatted";
-import FlowingBalance from "../../../components/FlowingBalance";
+import SuperTokenIndexes from "../../../components/SuperTokenIndexes";
+import SuperTokenStreams from "../../../components/SuperTokenStreams";
+import IdContext from "../../../contexts/IdContext";
+import NetworkContext from "../../../contexts/NetworkContext";
+import { sfApi, sfSubgraph } from "../../../redux/store";
 
 const SuperTokenPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -93,14 +90,12 @@ const SuperTokenPage: NextPage = () => {
   if (
     !tokenQuery.isUninitialized &&
     !tokenQuery.isLoading &&
-    !tokenQuery.data
+    (!tokenQuery.data || !tokenQuery.data.isSuperToken)
   ) {
     return <Error statusCode={404} />;
   }
 
   const tokenStatistics = tokenStatisticsQuery.data;
-
-  console.log("tokenStatistics", tokenStatistics);
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
@@ -172,7 +167,11 @@ const SuperTokenPage: NextPage = () => {
                     data-cy={"token-symbol"}
                     secondary="Symbol"
                     primary={
-                      superToken ? superToken.symbol : <SkeletonTokenSymbol />
+                      superToken ? (
+                        superToken.symbol
+                      ) : (
+                        <Skeleton sx={{ width: 60 }} />
+                      )
                     }
                   />
                 </ListItem>
@@ -218,7 +217,7 @@ const SuperTokenPage: NextPage = () => {
                           "No"
                         )
                       ) : (
-                        <Skeleton sx={{ width: "20px" }} />
+                        <Skeleton sx={{ width: 40 }} />
                       )
                     }
                   />
