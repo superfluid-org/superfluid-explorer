@@ -397,7 +397,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             <TableRow key={token.id}>
               <TableCell>
                 <AppLink href={`/${network.slugName}/supertokens/${token.id}`}>
-                  {token.name}
+                  {token.name || <>&#8212;</>}
                 </AppLink>
               </TableCell>
               <TableCell>
@@ -408,7 +408,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                   <Chip
                     clickable
                     size="small"
-                    label={token.symbol}
+                    label={token.symbol || <>&#8211;</>}
                     sx={{ cursor: "pointer", lineHeight: "24px" }}
                   />
                 </AppLink>
