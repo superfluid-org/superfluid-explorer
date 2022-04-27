@@ -1,6 +1,5 @@
 import {
   Box,
-  CircularProgress,
   Stack,
   Table,
   TableBody,

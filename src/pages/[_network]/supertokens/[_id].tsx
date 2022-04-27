@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { sfSubgraph, sfApi } from "../../../redux/store";
+import { sfSubgraph } from "../../../redux/store";
 import {
   Breadcrumbs,
   Button,
@@ -37,9 +37,7 @@ import { ethers } from "ethers";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import { gql } from "graphql-request";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
-import CopyIconBtn from "../../../components/CopyIconBtn";
 import CopyClipboard from "../../../components/CopyClipboard";
-import BalanceWithToken from "../../../components/BalanceWithToken";
 import EtherFormatted from "../../../components/EtherFormatted";
 import FlowingBalance from "../../../components/FlowingBalance";
 
@@ -58,20 +56,6 @@ const SuperTokenPage: NextPage = () => {
   });
 
   const superToken: Token | null | undefined = tokenQuery.data;
-
-  const [triggerMonitoring, monitorResult] =
-    sfApi.useMonitorForEventsToInvalidateCacheMutation();
-
-  useEffect(() => {
-    if (superToken) {
-      triggerMonitoring({
-        chainId: network.chainId,
-        address: superToken.id,
-      });
-      return monitorResult.reset;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [superToken]);
 
   const router = useRouter();
   const { tab } = router.query;
