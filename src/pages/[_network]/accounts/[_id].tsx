@@ -29,7 +29,7 @@ import { AddressBookButton } from "../../../components/AddressBook";
 import CopyIconBtn from "../../../components/CopyIconBtn";
 import CopyLink from "../../../components/CopyLink";
 import EventList from "../../../components/EventList";
-import FlowingBalanceWithToken from "../../../components/FlowingBalanceWithToken";
+import TokenBalance from "../../../components/FlowingBalanceWithToken";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
@@ -85,6 +85,7 @@ const AccountPage: NextPage = () => {
     },
     filter: {
       account: address,
+
     },
     pagination: {
       take: 50,
@@ -255,7 +256,7 @@ const AccountPage: NextPage = () => {
             <Grid item sm={4} key={tokenSnapshot.id}>
               <ListItem>
                 <ListItemText>
-                  <FlowingBalanceWithToken
+                  <TokenBalance
                     network={network}
                     tokenAddress={tokenSnapshot.token}
                     balance={tokenSnapshot.balanceUntilUpdatedAt}

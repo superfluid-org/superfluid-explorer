@@ -84,8 +84,6 @@ const SuperTokenPage: NextPage = () => {
 
   const tokenStatistics = tokenStatisticsQuery.data;
 
-  console.log("tokenStatistics", tokenStatistics);
-
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
       <Stack direction="row" alignItems="center" gap={1}>

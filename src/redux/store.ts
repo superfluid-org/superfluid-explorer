@@ -30,8 +30,9 @@ import {
 } from "redux-persist";
 import { isServer } from "../utils/isServer";
 import { addDays } from "../utils/dateTime";
+import { newRpcApiEndpoints } from "./newRpcApiEndpoints";
 
-export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks);
+export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks).injectEndpoints(newRpcApiEndpoints);
 export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
 ).injectEndpoints(allSubgraphEndpoints);

@@ -18,7 +18,7 @@ import { FC, useState } from "react";
 import { Network } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
 import AccountAddress from "./AccountAddress";
-import FlowingBalanceWithToken from "./FlowingBalanceWithToken";
+import TokenBalance from "./FlowingBalanceWithToken";
 import InfinitePagination from "./InfinitePagination";
 import TableLoader from "./TableLoader";
 import TimeAgo from "./TimeAgo";
@@ -144,6 +144,6 @@ interface TotalStreamedProps {
 const TotalStreamed: FC<TotalStreamedProps> = (props) => (
   <Stack sx={{ lineHeight: "1.5" }}>
     <Typography variant="body2">Total streamed:</Typography>
-    <FlowingBalanceWithToken {...props} />
+    <TokenBalance {...props} />
   </Stack>
 );

@@ -26,7 +26,7 @@ import AccountAddress from "../../../components/AccountAddress";
 import AppLink from "../../../components/AppLink";
 import CopyLink from "../../../components/CopyLink";
 import FlowingBalance from "../../../components/FlowingBalance";
-import FlowingBalanceWithToken from "../../../components/FlowingBalanceWithToken";
+import TokenBalance from "../../../components/FlowingBalanceWithToken";
 import FlowRate from "../../../components/FlowRate";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
@@ -249,7 +249,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
               primary={
                 stream ? (
                   <>
-                    <FlowingBalanceWithToken
+                    <TokenBalance
                       network={network}
                       tokenAddress={stream.token}
                       balance={stream.streamedUntilUpdatedAt}

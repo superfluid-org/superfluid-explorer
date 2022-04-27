@@ -46,7 +46,7 @@ import { sfSubgraph } from "../../../redux/store";
 import AccountAddress from "../../AccountAddress";
 import ClearInputAdornment from "../../ClearInputAdornment";
 import DetailsButton from "../../DetailsButton";
-import FlowingBalanceWithToken from "../../FlowingBalanceWithToken";
+import TokenBalance from "../../FlowingBalanceWithToken";
 import FlowRate from "../../FlowRate";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
@@ -391,7 +391,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 <FlowRate flowRate={stream.currentFlowRate} />
               </TableCell>
               <TableCell data-cy={"incoming-total-streamed"}>
-                <FlowingBalanceWithToken
+                <TokenBalance
                   balance={stream.streamedUntilUpdatedAt}
                   balanceTimestamp={stream.updatedAtTimestamp}
                   flowRate={stream.currentFlowRate}

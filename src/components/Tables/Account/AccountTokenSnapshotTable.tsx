@@ -34,7 +34,8 @@ import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import AppLink from "../../AppLink";
-import FlowingBalance from "../../FlowingBalance";
+import FlowingBalance, { FlowingBalanceProps } from "../../FlowingBalance";
+import { AccountTokenBalance } from "../../FlowingBalanceWithToken";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import SuperTokenAddress from "../../SuperTokenAddress";
@@ -472,10 +473,15 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 />
               </TableCell>
               <TableCell>
-                <FlowingBalance
-                  balance={tokenSnapshot.balanceUntilUpdatedAt}
-                  balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
-                  flowRate={tokenSnapshot.totalNetFlowRate}
+                <AccountTokenBalance
+                  network={network}
+                  accountAddress={accountAddress}
+                  tokenAddress={tokenSnapshot.token}
+                  placeholder={{
+                    balance: tokenSnapshot.balanceUntilUpdatedAt,
+                    balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
+                    flowRate: tokenSnapshot.totalNetFlowRate,
+                  }}
                 />
               </TableCell>
               <TableCell data-cy={"active-streams"}>
