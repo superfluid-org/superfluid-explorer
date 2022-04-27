@@ -9,8 +9,8 @@ export const AccountTokenBalance: FC<{
   network: Network;
   tokenAddress: string;
   accountAddress: string;
-  placeholder?: FlowingBalanceProps;
-  TokenChipProps?: TokenChipProps;
+  placeholder: FlowingBalanceProps;
+  TokenChipProps: TokenChipProps | undefined | null;
 }> = ({
   network,
   tokenAddress,
@@ -45,8 +45,11 @@ export const AccountTokenBalance: FC<{
   }
 };
 
+/**
+ * If TokenChipProps is not provided, token chip will not be shown.
+ */
 const TokenBalance: FC<
-  FlowingBalanceProps & { TokenChipProps?: TokenChipProps }
+  FlowingBalanceProps & { TokenChipProps: TokenChipProps | undefined | null }
 > = ({ TokenChipProps, ...flowingBalanceProps }) => (
   <Stack direction="row" alignItems="center" gap={1}>
     {TokenChipProps && <TokenChip {...TokenChipProps} />}

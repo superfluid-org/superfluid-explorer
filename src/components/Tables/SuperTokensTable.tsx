@@ -50,6 +50,8 @@ interface SuperTokensTableProps {
   network: Network;
 }
 
+type RequiredTokensQuery = Required<Omit<TokensQuery, "block">>;
+
 const defaultOrdering = {} as Ordering<Token_OrderBy>;
 
 const defaultFilter: Token_Filter = {};
@@ -64,14 +66,14 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const [listedStatus, setListedStatus] = useState<ListedStatus | null>(null);
 
-  const createDefaultArg = (): Required<TokensQuery> => ({
+  const createDefaultArg = (): RequiredTokensQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
     order: defaultOrdering,
   });
 
-  const [queryArg, setQueryArg] = useState<Required<TokensQuery>>(
+  const [queryArg, setQueryArg] = useState<RequiredTokensQuery>(
     createDefaultArg()
   );
 
@@ -79,7 +81,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
-  const onQueryArgsChanged = (newArgs: Required<TokensQuery>) => {
+  const onQueryArgsChanged = (newArgs: RequiredTokensQuery) => {
     setQueryArg(newArgs);
 
     if (

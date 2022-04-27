@@ -1638,7 +1638,7 @@
   dependencies:
     "@ethersproject/logger" "^5.6.0"
 
-"@ethersproject/providers@5.5.3", "@ethersproject/providers@^5.5.3":
+"@ethersproject/providers@5.5.3":
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.5.3.tgz#56c2b070542ac44eb5de2ed3cf6784acd60a3130"
   integrity sha512-ZHXxXXXWHuwCQKrgdpIkbzMNJMvs+9YWemanwp1fA7XZEv7QlilseysPvQe0D7Q7DlkJX/w/bGA1MdgK2TbGvA==
@@ -2487,15 +2487,14 @@
   dependencies:
     "@sentry/cli" "^1.73.0"
 
-"@superfluid-finance/sdk-core@0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.3.2.tgz#cbf4d28399cfc9c15191f6a3aec3c9dde22110eb"
-  integrity sha512-t7xsqSJifsfl+DyroKXGG5awvkESEqN4Cg0cXglD/3RtGNFOTK+73YduX0+CgsTjXY3DJPHDrnhTxrZyt0VXzw==
+"@superfluid-finance/sdk-core@0.3.3-dev.812e77d.0":
+  version "0.3.3-dev.812e77d.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.3.3-dev.812e77d.0.tgz#f168d59a00afca1010ab1400b8cbdf54812f5cb1"
+  integrity sha512-mngiTBqOsnbp93IV9Q9oQ2zg/qkr6MjLvN4PeslBW2MNqjy1Ra6hIzSets4VXnLdajeiBzmSs8WnSe50ewvLHg==
   dependencies:
-    "@ethersproject/providers" "^5.5.3"
-    ajv "^8.9.0"
+    ajv "^8.11.0"
     browserify "^17.0.0"
-    ethers "^5.5.4"
+    ethers "^5.6.2"
     graphql-request "^3.7.0"
     lodash "^4.17.21"
     tsify "^5.0.4"
@@ -2765,10 +2764,10 @@ ajv@^6.10.0, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.9.0:
-  version "8.10.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.10.0.tgz#e573f719bd3af069017e3b66538ab968d040e54d"
-  integrity sha512-bzqAEZOjkrUMl2afH8dknrq5KEk2SrwdBROR+vH1EKVQTqaUbJVPdc/gEdggTMM0Se+s+Ja4ju4TlNcStKl2Hw==
+ajv@^8.11.0:
+  version "8.11.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.11.0.tgz#977e91dd96ca669f54a11e23e378e33b884a565f"
+  integrity sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -4533,7 +4532,7 @@ ethereum-multicall@^2.10.0:
     "@ethersproject/providers" "^5.0.10"
     ethers "^5.0.15"
 
-ethers@^5.0.15:
+ethers@^5.0.15, ethers@^5.6.2:
   version "5.6.4"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.4.tgz#23629e9a7d4bc5802dfb53d4da420d738744b53c"
   integrity sha512-62UIfxAQXdf67TeeOaoOoPctm5hUlYgfd0iW3wxfj7qRYKDcvvy0f+sJ3W2/Pyx77R8dblvejA8jokj+lS+ATQ==

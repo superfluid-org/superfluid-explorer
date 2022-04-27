@@ -257,11 +257,13 @@ const AccountPage: NextPage = () => {
               <ListItem>
                 <ListItemText>
                   <TokenBalance
-                    network={network}
-                    tokenAddress={tokenSnapshot.token}
                     balance={tokenSnapshot.balanceUntilUpdatedAt}
                     balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
                     flowRate={tokenSnapshot.totalNetFlowRate}
+                    TokenChipProps={{
+                      network,
+                      tokenAddress: tokenSnapshot.token
+                    }}
                   />
                 </ListItemText>
               </ListItem>

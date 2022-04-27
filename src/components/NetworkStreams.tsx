@@ -141,9 +141,9 @@ interface TotalStreamedProps {
   flowRate: string;
 }
 
-const TotalStreamed: FC<TotalStreamedProps> = (props) => (
+const TotalStreamed: FC<TotalStreamedProps> = ({network, tokenAddress, ...props}) => (
   <Stack sx={{ lineHeight: "1.5" }}>
     <Typography variant="body2">Total streamed:</Typography>
-    <TokenBalance {...props} />
+    <TokenBalance {...props} TokenChipProps={{ network, tokenAddress }}  />
   </Stack>
 );

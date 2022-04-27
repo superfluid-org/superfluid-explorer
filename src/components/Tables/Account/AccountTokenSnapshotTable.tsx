@@ -57,6 +57,8 @@ interface AccountTokenSnapshotTableProps {
   accountAddress: string;
 }
 
+type RequiredAccountTokenSnapshotsQuery = Required<Omit<AccountTokenSnapshotsQuery, "block">>;
+
 const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   network,
   accountAddress,
@@ -76,7 +78,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
     account: accountAddress,
   };
 
-  const createDefaultArg = (): Required<AccountTokenSnapshotsQuery> => ({
+  const createDefaultArg = (): RequiredAccountTokenSnapshotsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
@@ -84,7 +86,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   });
 
   const [queryArg, setQueryArg] = useState<
-    Required<AccountTokenSnapshotsQuery>
+  RequiredAccountTokenSnapshotsQuery
   >(createDefaultArg());
 
   const [queryTrigger, queryResult] =
@@ -92,7 +94,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
-  const onQueryArgChanged = (newArgs: Required<AccountTokenSnapshotsQuery>) => {
+  const onQueryArgChanged = (newArgs: RequiredAccountTokenSnapshotsQuery) => {
     setQueryArg(newArgs);
 
     if (
@@ -482,6 +484,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                     balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
                     flowRate: tokenSnapshot.totalNetFlowRate,
                   }}
+                  TokenChipProps={null}
                 />
               </TableCell>
               <TableCell data-cy={"active-streams"}>

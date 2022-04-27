@@ -61,6 +61,8 @@ interface SuperTokenStreamsTableProps {
   tokenAddress: string;
 }
 
+type RequiredStreamsQuery = Required<Omit<StreamsQuery, "block">>;
+
 const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
   network,
   tokenAddress,
@@ -75,14 +77,14 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
     token: tokenAddress,
   };
 
-  const createDefaultArg = (): Required<StreamsQuery> => ({
+  const createDefaultArg = (): RequiredStreamsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
     order: defaultOrdering,
   });
 
-  const [queryArg, setQueryArg] = useState<Required<StreamsQuery>>(
+  const [queryArg, setQueryArg] = useState<RequiredStreamsQuery>(
     createDefaultArg()
   );
 
@@ -90,7 +92,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
-  const onQueryArgChanged = (newArgs: Required<StreamsQuery>) => {
+  const onQueryArgChanged = (newArgs: RequiredStreamsQuery) => {
     setQueryArg(newArgs);
 
     if (
