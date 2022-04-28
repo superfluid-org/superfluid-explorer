@@ -54,7 +54,9 @@ type RequiredTokensQuery = Required<Omit<TokensQuery, "block">>;
 
 const defaultOrdering = {} as Ordering<Token_OrderBy>;
 
-const defaultFilter: Token_Filter = {};
+const defaultFilter: Token_Filter = {
+  isSuperToken: true,
+};
 
 export const defaultPaging = createSkipPaging({
   take: 10,
@@ -397,7 +399,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             <TableRow key={token.id}>
               <TableCell>
                 <AppLink href={`/${network.slugName}/supertokens/${token.id}`}>
-                  {token.name}
+                  {token.name || <>&#8212;</>}
                 </AppLink>
               </TableCell>
               <TableCell>
@@ -408,7 +410,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                   <Chip
                     clickable
                     size="small"
-                    label={token.symbol}
+                    label={token.symbol || <>&#8211;</>}
                     sx={{ cursor: "pointer", lineHeight: "24px" }}
                   />
                 </AppLink>
