@@ -11,6 +11,8 @@
     "matic",
     "avalanche-fuji",
     "arbitrum-rinkeby",
-    "optimism-kovan"
+    "optimism-kovan",
+    "arbitrum-one",
+    "optimism-mainnet"
   ]
 }

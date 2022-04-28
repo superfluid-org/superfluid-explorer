@@ -1,6 +1,7 @@
 import {BasePage} from "../BasePage";
 
 //Temporary Selectors
+// @mariam , for practice,  I addded the data-cy attribute to the elements, feel free to fix them up
 const DEPOSIT_SIZE = ":nth-child(1) > .MuiBox-root > :nth-child(1) > .MuiTypography-body1"
 const OWED_DEPOSIT_SIZE = ":nth-child(1) > .MuiBox-root > :nth-child(2) > .MuiTypography-body1"
 const PATRICIAN_PERIOD = ":nth-child(3) > .MuiTypography-body1"
@@ -13,7 +14,6 @@ const TOGA = ":nth-child(7) > .MuiListItemText-root > .MuiTypography-body2 > .cs
 const HOST = ":nth-child(2) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
 const IDA_V1 = ":nth-child(4) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
 const SUPERFLUID_LOADER_V1 = ":nth-child(6) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
-const OPTIMISM_BUTTON = "[data-cy=optimism-mainnet-landing-button]"
 
 export class ProtocolPage extends BasePage {
 
@@ -33,6 +33,7 @@ export class ProtocolPage extends BasePage {
 
   static validateContractAddresses(network: string) {
    cy.fixture("protocolData").then(protocol => {
+     //this could be taken from the console code, look for - protocolContracts in the code base
      this.hasText(RESOLVER, protocol[network].Resolver)
      this.hasText(CFA_V1, protocol[network].CFAv1)
      this.hasText(SUPER_TOKEN_FACTORY, protocol[network].SuperTokenFactory)
@@ -43,6 +44,9 @@ export class ProtocolPage extends BasePage {
    })
   }
 
+
+  // @mariam Reuse the step from the landing page
+  // then validate with validateContractAddresses and validateGovernanceParameters
   static switchNetworks(network: string) {
     cy.fixture("protocolData").then(protocol => {
       this.click(OPTIMISM_BUTTON)

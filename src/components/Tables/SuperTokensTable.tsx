@@ -220,7 +220,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             <Chip
               label={
                 <>
-                  Name: <b>{filter.name_contains}</b>
+                  Name: <b data-cy={"chip-name"}>{filter.name_contains}</b>
                 </>
               }
               size="small"
@@ -232,7 +232,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             <Chip
               label={
                 <>
-                  Symbol: <b>{filter.symbol_contains}</b>
+                  Symbol: <b data-cy={"chip-symbol"}>{filter.symbol_contains}</b>
                 </>
               }
               size="small"
@@ -245,7 +245,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
               label={
                 <>
                   Listed:{" "}
-                  <b>{listedStatus === ListedStatus.Listed ? "Yes" : "No"}</b>
+                  <b data-cy={"chip-listed-status"}>{listedStatus === ListedStatus.Listed ? "Yes" : "No"}</b>
                 </>
               }
               size="small"
@@ -279,6 +279,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 Token name
               </Typography>
               <OutlinedInput
+                data-cy={"filter-name-input"}
                 autoFocus
                 fullWidth
                 size="small"
@@ -299,6 +300,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 Token symbol
               </Typography>
               <OutlinedInput
+                data-cy={"filter-symbol-input"}
                 fullWidth
                 size="small"
                 value={filter.symbol_contains || ""}
@@ -325,8 +327,8 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 value={listedStatus}
                 onChange={onListedStatusChange}
               >
-                <ToggleButton value={ListedStatus.Listed}>Yes</ToggleButton>
-                <ToggleButton value={ListedStatus.NotListed}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-listed-yes"} value={ListedStatus.Listed}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-listed-no"} value={ListedStatus.NotListed}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -334,11 +336,11 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
               {(filter.name_contains ||
                 filter.symbol_contains ||
                 listedStatus !== null) && (
-                <Button onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}
-              <Button type="submit" tabIndex={-1}>
+              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
@@ -393,12 +395,12 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
         <TableBody>
           {tokens.map((token) => (
             <TableRow key={token.id}>
-              <TableCell>
+              <TableCell data-cy={"token-name"}>
                 <AppLink href={`/${network.slugName}/supertokens/${token.id}`}>
                   {token.name}
                 </AppLink>
               </TableCell>
-              <TableCell>
+              <TableCell data-cy={"token-symbol"}>
                 <AppLink
                   href={`/${network.slugName}/supertokens/${token.id}`}
                   sx={{ textDecoration: "none", flexShrink: 0 }}
@@ -411,8 +413,8 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                   />
                 </AppLink>
               </TableCell>
-              <TableCell>{token.isListed ? "Yes" : "No"}</TableCell>
-              <TableCell>{token.id}</TableCell>
+              <TableCell data-cy={"token-listed-status"}>{token.isListed ? "Yes" : "No"}</TableCell>
+              <TableCell data-cy={"token-address"}>{token.id}</TableCell>
             </TableRow>
           ))}
 
