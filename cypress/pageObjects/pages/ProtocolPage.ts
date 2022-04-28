@@ -49,7 +49,7 @@ export class ProtocolPage extends BasePage {
   // then validate with validateContractAddresses and validateGovernanceParameters
   static switchNetworks(network: string) {
     cy.fixture("protocolData").then(protocol => {
-      this.click(OPTIMISM_BUTTON)
+      //this.click(OPTIMISM_BUTTON)
       this.hasText(RESOLVER, protocol[network].Resolver)
     })
   }

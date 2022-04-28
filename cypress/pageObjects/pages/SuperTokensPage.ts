@@ -36,7 +36,7 @@ export class SuperTokensPage extends BasePage {
   // with validateSuperTokens() after that step
   static switchNetworks(network: string) {
     cy.fixture("supertokensData").then(supertokens => {
-      this.click(OPTIMISM_BUTTON)
+      //this.click(OPTIMISM_BUTTON)
       this.isNotVisible(LOADING_SPINNER)
       this.hasText(SUPER_TOKENS_NAME, supertokens[network].TokenName)
       this.hasText(SUPER_TOKENS_SYMBOL, supertokens[network].TokenSymbol)
