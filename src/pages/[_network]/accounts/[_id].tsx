@@ -24,12 +24,12 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import AccountIndexes from "../../../components/AccountIndexes";
 import AccountStreams from "../../../components/AccountStreams";
+import AccountTokenBalance from "../../../components/AccountTokenBalance";
 import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
 import CopyIconBtn from "../../../components/CopyIconBtn";
 import CopyLink from "../../../components/CopyLink";
 import EventList from "../../../components/EventList";
-import TokenBalance from "../../../components/FlowingBalanceWithToken";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
@@ -85,7 +85,6 @@ const AccountPage: NextPage = () => {
     },
     filter: {
       account: address,
-
     },
     pagination: {
       take: 50,
@@ -263,14 +262,19 @@ const AccountPage: NextPage = () => {
               <Grid item sm={4} key={tokenSnapshot.id}>
                 <ListItem>
                   <ListItemText>
-                    <TokenBalance
-                    balance={tokenSnapshot.balanceUntilUpdatedAt}
-                    balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
-                    flowRate={tokenSnapshot.totalNetFlowRate}
-                    TokenChipProps={{
-                      network,
-                      tokenAddress: tokenSnapshot.token
-                    }}
+                    <AccountTokenBalance
+                      network={network}
+                      accountAddress={address}
+                      tokenAddress={tokenSnapshot.token}
+                      placeholder={{
+                        balance: tokenSnapshot.balanceUntilUpdatedAt,
+                        balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
+                        flowRate: tokenSnapshot.totalNetFlowRate
+                      }}
+                      TokenChipProps={{
+                        network,
+                        tokenAddress: tokenSnapshot.token,
+                      }}
                     />
                   </ListItemText>
                 </ListItem>

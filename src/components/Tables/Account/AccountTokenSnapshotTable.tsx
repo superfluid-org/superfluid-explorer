@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Chip,
-  CircularProgress,
   IconButton,
   Popover,
   Stack,
@@ -33,9 +32,8 @@ import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
+import AccountTokenBalance from "../../AccountTokenBalance";
 import AppLink from "../../AppLink";
-import FlowingBalance, { FlowingBalanceProps } from "../../FlowingBalance";
-import { AccountTokenBalance } from "../../FlowingBalanceWithToken";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import SuperTokenAddress from "../../SuperTokenAddress";
