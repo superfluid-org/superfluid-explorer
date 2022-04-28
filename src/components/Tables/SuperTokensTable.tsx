@@ -331,7 +331,9 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             </Box>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {filter.name_contains && (
+              {(filter.name_contains ||
+                filter.symbol_contains ||
+                listedStatus !== null) && (
                 <Button onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
