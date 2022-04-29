@@ -1,7 +1,8 @@
 import {BasePage} from "../BasePage";
 
-
-const LOADING_SPINNER = ".MuiCircularProgress-svg"
+const TOKENS_BUTTON = 'a[href="/super-tokens"]'
+const NETWORK_RIGHT_ARROW = "[data-testid=KeyboardArrowRightIcon]"
+const LOADING_SPINNER = ".svg.MuiCircularProgress-svg.css-1idz92c-MuiCircularProgress-svg"
 const SUPER_TOKENS_NAME = "[data-cy=token-name] > *"
 const SUPER_TOKENS_SYMBOL = "[data-cy=token-symbol] span"
 const SUPER_TOKENS_ADDRESS = "[data-cy=token-address]"
@@ -13,63 +14,51 @@ const FILTER_CLOSE_BUTTON = "[data-cy=close-filter]"
 const FILTER_LISTED_YES_BUTTON = "[data-cy=filter-listed-yes]"
 const FILTER_LISTED_NO_BUTTON = "[data-cy=filter-listed-no]"
 const LISTED_TOKEN_ROW = "[data-cy=token-listed-status]"
+const CHIP_NAME = "[data-cy=chip-name]"
+const CHIP_SYMBOL ="[data-cy=chip-symbol]"
+const CHIP_LISTED_STATUS = "[data-cy=chip-listed-status]"
+const FILTERING_CHIP = ".css-nj19ab-MuiStack-root > .MuiButtonBase-root"
 
 export class SuperTokensPage extends BasePage {
 
-  // @mariam Create a quick test case that will check if the button in header will work too
   static openTokensPage() {
-    cy.visit('/super-tokens')
+    this.click(TOKENS_BUTTON)
   }
 
-  static validateSuperTokens(network: string) {
-    cy.fixture("supertokensData").then(supertokens => {
-      this.isNotVisible(LOADING_SPINNER)
-      // @mariam This has to be changed, new tokens come up every day , so sooner or later, but the test case will break
-      //Simply check if 10 tokens are present for now
-      this.hasText(SUPER_TOKENS_NAME, supertokens[network].TokenName)
-      this.hasText(SUPER_TOKENS_SYMBOL, supertokens[network].TokenSymbol)
-      this.hasText(SUPER_TOKENS_ADDRESS, supertokens[network].TokenAddress)
-    })
-  }
-
-  // @mariam Delete this function  , and use a step from landing page to switch to the network and then just validate
-  // with validateSuperTokens() after that step
-  static switchNetworks(network: string) {
-    cy.fixture("supertokensData").then(supertokens => {
-      //this.click(OPTIMISM_BUTTON)
-      this.isNotVisible(LOADING_SPINNER)
-      this.hasText(SUPER_TOKENS_NAME, supertokens[network].TokenName)
-      this.hasText(SUPER_TOKENS_SYMBOL, supertokens[network].TokenSymbol)
-      this.hasText(SUPER_TOKENS_ADDRESS, supertokens[network].TokenAddress)
-    })
+  static switchLNetworkAndValidateTokens(network: string) {
+    this.click(NETWORK_RIGHT_ARROW)
+    this.click("[data-cy=" + network + "-landing-button]")
+    this.hasAttributeWithValue("[data-cy=" + network + "-landing-button]", "aria-selected", "true")
+    this.doesNotExist(LOADING_SPINNER)
+    this.hasLength(SUPER_TOKENS_NAME, 10)
+    this.hasLength(SUPER_TOKENS_SYMBOL, 10)
+    this.hasLength(SUPER_TOKENS_ADDRESS, 10)
   }
 
   static filterByTokenName(network: string){
     cy.fixture("supertokensData").then(supertokens => {
       this.click(FILTER_BUTTON)
       this.type(TOKEN_NAME_FILTER, supertokens[network].TokenName)
+      this.hasText(CHIP_NAME,supertokens[network].TokenName)
       this.click(FILTER_CLOSE_BUTTON)
-      this.isNotVisible(LOADING_SPINNER)
+      this.doesNotExist(LOADING_SPINNER)
       cy.get(SUPER_TOKENS_NAME).each((
         $el) => {
-        // @mariam Should change this equal to contains, since it will find all tokens containing the filter input
-        expect($el.text()).to.be.equal(supertokens[network].TokenName)
+        expect($el.text()).contains(supertokens[network].TokenName)
       })
-
     })
   }
 
   static filterByTokenSymbol(network: string){
     cy.fixture("supertokensData").then(supertokens => {
       this.click(FILTER_BUTTON)
-      // @mariam Add a check for the chip that appears after filtering
       this.type(TOKEN_SYMBOL_FILTER, supertokens[network].TokenSymbol)
+      this.hasText(CHIP_SYMBOL,supertokens[network].TokenSymbol)
       this.click(FILTER_CLOSE_BUTTON)
       this.isNotVisible(LOADING_SPINNER)
       cy.get(SUPER_TOKENS_SYMBOL).each((
         $el) => {
-        // @mariam Should change this equal to contains, since it will find all tokens containing the filter input
-        expect($el.text()).to.be.equal(supertokens[network].TokenSymbol)
+        expect($el.text()).contains(supertokens[network].TokenSymbol)
       })
     })
   }
@@ -77,11 +66,9 @@ export class SuperTokensPage extends BasePage {
   static filterByListed(){
     this.click(FILTER_BUTTON)
     this.click(FILTER_LISTED_YES_BUTTON)
-    // @mariam Add a check for the chip that appears after filtering
+    this.hasText(CHIP_LISTED_STATUS,"Yes")
     this.click(FILTER_CLOSE_BUTTON)
-    // @mariam Get rid of this wait, we can do better
-    // Either wait for the loading spinner to be gone or intercept the graph request
-    // and wait for it to complete before asserting    cy.wait(1000)
+    this.isNotVisible(LOADING_SPINNER)
     cy.get(LISTED_TOKEN_ROW).each((
       $el) => {
       expect($el.text()).to.be.equal("Yes")
@@ -90,13 +77,10 @@ export class SuperTokensPage extends BasePage {
 
   static filterByNotListed() {
     this.click(FILTER_BUTTON)
-    // @mariam Add a check for the chip that appears after filtering
     this.click(FILTER_LISTED_NO_BUTTON)
+    this.hasText(CHIP_LISTED_STATUS,"No")
     this.click(FILTER_CLOSE_BUTTON)
-    // @mariam Get rid of this wait, we can do better
-    // Either wait for the loading spinner to be gone or intercept the graph request
-    // and wait for it to complete before asserting
-    cy.wait(1000)
+    this.isNotVisible(LOADING_SPINNER)
     cy.get(LISTED_TOKEN_ROW).each((
       $el) => {
       expect($el.text()).to.be.equal("No")
@@ -109,7 +93,7 @@ export class SuperTokensPage extends BasePage {
   static resetFilter(){
     this.click(FILTER_BUTTON)
     this.click(FILTER_RESET_BUTTON)
-    //  @mariam Add a check that there are no more filtering chips visible after reset
-    this.click(FILTER_CLOSE_BUTTON)
+    this.doesNotExist(FILTERING_CHIP)
+
   }
 }

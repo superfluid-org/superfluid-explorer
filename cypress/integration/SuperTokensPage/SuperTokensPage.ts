@@ -1,27 +1,22 @@
 import {Given, Then} from "cypress-cucumber-preprocessor/steps";
 import {SuperTokensPage} from "../../pageObjects/pages/SuperTokensPage";
+import {LandingPage} from "../../pageObjects/pages/LandingPage";
 
-Given("User has opened the tokens page page on {string}", () => {
-  SuperTokensPage.openTokensPage()
+Given("User opens {string} page", (page) => {
+  LandingPage.openPage(page)
 })
 
-Then("Super tokens are visible for {string}", () => {
-  SuperTokensPage.validateSuperTokens("matic")
+Then("User switches network for {string} and validates data", (network) => {
+  SuperTokensPage.switchLNetworkAndValidateTokens(network)
 })
 
-
-Then("User switches network for {string}", () => {
-  SuperTokensPage.switchNetworks("optimism-mainnet")
-})
-
-
-Then("User filters super tokens by name", () => {
-  SuperTokensPage.filterByTokenName("matic")
+Then("User filters super tokens by name for {string}", (network) => {
+  SuperTokensPage.filterByTokenName(network)
   SuperTokensPage.resetFilter()
 })
 
-Then("User filters super tokens by symbol", () => {
-  SuperTokensPage.filterByTokenSymbol("matic")
+Then("User filters super tokens by symbol for {string}", (network) => {
+  SuperTokensPage.filterByTokenSymbol(network)
   SuperTokensPage.resetFilter()
 })
 

@@ -1,24 +1,32 @@
 import {BasePage} from "../BasePage";
+import protocolContracts from "../../../src/redux/protocolContracts";
 
-//Temporary Selectors
-// @mariam , for practice,  I addded the data-cy attribute to the elements, feel free to fix them up
-const DEPOSIT_SIZE = ":nth-child(1) > .MuiBox-root > :nth-child(1) > .MuiTypography-body1"
-const OWED_DEPOSIT_SIZE = ":nth-child(1) > .MuiBox-root > :nth-child(2) > .MuiTypography-body1"
-const PATRICIAN_PERIOD = ":nth-child(3) > .MuiTypography-body1"
-const MINIMUM_EXIT_PERIOD = ":nth-child(3) > .MuiBox-root > :nth-child(1) > .MuiTypography-body1"
-const DEFAULT_EXIT_PERIOD = ":nth-child(3) > .MuiBox-root > :nth-child(2) > .MuiTypography-body1"
-const RESOLVER = ":nth-child(1) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
-const CFA_V1 = ":nth-child(3) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
-const SUPER_TOKEN_FACTORY = ":nth-child(5) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
-const TOGA = ":nth-child(7) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
-const HOST = ":nth-child(2) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
-const IDA_V1 = ":nth-child(4) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
-const SUPERFLUID_LOADER_V1 = ":nth-child(6) > .MuiListItemText-root > .MuiTypography-body2 > .css-1d9cypr-MuiStack-root"
+const PROTOCOL_BUTTON = 'a[href="/protocol"]'
+const NETWORK_RIGHT_ARROW = "[data-testid=KeyboardArrowRightIcon]"
+const DEPOSIT_SIZE = "[data-cy=deposit] > .MuiTypography-body1"
+const OWED_DEPOSIT_SIZE = "[data-cy=owed-deposit] > .MuiTypography-body1"
+const PATRICIAN_PERIOD = "[data-cy=patrician-period] > .MuiTypography-body1"
+const MINIMUM_EXIT_PERIOD = "[data-cy=toga-min-exit-period] > .MuiTypography-body1"
+const DEFAULT_EXIT_PERIOD = "[data-cy=toga-default-exit-period] > .MuiTypography-body1"
+const RESOLVER = "[data-cy=resolver-address] > .MuiTypography-body2"
+const CFA_V1 = "[data-cy=CFAv1-address] > .MuiTypography-body2"
+const SUPER_TOKEN_FACTORY = "[data-cy=SuperTokenFactory-address] > .MuiTypography-body2"
+const TOGA = "[data-cy=TOGA-address] > .MuiTypography-body2"
+const HOST = "[data-cy=host-address] > .MuiTypography-body2"
+const IDA_V1 = "[data-cy=IDAv1-address] > .MuiTypography-body2"
+const SUPERFLUID_LOADER_V1 = "[data-cy=SuperLoaderV1-address] > .MuiTypography-body2"
+
 
 export class ProtocolPage extends BasePage {
 
   static openProtocolPage() {
-    cy.visit('/protocol')
+    this.click(PROTOCOL_BUTTON)
+  }
+
+  static switchLNetwork(network: string) {
+    this.click(NETWORK_RIGHT_ARROW)
+    this.click("[data-cy=" + network + "-landing-button]")
+    this.hasAttributeWithValue("[data-cy=" + network + "-landing-button]", "aria-selected", "true")
   }
 
   static validateGovernanceParameters(network: string) {
@@ -32,25 +40,12 @@ export class ProtocolPage extends BasePage {
   }
 
   static validateContractAddresses(network: string) {
-   cy.fixture("protocolData").then(protocol => {
-     //this could be taken from the console code, look for - protocolContracts in the code base
-     this.hasText(RESOLVER, protocol[network].Resolver)
-     this.hasText(CFA_V1, protocol[network].CFAv1)
-     this.hasText(SUPER_TOKEN_FACTORY, protocol[network].SuperTokenFactory)
-     this.hasText(TOGA, protocol[network].TOGA)
-     this.hasText(HOST, protocol[network].Host)
-     this.hasText(IDA_V1, protocol[network].IDAv1)
-     this.hasText(SUPERFLUID_LOADER_V1, protocol[network].SuperfluidLoaderV1)
-   })
-  }
-
-
-  // @mariam Reuse the step from the landing page
-  // then validate with validateContractAddresses and validateGovernanceParameters
-  static switchNetworks(network: string) {
-    cy.fixture("protocolData").then(protocol => {
-      //this.click(OPTIMISM_BUTTON)
-      this.hasText(RESOLVER, protocol[network].Resolver)
-    })
+    this.hasText(RESOLVER, protocolContracts[network].resolver)
+    this.hasText(CFA_V1, protocolContracts[network].CFAv1)
+    this.hasText(SUPER_TOKEN_FACTORY, protocolContracts[network].superTokenFactory)
+    //this.hasText(TOGA, protocolContracts[network].TOGA)
+    this.hasText(HOST, protocolContracts[network].host)
+    this.hasText(IDA_V1, protocolContracts[network].IDAv1)
+    this.hasText(SUPERFLUID_LOADER_V1, protocolContracts[network].superfluidLoaderv1)
   }
 }

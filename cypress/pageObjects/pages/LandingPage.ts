@@ -42,6 +42,14 @@ export class LandingPage extends BasePage {
         cy.visit("/")
         break;
       }
+      case "tokens" : {
+        cy.visit("/super-tokens")
+        break;
+      }
+      case "protocol" : {
+        cy.visit("/protocol")
+        break;
+      }
       default: {
         throw Error("Page not defined : " + page)
       }
