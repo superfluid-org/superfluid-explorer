@@ -13,6 +13,9 @@ export const AccountTokenBalance: FC<{
    * The temporary balance used (e.g. from Subgraph) before doing the RPC call for the most accurate balance.
    */
   placeholder: FlowingBalanceProps;
+  /**
+   * If TokenChipProps is not provided, token chip will not be shown.
+   */
   TokenChipProps: TokenChipProps | undefined | null;
 }> = ({
   network,
