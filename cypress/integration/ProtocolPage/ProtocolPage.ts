@@ -15,3 +15,6 @@ Then("General protocol information is showing correct data for {string}", (netwo
   ProtocolPage.validateContractAddresses(network)
 })
 
+Given("User clicks on the protocol button",  () => {
+  ProtocolPage.clickProtocolButton()
+});
