@@ -14,7 +14,7 @@ const FILTER_LISTED_YES_BUTTON = "[data-cy=filter-listed-yes]"
 const FILTER_LISTED_NO_BUTTON = "[data-cy=filter-listed-no]"
 const LISTED_TOKEN_ROW = "[data-cy=token-listed-status]"
 const CHIP_NAME = "[data-cy=chip-name]"
-const CHIP_SYMBOL ="[data-cy=chip-symbol]"
+const CHIP_SYMBOL = "[data-cy=chip-symbol]"
 const CHIP_LISTED_STATUS = "[data-cy=chip-listed-status]"
 const FILTERING_CHIP = ".css-nj19ab-MuiStack-root > .MuiButtonBase-root"
 const CANCEL_ICON = "[data-testid=CancelIcon]"
@@ -32,11 +32,11 @@ export class TokenGovernancePage extends BasePage {
     this.hasLength(SUPER_TOKENS_ADDRESS, 10)
   }
 
-  static filterByTokenName(network: string){
+  static filterByTokenName(network: string) {
     cy.fixture("supertokensData").then(supertokens => {
       this.click(FILTER_BUTTON)
       this.type(TOKEN_NAME_FILTER, supertokens[network].TokenName)
-      this.hasText(CHIP_NAME,supertokens[network].TokenName)
+      this.hasText(CHIP_NAME, supertokens[network].TokenName)
       this.click(FILTER_CLOSE_BUTTON)
       this.isVisible(LOADING_SPINNER)
       this.isNotVisible(LOADING_SPINNER)
@@ -47,11 +47,11 @@ export class TokenGovernancePage extends BasePage {
     })
   }
 
-  static filterByTokenSymbol(network: string){
+  static filterByTokenSymbol(network: string) {
     cy.fixture("supertokensData").then(supertokens => {
       this.click(FILTER_BUTTON)
       this.type(TOKEN_SYMBOL_FILTER, supertokens[network].TokenSymbol)
-      this.hasText(CHIP_SYMBOL,supertokens[network].TokenSymbol)
+      this.hasText(CHIP_SYMBOL, supertokens[network].TokenSymbol)
       this.click(FILTER_CLOSE_BUTTON)
       this.isVisible(LOADING_SPINNER)
       this.isNotVisible(LOADING_SPINNER)
@@ -62,29 +62,29 @@ export class TokenGovernancePage extends BasePage {
     })
   }
 
-  static filterByListed(){
+  static filterByListed() {
     this.click(FILTER_BUTTON)
     this.click(FILTER_LISTED_YES_BUTTON)
-    this.hasText(CHIP_LISTED_STATUS,"Yes")
+    this.hasText(CHIP_LISTED_STATUS, "Yes")
     this.click(FILTER_CLOSE_BUTTON)
     this.isVisible(LOADING_SPINNER)
     this.isNotVisible(LOADING_SPINNER)
     cy.get(LISTED_TOKEN_ROW).each((
       $el) => {
-      cy.wrap($el.text()).should('contain',"Yes")
-   })
+      cy.wrap($el.text()).should('contain', "Yes")
+    })
   }
 
   static filterByNotListed() {
     this.click(FILTER_BUTTON)
     this.click(FILTER_LISTED_NO_BUTTON)
-    this.hasText(CHIP_LISTED_STATUS,"No")
+    this.hasText(CHIP_LISTED_STATUS, "No")
     this.click(FILTER_CLOSE_BUTTON)
     this.isVisible(LOADING_SPINNER)
     this.isNotVisible(LOADING_SPINNER)
     cy.get(LISTED_TOKEN_ROW).each((
       $el) => {
-      cy.wrap($el.text()).should('contain',"No")
+      cy.wrap($el.text()).should('contain', "No")
     })
   }
 

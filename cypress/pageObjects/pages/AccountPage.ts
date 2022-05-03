@@ -60,14 +60,14 @@ export class AccountPage extends BasePage {
     })
   }
 
-  static validateStreamsIncomingStreams( index: number, stream: any) {
+  static validateStreamsIncomingStreams(index: number, stream: any) {
     cy.get(INCOMING_TOKEN_NAMES).eq(index).should("contain.text", stream.token)
     cy.get(SENDER_ADDRESS).eq(index).should("contain.text", this.getShortenedAddress(stream.receiver))
     cy.get(INCOMING_FLOW_RATES).eq(index).should("contain.text", stream.flowRate)
     cy.get(INCOMING_TOTAL_STREAMED).eq(index).should("contain.text", stream.totalStreamed)
   }
 
-  static validateStreamsOutgoingStreams( index: number, stream: any) {
+  static validateStreamsOutgoingStreams(index: number, stream: any) {
     cy.get(OUTGOING_TOKEN_NAMES).eq(index).should("contain.text", stream.token)
     cy.get(RECEIVER_ADDRESS).eq(index).should("contain.text", this.getShortenedAddress(stream.receiver))
     cy.get(OUTGOING_FLOW_RATES).eq(index).should("contain.text", stream.flowRate)

@@ -30,6 +30,6 @@ Then("User filters super tokens by not listed", () => {
   TokenGovernancePage.resetFilter()
 })
 
-Given("User clicks on the tokens button",  () => {
+Given("User clicks on the tokens button", () => {
   LandingPage.openTokenGovernancePage()
 });
