@@ -19,7 +19,7 @@ export class BasePage {
     cy.get(selector).filter(":visible").type(text, {delay: 0});
   }
 
-  static hasText(selector: string, text: string) {
+  static hasText(selector: string, text?: string) {
     cy.get(selector).filter(":visible").should("have.text", text);
   }
 
