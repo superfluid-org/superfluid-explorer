@@ -57,6 +57,8 @@ interface EventTableProps {
   accountAddress: string;
 }
 
+type RequiredEventsQuery = Required<Omit<EventsQuery, "block">>;
+
 const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
   const filterAnchorRef = useRef(null);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
@@ -66,14 +68,14 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
     addresses_contains: [accountAddress],
   };
 
-  const createDefaultArg = (): Required<EventsQuery> => ({
+  const createDefaultArg = (): RequiredEventsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
     order: defaultOrdering,
   });
 
-  const [queryArg, setQueryArg] = useState<Required<EventsQuery>>(
+  const [queryArg, setQueryArg] = useState<RequiredEventsQuery>(
     createDefaultArg()
   );
 
@@ -81,7 +83,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
-  const onQueryArgChanged = (newArgs: Required<EventsQuery>) => {
+  const onQueryArgChanged = (newArgs: RequiredEventsQuery) => {
     setQueryArg(newArgs);
 
     if (

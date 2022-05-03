@@ -73,6 +73,8 @@ interface AccountIncomingStreamsTableProps {
   accountAddress: string;
 }
 
+type RequiredStreamQuery = Required<Omit<StreamsQuery, "block">>;
+
 const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
   network,
   accountAddress,
@@ -87,23 +89,21 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
     receiver: accountAddress,
   };
 
-  const createDefaultArg = (): Required<StreamsQuery> => ({
+  const createDefaultArg = (): RequiredStreamQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: incomingStreamPagingDefault,
     order: incomingStreamOrderingDefault,
   });
 
-  const [streamsQueryArg, setStreamsQueryArg] = useState<
-    Required<StreamsQuery>
-  >(createDefaultArg());
+  const [streamsQueryArg, setStreamsQueryArg] = useState<RequiredStreamQuery>(createDefaultArg());
 
   const [streamsQueryTrigger, streamsQueryResult] =
     sfSubgraph.useLazyStreamsQuery();
 
   const streamsQueryTriggerDebounced = useDebounce(streamsQueryTrigger, 250);
 
-  const onStreamQueryArgsChanged = (newArgs: Required<StreamsQuery>) => {
+  const onStreamQueryArgsChanged = (newArgs: RequiredStreamQuery) => {
     setStreamsQueryArg(newArgs);
 
     if (
@@ -395,8 +395,10 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                   balance={stream.streamedUntilUpdatedAt}
                   balanceTimestamp={stream.updatedAtTimestamp}
                   flowRate={stream.currentFlowRate}
-                  network={network}
-                  tokenAddress={stream.token}
+                  TokenChipProps={{
+                    network,
+                    tokenAddress: stream.token
+                  }}
                 />
               </TableCell>
               <TableCell>

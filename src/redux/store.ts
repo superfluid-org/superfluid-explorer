@@ -1,11 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
+  allSubgraphEndpoints,
   createApiWithReactHooks,
-  initializeSfApiSlice,
-  initializeSubgraphSlice,
-  initializeSfTransactionSlice,
   setFrameworkForSdkRedux,
-  allSubgraphSliceEndpoints,
+  initializeSubgraphApiSlice,
+  initializeRpcApiSlice
 } from "@superfluid-finance/sdk-redux";
 import { Framework } from "@superfluid-finance/sdk-core";
 import { ethers } from "ethers";
@@ -31,12 +30,12 @@ import {
 } from "redux-persist";
 import { isServer } from "../utils/isServer";
 import { addDays } from "../utils/dateTime";
+import { newRpcApiEndpoints } from "./newRpcApiEndpoints";
 
-export const { sfApi } = initializeSfApiSlice(createApiWithReactHooks);
-export const sfSubgraph = initializeSubgraphSlice(
+export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks).injectEndpoints(newRpcApiEndpoints);
+export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
-).injectEndpoints(allSubgraphSliceEndpoints);
-export const { sfTransactions } = initializeSfTransactionSlice();
+).injectEndpoints(allSubgraphEndpoints);
 
 const infuraProviders = networks.map((network) => ({
   chainId: network.chainId,
@@ -59,9 +58,8 @@ export const makeStore = wrapMakeStore(() => {
 
   const store = configureStore({
     reducer: {
-      sfApi: sfApi.reducer,
-      sfSubgraph: sfSubgraph.reducer,
-      sfTransactions: sfTransactions.reducer,
+      [rpcApi.reducerPath]: rpcApi.reducer,
+      [sfSubgraph.reducerPath]: sfSubgraph.reducer,
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer
     },
@@ -86,7 +84,7 @@ export const makeStore = wrapMakeStore(() => {
             expires: addDays(new Date(), 14)
           })
         )
-        .concat(sfApi.middleware)
+        .concat(rpcApi.middleware)
         .concat(sfSubgraph.middleware),
   });
 

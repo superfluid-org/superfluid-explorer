@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Chip,
-  CircularProgress,
   IconButton,
   Popover,
   Stack,
@@ -33,8 +32,8 @@ import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
+import AccountTokenBalance from "../../AccountTokenBalance";
 import AppLink from "../../AppLink";
-import FlowingBalance from "../../FlowingBalance";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import SuperTokenAddress from "../../SuperTokenAddress";
@@ -56,6 +55,8 @@ interface AccountTokenSnapshotTableProps {
   accountAddress: string;
 }
 
+type RequiredAccountTokenSnapshotsQuery = Required<Omit<AccountTokenSnapshotsQuery, "block">>;
+
 const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   network,
   accountAddress,
@@ -75,7 +76,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
     account: accountAddress,
   };
 
-  const createDefaultArg = (): Required<AccountTokenSnapshotsQuery> => ({
+  const createDefaultArg = (): RequiredAccountTokenSnapshotsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
@@ -83,7 +84,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   });
 
   const [queryArg, setQueryArg] = useState<
-    Required<AccountTokenSnapshotsQuery>
+  RequiredAccountTokenSnapshotsQuery
   >(createDefaultArg());
 
   const [queryTrigger, queryResult] =
@@ -91,7 +92,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
-  const onQueryArgChanged = (newArgs: Required<AccountTokenSnapshotsQuery>) => {
+  const onQueryArgChanged = (newArgs: RequiredAccountTokenSnapshotsQuery) => {
     setQueryArg(newArgs);
 
     if (
@@ -472,10 +473,16 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 />
               </TableCell>
               <TableCell>
-                <FlowingBalance
-                  balance={tokenSnapshot.balanceUntilUpdatedAt}
-                  balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
-                  flowRate={tokenSnapshot.totalNetFlowRate}
+                <AccountTokenBalance
+                  network={network}
+                  accountAddress={accountAddress}
+                  tokenAddress={tokenSnapshot.token}
+                  placeholder={{
+                    balance: tokenSnapshot.balanceUntilUpdatedAt,
+                    balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
+                    flowRate: tokenSnapshot.totalNetFlowRate,
+                  }}
+                  TokenChipProps={null}
                 />
               </TableCell>
               <TableCell data-cy={"active-streams"}>

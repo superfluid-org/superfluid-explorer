@@ -5,25 +5,14 @@ import {
   Breadcrumbs,
   Button,
   Card,
-  CardContent,
-  CardHeader,
   Container,
   Grid,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
   Skeleton,
   Stack,
   Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TableRow,
-  Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -35,21 +24,17 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import AccountIndexes from "../../../components/AccountIndexes";
 import AccountStreams from "../../../components/AccountStreams";
+import AccountTokenBalance from "../../../components/AccountTokenBalance";
 import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
 import CopyIconBtn from "../../../components/CopyIconBtn";
 import CopyLink from "../../../components/CopyLink";
 import EventList from "../../../components/EventList";
-import FlowingBalance from "../../../components/FlowingBalance";
-import FlowingBalanceWithToken from "../../../components/FlowingBalanceWithToken";
-import FlowRate from "../../../components/FlowRate";
-import InfinitePagination from "../../../components/InfinitePagination";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
-import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import {
   incomingStreamOrderingDefault,
   incomingStreamPagingDefault,
@@ -66,7 +51,6 @@ import {
   publishedIndexOrderingDefault,
   publishedIndexPagingDefault,
 } from "../../../components/Tables/Account/AccountPublishedIndexesTable";
-import TokenChip from "../../../components/TokenChip";
 import IdContext from "../../../contexts/IdContext";
 import NetworkContext from "../../../contexts/NetworkContext";
 import { useAppSelector } from "../../../redux/hooks";
@@ -74,7 +58,7 @@ import {
   addressBookSelectors,
   createEntryId,
 } from "../../../redux/slices/addressBook.slice";
-import { sfApi, sfSubgraph } from "../../../redux/store";
+import { sfSubgraph } from "../../../redux/store";
 import ellipsisAddress from "../../../utils/ellipsisAddress";
 
 const AccountPage: NextPage = () => {
@@ -86,26 +70,12 @@ const AccountPage: NextPage = () => {
     id: address,
   });
 
-  const [triggerMonitoring, monitorResult] =
-    sfApi.useMonitorForEventsToInvalidateCacheMutation();
-
-  useEffect(() => {
-    if (network && accountQuery.data) {
-      triggerMonitoring({
-        chainId: network.chainId,
-        address: accountQuery.data.id,
-      });
-      return monitorResult.reset;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams");
   const prefetchIndexesQuery = sfSubgraph.usePrefetch("indexes");
   const prefetchIndexSubscriptionsQuery =
     sfSubgraph.usePrefetch("indexSubscriptions");
-  const prefetchTokensQuery = sfSubgraph.usePrefetch("accountTokenSnapshots");
-  const prefetchEventsQuery = sfSubgraph.usePrefetch("events");
+  // const prefetchTokensQuery = sfSubgraph.usePrefetch("accountTokenSnapshots");
+  // const prefetchEventsQuery = sfSubgraph.usePrefetch("events");
 
   const tokenSnapshotQuery = sfSubgraph.useAccountTokenSnapshotsQuery({
     chainId: network.chainId,
@@ -276,28 +246,43 @@ const AccountPage: NextPage = () => {
         </List>
       </Card>
 
-      <Card elevation={2} sx={{ mt: 3 }}>
-        <Typography variant="h6" component="h2" sx={{ mx: 2, mt: 2 }}>
-          Balances
-        </Typography>
-        <Grid container columnSpacing={2} component={List}>
-          {tokensWithBalance.map((tokenSnapshot) => (
-            <Grid item sm={4} key={tokenSnapshot.id}>
-              <ListItem>
-                <ListItemText>
-                  <FlowingBalanceWithToken
-                    network={network}
-                    tokenAddress={tokenSnapshot.token}
-                    balance={tokenSnapshot.balanceUntilUpdatedAt}
-                    balanceTimestamp={tokenSnapshot.updatedAtTimestamp}
-                    flowRate={tokenSnapshot.totalNetFlowRate}
-                  />
-                </ListItemText>
-              </ListItem>
-            </Grid>
-          ))}
-        </Grid>
-      </Card>
+      {(tokenSnapshotQuery.isFetching || tokenSnapshotQuery.isLoading) && (
+        <Skeleton
+          sx={{ height: 112, width: "100%", transform: "scale(1)", mt: 3 }}
+        />
+      )}
+
+      {tokensWithBalance.length > 0 && (
+        <Card elevation={2} sx={{ mt: 3 }}>
+          <Typography variant="h6" component="h2" sx={{ mx: 2, mt: 2 }}>
+            Balances
+          </Typography>
+          <Grid container columnSpacing={2} component={List}>
+            {tokensWithBalance.map((tokenSnapshot) => (
+              <Grid item sm={4} key={tokenSnapshot.id}>
+                <ListItem>
+                  <ListItemText>
+                    <AccountTokenBalance
+                      network={network}
+                      accountAddress={address}
+                      tokenAddress={tokenSnapshot.token}
+                      placeholder={{
+                        balance: tokenSnapshot.balanceUntilUpdatedAt,
+                        balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
+                        flowRate: tokenSnapshot.totalNetFlowRate
+                      }}
+                      TokenChipProps={{
+                        network,
+                        tokenAddress: tokenSnapshot.token,
+                      }}
+                    />
+                  </ListItemText>
+                </ListItem>
+              </Grid>
+            ))}
+          </Grid>
+        </Card>
+      )}
 
       <Card elevation={2} sx={{ mt: 3 }}>
         <TabContext value={tabValue}>

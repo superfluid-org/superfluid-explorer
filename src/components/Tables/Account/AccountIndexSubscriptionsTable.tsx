@@ -67,6 +67,8 @@ interface AccountIndexSubscriptionsTableProps {
   accountAddress: string;
 }
 
+type RequiredIndexSubscriptionsQuery = Required<Omit<IndexSubscriptionsQuery, "block">>;
+
 const AccountIndexSubscriptionsTable: FC<
   AccountIndexSubscriptionsTableProps
 > = ({ network, accountAddress }) => {
@@ -84,14 +86,14 @@ const AccountIndexSubscriptionsTable: FC<
     subscriber: accountAddress,
   };
 
-  const createDefaultArg = (): Required<IndexSubscriptionsQuery> => ({
+  const createDefaultArg = (): RequiredIndexSubscriptionsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: indexSubscriptionPagingDefault,
     order: indexSubscriptionOrderingDefault,
   });
 
-  const [queryArg, setQueryArg] = useState<Required<IndexSubscriptionsQuery>>(
+  const [queryArg, setQueryArg] = useState<RequiredIndexSubscriptionsQuery>(
     createDefaultArg()
   );
 
@@ -100,7 +102,7 @@ const AccountIndexSubscriptionsTable: FC<
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
-  const onQueryArgChanged = (newArgs: Required<IndexSubscriptionsQuery>) => {
+  const onQueryArgChanged = (newArgs: RequiredIndexSubscriptionsQuery) => {
     setQueryArg(newArgs);
 
     if (

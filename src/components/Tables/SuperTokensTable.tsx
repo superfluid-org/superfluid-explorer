@@ -50,9 +50,13 @@ interface SuperTokensTableProps {
   network: Network;
 }
 
+type RequiredTokensQuery = Required<Omit<TokensQuery, "block">>;
+
 const defaultOrdering = {} as Ordering<Token_OrderBy>;
 
-const defaultFilter: Token_Filter = {};
+const defaultFilter: Token_Filter = {
+  isSuperToken: true,
+};
 
 export const defaultPaging = createSkipPaging({
   take: 10,
@@ -64,14 +68,14 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const [listedStatus, setListedStatus] = useState<ListedStatus | null>(null);
 
-  const createDefaultArg = (): Required<TokensQuery> => ({
+  const createDefaultArg = (): RequiredTokensQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
     order: defaultOrdering,
   });
 
-  const [queryArg, setQueryArg] = useState<Required<TokensQuery>>(
+  const [queryArg, setQueryArg] = useState<RequiredTokensQuery>(
     createDefaultArg()
   );
 
@@ -79,7 +83,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
-  const onQueryArgsChanged = (newArgs: Required<TokensQuery>) => {
+  const onQueryArgsChanged = (newArgs: RequiredTokensQuery) => {
     setQueryArg(newArgs);
 
     if (
@@ -397,7 +401,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             <TableRow key={token.id}>
               <TableCell data-cy={"token-name"}>
                 <AppLink href={`/${network.slugName}/supertokens/${token.id}`}>
-                  {token.name}
+                  {token.name || <>&#8212;</>}
                 </AppLink>
               </TableCell>
               <TableCell data-cy={"token-symbol"}>
@@ -408,7 +412,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                   <Chip
                     clickable
                     size="small"
-                    label={token.symbol}
+                    label={token.symbol || <>&#8211;</>}
                     sx={{ cursor: "pointer", lineHeight: "24px" }}
                   />
                 </AppLink>

@@ -61,6 +61,8 @@ interface AccountOutgoingStreamsTableProps {
   accountAddress: string;
 }
 
+type RequiredStreamsQuery = Required<Omit<StreamsQuery, "block">>;
+
 const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
   network,
   accountAddress,
@@ -73,7 +75,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
     sender: accountAddress,
   };
 
-  const createDefaultArg = (): Required<StreamsQuery> => ({
+  const createDefaultArg = (): RequiredStreamsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: outgoingStreamPagingDefault,
@@ -81,7 +83,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
   });
 
   const [streamsQueryArg, setStreamsQueryArg] = useState<
-    Required<StreamsQuery>
+    RequiredStreamsQuery
   >(createDefaultArg());
 
   const [streamsQueryTrigger, streamsQueryResult] =
@@ -89,7 +91,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
 
   const streamsQueryTriggerDebounced = useDebounce(streamsQueryTrigger, 250);
 
-  const onStreamQueryArgsChanged = (newArgs: Required<StreamsQuery>) => {
+  const onStreamQueryArgsChanged = (newArgs: RequiredStreamsQuery) => {
     setStreamsQueryArg(newArgs);
 
     if (
@@ -379,8 +381,10 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                   balance={stream.streamedUntilUpdatedAt}
                   balanceTimestamp={stream.updatedAtTimestamp}
                   flowRate={stream.currentFlowRate}
-                  network={network}
-                  tokenAddress={stream.token}
+                  TokenChipProps={{
+                    network,
+                    tokenAddress: stream.token
+                  }}
                 />
               </TableCell>
               <TableCell>

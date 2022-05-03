@@ -68,6 +68,8 @@ interface AccountPublishedIndexesTableProps {
   accountAddress: string;
 }
 
+type RequiredIndexesQuery = Required<Omit<IndexesQuery, "block">>;
+
 const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
   network,
   accountAddress,
@@ -83,14 +85,14 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
     publisher: accountAddress,
   };
 
-  const createDefaultArg = (): Required<IndexesQuery> => ({
+  const createDefaultArg = (): RequiredIndexesQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: publishedIndexPagingDefault,
     order: publishedIndexOrderingDefault,
   });
 
-  const [queryArg, setQueryArg] = useState<Required<IndexesQuery>>(
+  const [queryArg, setQueryArg] = useState<RequiredIndexesQuery>(
     createDefaultArg()
   );
 
@@ -98,7 +100,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
-  const onQueryArgChanged = (newArgs: Required<IndexesQuery>) => {
+  const onQueryArgChanged = (newArgs: RequiredIndexesQuery) => {
     setQueryArg(newArgs);
 
     if (

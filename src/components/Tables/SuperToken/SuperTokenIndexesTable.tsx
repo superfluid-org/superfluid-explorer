@@ -59,6 +59,8 @@ interface SuperTokenIndexesTableProps {
   tokenAddress: string;
 }
 
+type RequiredIndexesQuery = Required<Omit<IndexesQuery, "block">>;
+
 const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
   network,
   tokenAddress,
@@ -73,14 +75,14 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
     token: tokenAddress,
   };
 
-  const createDefaultArg = (): Required<IndexesQuery> => ({
+  const createDefaultArg = (): RequiredIndexesQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
     order: defaultOrdering,
   });
 
-  const [queryArg, setQueryArg] = useState<Required<IndexesQuery>>(
+  const [queryArg, setQueryArg] = useState<RequiredIndexesQuery>(
     createDefaultArg()
   );
 
@@ -88,7 +90,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
-  const onQueryArgChanged = (newArgs: Required<IndexesQuery>) => {
+  const onQueryArgChanged = (newArgs: RequiredIndexesQuery) => {
     setQueryArg(newArgs);
 
     if (

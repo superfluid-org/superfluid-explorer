@@ -250,11 +250,13 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                 stream ? (
                   <>
                     <FlowingBalanceWithToken
-                      network={network}
-                      tokenAddress={stream.token}
                       balance={stream.streamedUntilUpdatedAt}
                       balanceTimestamp={stream.updatedAtTimestamp}
                       flowRate={stream.currentFlowRate}
+                      TokenChipProps={{
+                        network,
+                        tokenAddress: stream.token
+                      }}
                     />
                   </>
                 ) : (

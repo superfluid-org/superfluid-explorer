@@ -21,6 +21,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
   flowRate,
 }): ReactElement => {
   const [weiValue, setWeiValue] = useState<BigNumberish>(balance);
+  useEffect(() => setWeiValue(balance), [balance]);
 
   const balanceTimestampMs = useMemo(
     () => ethers.BigNumber.from(balanceTimestamp).mul(1000),

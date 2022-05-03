@@ -1,15 +1,15 @@
 import {Network, networks, networksByChainId} from "../redux/networks";
-import {PossibleErrors} from "@superfluid-finance/sdk-redux";
 import _ from "lodash";
 import {ethers} from "ethers";
 import {useSearchAddressBook} from "./useSearchAddressBook";
 import {SubgraphSearchByAddressResult, useSearchSubgraphByAddress} from "./useSearchSubgraphByAddress";
 import {SubgraphSearchByTokenSymbolResult, useSearchSubgraphByTokenSymbol} from "./useSearchSubgraphByTokenSymbol";
+import { SerializedError } from "@reduxjs/toolkit";
 
 export type NetworkSearchResult = {
   network: Network;
   isFetching: boolean;
-  error?: PossibleErrors;
+  error?: SerializedError;
   tokens: {
     id: string;
     symbol: string;

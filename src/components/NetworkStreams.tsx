@@ -1,6 +1,5 @@
 import {
   Box,
-  CircularProgress,
   Stack,
   Table,
   TableBody,
@@ -142,9 +141,9 @@ interface TotalStreamedProps {
   flowRate: string;
 }
 
-const TotalStreamed: FC<TotalStreamedProps> = (props) => (
+const TotalStreamed: FC<TotalStreamedProps> = ({network, tokenAddress, ...props}) => (
   <Stack sx={{ lineHeight: "1.5" }}>
     <Typography variant="body2">Total streamed:</Typography>
-    <FlowingBalanceWithToken {...props} />
+    <FlowingBalanceWithToken {...props} TokenChipProps={{ network, tokenAddress }}  />
   </Stack>
 );
