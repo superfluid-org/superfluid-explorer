@@ -2,9 +2,9 @@ import {Given, Then} from "cypress-cucumber-preprocessor/steps";
 import {TokenGovernancePage} from "../../pageObjects/pages/TokenGovernancePage";
 import {LandingPage} from "../../pageObjects/pages/LandingPage";
 
-Given("User opens {string} page", (page) => {
+Given(`User has opened the {string} page`, (page) => {
   LandingPage.openPage(page)
-})
+});
 
 Then("User switches network for {string} and validates data", (network) => {
   TokenGovernancePage.switchLNetworkAndValidateTokens(network)

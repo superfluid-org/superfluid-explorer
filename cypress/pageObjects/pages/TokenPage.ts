@@ -34,6 +34,7 @@ export class TokenPage extends BasePage {
   static validateLoadedTokenStreamData() {
     this.isVisible(STREAMS_SENDER)
     this.isVisible(STREAMS_RECEIVER)
+    cy.get(STREAMS_FLOW_RATES).last().scrollIntoView()
     this.isVisible(STREAMS_FLOW_RATES)
   }
 
