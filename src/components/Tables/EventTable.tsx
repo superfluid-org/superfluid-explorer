@@ -209,6 +209,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                 size="small"
                 value={filter.name_contains || ""}
                 onChange={onFilterFieldChange("name_contains")}
+                data-cy={"event_name_input"}
                 endAdornment={
                   filter.name_contains && (
                     <ClearInputAdornment
@@ -228,6 +229,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                 size="small"
                 value={filter.transactionHash_contains || ""}
                 onChange={onFilterFieldChange("transactionHash_contains")}
+                data-cy={"transaction_hash_input"}
                 endAdornment={
                   filter.transactionHash_contains && (
                     <ClearInputAdornment
@@ -240,11 +242,11 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               {(filter.name_contains || filter.transactionHash_contains) && (
-                <Button onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}
-              <Button type="submit" tabIndex={-1}>
+              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
@@ -300,7 +302,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography variant="body1">No results</Typography>
+                <Typography data-cy={"no-results"} variant="body1">No results</Typography>
               </TableCell>
             </TableRow>
           )}

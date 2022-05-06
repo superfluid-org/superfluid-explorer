@@ -2,6 +2,8 @@ import {BasePage} from "../BasePage";
 import Decimal from "decimal.js";
 
 const ACCOUNT_TYPE = "[data-cy=account-type] span"
+const ACCOUNT_SYMBOL = "[data-cy=token-symbol]"
+const UNDERLYING_TOKEN_ADDRESS = "[data-cy=underlying-token-address]"
 const BORDER_ADD_TO_ADDRESS_BOOK_BUTTON = "[data-testid=StarBorderIcon]"
 const FILLED_ADD_TO_ADDRESS_BOOK_BUTTON = "[data-testid=StarIcon]"
 const NETWORK_NAME = "[data-cy=network-name] div"
@@ -17,8 +19,9 @@ const PUBLICATION_TOKEN = "[data-field=token][role=cell] > *"
 const PUBLICATION_TOTAL_DISTRIBUTED = "[data-cy=publications-total-distributed]"
 const PUBLICATION_TOTAL_UNITS = "[data-cy=publications-units]"
 const PUBLICATION_DETAILS_BUTTONS = "[data-cy=publications-details-buttons]"
-const APPROVED_STATUSES = "[data-field=approved]"
-const SUBSCRIPTION_UNITS = "[data-field=units]"
+const APPROVED_STATUSES = "[data-cy=approved-status]"
+const SUBSCRIPTION_UNITS = "[data-cy=subscription-units]"
+const SUBSCRIPTION_AMOUNT_RECEIVED = "[data-cy=amount-received]"
 const ACTIVE_STREAM_COUNT = "[data-cy=active-streams]"
 const CLOSED_STREAM_COUNT = "[data-cy=closed-streams]"
 const SUBSCRIPTIONS_WITH_UNITS_COUNT = "[data-cy=subscriptions-with-units]"
@@ -38,7 +41,48 @@ const OUTGOING_NO_RESULTS = "[data-cy=outgoing-no-results]"
 const PUBLICATIONS_NO_RESULTS = "[data-cy=publications-no-results]"
 const SUBSCRIPTIONS_NO_RESULTS = "[data-cy=subscriptions-no-results]"
 const PUBLICATION_TOKEN_NAMES = "[data-cy=publications-total-distributed] [data-cy=token-link] span"
+const PUBLICATIONS_INDEX_ID = "[data-cy=publications-index-id]"
 const SUBSCRIPTION_TOKEN_NAMES = "[data-cy=subscriptions-total-distributed] [data-cy=token-link] span"
+const FILTER_BUTTON = "[data-testid=FilterListIcon]"
+const INCOMING_FILTER_BUTTON = "[data-cy=incoming-filter-button]"
+const OUTGOING_FILTER_BUTTON = "[data-cy=outgoing-filter-button]"
+const FILTER_SENDER_ADDRESS = "[data-cy=sender-address-input]"
+const FILTER_RECEIVER_ADDRESS = "[data-cy=receiver-address-input]"
+const FILTER_ACTIVE_YES_BUTTON = "[data-cy=filter-active-yes]"
+const FILTER_ACTIVE_NO_BUTTON = "[data-cy=filter-active-no]"
+const FILTER_PUBLICATIONS_BUTTON = "[data-cy=publications-filter]"
+const FILTER_INDEX_ID = "[data-cy=indexId-input]"
+const FILTER_DISTRIBUTED_YES_BUTTON = "[data-cy=filter-distributed-yes]"
+const FILTER_DISTRIBUTED_NO_BUTTON = "[data-cy=filter-distributed-no]"
+const FILTER_UNITS_YES_BUTTON = "[data-cy=filter-issued-yes]"
+const FILTER_UNITS_NO_BUTTON = "[data-cy=filter-issued-no]"
+const FILTER_SUBSCRIPTIONS_BUTTON = "[data-cy=subscriptions-filter]"
+const FILTER_SUB_APPROVED_YES_BUTTON = "[data-cy=filter-subscriptions-approved-yes]"
+const FILTER_SUB_APPROVED_NO_BUTTON = "[data-cy=filter-subscriptions-approved-no]"
+const FILTER_RECEIVED_DIS_YES_BUTTON = "[data-cy=filter-received-distributions-yes]"
+const FILTER_RECEIVED_DIS_NO_BUTTON = "[data-cy=filter-received-distributions-no]"
+const FILTER_SUB_UNITS_YES_BUTTON = "[data-cy=filter-subscriptions-units-yes]"
+const FILTER_SUB_UNITS_NO_BUTTON = "[data-cy=filter-subscriptions-units-no]"
+const FILTER_CLOSED_YES_BUTTON = "[data-cy=filter-closed-yes]"
+const FILTER_CLOSED_NO_BUTTON = "[data-cy=filter-closed-no]"
+const FILTER_EVENT_NAME = "[data-cy=event_name_input]"
+const FILTER_TRANSACTION_HASH = "[data-cy=transaction_hash_input]"
+const FILTER_CLOSE_BUTTON = "[data-cy=close-filter]"
+const FILTER_RESET_BUTTON = "[data-cy=reset-filter]"
+const FILTER_CLOSE_ICON = "[data-testid=CloseIcon]"
+const FILTER_CANCEL_ICON = "[data-testid=CancelIcon]"
+const LOADING_SPINNER = ".MuiCircularProgress-svg"
+const NO_RESULTS = "[data-cy=no-results]"
+const CHIP_SENDER = "[data-cy=chip-sender]"
+const CHIP_RECEIVER = "[data-cy=chip-receiver]"
+const CHIP_STATUS = "[data-cy=chip-status]"
+const CHIP_INDEX_ID = "[data-cy=chip-indexId]"
+const CHIP_DISTRIBUTED = "[data-cy=chip-distributed]"
+const CHIP_UNITS = "[data-cy=chip-units]"
+const CHIP_ACTIVE = "[data-cy=chip-active]"
+const CHIP_INACTIVE = "[data-cy=chip-inactive]"
+
+
 
 
 export class AccountPage extends BasePage {
@@ -226,4 +270,516 @@ export class AccountPage extends BasePage {
       })
     })
   }
+
+  static filterIncomingStreamsBySenderAddress(network: string) {
+    cy.fixture("filteringData").then(account => {
+      this.isVisible(LOADING_SPINNER)
+      this.isNotVisible(LOADING_SPINNER)
+      this.click(INCOMING_FILTER_BUTTON)
+      this.type(FILTER_SENDER_ADDRESS, account[network].sender)
+      this.click(FILTER_CLOSE_BUTTON)
+      this.caseInsensitive(CHIP_SENDER, account[network].sender)
+      this.isVisible(LOADING_SPINNER)
+      this.isNotVisible(LOADING_SPINNER)
+    })
+  }
+
+  static validateFilteredIncomingStreamsBySenderAddress(network: string) {
+    cy.fixture("filteringData").then(account => {
+      cy.get(SENDER_ADDRESS).each((
+        $el) => {
+        cy.wrap($el.text()).should("contain", this.getShortenedAddress(account[network].sender))
+      })
+    })
+  }
+
+  static filterIncomingStreamsByActive() {
+    this.click(INCOMING_FILTER_BUTTON)
+    this.click(FILTER_CLOSE_ICON)
+    this.click(FILTER_ACTIVE_YES_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_STATUS, "Active")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredIncomingStreamsByActive() {
+    cy.get(INCOMING_FLOW_RATES).each((
+      $el) => {
+      cy.wrap($el.text()).should('contain', "/")
+    })
+  }
+
+  static filterIncomingStreamsByNotActive() {
+    this.click(FILTER_CANCEL_ICON)
+    this.click(INCOMING_FILTER_BUTTON)
+    this.click(FILTER_ACTIVE_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_STATUS, "Inactive")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredIncomingStreamsByNotActive() {
+    cy.get(INCOMING_FLOW_RATES).each((
+      $el) => {
+      cy.wrap($el.text()).should('contain', "0")
+    })
+  }
+
+  static filterIncomingStreamsNoResults() {
+    this.click(INCOMING_FILTER_BUTTON)
+    this.type(FILTER_SENDER_ADDRESS, "test")
+    this.click(FILTER_CLOSE_BUTTON)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+    cy.get(INCOMING_NO_RESULTS).should("be.visible")
+  }
+
+  static resetIncomingStreamsFilter() {
+    this.click(INCOMING_FILTER_BUTTON)
+    this.click(FILTER_RESET_BUTTON)
+  }
+
+  static filterOutgoingStreamsByReceiverAddress(network: string) {
+    cy.fixture("filteringData").then(account => {
+      this.click(OUTGOING_FILTER_BUTTON)
+      this.type(FILTER_RECEIVER_ADDRESS, account[network].receiver)
+      this.click(FILTER_CLOSE_BUTTON)
+      this.caseInsensitive(CHIP_RECEIVER, account[network].receiver)
+      this.isVisible(LOADING_SPINNER)
+      this.isNotVisible(LOADING_SPINNER)
+    })
+  }
+
+  static validateFilteredOutgoingStreamsByReceiverAddress(network: string) {
+    cy.fixture("filteringData").then(account => {
+      cy.get(RECEIVER_ADDRESS).each((
+        $el) => {
+        cy.wrap($el.text()).should("contain", this.getShortenedAddress(account[network].receiver))
+      })
+    })
+  }
+
+  static filterOutgoingStreamsByActive() {
+    this.click(OUTGOING_FILTER_BUTTON)
+    this.click(FILTER_CLOSE_ICON)
+    this.click(FILTER_ACTIVE_YES_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_STATUS, "Active")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredOutgoingStreamsByActive() {
+    cy.get(OUTGOING_FLOW_RATES).each((
+      $el) => {
+      cy.wrap($el.text()).should('contain', "/")
+    })
+  }
+
+  static filterOutgoingStreamsByNotActive() {
+    this.click(OUTGOING_FILTER_BUTTON)
+    this.click(FILTER_ACTIVE_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_STATUS, "Inactive")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredOutgoingStreamsByNotActive() {
+    cy.get(OUTGOING_FLOW_RATES).each((
+      $el) => {
+      cy.wrap($el.text()).should('contain', "0")
+    })
+  }
+
+  static filterOutgoingStreamsNoResults() {
+    this.click(OUTGOING_FILTER_BUTTON)
+    this.type(FILTER_RECEIVER_ADDRESS, "test")
+    this.click(FILTER_CLOSE_BUTTON)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+    cy.get(OUTGOING_NO_RESULTS).should("be.visible")
+  }
+
+  static resetOutgoingStreamsFilter() {
+    this.click(OUTGOING_FILTER_BUTTON)
+    this.click(FILTER_RESET_BUTTON)
+  }
+
+  static filterPublicationsByIndexID() {
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+    this.click(FILTER_PUBLICATIONS_BUTTON)
+    this.type(FILTER_INDEX_ID, "0")
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_INDEX_ID,"0")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredPublicationsByIndexID() {
+    cy.get(PUBLICATIONS_INDEX_ID).each((
+      $el) => {
+      cy.wrap($el.text()).should('eq', "0")
+    })
+  }
+
+  static filterPublicationsByDistributed() {
+    this.click(FILTER_CANCEL_ICON)
+    this.click(FILTER_PUBLICATIONS_BUTTON)
+    this.click(FILTER_DISTRIBUTED_YES_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_DISTRIBUTED, "Has distributed tokens")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredPublicationsByDistributed() {
+    cy.get(PUBLICATION_TOTAL_DISTRIBUTED).each((
+      $el) => {
+      cy.wrap($el.text()).should("not.eq", "0")
+    })
+  }
+
+  static filterPublicationsByNotDistributed() {
+    this.click(FILTER_PUBLICATIONS_BUTTON)
+    this.click(FILTER_DISTRIBUTED_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_DISTRIBUTED, "Has not distributed tokens")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredPublicationsByNotDistributed() {
+    cy.get(PUBLICATION_TOTAL_DISTRIBUTED).each((
+      $el) => {
+      cy.wrap($el.text()).should("eq", "0")
+    })
+  }
+
+  static filterPublicationsByIssuedUnits() {
+    this.click(FILTER_CANCEL_ICON)
+    this.click(FILTER_PUBLICATIONS_BUTTON)
+    this.click(FILTER_UNITS_YES_BUTTON)
+    this.validateChip(CHIP_UNITS, "Has issued units")
+    this.click(FILTER_CLOSE_BUTTON)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredPublicationsByIssuedUnits() {
+    cy.get(PUBLICATION_TOTAL_UNITS).each((
+      $el) => {
+      cy.wrap($el.text()).should("not.eq", "0")
+    })
+  }
+
+  static filterPublicationsByNoIssuedUnits() {
+    this.click(FILTER_PUBLICATIONS_BUTTON)
+    this.click(FILTER_UNITS_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_UNITS, "Has not issued units")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredPublicationsByNoIssuedUnits() {
+    cy.get(PUBLICATION_TOTAL_UNITS).each((
+      $el) => {
+      cy.wrap($el.text()).should("eq", "0")
+    })
+  }
+
+  static filterPublicationsNoResults () {
+    this.click(FILTER_CANCEL_ICON)
+    this.click(FILTER_PUBLICATIONS_BUTTON)
+    this.click(FILTER_DISTRIBUTED_NO_BUTTON)
+    this.click(FILTER_UNITS_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+    cy.get(PUBLICATIONS_NO_RESULTS).should("be.visible")
+  }
+
+  static resetPublicationsFilter(){
+    this.click(FILTER_PUBLICATIONS_BUTTON)
+    this.click(FILTER_RESET_BUTTON)
+  }
+
+  static filterSubscriptionsByApproved() {
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+    this.click(FILTER_SUBSCRIPTIONS_BUTTON)
+    this.click(FILTER_SUB_APPROVED_YES_BUTTON)
+    this.validateChip(CHIP_STATUS, "Approved")
+    this.click(FILTER_CLOSE_BUTTON)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSubscriptionsByApproved() {
+    cy.get(APPROVED_STATUSES).each((
+      $el) => {
+      cy.wrap($el.text()).should("contain", "Yes")
+    })
+  }
+
+  static filterSubscriptionsByNotApproved() {
+    this.click(FILTER_SUBSCRIPTIONS_BUTTON)
+    this.click(FILTER_SUB_APPROVED_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_STATUS, "Not approved")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSubscriptionsByNotApproved() {
+    cy.get(APPROVED_STATUSES).each((
+      $el) => {
+      cy.wrap($el.text()).should("contain", "No")
+    })
+  }
+
+  static filterSubscriptionsByDistributed() {
+    this.click(FILTER_CANCEL_ICON)
+    this.click(FILTER_SUBSCRIPTIONS_BUTTON)
+    this.click(FILTER_RECEIVED_DIS_YES_BUTTON)
+    this.validateChip(CHIP_DISTRIBUTED, "Has received distribution")
+    this.click(FILTER_CLOSE_BUTTON)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSubscriptionsByDistributed() {
+    cy.get(SUBSCRIPTION_AMOUNT_RECEIVED).each((
+      $el) => {
+      cy.wrap($el.text()).should("not.eq", "0")
+    })
+  }
+
+  static filterSubscriptionsByNotDistributed() {
+    this.click(FILTER_SUBSCRIPTIONS_BUTTON)
+    this.click(FILTER_RECEIVED_DIS_NO_BUTTON)
+    this.validateChip(CHIP_DISTRIBUTED, "No distributions received")
+    this.click(FILTER_CLOSE_BUTTON)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSubscriptionsByNotDistributed() {
+    cy.get(SUBSCRIPTION_AMOUNT_RECEIVED).each((
+      $el) => {
+      cy.wrap($el.text()).should("contain", "0")
+    })
+  }
+
+  static filterSubscriptionsByUnits() {
+    this.click(FILTER_CANCEL_ICON)
+    this.click(FILTER_SUBSCRIPTIONS_BUTTON)
+    this.click(FILTER_SUB_UNITS_YES_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_UNITS, "Has units")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSubscriptionsByUnits() {
+    cy.get(SUBSCRIPTION_UNITS).each((
+      $el) => {
+      cy.wrap($el.text()).should("not.contain", "(0%)")
+    })
+  }
+
+  static filterSubscriptionsByNoUnits() {
+    this.click(FILTER_SUBSCRIPTIONS_BUTTON)
+    this.click(FILTER_SUB_UNITS_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_UNITS, "No units")
+
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSubscriptionsByNoUnits() {
+    cy.get(SUBSCRIPTION_UNITS).each((
+      $el) => {
+      cy.wrap($el.text()).should("contain", "(0%)")
+    })
+  }
+
+  static filterSubscriptionsNoResults () {
+    this.click(FILTER_SUBSCRIPTIONS_BUTTON)
+    this.click(FILTER_SUB_UNITS_YES_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    cy.get(SUBSCRIPTIONS_NO_RESULTS).should("be.visible")
+  }
+
+  static resetSubscriptionsFilter(){
+    this.click(FILTER_SUBSCRIPTIONS_BUTTON)
+    this.click(FILTER_RESET_BUTTON)
+  }
+
+  static filterSuperTokensByActive() {
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+    this.click(FILTER_BUTTON)
+    this.click(FILTER_ACTIVE_YES_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_ACTIVE, "Has active streams")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSuperTokensByActive() {
+    cy.get(ACTIVE_STREAM_COUNT).each((
+      $el) => {
+      cy.wrap($el.text()).should('not.eq', "0")
+    })
+  }
+
+  static filterSuperTokensByNotActive() {
+    this.click(FILTER_BUTTON)
+    this.click(FILTER_ACTIVE_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_ACTIVE, "Has no active streams")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSuperTokensByNotActive() {
+    cy.get(ACTIVE_STREAM_COUNT).each((
+      $el) => {
+      cy.wrap($el.text()).should('eq', "0")
+    })
+  }
+
+  static filterSuperTokensByClosed() {
+    this.click(FILTER_CANCEL_ICON)
+    this.click(FILTER_BUTTON)
+    this.click(FILTER_CLOSED_YES_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_INACTIVE, "Has inactive streams")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSuperTokensByClosed() {
+    cy.get(CLOSED_STREAM_COUNT).each((
+      $el) => {
+      cy.wrap($el.text()).should('not.eq', "0")
+    })
+  }
+
+  static filterSuperTokensByNotClosed() {
+    this.click(FILTER_BUTTON)
+    this.click(FILTER_CLOSED_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_INACTIVE, "Has no inactive streams")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSuperTokensByNotClosed() {
+    cy.get(CLOSED_STREAM_COUNT).each((
+      $el) => {
+      cy.wrap($el.text()).should('eq', "0")
+    })
+  }
+
+  static filterSuperTokensByUnits() {
+    this.click(FILTER_CANCEL_ICON)
+    this.click(FILTER_BUTTON)
+    this.click(FILTER_SUB_UNITS_YES_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_UNITS, "Has subscriptions with units")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSuperTokensByUnits() {
+    cy.get(SUBSCRIPTIONS_WITH_UNITS_COUNT).each((
+      $el) => {
+      cy.wrap($el.text()).should('not.eq', "0")
+    })
+  }
+
+  static filterSuperTokensByNoUnits() {
+    this.click(FILTER_BUTTON)
+    this.click(FILTER_SUB_UNITS_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.validateChip(CHIP_UNITS, "Has no subscriptions with units")
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+  static validateFilteredSuperTokensByNoUnits() {
+    cy.get(SUBSCRIPTIONS_WITH_UNITS_COUNT).each((
+      $el) => {
+      cy.wrap($el.text()).should('eq', "0")
+    })
+  }
+
+  static filterSuperTokensNoResults() {
+    this.click(FILTER_BUTTON)
+    this.click(FILTER_ACTIVE_NO_BUTTON)
+    this.click(FILTER_CLOSED_NO_BUTTON)
+    this.click(FILTER_SUB_UNITS_NO_BUTTON)
+    this.click(FILTER_CLOSE_BUTTON)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+    cy.get(NO_RESULTS).should("be.visible")
+  }
+
+  static filterEventsByEventName(network: string) {
+    cy.fixture("filteringData").then(account => {
+      this.isVisible(LOADING_SPINNER)
+      this.isNotVisible(LOADING_SPINNER)
+      this.click(FILTER_BUTTON)
+      this.type(FILTER_EVENT_NAME, account[network].eventName)
+      this.click(FILTER_CLOSE_BUTTON)
+      this.isVisible(LOADING_SPINNER)
+      this.isNotVisible(LOADING_SPINNER)
+    })
+  }
+
+  static validateFilteredEventsByEventName(network: string) {
+    cy.fixture("filteringData").then(account => {
+      cy.get(EVENT_NAMES).each((
+        $el) => {
+        cy.wrap($el.text()).should("contain", account[network].eventName)
+      })
+    })
+  }
+
+  static filterEventsByTransactionHash(network: string) {
+   cy.fixture("filteringData").then(account => {
+     this.click(FILTER_BUTTON)
+     this.click(FILTER_CLOSE_ICON)
+     this.type(FILTER_TRANSACTION_HASH, account[network].transactionHash)
+     this.click(FILTER_CLOSE_BUTTON)
+     this.isVisible(LOADING_SPINNER)
+     this.isNotVisible(LOADING_SPINNER)
+  })
+}
+
+  static validateFilteredEventsByTransactionHash(network: string){
+    cy.fixture("filteringData").then(account => {
+      cy.get(EVENT_SHORT_TX_HASH).each((
+        $el) => {
+        cy.wrap($el.text()).should("contain", this.getShortenedHashAddress(account[network].transactionHash))
+      })
+    })
+  }
+
+  static filterEventsNoResults () {
+    this.click(FILTER_BUTTON)
+    this.type(FILTER_EVENT_NAME, "test")
+    this.click(FILTER_CLOSE_BUTTON)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+    cy.get(NO_RESULTS).should("be.visible")
+  }
+
 }

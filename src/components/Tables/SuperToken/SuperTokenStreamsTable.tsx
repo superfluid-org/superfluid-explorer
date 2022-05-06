@@ -234,7 +234,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
             <Chip
               label={
                 <>
-                  Sender: <b>{filter.sender_contains}</b>
+                  Sender: <b data-cy={"chip-sender"}>{filter.sender_contains}</b>
                 </>
               }
               size="small"
@@ -246,7 +246,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
             <Chip
               label={
                 <>
-                  Receiver: <b>{filter.receiver_contains}</b>
+                  Receiver: <b data-cy={"chip-receiver"}>{filter.receiver_contains}</b>
                 </>
               }
               size="small"
@@ -259,7 +259,8 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
               label={
                 <>
                   Stream status:{" "}
-                  <b>
+                  <b data-cy={"chip-status"}
+                  >
                     {streamStatus === StreamStatus.Active
                       ? "Active"
                       : "Inactive"}
@@ -301,6 +302,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
                 size="small"
                 value={filter.sender_contains || ""}
                 onChange={onSenderChange}
+                data-cy={"sender-address-input"}
                 endAdornment={
                   filter.sender_contains && (
                     <ClearInputAdornment
@@ -320,6 +322,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
                 size="small"
                 value={filter.receiver_contains || ""}
                 onChange={onReceiverChange}
+                data-cy={"receiver-address-input"}
                 endAdornment={
                   filter.receiver_contains && (
                     <ClearInputAdornment
@@ -342,8 +345,8 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
                 value={streamStatus}
                 onChange={onStreamStatusChange}
               >
-                <ToggleButton value={StreamStatus.Active}>Yes</ToggleButton>
-                <ToggleButton value={StreamStatus.Inactive}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-active-yes"} value={StreamStatus.Active}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-active-no"} value={StreamStatus.Inactive}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -351,11 +354,11 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
               {(filter.sender_contains ||
                 filter.receiver_contains ||
                 streamStatus !== null) && (
-                <Button onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}
-              <Button type="submit" tabIndex={-1}>
+              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
@@ -441,7 +444,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography variant="body1">No results</Typography>
+                <Typography data-cy={"no-results"} variant="body1">No results</Typography>
               </TableCell>
             </TableRow>
           )}

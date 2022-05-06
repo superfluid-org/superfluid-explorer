@@ -4,6 +4,12 @@
     "symbol": "DAIx",
     "listedStatus": "Yes",
     "networkFancyName": "Polygon",
-    "underlyingTokenAddress": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063"
+    "underlyingTokenAddress": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+    "sender": "0x82548e6904D3d95E0f58c0630e5aF70B02f69b8F",
+    "receiver": "0x8413278f5d4073cb9b5A3E815422c1d830ff58Aa",
+    "publisher": "0xcaB28480ab5c1E133e9B7FC67E030B8DCC2A1d24",
+    "regularTokenAddress": "0xcd1f2f1a1d1ba631a06b957db77bb9d7b13bf861",
+    "eventName": "Transfer",
+    "transactionHash": "0x6d45966ff4cad2d5747661d8943bc5d16e11699613306996a3d4446c931453f1"
   }
 }

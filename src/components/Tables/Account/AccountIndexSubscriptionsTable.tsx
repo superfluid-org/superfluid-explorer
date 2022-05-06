@@ -71,7 +71,7 @@ type RequiredIndexSubscriptionsQuery = Required<Omit<IndexSubscriptionsQuery, "b
 
 const AccountIndexSubscriptionsTable: FC<
   AccountIndexSubscriptionsTableProps
-> = ({ network, accountAddress }) => {
+  > = ({ network, accountAddress }) => {
   const filterAnchorRef = useRef(null);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
@@ -158,8 +158,8 @@ const AccountIndexSubscriptionsTable: FC<
 
   const clearFilterField =
     (...fields: Array<keyof IndexSubscription_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter));
+      () =>
+        onFilterChange(omit(fields, queryArg.filter));
 
   const getSubscriptionStatusFilter = (
     status: SubscriptionStatus | null
@@ -308,7 +308,8 @@ const AccountIndexSubscriptionsTable: FC<
           {subscriptionStatus !== null && (
             <Chip
               label={
-                <b>
+                <b data-cy={"chip-status"}
+                >
                   {subscriptionStatus === SubscriptionStatus.Approved
                     ? "Approved"
                     : "Not approved"}
@@ -322,7 +323,8 @@ const AccountIndexSubscriptionsTable: FC<
           {distributionStatus !== null && (
             <Chip
               label={
-                <b>
+                <b data-cy={"chip-distributed"}
+                >
                   {distributionStatus === DistributionStatus.HasReceived
                     ? "Has received distribution"
                     : "No distributions received"}
@@ -336,7 +338,7 @@ const AccountIndexSubscriptionsTable: FC<
           {unitsStatus !== null && (
             <Chip
               label={
-                <b>
+                <b data-cy={"chip-units"} >
                   {unitsStatus === UnitsStatus.Issued
                     ? "Has units"
                     : "No units"}
@@ -349,7 +351,7 @@ const AccountIndexSubscriptionsTable: FC<
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton ref={filterAnchorRef} onClick={openFilter}>
+          <IconButton data-cy={"subscriptions-filter"} ref={filterAnchorRef} onClick={openFilter}>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -379,10 +381,10 @@ const AccountIndexSubscriptionsTable: FC<
                 value={subscriptionStatus}
                 onChange={onSubscriptionStatusChange}
               >
-                <ToggleButton value={SubscriptionStatus.Approved}>
+                <ToggleButton data-cy={"filter-subscriptions-approved-yes"} value={SubscriptionStatus.Approved}>
                   Yes
                 </ToggleButton>
-                <ToggleButton value={SubscriptionStatus.NotApproved}>
+                <ToggleButton data-cy={"filter-subscriptions-approved-no"} value={SubscriptionStatus.NotApproved}>
                   No
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -400,8 +402,8 @@ const AccountIndexSubscriptionsTable: FC<
                 value={distributionStatus}
                 onChange={onDistributionStatusChange}
               >
-                <ToggleButton value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-received-distributions-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-received-distributions-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -417,19 +419,19 @@ const AccountIndexSubscriptionsTable: FC<
                 value={unitsStatus}
                 onChange={onUnitsStatusChange}
               >
-                <ToggleButton value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-subscriptions-units-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-subscriptions-units-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               {(subscriptionStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}
-              <Button type="submit" tabIndex={-1}>
+              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
@@ -458,7 +460,8 @@ const AccountIndexSubscriptionsTable: FC<
                 iconSx={{ mb: 0, mr: 0.5 }}
               />
             </TableCell>
-            <TableCell width="160px">
+            <TableCell
+              width="160px">
               <TableSortLabel
                 active={order.orderBy === "approved"}
                 direction={
@@ -510,8 +513,8 @@ const AccountIndexSubscriptionsTable: FC<
                   ellipsis={6}
                 />
               </TableCell>
-              <TableCell>{subscription.approved ? "Yes" : "No"}</TableCell>
-              <TableCell>
+              <TableCell data-cy={"approved-status"}>{subscription.approved ? "Yes" : "No"}</TableCell>
+              <TableCell data-cy={"amount-received"} >
                 <BalanceWithToken
                   network={network}
                   tokenAddress={subscription.token}
@@ -525,7 +528,7 @@ const AccountIndexSubscriptionsTable: FC<
                   )}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell data-cy={"subscription-units"}>
                 {subscription.units}&nbsp;
                 {`(${calculatePoolPercentage(
                   new Decimal(subscription.indexTotalUnits),

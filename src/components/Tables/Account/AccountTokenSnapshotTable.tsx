@@ -58,9 +58,9 @@ interface AccountTokenSnapshotTableProps {
 type RequiredAccountTokenSnapshotsQuery = Required<Omit<AccountTokenSnapshotsQuery, "block">>;
 
 const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
-  network,
-  accountAddress,
-}) => {
+                                                                         network,
+                                                                         accountAddress,
+                                                                       }) => {
   const filterAnchorRef = useRef(null);
 
   const [showFilterMenu, setShowFilterMenu] = useState(false);
@@ -84,8 +84,8 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   });
 
   const [queryArg, setQueryArg] = useState<
-  RequiredAccountTokenSnapshotsQuery
-  >(createDefaultArg());
+    RequiredAccountTokenSnapshotsQuery
+    >(createDefaultArg());
 
   const [queryTrigger, queryResult] =
     sfSubgraph.useLazyAccountTokenSnapshotsQuery();
@@ -270,7 +270,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
 
   const { filter, order, pagination } = queryArg;
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
-    queryResult.data?.paging || {};
+  queryResult.data?.paging || {};
 
   return (
     <>
@@ -282,6 +282,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mx: 2 }}>
           {activeStreamsStatus !== null && (
             <Chip
+              data-cy={"chip-active"}
               label={
                 activeStreamsStatus === StreamStatus.Active
                   ? "Has active streams"
@@ -294,6 +295,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
 
           {inactiveStreamsStatus !== null && (
             <Chip
+              data-cy={"chip-inactive"}
               label={
                 inactiveStreamsStatus === StreamStatus.Inactive
                   ? "Has inactive streams"
@@ -306,6 +308,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
 
           {subsWithUnitsStatus !== null && (
             <Chip
+              data-cy={"chip-units"}
               label={
                 subsWithUnitsStatus === UnitsStatus.Issued
                   ? "Has subscriptions with units"
@@ -348,8 +351,8 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 value={activeStreamsStatus}
                 onChange={onActiveStreamsStatusChange}
               >
-                <ToggleButton value={StreamStatus.Active}>Yes</ToggleButton>
-                <ToggleButton value={StreamStatus.Inactive}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-active-yes"} value={StreamStatus.Active}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-active-no"} value={StreamStatus.Inactive}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -365,8 +368,8 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 value={inactiveStreamsStatus}
                 onChange={onInactiveStreamsStatusChange}
               >
-                <ToggleButton value={StreamStatus.Inactive}>Yes</ToggleButton>
-                <ToggleButton value={StreamStatus.Active}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-closed-yes"} value={StreamStatus.Inactive}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-closed-no"} value={StreamStatus.Active}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -382,8 +385,8 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 value={subsWithUnitsStatus}
                 onChange={onSubsWithUnitsStatusChange}
               >
-                <ToggleButton value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-subscriptions-units-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-subscriptions-units-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -391,11 +394,11 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
               {(activeStreamsStatus !== null ||
                 inactiveStreamsStatus !== null ||
                 subsWithUnitsStatus !== null) && (
-                <Button onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}
-              <Button type="submit" tabIndex={-1}>
+              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
@@ -504,7 +507,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography variant="body1">No results</Typography>
+                <Typography data-cy={"no-results"} variant="body1">No results</Typography>
               </TableCell>
             </TableRow>
           )}

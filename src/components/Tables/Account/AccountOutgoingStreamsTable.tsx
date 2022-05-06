@@ -64,9 +64,9 @@ interface AccountOutgoingStreamsTableProps {
 type RequiredStreamsQuery = Required<Omit<StreamsQuery, "block">>;
 
 const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
-  network,
-  accountAddress,
-}) => {
+                                                                             network,
+                                                                             accountAddress,
+                                                                           }) => {
   const filterAnchorRef = useRef(null);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [streamStatus, setStreamStatus] = useState<StreamStatus | null>(null);
@@ -84,7 +84,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
 
   const [streamsQueryArg, setStreamsQueryArg] = useState<
     RequiredStreamsQuery
-  >(createDefaultArg());
+    >(createDefaultArg());
 
   const [streamsQueryTrigger, streamsQueryResult] =
     sfSubgraph.useLazyStreamsQuery();
@@ -192,8 +192,8 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Stream_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, streamsQueryArg.filter));
+      () =>
+        onFilterChange(omit(fields, streamsQueryArg.filter));
 
   const openFilter = () => setShowFilterMenu(true);
   const closeFilter = () => setShowFilterMenu(false);
@@ -231,7 +231,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
             <Chip
               label={
                 <>
-                  Sender: <b>{filter.receiver_contains}</b>
+                  Sender: <b data-cy={"chip-receiver"}>{filter.receiver_contains}</b>
                 </>
               }
               size="small"
@@ -243,7 +243,8 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
               label={
                 <>
                   Stream status:{" "}
-                  <b>
+                  <b data-cy={"chip-status"}
+                  >
                     {streamStatus === StreamStatus.Active
                       ? "Active"
                       : "Inactive"}
@@ -257,7 +258,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton ref={filterAnchorRef} onClick={openFilter}>
+          <IconButton data-cy={"outgoing-filter-button"} ref={filterAnchorRef} onClick={openFilter}>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -285,6 +286,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 size="small"
                 value={filter.receiver_contains || ""}
                 onChange={onReceiverChange}
+                data-cy={"receiver-address-input"}
                 endAdornment={
                   filter.receiver_contains && (
                     <ClearInputAdornment
@@ -306,18 +308,18 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 value={streamStatus}
                 onChange={onStreamStatusChange}
               >
-                <ToggleButton value={StreamStatus.Active}>Yes</ToggleButton>
-                <ToggleButton value={StreamStatus.Inactive}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-active-yes"} value={StreamStatus.Active}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-active-no"} value={StreamStatus.Inactive}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               {(filter.receiver_contains || streamStatus !== null) && (
-                <Button onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}
-              <Button type="submit" tabIndex={-1}>
+              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
@@ -409,7 +411,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography variant="body1">No results</Typography>
+                <Typography data-cy={"outgoing-no-results"}  variant="body1">No results</Typography>
               </TableCell>
             </TableRow>
           )}

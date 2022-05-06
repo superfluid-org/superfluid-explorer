@@ -243,7 +243,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
             <Chip
               label={
                 <>
-                  Sender: <b>{filter.sender_contains}</b>
+                  Sender: <b data-cy={"chip-sender"} >{filter.sender_contains}</b>
                 </>
               }
               size="small"
@@ -256,7 +256,8 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
               label={
                 <>
                   Stream status:{" "}
-                  <b>
+                  <b data-cy={"chip-status"}
+                  >
                     {streamStatus === StreamStatus.Active
                       ? "Active"
                       : "Inactive"}
@@ -270,7 +271,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton ref={filterAnchorRef} onClick={openFilter}>
+          <IconButton data-cy={"incoming-filter-button"} ref={filterAnchorRef} onClick={openFilter}>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -298,6 +299,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 size="small"
                 value={filter.sender_contains || ""}
                 onChange={onSenderChange}
+                data-cy={"sender-address-input"}
                 endAdornment={
                   filter.sender_contains && (
                     <ClearInputAdornment
@@ -320,18 +322,19 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 value={streamStatus}
                 onChange={onStreamStatusChange}
               >
-                <ToggleButton value={StreamStatus.Active}>Yes</ToggleButton>
-                <ToggleButton value={StreamStatus.Inactive}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-active-yes"} value={StreamStatus.Active}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-active-no"} value={StreamStatus.Inactive}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
+
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               {(filter.sender_contains || streamStatus !== null) && (
-                <Button onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}
-              <Button type="submit" tabIndex={-1}>
+              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>

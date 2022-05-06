@@ -102,6 +102,18 @@ export class LandingPage extends BasePage {
         })
         break;
       }
+      case "balance account for filtering": {
+        cy.fixture("filteringData").then(fixture => {
+          cy.visit("/" + network + "/accounts/" + fixture[network].address)
+        })
+        break;
+      }
+      case "regular token": {
+        cy.fixture("tokenData").then(fixture => {
+          cy.visit("/" + network + "/supertokens/" + fixture[network].regularTokenAddress)
+        })
+        break;
+      }
       default: {
         throw Error("Page not defined : " + page)
       }

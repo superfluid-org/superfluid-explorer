@@ -266,7 +266,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
             <Chip
               label={
                 <>
-                  Index ID: <b>{filter.indexId}</b>
+                  Index ID: <b data-cy={"chip-indexId"}>{filter.indexId}</b>
                 </>
               }
               size="small"
@@ -276,6 +276,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
 
           {distributionStatus !== null && (
             <Chip
+              data-cy={"chip-distributed"}
               label={
                 distributionStatus === DistributionStatus.Distributed
                   ? "Has distributed tokens"
@@ -288,6 +289,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
 
           {unitsStatus !== null && (
             <Chip
+              data-cy={"chip-units"}
               label={
                 unitsStatus === UnitsStatus.Issued
                   ? "Has issued units"
@@ -300,7 +302,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton ref={filterAnchorRef} onClick={openFilter}>
+          <IconButton data-cy={"publications-filter"} ref={filterAnchorRef} onClick={openFilter}>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -329,6 +331,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 inputProps={{ min: 0 }}
                 value={filter.indexId || ""}
                 onChange={onIndexIdChange}
+                data-cy={"indexId-input"}
                 endAdornment={
                   filter.indexId && (
                     <ClearInputAdornment
@@ -351,10 +354,10 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 value={distributionStatus}
                 onChange={onDistributionStatusChange}
               >
-                <ToggleButton value={DistributionStatus.Distributed}>
+                <ToggleButton data-cy={"filter-distributed-yes"} value={DistributionStatus.Distributed}>
                   Yes
                 </ToggleButton>
-                <ToggleButton value={DistributionStatus.NotDistributed}>
+                <ToggleButton data-cy={"filter-distributed-no"} value={DistributionStatus.NotDistributed}>
                   No
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -372,8 +375,8 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 value={unitsStatus}
                 onChange={onUnitsStatusChange}
               >
-                <ToggleButton value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-issued-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-issued-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -381,11 +384,11 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
               {(filter.indexId ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"}  onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}
-              <Button type="submit" tabIndex={-1}>
+              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>

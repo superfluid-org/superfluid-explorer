@@ -16,6 +16,8 @@ const SETTINGS_CLOSE_BUTTON = "[data-testid=CloseIcon]"
 const ETHER_DECIMAL_GROUP = "[data-cy=ether-decimal-button-group]"
 const STREAM_GRANULARITY_GROUP = "[data-cy=stream-granularity-button-group]"
 const SETTINGS_BUTTON = "[data-testid=SettingsOutlinedIcon]"
+const FILTER_BUTTON = "[data-testid=FilterListIcon]"
+const FILTER_RESET_BUTTON = "[data-cy=reset-filter]"
 
 export class CommonElements extends BasePage {
 
@@ -113,5 +115,10 @@ export class CommonElements extends BasePage {
     cy.fixture("toolTipStringsAndLinks").then(fixture => {
       cy.visit(fixture[page + "-link"])
     })
+  }
+
+  static resetFilter() {
+    this.click(FILTER_BUTTON)
+    this.click(FILTER_RESET_BUTTON)
   }
 }

@@ -62,9 +62,9 @@ interface SuperTokenIndexesTableProps {
 type RequiredIndexesQuery = Required<Omit<IndexesQuery, "block">>;
 
 const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
-  network,
-  tokenAddress,
-}) => {
+                                                                   network,
+                                                                   tokenAddress,
+                                                                 }) => {
   const filterAnchorRef = useRef(null);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
@@ -190,8 +190,8 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Index_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter));
+      () =>
+        onFilterChange(omit(fields, queryArg.filter));
 
   const openFilter = () => setShowFilterMenu(true);
   const closeFilter = () => setShowFilterMenu(false);
@@ -213,7 +213,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
   const { filter, order, pagination } = queryArg;
 
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
-    queryResult.data?.paging || {};
+  queryResult.data?.paging || {};
 
   return (
     <>
@@ -227,7 +227,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
             <Chip
               label={
                 <>
-                  Index ID: <b>{filter.indexId}</b>
+                  Index ID: <b data-cy={"chip-indexId"} >{filter.indexId}</b>
                 </>
               }
               size="small"
@@ -239,7 +239,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
             <Chip
               label={
                 <>
-                  Publisher: <b>{filter.publisher_contains}</b>
+                  Publisher: <b data-cy={"chip-publisher"}>{filter.publisher_contains}</b>
                 </>
               }
               size="small"
@@ -249,6 +249,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
 
           {distributionStatus !== null && (
             <Chip
+              data-cy={"chip-distributed"}
               label={
                 distributionStatus === DistributionStatus.Distributed
                   ? "Has distributed tokens"
@@ -290,6 +291,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 inputProps={{ min: 0 }}
                 value={filter.indexId || ""}
                 onChange={onStringFilterChange("indexId")}
+                data-cy={"indexId-input"}
                 endAdornment={
                   filter.indexId && (
                     <ClearInputAdornment
@@ -310,6 +312,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 inputProps={{ min: 0 }}
                 value={filter.publisher_contains || ""}
                 onChange={onStringFilterChange("publisher_contains")}
+                data-cy={"publisher-address-input"}
                 endAdornment={
                   filter.publisher_contains && (
                     <ClearInputAdornment
@@ -332,10 +335,10 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 value={distributionStatus}
                 onChange={onDistributionStatusChange}
               >
-                <ToggleButton value={DistributionStatus.Distributed}>
+                <ToggleButton data-cy={"filter-distributed-yes"} value={DistributionStatus.Distributed}>
                   Yes
                 </ToggleButton>
-                <ToggleButton value={DistributionStatus.NotDistributed}>
+                <ToggleButton data-cy={"filter-distributed-no"} value={DistributionStatus.NotDistributed}>
                   No
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -345,11 +348,11 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
               {(filter.indexId ||
                 filter.publisher_contains ||
                 distributionStatus !== null) && (
-                <Button onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}
-              <Button type="submit" tabIndex={-1}>
+              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
@@ -451,7 +454,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography variant="body1">No results</Typography>
+                <Typography data-cy={"no-results"} variant="body1">No results</Typography>
               </TableCell>
             </TableRow>
           )}
