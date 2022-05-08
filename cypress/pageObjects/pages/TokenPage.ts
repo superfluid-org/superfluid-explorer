@@ -285,4 +285,10 @@ export class TokenPage extends BasePage {
     cy.get(FILTER_NO_RESULTS).should("be.visible")
   }
 
+  static errorPageOnRegularToken(){
+    cy.contains("404").should("be.visible")
+    cy.contains("This page could not be found.").should("be.visible")
+    cy.title().should("contain", "404: This page could not be found")
+  }
+
 }

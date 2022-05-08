@@ -384,7 +384,7 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
               {(filter.indexId ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button data-cy={"reset-filter"}  onClick={resetFilter} tabIndex={-1}>
+                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset
                 </Button>
               )}

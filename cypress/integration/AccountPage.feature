@@ -115,12 +115,12 @@ Feature: Account page test cases
     And User resets super tokens filter
 
   Scenario: Filtering cases for events tab
-    Given User has opened the "balance account for filtering" page on "goerli"
+    Given User has opened the "balance account for filtering" page on "matic"
     And User switches to "events" tab
-    And User filters events by event name for "goerli"
-    Then Events filtered by event name are shown correctly for "goerli"
-    And User filters events by transaction hash for "goerli"
-    Then Events filtered by transaction hash are shown correctly for "goerli"
+    And User filters events by event name for "matic"
+    Then Events filtered by event name are shown correctly for "matic"
+    And User filters events by transaction hash for "matic"
+    Then Events filtered by transaction hash are shown correctly for "matic"
     And User filters events with no results
     And User resets events filter
 

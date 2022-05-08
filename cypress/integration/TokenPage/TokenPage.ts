@@ -113,5 +113,8 @@ Then(`User resets events filter`, () => {
   CommonElements.resetFilter()
 });
 
+Then(`User sees 404 page`, () => {
+  TokenPage.errorPageOnRegularToken()
+});
 
 

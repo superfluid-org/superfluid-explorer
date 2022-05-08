@@ -62,9 +62,9 @@ interface SuperTokenIndexesTableProps {
 type RequiredIndexesQuery = Required<Omit<IndexesQuery, "block">>;
 
 const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
-                                                                   network,
-                                                                   tokenAddress,
-                                                                 }) => {
+  network,
+  tokenAddress,
+}) => {
   const filterAnchorRef = useRef(null);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
@@ -190,8 +190,8 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Index_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter));
+    () =>
+      onFilterChange(omit(fields, queryArg.filter));
 
   const openFilter = () => setShowFilterMenu(true);
   const closeFilter = () => setShowFilterMenu(false);
@@ -213,7 +213,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
   const { filter, order, pagination } = queryArg;
 
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
-  queryResult.data?.paging || {};
+    queryResult.data?.paging || {};
 
   return (
     <>

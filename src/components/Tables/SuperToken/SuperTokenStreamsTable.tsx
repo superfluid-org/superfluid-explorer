@@ -259,8 +259,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
               label={
                 <>
                   Stream status:{" "}
-                  <b data-cy={"chip-status"}
-                  >
+                  <b data-cy={"chip-status"}>
                     {streamStatus === StreamStatus.Active
                       ? "Active"
                       : "Inactive"}

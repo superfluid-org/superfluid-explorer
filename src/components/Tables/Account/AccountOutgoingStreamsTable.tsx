@@ -64,9 +64,9 @@ interface AccountOutgoingStreamsTableProps {
 type RequiredStreamsQuery = Required<Omit<StreamsQuery, "block">>;
 
 const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
-                                                                             network,
-                                                                             accountAddress,
-                                                                           }) => {
+  network,
+  accountAddress,
+}) => {
   const filterAnchorRef = useRef(null);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [streamStatus, setStreamStatus] = useState<StreamStatus | null>(null);
@@ -84,7 +84,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
 
   const [streamsQueryArg, setStreamsQueryArg] = useState<
     RequiredStreamsQuery
-    >(createDefaultArg());
+  >(createDefaultArg());
 
   const [streamsQueryTrigger, streamsQueryResult] =
     sfSubgraph.useLazyStreamsQuery();
@@ -192,8 +192,8 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Stream_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, streamsQueryArg.filter));
+    () =>
+      onFilterChange(omit(fields, streamsQueryArg.filter));
 
   const openFilter = () => setShowFilterMenu(true);
   const closeFilter = () => setShowFilterMenu(false);
@@ -243,8 +243,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
               label={
                 <>
                   Stream status:{" "}
-                  <b data-cy={"chip-status"}
-                  >
+                  <b data-cy={"chip-status"}>
                     {streamStatus === StreamStatus.Active
                       ? "Active"
                       : "Inactive"}
@@ -411,7 +410,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography data-cy={"outgoing-no-results"}  variant="body1">No results</Typography>
+                <Typography data-cy={"outgoing-no-results"} variant="body1">No results</Typography>
               </TableCell>
             </TableRow>
           )}

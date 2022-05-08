@@ -58,9 +58,9 @@ interface AccountTokenSnapshotTableProps {
 type RequiredAccountTokenSnapshotsQuery = Required<Omit<AccountTokenSnapshotsQuery, "block">>;
 
 const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
-                                                                         network,
-                                                                         accountAddress,
-                                                                       }) => {
+  network,
+  accountAddress,
+}) => {
   const filterAnchorRef = useRef(null);
 
   const [showFilterMenu, setShowFilterMenu] = useState(false);
@@ -84,8 +84,8 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   });
 
   const [queryArg, setQueryArg] = useState<
-    RequiredAccountTokenSnapshotsQuery
-    >(createDefaultArg());
+  RequiredAccountTokenSnapshotsQuery
+  >(createDefaultArg());
 
   const [queryTrigger, queryResult] =
     sfSubgraph.useLazyAccountTokenSnapshotsQuery();
@@ -270,7 +270,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
 
   const { filter, order, pagination } = queryArg;
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
-  queryResult.data?.paging || {};
+    queryResult.data?.paging || {};
 
   return (
     <>

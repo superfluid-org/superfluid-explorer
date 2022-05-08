@@ -71,7 +71,7 @@ type RequiredIndexSubscriptionsQuery = Required<Omit<IndexSubscriptionsQuery, "b
 
 const AccountIndexSubscriptionsTable: FC<
   AccountIndexSubscriptionsTableProps
-  > = ({ network, accountAddress }) => {
+> = ({ network, accountAddress }) => {
   const filterAnchorRef = useRef(null);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
@@ -158,8 +158,8 @@ const AccountIndexSubscriptionsTable: FC<
 
   const clearFilterField =
     (...fields: Array<keyof IndexSubscription_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter));
+    () =>
+      onFilterChange(omit(fields, queryArg.filter));
 
   const getSubscriptionStatusFilter = (
     status: SubscriptionStatus | null
@@ -308,8 +308,7 @@ const AccountIndexSubscriptionsTable: FC<
           {subscriptionStatus !== null && (
             <Chip
               label={
-                <b data-cy={"chip-status"}
-                >
+                <b data-cy={"chip-status"}>
                   {subscriptionStatus === SubscriptionStatus.Approved
                     ? "Approved"
                     : "Not approved"}
@@ -323,8 +322,7 @@ const AccountIndexSubscriptionsTable: FC<
           {distributionStatus !== null && (
             <Chip
               label={
-                <b data-cy={"chip-distributed"}
-                >
+                <b data-cy={"chip-distributed"}>
                   {distributionStatus === DistributionStatus.HasReceived
                     ? "Has received distribution"
                     : "No distributions received"}
@@ -338,7 +336,7 @@ const AccountIndexSubscriptionsTable: FC<
           {unitsStatus !== null && (
             <Chip
               label={
-                <b data-cy={"chip-units"} >
+                <b data-cy={"chip-units"}>
                   {unitsStatus === UnitsStatus.Issued
                     ? "Has units"
                     : "No units"}
@@ -460,8 +458,7 @@ const AccountIndexSubscriptionsTable: FC<
                 iconSx={{ mb: 0, mr: 0.5 }}
               />
             </TableCell>
-            <TableCell
-              width="160px">
+            <TableCell width="160px">
               <TableSortLabel
                 active={order.orderBy === "approved"}
                 direction={
