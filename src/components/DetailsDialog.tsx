@@ -1,10 +1,8 @@
-import { FC, useEffect } from "react";
+import { FC, PropsWithChildren, useEffect } from "react";
 import {
   AppBar,
   Dialog,
   DialogContent,
-  DialogTitle,
-  Drawer,
   IconButton,
   Toolbar,
   useMediaQuery,
@@ -13,10 +11,12 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useRouter } from "next/router";
 
-const DetailsDialog: FC<{
-  open: boolean;
-  handleClose: () => void;
-}> = ({ open, handleClose, children }) => {
+const DetailsDialog: FC<
+  PropsWithChildren<{
+    open: boolean;
+    handleClose: () => void;
+  }>
+> = ({ open, handleClose, children }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -53,18 +53,18 @@ const DetailsDialog: FC<{
       maxWidth="lg"
       fullWidth={true}
     >
-        <AppBar sx={{ position: "relative" }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+      <AppBar sx={{ position: "relative" }}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
       <DialogContent>{children}</DialogContent>
     </Dialog>
   );

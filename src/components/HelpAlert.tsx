@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, PropsWithChildren } from "react";
 import { Paper, Stack, SxProps, Typography } from "@mui/material";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
@@ -7,7 +7,7 @@ interface HelpAlertProps {
   dataCy?: string;
 }
 
-const HelpAlert: FC<HelpAlertProps> = ({ sx,dataCy = {}, children }) => {
+const HelpAlert: FC<PropsWithChildren<HelpAlertProps>> = ({ sx,dataCy = {}, children }) => {
   return (
     <Paper
       variant="outlined"

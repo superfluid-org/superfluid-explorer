@@ -13,16 +13,12 @@ import {
   SkipPaging,
 } from "@superfluid-finance/sdk-core";
 import { IndexSubscriptionDetailsDialog } from "./IndexSubscriptionDetails";
-import AccountAddress from "./AccountAddress";
-import SuperTokenAddress from "./SuperTokenAddress";
 import { Network } from "../redux/networks";
 import calculateWeiAmountReceived from "../logic/calculateWeiAmountReceived";
 import { BigNumber } from "ethers";
 import calculatePoolPercentage from "../logic/calculatePoolPercentage";
 import Decimal from "decimal.js";
 import TimeAgo from "./TimeAgo";
-import EtherFormatted from "./EtherFormatted";
-import AppLink from "./AppLink";
 import InfoTooltipBtn from "./InfoTooltipBtn";
 import { Button } from "@mui/material";
 import BalanceWithToken from "./BalanceWithToken";
@@ -53,9 +49,9 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
         headerName: "Created At",
         sortable: true,
         flex: 0.5,
-        renderCell: (params: GridRenderCellParams<number>) => (
-          <TimeAgo subgraphTime={params.value} />
-        ),
+        renderCell: (params: GridRenderCellParams<number>) => params.value ? (
+          <TimeAgo subgraphTime={params.value} /> 
+        ) : null,
       },
       {
         field: "approved",

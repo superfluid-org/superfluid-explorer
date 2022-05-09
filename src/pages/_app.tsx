@@ -5,7 +5,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import createEmotionCache from "../utils/createEmotionCache";
 import { wrapper } from "../redux/store";
 import SfAppBar from "../components/SfAppBar";
-import { FC, useEffect, useRef } from "react";
+import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import "../styles/graphiql.min.css";
 import "../styles/app.css";
@@ -93,7 +93,7 @@ function MyApp(props: MyAppProps) {
 /**
  * Scopes to network & id for dynamic routes. Idea is to reduce boilerplate in the specific pageObjects. The downside is that a bit less can be pre-rendered.
  */
-const Layout: FC = ({ children }) => {
+const Layout: FC<PropsWithChildren<unknown>> = ({ children }) => {
   const router = useRouter();
   const { _network, _id } = router.query;
 
