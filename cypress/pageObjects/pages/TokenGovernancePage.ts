@@ -21,7 +21,7 @@ const CANCEL_ICON = "[data-testid=CancelIcon]"
 
 export class TokenGovernancePage extends BasePage {
 
-  static switchLNetworkAndValidateTokens(network: string) {
+  static switchNetworkAndValidateTokens(network: string) {
     this.isNotVisible(LOADING_SPINNER)
     this.click(NETWORK_RIGHT_ARROW)
     this.click("[data-cy=" + network + "-landing-button]")
@@ -47,7 +47,7 @@ export class TokenGovernancePage extends BasePage {
     })
   }
 
-  static filterByTokenSymbol(network: string) {
+  static filterByTestTokenSymbolOn(network: string) {
     cy.fixture("supertokensData").then(supertokens => {
       this.click(FILTER_BUTTON)
       this.type(TOKEN_SYMBOL_FILTER, supertokens[network].TokenSymbol)
