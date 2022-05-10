@@ -83,8 +83,6 @@ const CHIP_ACTIVE = "[data-cy=chip-active]"
 const CHIP_INACTIVE = "[data-cy=chip-inactive]"
 
 
-
-
 export class AccountPage extends BasePage {
 
   static clickAddressBookButton() {
@@ -101,6 +99,14 @@ export class AccountPage extends BasePage {
       this.hasText(ACCOUNT_TYPE, account[network].accountType)
       this.hasText(ACCOUNT_ADDRESS, this.getShortenedAddress(account[network].address))
       this.hasText(NETWORK_NAME, account[network].networkFancyName)
+    })
+  }
+
+  static validateAccountBalances(network: string){
+    cy.fixture("accountData").then(account => {
+      account[network].superTokens.forEach((token: any, index: number) => {
+        cy.get(TOTAL_STREAMED).eq(index).should("contain.text", token.balance)
+      })
     })
   }
 

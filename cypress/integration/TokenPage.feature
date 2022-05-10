@@ -9,7 +9,7 @@ Feature: Token page test cases
     And User switches to "events" tab
     And The latest token events data is loaded
 
-  Scenario: Filtering cases for streams ta
+  Scenario: Filtering cases for streams tab
    Given User has opened the "listed token" page on "matic"
     And User filters streams by senders address on "matic"
     Then Streams filtered by senders address are shown correctly for "matic"

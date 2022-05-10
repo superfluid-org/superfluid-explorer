@@ -11,6 +11,10 @@ Given(`The account address, type and network is shown correctly for {string}`, (
   AccountPage.validateAccountAddressTypeAndNetwork(network)
 });
 
+Given(`The account balances are shown correctly for {string}`, (network) => {
+  AccountPage.validateAccountBalances(network)
+});
+
 Given(`The account streams are shown correctly for {string}`, (network) => {
   AccountPage.validateStreamsTabEntries(network)
 });
@@ -23,7 +27,7 @@ Given(`The account publications are shown correctly for {string}`, (network) => 
   AccountPage.validateIndexTabEntries(network)
 });
 
-Given(`The account balances are shown correctly for {string}`, (network) => {
+Given(`The account super tokens balances are shown correctly for {string}`, (network) => {
   AccountPage.validateTokensTabEntries(network)
 });
 
