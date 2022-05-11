@@ -11,10 +11,6 @@ Given(`The account address, type ,balances and network is shown correctly for {s
   AccountPage.validateAccountAddressTypeAndNetwork(network)
 });
 
-Given(`The account balances are shown correctly for {string}`, (network) => {
-  AccountPage.validateAccountBalances(network)
-});
-
 Given(`The account streams are shown correctly for {string}`, (network) => {
   AccountPage.validateStreamsTabEntries(network)
 });
@@ -85,7 +81,6 @@ Then(`User resets incoming streams filter`, () => {
   AccountPage.resetIncomingStreamsFilter()
 });
 
-
 Then(`User filters outgoing streams by receivers address for {string}`, (network) => {
   AccountPage.filterOutgoingStreamsByReceiverAddress(network)
 });
@@ -110,7 +105,6 @@ Then(`User filters outgoing streams with no results`, () => {
 Then(`User resets outgoing streams filter`, () => {
   AccountPage.resetOutgoingStreamsFilter()
 });
-
 
 Then(`User filters publications by index id`, () => {
   AccountPage.filterPublicationsByIndexID()
@@ -148,7 +142,6 @@ Then(`User filters publications with no results`, () => {
 Then(`User resets publications filter`, () => {
   AccountPage.resetPublicationsFilter()
 });
-
 
 Then(`User filters subscriptions by approved`, () => {
   AccountPage.filterSubscriptionsByApproved()
@@ -193,7 +186,6 @@ Then(`User resets subscriptions filter`, () => {
   AccountPage.resetSubscriptionsFilter()
 });
 
-
 Then(`User filters super tokens by active`, () => {
   AccountPage.filterSuperTokensByActive()
 });
@@ -236,7 +228,6 @@ Then(`User filters super tokens with no results`, () => {
 Then(`User resets super tokens filter`, () => {
   CommonElements.resetFilter()
 });
-
 
 Then(`User filters events by event name for {string}`, (network) => {
   AccountPage.filterEventsByEventName(network)
