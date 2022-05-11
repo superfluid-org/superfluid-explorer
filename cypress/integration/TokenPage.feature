@@ -1,8 +1,10 @@
 Feature: Token page test cases
 
   Scenario: Data displayed in token pages
-   Given User has opened the "listed token" page on "matic"
+   Given Token statistics queries are saved for "matic"
+    And User has opened the "listed token" page on "matic"
     And The token address, symbol , underlying address , network and listing is shown correctly for "matic"
+    And The token overall data is shown correctly
     And The latest token streams data is loaded
     And User switches to "indexes" tab
     And The latest token index data is loaded
@@ -49,4 +51,3 @@ Feature: Token page test cases
   Scenario: Regular token case
    Given User has opened the "regular token" page on "matic"
     And User sees 404 page
-

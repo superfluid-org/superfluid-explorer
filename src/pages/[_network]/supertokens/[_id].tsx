@@ -407,6 +407,7 @@ const SuperTokenPage: NextPage = () => {
 
           <ListItem divider>
             <ListItemText
+              data-cy={"total-distributed"}
               secondary="Total amount distributed"
               primary={
                 tokenStatistics ? (
@@ -422,6 +423,7 @@ const SuperTokenPage: NextPage = () => {
 
           <ListItem>
             <ListItemText
+              data-cy={"total-transferred"}
               secondary="Total amount transferred"
               primary={
                 tokenStatistics ? (
@@ -437,6 +439,7 @@ const SuperTokenPage: NextPage = () => {
 
           <ListItem>
             <ListItemText
+              data-cy={"total-supply"}
               secondary="Total supply"
               primary={
                 tokenStatistics ? (

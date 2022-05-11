@@ -7,7 +7,7 @@ Given(`User has opened the {string} page on {string}`, (page, network) => {
   LandingPage.openDataPage(page, network)
 });
 
-Given(`The account address, type and network is shown correctly for {string}`, (network) => {
+Given(`The account address, type ,balances and network is shown correctly for {string}`, (network) => {
   AccountPage.validateAccountAddressTypeAndNetwork(network)
 });
 
@@ -59,7 +59,6 @@ Given(`The {string} help alert is shown`, (alert) => {
 Given(`Tooltip is visible when user hovers the {string} tooltip icon`, (tooltip) => {
   AccountPage.hoverTooltipAndValidateLink(tooltip)
 });
-
 
 Then(`User filters incoming streams by senders address for {string}`, (network) => {
   AccountPage.filterIncomingStreamsBySenderAddress(network)
@@ -256,4 +255,7 @@ Then(`User filters events with no results`, () => {
 });
 Then(`User resets events filter`, () => {
   CommonElements.resetFilter()
+});
+Then("Table contains the same streams as before filtering", () => {
+  AccountPage.validateSenderAddressesAfterFiltering()
 });

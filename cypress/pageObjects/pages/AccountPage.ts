@@ -99,13 +99,9 @@ export class AccountPage extends BasePage {
       this.hasText(ACCOUNT_TYPE, account[network].accountType)
       this.hasText(ACCOUNT_ADDRESS, this.getShortenedAddress(account[network].address))
       this.hasText(NETWORK_NAME, account[network].networkFancyName)
-    })
-  }
-
-  static validateAccountBalances(network: string){
-    cy.fixture("accountData").then(account => {
-      account[network].superTokens.forEach((token: any, index: number) => {
-        cy.get(TOTAL_STREAMED).eq(index).should("contain.text", token.balance)
+        account[network].superTokens.forEach((token: any, index: number) => {
+          //Reusing the same element for total streamed and balances , so the selector is the same
+          cy.get(TOTAL_STREAMED).eq(index).should("contain.text", token.balance)
       })
     })
   }
@@ -278,6 +274,12 @@ export class AccountPage extends BasePage {
   }
 
   static filterIncomingStreamsBySenderAddress(network: string) {
+    //Save the data before filtering
+    let senderAddresses = []
+    cy.get(SENDER_ADDRESS).each(el => {
+      senderAddresses.push(el.text())
+    })
+    cy.wrap(senderAddresses).as("senderAddresses")
     cy.fixture("filteringData").then(account => {
       this.isVisible(LOADING_SPINNER)
       this.isNotVisible(LOADING_SPINNER)
@@ -339,7 +341,7 @@ export class AccountPage extends BasePage {
     this.click(FILTER_CLOSE_BUTTON)
     this.isVisible(LOADING_SPINNER)
     this.isNotVisible(LOADING_SPINNER)
-    cy.get(INCOMING_NO_RESULTS).should("be.visible")
+    this.isVisible(INCOMING_NO_RESULTS)
   }
 
   static resetIncomingStreamsFilter() {
@@ -788,4 +790,9 @@ export class AccountPage extends BasePage {
     cy.get(NO_RESULTS).should("be.visible")
   }
 
+  static validateSenderAddressesAfterFiltering() {
+    cy.get("@senderAddresses").each((address , i) => {
+      cy.get(SENDER_ADDRESS).eq(i).should("contain", address)
+    })
+  }
 }

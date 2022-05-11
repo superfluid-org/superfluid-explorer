@@ -1,4 +1,7 @@
 import {BasePage} from "../BasePage";
+import {aliasQuery, hasOperationName, networkAliasQuery} from '../../utils/graphql-test-utils'
+import EtherFormatted from "../../../src/components/EtherFormatted";
+import {ethers} from "ethers";
 
 const TOKEN_LISTED_STATUS = "[data-cy=token-listed-status] span"
 const TOKEN_SYMBOL = "[data-cy=token-symbol] span"
@@ -38,6 +41,10 @@ const CHIP_STATUS = "[data-cy=chip-status]"
 const CHIP_INDEX_ID = "[data-cy=chip-indexId]"
 const CHIP_PUBLISHER= "[data-cy=chip-publisher]"
 const CHIP_DISTRIBUTED = "[data-cy=chip-distributed]"
+const TOTAL_STREAMED = "[data-cy=total-streamed]"
+const TOTAL_DISTIRUBTED = "[data-cy=total-distributed] span"
+const TOTAL_SUPPLY = "[data-cy=total-supply] span"
+const TOTAL_TRANSFERRED = "[data-cy=total-transferred] span"
 
 
 export class TokenPage extends BasePage {
@@ -291,4 +298,27 @@ export class TokenPage extends BasePage {
     cy.title().should("contain", "404: This page could not be found")
   }
 
+  static validateOverallTokenData() {
+    cy.get("@tokenStatistics").its("response").then(res => {
+      let stats = res.body.data.tokenStatistics[0]
+      this.hasText(TOTAL_TRANSFERRED , (ethers.utils.formatEther(stats.totalAmountTransferredUntilUpdatedAt)).toString())
+      this.hasText(TOTAL_DISTIRUBTED , (ethers.utils.formatEther(stats.totalAmountDistributedUntilUpdatedAt)).toString())
+      this.hasText(TOTAL_SUPPLY , (ethers.utils.formatEther(stats.totalSupply)).toString())
+      // Cypress saves the text of the element and then asserts it ,
+      // but its hard to catch exact value with the flowing balances and not make the tests brittle
+      // So just checking if the totalStreamed value is close to the
+      // totalAmountStreamedUntilUpdatedAt value from the graph request
+      cy.get(TOTAL_STREAMED).then($el => {
+        expect(parseFloat($el.text())).to.closeTo(parseFloat(ethers.utils.formatEther(stats.totalAmountStreamedUntilUpdatedAt)) , 1000)
+      })
+    })
+  }
+
+  static saveTokenStatisticsQueriesOn(network: string) {
+    cy.intercept("POST","**protocol-dev-"+network, (req) => {
+      if(req.body.operationName === "tokenStatistics") {
+        req.alias = "tokenStatistics"
+      }
+    })
+  }
 }

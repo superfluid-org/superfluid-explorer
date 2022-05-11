@@ -1,9 +1,8 @@
 Feature: Account page test cases
 
  Scenario: Data displayed in account page
-  Given User has opened the "static balance account" page on "matic"
-   And The account address, type and network is shown correctly for "matic"
-   And The account balances are shown correctly for "matic"
+   Given User has opened the "static balance account" page on "matic"
+   And The account address, type ,balances and network is shown correctly for "matic"
    And The account streams are shown correctly for "matic"
    And User switches to "indexes" tab
    And The account publications are shown correctly for "matic"
@@ -51,6 +50,7 @@ Feature: Account page test cases
     Then Incoming streams filtered by not active are shown correctly
     And User filters incoming streams with no results
     And User resets incoming streams filter
+    Then Table contains the same streams as before filtering
 
   Scenario: Filtering outgoing stream cases for streams tab
    Given User has opened the "balance account for filtering" page on "goerli"
@@ -71,11 +71,9 @@ Feature: Account page test cases
     And User filters publications by distributed
     Then Publications filtered by distributed are shown correctly
     And User filters publications by not distributed
-    #Then Publications filtered by not distributed are shown correctly
     And User filters publications by issued units
     Then Publications filtered by issued units are shown correctly
     And User filters publications by no issued units
-    #Then Publications filtered by no issued units are shown correctly
     And User filters publications with no results
     And User resets publications filter
 
@@ -87,11 +85,9 @@ Feature: Account page test cases
     Then User filters subscriptions by not approved
     Then Subscriptions filtered by not approved are shown correctly
     Then User filters subscriptions by distributions
-    #Then Subscriptions filtered by distributions are shown correctly
     Then User filters subscriptions by no distributions
     Then Subscriptions filtered by no distributions are shown correctly
     Then User filters subscriptions by units
-    #Then Subscriptions filtered by units are shown correctly
     Then User filters subscriptions by no units
     Then Subscriptions filtered by no units are shown correctly
     And User filters subscriptions with no results
