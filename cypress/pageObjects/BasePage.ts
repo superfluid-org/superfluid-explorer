@@ -99,11 +99,11 @@ export class BasePage {
     return address.slice(0, chars) + "..."
   }
 
-  static validateChip(selector:string, text:string){
+  static validateChip(selector: string, text: string) {
     this.hasText(selector, text)
   }
 
-  static caseInsensitive(selector:string, text:string){
-    cy.get(selector).contains(text, { matchCase: false })
+  static caseInsensitive(selector: string, text: string) {
+    cy.get(selector).contains(text, {matchCase: false})
   }
 }

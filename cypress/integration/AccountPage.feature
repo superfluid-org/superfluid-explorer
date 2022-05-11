@@ -1,47 +1,47 @@
 Feature: Account page test cases
 
- Scenario: Data displayed in account page
-   Given User has opened the "static balance account" page on "matic"
-   And The account address, type ,balances and network is shown correctly for "matic"
-   And The account streams are shown correctly for "matic"
-   And User switches to "indexes" tab
-   And The account publications are shown correctly for "matic"
-   And User switches to "super tokens" tab
-   And The account super tokens balances are shown correctly for "matic"
-   And User switches to "events" tab
-   Then The account events are shown correctly for "matic"
+  Scenario: Data displayed in account page
+    Given User has opened the "static balance account" page on "matic"
+    And The account address, type ,balances and network is shown correctly for "matic"
+    And The account streams are shown correctly for "matic"
+    And User switches to "indexes" tab
+    And The account publications are shown correctly for "matic"
+    And User switches to "super tokens" tab
+    And The account super tokens balances are shown correctly for "matic"
+    And User switches to "events" tab
+    Then The account events are shown correctly for "matic"
 
- Scenario: Account with published indexes and the data shown in the index tab publications section
-  Given User has opened the "super app" page on "goerli"
-   And User switches to "indexes" tab
-   And The super app publications are shown correctly for "goerli"
-   And User opens the publication details
-   Then The index details container is visible
+  Scenario: Account with published indexes and the data shown in the index tab publications section
+    Given User has opened the "super app" page on "goerli"
+    And User switches to "indexes" tab
+    And The super app publications are shown correctly for "goerli"
+    And User opens the publication details
+    Then The index details container is visible
 
- Scenario: Changing stream granularity
-  Given User has opened the "ongoing streams account" page on "matic"
-   And User opens the settings menu
-   And User changes the stream granularity to "Second"
-   Then Flow rates on "matic" are shown in "second"
-   And User changes the stream granularity to "Minute"
-   Then Flow rates on "matic" are shown in "minute"
-   And User changes the stream granularity to "Hour"
-   Then Flow rates on "matic" are shown in "hour"
-   And User changes the stream granularity to "Day"
-   Then Flow rates on "matic" are shown in "day"
-   And User changes the stream granularity to "Week"
-   Then Flow rates on "matic" are shown in "week"
-   And User changes the stream granularity to "30 Day"
-   Then Flow rates on "matic" are shown in "month"
+  Scenario: Changing stream granularity
+    Given User has opened the "ongoing streams account" page on "matic"
+    And User opens the settings menu
+    And User changes the stream granularity to "Second"
+    Then Flow rates on "matic" are shown in "second"
+    And User changes the stream granularity to "Minute"
+    Then Flow rates on "matic" are shown in "minute"
+    And User changes the stream granularity to "Hour"
+    Then Flow rates on "matic" are shown in "hour"
+    And User changes the stream granularity to "Day"
+    Then Flow rates on "matic" are shown in "day"
+    And User changes the stream granularity to "Week"
+    Then Flow rates on "matic" are shown in "week"
+    And User changes the stream granularity to "30 Day"
+    Then Flow rates on "matic" are shown in "month"
 
   Scenario: Hovering on account page tooltips and help alert links
-   Given User has opened the "static balance account" page on "matic"
+    Given User has opened the "static balance account" page on "matic"
     And The "streams" help alert is shown
     And User switches to "indexes" tab
     Then Tooltip is visible when user hovers the "subscriptions" tooltip icon
 
   Scenario: Filtering incoming stream cases for streams tab
-   Given User has opened the "balance account for filtering" page on "goerli"
+    Given User has opened the "balance account for filtering" page on "goerli"
     Then  User filters incoming streams by senders address for "goerli"
     Then Incoming streams filtered by senders address are shown correctly for "goerli"
     And User filters incoming streams by active
@@ -53,7 +53,7 @@ Feature: Account page test cases
     Then Table contains the same streams as before filtering
 
   Scenario: Filtering outgoing stream cases for streams tab
-   Given User has opened the "balance account for filtering" page on "goerli"
+    Given User has opened the "balance account for filtering" page on "goerli"
     And User filters outgoing streams by receivers address for "goerli"
     Then Outgoing streams filtered by receivers address are shown correctly for "goerli"
     And User filters outgoing streams by active
@@ -64,7 +64,7 @@ Feature: Account page test cases
     And User resets outgoing streams filter
 
   Scenario: Filtering publication cases for indexes tab
-   Given User has opened the "super app" page on "goerli"
+    Given User has opened the "super app" page on "goerli"
     And User switches to "indexes" tab
     And User filters publications by index id
     Then Publications filtered by index id are shown correctly
@@ -78,7 +78,7 @@ Feature: Account page test cases
     And User resets publications filter
 
   Scenario: Filtering subscriptions cases for indexes tab
-   Given User has opened the "balance account for filtering" page on "matic"
+    Given User has opened the "balance account for filtering" page on "matic"
     And User switches to "indexes" tab
     Then User filters subscriptions by approved
     Then Subscriptions filtered by approved are shown correctly
@@ -94,7 +94,7 @@ Feature: Account page test cases
     And User resets subscriptions filter
 
   Scenario: Filtering cases for super tokens tab
-   Given User has opened the "balance account for filtering" page on "goerli"
+    Given User has opened the "balance account for filtering" page on "goerli"
     And User switches to "super tokens" tab
     And User filters super tokens by active
     Then Super tokens filtered by active are shown correctly
@@ -112,7 +112,7 @@ Feature: Account page test cases
     And User resets super tokens filter
 
   Scenario: Filtering cases for events tab
-   Given User has opened the "balance account for filtering" page on "matic"
+    Given User has opened the "balance account for filtering" page on "matic"
     And User switches to "events" tab
     And User filters events by event name for "matic"
     Then Events filtered by event name are shown correctly for "matic"

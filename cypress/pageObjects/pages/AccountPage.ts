@@ -99,9 +99,9 @@ export class AccountPage extends BasePage {
       this.hasText(ACCOUNT_TYPE, account[network].accountType)
       this.hasText(ACCOUNT_ADDRESS, this.getShortenedAddress(account[network].address))
       this.hasText(NETWORK_NAME, account[network].networkFancyName)
-        account[network].superTokens.forEach((token: any, index: number) => {
-          //Reusing the same element for total streamed and balances , so the selector is the same
-          cy.get(TOTAL_STREAMED).eq(index).should("contain.text", token.balance)
+      account[network].superTokens.forEach((token: any, index: number) => {
+        //Reusing the same element for total streamed and balances , so the selector is the same
+        cy.get(TOTAL_STREAMED).eq(index).should("contain.text", token.balance)
       })
     })
   }
@@ -422,7 +422,7 @@ export class AccountPage extends BasePage {
     this.click(FILTER_PUBLICATIONS_BUTTON)
     this.type(FILTER_INDEX_ID, "0")
     this.click(FILTER_CLOSE_BUTTON)
-    this.validateChip(CHIP_INDEX_ID,"0")
+    this.validateChip(CHIP_INDEX_ID, "0")
     this.isVisible(LOADING_SPINNER)
     this.isNotVisible(LOADING_SPINNER)
   }
@@ -500,7 +500,7 @@ export class AccountPage extends BasePage {
     })
   }
 
-  static filterPublicationsNoResults () {
+  static filterPublicationsNoResults() {
     this.click(FILTER_CANCEL_ICON)
     this.click(FILTER_PUBLICATIONS_BUTTON)
     this.click(FILTER_DISTRIBUTED_NO_BUTTON)
@@ -511,7 +511,7 @@ export class AccountPage extends BasePage {
     cy.get(PUBLICATIONS_NO_RESULTS).should("be.visible")
   }
 
-  static resetPublicationsFilter(){
+  static resetPublicationsFilter() {
     this.click(FILTER_PUBLICATIONS_BUTTON)
     this.click(FILTER_RESET_BUTTON)
   }
@@ -617,14 +617,14 @@ export class AccountPage extends BasePage {
     })
   }
 
-  static filterSubscriptionsNoResults () {
+  static filterSubscriptionsNoResults() {
     this.click(FILTER_SUBSCRIPTIONS_BUTTON)
     this.click(FILTER_SUB_UNITS_YES_BUTTON)
     this.click(FILTER_CLOSE_BUTTON)
     cy.get(SUBSCRIPTIONS_NO_RESULTS).should("be.visible")
   }
 
-  static resetSubscriptionsFilter(){
+  static resetSubscriptionsFilter() {
     this.click(FILTER_SUBSCRIPTIONS_BUTTON)
     this.click(FILTER_RESET_BUTTON)
   }
@@ -762,17 +762,17 @@ export class AccountPage extends BasePage {
   }
 
   static filterEventsByTransactionHash(network: string) {
-   cy.fixture("filteringData").then(account => {
-     this.click(FILTER_BUTTON)
-     this.click(FILTER_CLOSE_ICON)
-     this.type(FILTER_TRANSACTION_HASH, account[network].transactionHash)
-     this.click(FILTER_CLOSE_BUTTON)
-     this.isVisible(LOADING_SPINNER)
-     this.isNotVisible(LOADING_SPINNER)
-  })
-}
+    cy.fixture("filteringData").then(account => {
+      this.click(FILTER_BUTTON)
+      this.click(FILTER_CLOSE_ICON)
+      this.type(FILTER_TRANSACTION_HASH, account[network].transactionHash)
+      this.click(FILTER_CLOSE_BUTTON)
+      this.isVisible(LOADING_SPINNER)
+      this.isNotVisible(LOADING_SPINNER)
+    })
+  }
 
-  static validateFilteredEventsByTransactionHash(network: string){
+  static validateFilteredEventsByTransactionHash(network: string) {
     cy.fixture("filteringData").then(account => {
       cy.get(EVENT_SHORT_TX_HASH).each((
         $el) => {
@@ -781,7 +781,7 @@ export class AccountPage extends BasePage {
     })
   }
 
-  static filterEventsNoResults () {
+  static filterEventsNoResults() {
     this.click(FILTER_BUTTON)
     this.type(FILTER_EVENT_NAME, "test")
     this.click(FILTER_CLOSE_BUTTON)
@@ -791,7 +791,7 @@ export class AccountPage extends BasePage {
   }
 
   static validateSenderAddressesAfterFiltering() {
-    cy.get("@senderAddresses").each((address , i) => {
+    cy.get("@senderAddresses").each((address, i) => {
       cy.get(SENDER_ADDRESS).eq(i).should("contain", address)
     })
   }

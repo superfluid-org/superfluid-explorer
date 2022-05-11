@@ -82,7 +82,7 @@ Then(`User filters incoming streams with no results`, () => {
   AccountPage.filterIncomingStreamsNoResults()
 });
 Then(`User resets incoming streams filter`, () => {
-AccountPage.resetIncomingStreamsFilter()
+  AccountPage.resetIncomingStreamsFilter()
 });
 
 
@@ -108,7 +108,7 @@ Then(`User filters outgoing streams with no results`, () => {
   AccountPage.filterOutgoingStreamsNoResults()
 });
 Then(`User resets outgoing streams filter`, () => {
-    AccountPage.resetOutgoingStreamsFilter()
+  AccountPage.resetOutgoingStreamsFilter()
 });
 
 
@@ -190,7 +190,7 @@ Then(`User filters subscriptions with no results`, () => {
   AccountPage.filterSubscriptionsNoResults()
 });
 Then(`User resets subscriptions filter`, () => {
-    AccountPage.resetSubscriptionsFilter()
+  AccountPage.resetSubscriptionsFilter()
 });
 
 

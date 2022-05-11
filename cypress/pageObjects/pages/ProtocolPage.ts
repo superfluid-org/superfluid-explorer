@@ -39,7 +39,7 @@ export class ProtocolPage extends BasePage {
     this.hasText(RESOLVER, protocolContracts[network].resolver)
     this.hasText(CFA_V1, protocolContracts[network].CFAv1)
     this.hasText(SUPER_TOKEN_FACTORY, protocolContracts[network].superTokenFactory)
-    if(protocolContracts[network].TOGA != undefined) {
+    if (protocolContracts[network].TOGA != undefined) {
       this.hasText(TOGA, protocolContracts[network].TOGA)
     }
     this.hasText(HOST, protocolContracts[network].host)

@@ -1,7 +1,7 @@
 Feature: Token page test cases
 
   Scenario: Data displayed in token pages
-   Given Token statistics queries are saved for "matic"
+    Given Token statistics queries are saved for "matic"
     And User has opened the "listed token" page on "matic"
     And The token address, symbol , underlying address , network and listing is shown correctly for "matic"
     And The token overall data is shown correctly
@@ -12,7 +12,7 @@ Feature: Token page test cases
     And The latest token events data is loaded
 
   Scenario: Filtering cases for streams tab
-   Given User has opened the "listed token" page on "matic"
+    Given User has opened the "listed token" page on "matic"
     And User filters streams by senders address on "matic"
     Then Streams filtered by senders address are shown correctly for "matic"
     And User filters streams by receivers address on "matic"
@@ -25,7 +25,7 @@ Feature: Token page test cases
     And User resets streams filter
 
   Scenario: Filtering cases for indexes tab
-   Given User has opened the "listed token" page on "matic"
+    Given User has opened the "listed token" page on "matic"
     And User switches to "indexes" tab
     And User filters indexes by index ID
     Then Indexes filtered by index ID are shown correctly
@@ -39,7 +39,7 @@ Feature: Token page test cases
     And User resets indexes filter
 
   Scenario: Filtering cases for events tab
-   Given User has opened the "listed token" page on "matic"
+    Given User has opened the "listed token" page on "matic"
     And User switches to "events" tab
     And User filters events by event name for "matic"
     And Events filtered by name are shown correctly for "matic"
@@ -49,5 +49,5 @@ Feature: Token page test cases
     And User resets events filter
 
   Scenario: Regular token case
-   Given User has opened the "regular token" page on "matic"
+    Given User has opened the "regular token" page on "matic"
     And User sees 404 page

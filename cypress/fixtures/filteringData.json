@@ -6,7 +6,6 @@
     "eventName": "Transfer",
     "transactionHash": "0x315b5e952ac2f3ffce1639e332589e16b80e8982206e1848b0dae978abc6df3c"
   },
-
   "matic": {
     "address": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
     "sender": "0xE0159F36b6A09e6407dF0c7debAc433a77511625",

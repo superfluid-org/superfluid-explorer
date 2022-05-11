@@ -117,7 +117,7 @@ Then(`User sees 404 page`, () => {
   TokenPage.errorPageOnRegularToken()
 });
 
-Given("The token overall data is shown correctly",  () => {
+Given("The token overall data is shown correctly", () => {
   TokenPage.validateOverallTokenData()
 });
 Given("Token statistics queries are saved for {string}", (network) => {

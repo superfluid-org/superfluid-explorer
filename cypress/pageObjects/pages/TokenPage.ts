@@ -1,6 +1,4 @@
 import {BasePage} from "../BasePage";
-import {aliasQuery, hasOperationName, networkAliasQuery} from '../../utils/graphql-test-utils'
-import EtherFormatted from "../../../src/components/EtherFormatted";
 import {ethers} from "ethers";
 
 const TOKEN_LISTED_STATUS = "[data-cy=token-listed-status] span"
@@ -39,7 +37,7 @@ const CHIP_SENDER = "[data-cy=chip-sender]"
 const CHIP_RECEIVER = "[data-cy=chip-receiver]"
 const CHIP_STATUS = "[data-cy=chip-status]"
 const CHIP_INDEX_ID = "[data-cy=chip-indexId]"
-const CHIP_PUBLISHER= "[data-cy=chip-publisher]"
+const CHIP_PUBLISHER = "[data-cy=chip-publisher]"
 const CHIP_DISTRIBUTED = "[data-cy=chip-distributed]"
 const TOTAL_STREAMED = "[data-cy=total-streamed]"
 const TOTAL_DISTIRUBTED = "[data-cy=total-distributed] span"
@@ -130,7 +128,7 @@ export class TokenPage extends BasePage {
     this.click(FILTER_BUTTON)
     this.click(FILTER_ACTIVE_YES)
     this.click(FILTER_CLOSE_BUTTON)
-    this.validateChip(CHIP_STATUS,"Active")
+    this.validateChip(CHIP_STATUS, "Active")
   }
 
   static validateFilteredStreamsByActive() {
@@ -144,14 +142,14 @@ export class TokenPage extends BasePage {
     this.click(FILTER_BUTTON)
     this.click(FILTER_ACTIVE_NO)
     this.click(FILTER_CLOSE_BUTTON)
-    this.validateChip(CHIP_STATUS,"Inactive")
+    this.validateChip(CHIP_STATUS, "Inactive")
   }
 
   static validateFilteredStreamsByNotActive() {
     this.doesNotExist(STREAMS_FLOW_RATES)
   }
 
-  static filterStreamsNoResults (){
+  static filterStreamsNoResults() {
     this.click(FILTER_BUTTON)
     this.type(FILTER_SENDER_ADDRESS, "test")
     this.click(FILTER_CLOSE_BUTTON)
@@ -166,7 +164,7 @@ export class TokenPage extends BasePage {
     this.click(FILTER_BUTTON)
     this.type(FILTER_INDEX_ID_ADDRESS, "1")
     this.click(FILTER_CLOSE_BUTTON)
-    this.validateChip(CHIP_INDEX_ID,"1")
+    this.validateChip(CHIP_INDEX_ID, "1")
     this.isVisible(LOADING_SPINNER)
     this.isNotVisible(LOADING_SPINNER)
   }
@@ -191,8 +189,8 @@ export class TokenPage extends BasePage {
   }
 
   static validateFilteredIndexesByPublisherAddress(network: string) {
-      cy.fixture("tokenData").then(tokens => {
-        cy.get(INDEX_PUBLISHERS).each((
+    cy.fixture("tokenData").then(tokens => {
+      cy.get(INDEX_PUBLISHERS).each((
         $el) => {
         cy.wrap($el.text()).should("contain", this.getShortenedAddress(tokens[network].publisher))
       })
@@ -212,7 +210,7 @@ export class TokenPage extends BasePage {
   static validateIndexesByDistributed() {
     cy.get(TOTAL_AMOUNT_DISTRIBUTED).each((
       $el) => {
-      cy.wrap($el.text()).should('not.contain', "DAIx0" )
+      cy.wrap($el.text()).should('not.contain', "DAIx0")
     })
   }
 
@@ -233,7 +231,7 @@ export class TokenPage extends BasePage {
     })
   }
 
-  static filterIndexesNoResults(){
+  static filterIndexesNoResults() {
     this.click(FILTER_BUTTON)
     this.type(FILTER_PUBLISHER_ADDRESS, "test")
     this.click(FILTER_CLOSE_BUTTON)
@@ -274,7 +272,7 @@ export class TokenPage extends BasePage {
     })
   }
 
-  static validateFilteredEventsByTransactionHash(network: string){
+  static validateFilteredEventsByTransactionHash(network: string) {
     cy.fixture("tokenData").then(token => {
       cy.get(EVENT_SHORT_TX_HASH).each((
         $el) => {
@@ -283,7 +281,7 @@ export class TokenPage extends BasePage {
     })
   }
 
-  static filterEventsNoResults () {
+  static filterEventsNoResults() {
     this.click(FILTER_BUTTON)
     this.type(FILTER_EVENT_NAME, "test")
     this.click(FILTER_CLOSE_BUTTON)
@@ -292,7 +290,7 @@ export class TokenPage extends BasePage {
     cy.get(FILTER_NO_RESULTS).should("be.visible")
   }
 
-  static errorPageOnRegularToken(){
+  static errorPageOnRegularToken() {
     cy.contains("404").should("be.visible")
     cy.contains("This page could not be found.").should("be.visible")
     cy.title().should("contain", "404: This page could not be found")
@@ -301,22 +299,22 @@ export class TokenPage extends BasePage {
   static validateOverallTokenData() {
     cy.get("@tokenStatistics").its("response").then(res => {
       let stats = res.body.data.tokenStatistics[0]
-      this.hasText(TOTAL_TRANSFERRED , (ethers.utils.formatEther(stats.totalAmountTransferredUntilUpdatedAt)).toString())
-      this.hasText(TOTAL_DISTIRUBTED , (ethers.utils.formatEther(stats.totalAmountDistributedUntilUpdatedAt)).toString())
-      this.hasText(TOTAL_SUPPLY , (ethers.utils.formatEther(stats.totalSupply)).toString())
+      this.hasText(TOTAL_TRANSFERRED, (ethers.utils.formatEther(stats.totalAmountTransferredUntilUpdatedAt)).toString())
+      this.hasText(TOTAL_DISTIRUBTED, (ethers.utils.formatEther(stats.totalAmountDistributedUntilUpdatedAt)).toString())
+      this.hasText(TOTAL_SUPPLY, (ethers.utils.formatEther(stats.totalSupply)).toString())
       // Cypress saves the text of the element and then asserts it ,
       // but its hard to catch exact value with the flowing balances and not make the tests brittle
       // So just checking if the totalStreamed value is close to the
       // totalAmountStreamedUntilUpdatedAt value from the graph request
       cy.get(TOTAL_STREAMED).then($el => {
-        expect(parseFloat($el.text())).to.closeTo(parseFloat(ethers.utils.formatEther(stats.totalAmountStreamedUntilUpdatedAt)) , 1000)
+        expect(parseFloat($el.text())).to.closeTo(parseFloat(ethers.utils.formatEther(stats.totalAmountStreamedUntilUpdatedAt)), 1000)
       })
     })
   }
 
   static saveTokenStatisticsQueriesOn(network: string) {
-    cy.intercept("POST","**protocol-dev-"+network, (req) => {
-      if(req.body.operationName === "tokenStatistics") {
+    cy.intercept("POST", "**protocol-dev-" + network, (req) => {
+      if (req.body.operationName === "tokenStatistics") {
         req.alias = "tokenStatistics"
       }
     })

@@ -7,7 +7,7 @@ Given(`User has opened the {string} page`, (page) => {
 });
 
 Then("User switches network for {string} and validates data", (network) => {
-  TokenGovernancePage.switchLNetworkAndValidateTokens(network)
+  TokenGovernancePage.switchNetworkAndValidateTokens(network)
 })
 
 Then("User filters super tokens by name for {string}", (network) => {
@@ -16,7 +16,7 @@ Then("User filters super tokens by name for {string}", (network) => {
 })
 
 Then("User filters super tokens by symbol for {string}", (network) => {
-  TokenGovernancePage.filterByTokenSymbol(network)
+  TokenGovernancePage.filterByTestTokenSymbolOn(network)
   TokenGovernancePage.resetFilter()
 })
 
