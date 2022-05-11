@@ -274,8 +274,8 @@ export class AccountPage extends BasePage {
   }
 
   static filterIncomingStreamsBySenderAddress(network: string) {
-    //Save the data before filtering
-    let senderAddresses = []
+    //Save the sender addresses before filtering
+    let senderAddresses: string[] = []
     cy.get(SENDER_ADDRESS).each(el => {
       senderAddresses.push(el.text())
     })

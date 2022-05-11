@@ -95,8 +95,8 @@ export class BasePage {
     return address.slice(0, chars + 2) + "..." + address.slice(address.length - chars, address.length)
   }
 
-  static getShortenedHashAddress(address: string, chars = 6) {
-    return address.slice(0, chars) + "..."
+  static getShortenedHashAddress(hash: string, chars = 6) {
+    return hash.slice(0, chars) + "..."
   }
 
   static validateChip(selector: string, text: string) {
