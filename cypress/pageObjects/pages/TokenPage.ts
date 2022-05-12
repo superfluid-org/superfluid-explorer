@@ -40,7 +40,7 @@ const CHIP_INDEX_ID = "[data-cy=chip-indexId]"
 const CHIP_PUBLISHER = "[data-cy=chip-publisher]"
 const CHIP_DISTRIBUTED = "[data-cy=chip-distributed]"
 const TOTAL_STREAMED = "[data-cy=total-streamed]"
-const TOTAL_DISTIRUBTED = "[data-cy=total-distributed] span"
+const TOTAL_DISTIRUBTED = "[data-cy=token-total-distributed] span"
 const TOTAL_SUPPLY = "[data-cy=total-supply] span"
 const TOTAL_TRANSFERRED = "[data-cy=total-transferred] span"
 

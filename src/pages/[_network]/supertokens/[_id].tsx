@@ -407,7 +407,7 @@ const SuperTokenPage: NextPage = () => {
 
           <ListItem divider>
             <ListItemText
-              data-cy={"total-distributed"}
+              data-cy={"token-total-distributed"}
               secondary="Total amount distributed"
               primary={
                 tokenStatistics ? (
