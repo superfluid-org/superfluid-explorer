@@ -11,9 +11,8 @@ Feature: Test cases for common elements and functionalities
       | network          |
       | matic            |
       | xdai             |
-      #TODO Uncomment this once the test account is set on the new networks
-      #| arbitrum-one  |
-      #| optimism-mainnet  |
+      | arbitrum-one     |
+      | optimism-mainnet |
       | arbitrum-rinkeby |
       | avalanche-fuji   |
       | goerli           |

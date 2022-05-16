@@ -25,15 +25,18 @@ interface AddressListItemProps {
   title: string;
   network: Network;
   address?: string;
+  dataCy?: string;
 }
 
 const AddressListItem: FC<AddressListItemProps> = ({
   network,
   title,
   address,
+  dataCy,
 }) => (
   <ListItem>
     <ListItemText
+      data-cy={dataCy}
       primary={title}
       secondary={
         <Stack
@@ -132,6 +135,7 @@ const Protocol: FC = () => {
                   }}
                 >
                   <ListItemText
+                    data-cy={"deposit"}
                     primary={`${network.isTestnet ? 1 : 4} hour flowrate`}
                     secondary={
                       <>
@@ -141,6 +145,7 @@ const Protocol: FC = () => {
                     }
                   />
                   <ListItemText
+                    data-cy={"owed-deposit"}
                     primary={`${network.isTestnet ? 1 : 4} hour flowrate`}
                     secondary={
                       <>
@@ -150,6 +155,7 @@ const Protocol: FC = () => {
                     }
                   />
                   <ListItemText
+                    data-cy={"patrician-period"}
                     primary={`${network.isTestnet ? 12 : 30} minutes`}
                     secondary={
                       <>
@@ -172,6 +178,7 @@ const Protocol: FC = () => {
                   }}
                 >
                   <ListItemText
+                    data-cy={"toga-min-exit-period"}
                     primary="1 week"
                     secondary={
                       <>
@@ -181,6 +188,7 @@ const Protocol: FC = () => {
                     }
                   />
                   <ListItemText
+                    data-cy={"toga-default-exit-period"}
                     primary="4 weeks"
                     secondary={
                       <>
@@ -210,36 +218,43 @@ const Protocol: FC = () => {
                 sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", pb: 2 }}
               >
                 <AddressListItem
+                  dataCy={"resolver-address"}
                   title="Resolver"
                   network={network}
                   address={resolver}
                 />
                 <AddressListItem
+                  dataCy={"host-address"}
                   title="Host"
                   network={network}
                   address={host}
                 />
                 <AddressListItem
+                  dataCy={"CFAv1-address"}
                   title="CFAv1"
                   network={network}
                   address={CFAv1}
                 />
                 <AddressListItem
+                  dataCy={"IDAv1-address"}
                   title="IDAv1"
                   network={network}
                   address={IDAv1}
                 />
                 <AddressListItem
+                  dataCy={"SuperTokenFactory-address"}
                   title="SuperTokenFactory"
                   network={network}
                   address={superTokenFactory}
                 />
                 <AddressListItem
+                  dataCy={"SuperLoaderV1-address"}
                   title="SuperfluidLoader v1"
                   network={network}
                   address={superfluidLoaderv1}
                 />
                 <AddressListItem
+                  dataCy={"TOGA-address"}
                   title="TOGA"
                   network={network}
                   address={TOGA}

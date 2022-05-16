@@ -9,6 +9,8 @@ const ADDRESS_LINKS = "[data-cy=account-address]"
 const TOKEN_LINKS = "[data-cy=token-link]"
 const TOTAL_STREAMED = "[data-cy=total-streamed]"
 const NETWORK_RIGHT_ARROW = "[data-testid=KeyboardArrowRightIcon]"
+const TOKENS_BUTTON = "[data-cy=token-page-button]"
+
 //Links
 const TERMS_OF_USE_LINK = "https://www.superfluid.finance/termsofuse/"
 const PRIVACY_POLICY_LINK = "https://www.iubenda.com/privacy-policy/34415583/legal"
@@ -40,6 +42,14 @@ export class LandingPage extends BasePage {
       }
       case "landing" : {
         cy.visit("/")
+        break;
+      }
+      case "tokens" : {
+        cy.visit("/super-tokens")
+        break;
+      }
+      case "protocol" : {
+        cy.visit("/protocol")
         break;
       }
       default: {
@@ -166,5 +176,9 @@ export class LandingPage extends BasePage {
       }
       expect(decimalCount).to.lte(num)
     })
+  }
+
+  static openTokenGovernancePage() {
+    this.click(TOKENS_BUTTON)
   }
 }

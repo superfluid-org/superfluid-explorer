@@ -69,7 +69,7 @@ export const SfAppBar = () => {
             spacing={6}
           >
             <Stack direction="row" alignItems="center" spacing={4}>
-              <AppLink href="/super-tokens" sx={{ textDecoration: "none" }}>
+              <AppLink data-cy="token-page-button" href="/super-tokens" sx={{ textDecoration: "none" }}>
                 <Typography
                   variant="button"
                   sx={{
@@ -82,7 +82,7 @@ export const SfAppBar = () => {
                   Tokens
                 </Typography>
               </AppLink>
-              <AppLink href="/protocol" sx={{ textDecoration: "none" }}>
+              <AppLink data-cy={"protocol-button"} href="/protocol" sx={{ textDecoration: "none" }}>
                 <Typography
                   variant="button"
                   sx={{

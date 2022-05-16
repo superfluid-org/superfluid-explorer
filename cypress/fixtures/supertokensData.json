@@ -1,0 +1,7 @@
+{
+  "goerli": {
+    "TokenName": "Super Usable Token",
+    "TokenSymbol": "SUP",
+    "TokenAddress": "0x00d90bfd2ac9c73e285712c2c845580a7e445b41"
+  }
+}

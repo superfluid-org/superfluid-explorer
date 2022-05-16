@@ -19,7 +19,7 @@ export class BasePage {
     cy.get(selector).filter(":visible").type(text, {delay: 0});
   }
 
-  static hasText(selector: string, text: string) {
+  static hasText(selector: string, text?: string) {
     cy.get(selector).filter(":visible").should("have.text", text);
   }
 
@@ -88,10 +88,10 @@ export class BasePage {
   }
 
   static replaceSpacesAndAssertText(selector: string, text: string, index = 0) {
-      cy.get(selector).eq(index).invoke("text").invoke("replace", /\u00a0/g, ' ').should("eq", text)
+    cy.get(selector).eq(index).invoke("text").invoke("replace", /\u00a0/g, ' ').should("eq", text)
   }
 
-  static getShortenedAddress(address:string,chars = 6) {
-    return address.slice(0,chars + 2) + "..." + address.slice(address.length - chars , address.length)
+  static getShortenedAddress(address: string, chars = 6) {
+    return address.slice(0, chars + 2) + "..." + address.slice(address.length - chars, address.length)
   }
 }

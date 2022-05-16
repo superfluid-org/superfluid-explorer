@@ -7,4 +7,4 @@ Feature: Index Page test cases
     And Distributions table is showing correct data for "goerli"
     And Subscriptions table is showing correct data for "goerli"
     And User opens the first subscription details
-    Then Subscription page container is visible
+    And Subscription page container is visible

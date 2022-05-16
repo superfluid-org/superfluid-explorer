@@ -31,7 +31,7 @@ export class IndexPage extends BasePage {
         this.hasText(TOTAL_UNITS, index.totalUnits)
         this.hasText(TOTAL_UNITS_APPROVED, index.details.totalUnitsApproved)
         this.hasText(TOTAL_UNITS_PENDING, index.details.totalUnitsPending)
-        this.replaceSpacesAndAssertText(TOTAL_AMOUNT_DISTRIBUTED,  index.token + index.totalDistributed)
+        this.replaceSpacesAndAssertText(TOTAL_AMOUNT_DISTRIBUTED, index.token + index.totalDistributed)
       })
     })
   }
