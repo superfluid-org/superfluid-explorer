@@ -60,7 +60,7 @@ const createFetching = (
 
         const multicall = new Multicall({
           ethersProvider: framework.settings.provider,
-          tryAggregate: true,
+          tryAggregate: false,
           multicallCustomContractAddress: multicallContractAddress,
         });
 
