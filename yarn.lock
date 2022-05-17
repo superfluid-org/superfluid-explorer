@@ -2614,10 +2614,10 @@
   dependencies:
     "@sentry/cli" "^1.73.0"
 
-"@superfluid-finance/sdk-core@0.4.2-dev.b0d8dd0.0":
-  version "0.4.2-dev.b0d8dd0.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.4.2-dev.b0d8dd0.0.tgz#a4c81db61df90cbff8c51cd13c2722e992fcd00e"
-  integrity sha512-Qcen5n1eRA1jF7rR/BMd3TAQwzCg3hHs063UCYyhOW61M3JebtroNJE7su4HW4pELY4WVp0c2TtTEh8EtGzBWQ==
+"@superfluid-finance/sdk-core@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.4.1.tgz#141ae751701f926a6b93520ef4f39fb10fcd5f79"
+  integrity sha512-frJJT8XzU228n/YAZ21fvdIGyHF7k0TPp6g9CrzHlOqIMbBY/6tqYrpq8jKcEK0y8JmgM6B4MZACjEZsUlcw+w==
   dependencies:
     ajv "^8.11.0"
     browserify "^17.0.0"
@@ -2626,10 +2626,10 @@
     lodash "^4.17.21"
     tsify "^5.0.4"
 
-"@superfluid-finance/sdk-redux@0.3.1-dev.812e77d.0":
-  version "0.3.1-dev.812e77d.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.3.1-dev.812e77d.0.tgz#f333b4748303ae2e4743a887dddc9b502b0c06c2"
-  integrity sha512-kV88KfSHYZh3yCkPCbDdqY71DxqXz6cJpAn9B+ldjdC+FjAabO/0kNMbNxGVNcQH3pAMPJeYBSmg2jF1wYpgAQ==
+"@superfluid-finance/sdk-redux@0.3.1-dev.b0d8dd0.0":
+  version "0.3.1-dev.b0d8dd0.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.3.1-dev.b0d8dd0.0.tgz#c2e208525894ddb5147584e4800dfdf0886d9cac"
+  integrity sha512-FVxawGMI5HHsZ8iDxNfUOjgK1CZ6UaqznmSseJ35IPO0BKoZgKI/KQxFgiw379w+8se+o2aM6yUgYC77zriXnw==
   dependencies:
     "@types/promise-retry" "^1.1.3"
     ethers "^5.5.4"

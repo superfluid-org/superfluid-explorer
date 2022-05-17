@@ -139,8 +139,8 @@ export const networks: Network[] = [
     isTestnet: false,
     rpcUrl: "https://rpc-endpoints.superfluid.dev/avalanche-c",
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-avalanche-c",
-    getLinkForTransaction: (txHash: string): string => `https://snowtrace.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string => `https://snowtrace.io/address/${address}`
+    getLinkForTransaction: (txHash: string): string => `https://avascan.info/blockchain/c/tx/${txHash}`,
+    getLinkForAddress: (address: string): string => `https://avascan.info/blockchain/c/address/${address}`
   }
 ];
 
