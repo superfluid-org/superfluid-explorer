@@ -522,7 +522,7 @@ export const IndexSubscriptionDistributions: FC<{
 
   const subscriptionUnitsUpdatedEvents:
     | SubscriptionUnitsUpdatedEvent[]
-    | undefined = subscriptionUnitsUpdatedEventsQuery.data?.data ?? [];
+    | undefined = useMemo(() => subscriptionUnitsUpdatedEventsQuery.data?.data ?? [], []);
 
   const indexUpdatedEventsQuery = sfSubgraph.useIndexUpdatedEventsQuery(
     index && subscriptionStartTime
