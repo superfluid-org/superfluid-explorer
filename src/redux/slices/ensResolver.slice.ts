@@ -9,6 +9,12 @@ export interface NameInfo {
   address: string
 }
 
+export interface ProfileInfo {
+  avatar: string[]
+  bio: string
+  name: string
+}
+
 
 export const getNameById = async (id: string ) => {
   if (!id) return ''
@@ -24,33 +30,14 @@ export const getAddressByName = async (id: string) => {
   return rsp.address
 }
 
-// export const createEntryNameId = (ensName: string | null, address: string) => (`${ensName}_${address.toLowerCase()}`);
 
-// export const getEntryNameId  = (nameInfo: NameInfo) => {
+export const getUserAvatar = async (address: string) => {
+  if (!address) return ''
+  const url = urlcat('https://hub.pass3.me/:address', { address })
+  const userInfo = (await (await fetch(url)).json()) as ProfileInfo
+  return userInfo.avatar
 
-//   return `${nameInfo.ensName}_${nameInfo.address.toLowerCase()}`;
-// }
-
-// export const ensAdapter = createEntityAdapter({
-//   selectId: (entry: NameInfo) => getEntryNameId(entry),
-// })
-
-// const sliceName = 'ensAddress';
-
-// export const ensResolverSlice = createSlice({
-//   name: sliceName,
-//   initialState: ensAdapter.getInitialState(),
-//   reducers: {
-//     entryUpserted: ensAdapter.upsertOne,
-//     entryRemoved: ensAdapter.removeOne
-//   },
-//   extraReducers: {
-//     [REHYDRATE]: (state, {payload}) => ({
-//       ...state,
-//       ...(payload ? payload[sliceName] : {}),
-//     }),
-//   },
-// })
+}
 
 
 export const ensApi = createApi({
@@ -94,9 +81,21 @@ export const ensApi = createApi({
           };
         },
       }),
+      lookupAvatar: builder.query<
+      { address: string; avatar: string } | null,
+      string>({
+        queryFn: async (address) => {
+          const avatar = await getUserAvatar(address);
+          return {
+            data: avatar ? {
+              address,
+              avatar: avatar[0]
+            }
+            : null,
+          }
+        }
+      })
     };
   },
 });
-
-// export const ensResolveApi = ensAdapter.getSelectors((state: RootState) => state.ensAdapter)
 
