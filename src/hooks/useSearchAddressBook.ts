@@ -3,6 +3,7 @@ import {ethers} from "ethers";
 import {networks} from "../redux/networks";
 import {useAppSelector} from "../redux/hooks";
 import {addressBookSelectors} from "../redux/slices/addressBook.slice";
+import {ensApi} from "../redux/slices/ensResolver.slice";
 
 export const useSearchAddressBook = (searchTerm: string) => {
   const isSearchTermAddress = useMemo(
@@ -10,9 +11,14 @@ export const useSearchAddressBook = (searchTerm: string) => {
     [searchTerm]
   );
 
+
+  const ensQuery = ensApi.useResolveNameQuery(
+    searchTerm
+  )
+
   return networks.map((network) => {
     const addressBookEntries = useAppSelector((state) =>
-      searchTerm !== "" && !isSearchTermAddress
+      searchTerm !== "" && !isSearchTermAddress && !ensQuery
         ? addressBookSelectors
           .selectAll(state)
           .filter((x) => x.chainId === network.chainId)

@@ -1,7 +1,6 @@
 import urlcat from 'urlcat'
-import { fakeBaseQuery } from "@reduxjs/toolkit/dist/query";
-import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { ethers } from "ethers";
+import { createApi, fetchBaseQuery, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface NameInfo {
   rnsName: string
@@ -98,4 +97,3 @@ export const ensApi = createApi({
     };
   },
 });
-

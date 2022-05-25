@@ -57,10 +57,10 @@ export const makeStore = wrapMakeStore(() => {
     addressBookSlice.reducer
   );
 
-  // const ensReducer = persistReducer(
-  //   { key: "ens-address", version: 1, storage: storageLocal },
-  //   ensResolverSlice.reducer
-  // )
+  const ensReducer = persistReducer(
+    { key: "ens-lockup", version: 1, storage: storageLocal },
+    ensApi.reducer
+  )
 
   const store = configureStore({
     reducer: {
@@ -68,7 +68,7 @@ export const makeStore = wrapMakeStore(() => {
       [sfSubgraph.reducerPath]: sfSubgraph.reducer,
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
-      [ensApi.reducerPath]: ensApi.reducer,
+      [ensApi.reducerPath]: ensReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -84,6 +84,7 @@ export const makeStore = wrapMakeStore(() => {
           ], // Ignore redux-persist actions: https://stackoverflow.com/a/62610422
         },
       })
+
         .prepend(
           nextReduxCookieMiddleware({
             compress: true,
@@ -92,7 +93,8 @@ export const makeStore = wrapMakeStore(() => {
           })
         )
         .concat(rpcApi.middleware)
-        .concat(sfSubgraph.middleware),
+        .concat(sfSubgraph.middleware)
+        .concat(ensApi.middleware),
   });
 
   if (!isServer()) {

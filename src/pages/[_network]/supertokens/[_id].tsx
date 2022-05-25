@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { sfSubgraph } from "../../../redux/store";
+import { sfSubgraph} from "../../../redux/store";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
