@@ -16,6 +16,7 @@ import {
 } from "next-redux-cookie-wrapper";
 import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { addressBookSlice } from "./slices/addressBook.slice";
+import { ensApi } from "./slices/ensResolver.slice";
 import { networks } from "./networks";
 import storageLocal from "redux-persist/lib/storage";
 import {
@@ -56,12 +57,18 @@ export const makeStore = wrapMakeStore(() => {
     addressBookSlice.reducer
   );
 
+  // const ensReducer = persistReducer(
+  //   { key: "ens-address", version: 1, storage: storageLocal },
+  //   ensResolverSlice.reducer
+  // )
+
   const store = configureStore({
     reducer: {
       [rpcApi.reducerPath]: rpcApi.reducer,
       [sfSubgraph.reducerPath]: sfSubgraph.reducer,
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
-      [addressBookSlice.name]: addressBookReducer
+      [addressBookSlice.name]: addressBookReducer,
+      [ensApi.reducerPath]: ensApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

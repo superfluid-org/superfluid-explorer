@@ -20,7 +20,7 @@ const SearchBar: FC = ({ children}) => {
 
 export default SearchBar;
 
-export const searchBarPlaceholderText = "Search any address on any network..."
+export const searchBarPlaceholderText = "Search any ens, address on any network..."
 
 // NOTE: Search bar UI is inspired by: https://mui.com/components/app-bar/#app-bar-with-a-primary-search-field
 
