@@ -60,10 +60,13 @@ import {
 } from "../../../redux/slices/addressBook.slice";
 import { sfSubgraph } from "../../../redux/store";
 import ellipsisAddress from "../../../utils/ellipsisAddress";
+import { ensApi } from '../../../redux/slices/ensResolver.slice';
 
 const AccountPage: NextPage = () => {
   const network = useContext(NetworkContext);
   const address = useContext(IdContext);
+  const [ensName, setEnsName] = useState<string>()
+
 
   const accountQuery = sfSubgraph.useAccountQuery({
     chainId: network.chainId,
@@ -98,6 +101,8 @@ const AccountPage: NextPage = () => {
     (tab as string) ?? "streams"
   );
 
+
+
   useEffect(() => {
     router.replace({
       query: {
@@ -108,6 +113,11 @@ const AccountPage: NextPage = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue]);
+
+  const addresEns = ensApi.useLookupAddressQuery(address)
+  useEffect(() => {
+    setEnsName(addresEns.data?.name);
+  }, [addresEns, address, ensName]);
 
   const addressBookEntry = useAppSelector((state) =>
     network
@@ -127,6 +137,9 @@ const AccountPage: NextPage = () => {
   const tokensWithBalance = tokens.filter(
     (snapshot) => Number(snapshot.balanceUntilUpdatedAt) !== 0
   );
+
+
+
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
       <Stack direction="row" alignItems="center" gap={1}>
@@ -167,6 +180,16 @@ const AccountPage: NextPage = () => {
               description="Copy address to clipboard"
             />
             <Stack direction="row" justifyContent="flex-end" flex={1} gap={1}>
+               <Button
+                size="small"
+                variant="outlined"
+                href={network.getLinkForAddress(accountQuery.data.id)}
+                target="_blank"
+                // startIcon={<OpenInNewIcon />}
+              >
+                {ensName}
+              </Button>
+
               <SubgraphQueryLink
                 network={network}
                 query={gql`

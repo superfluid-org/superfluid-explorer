@@ -41,6 +41,10 @@ export const AddressBookButton: FC<{
     address
   )
 
+  const ensAddress = ensApi.useLookupAddressQuery(
+    address
+  )
+
   return (
     <>
       <Tooltip
@@ -56,11 +60,12 @@ export const AddressBookButton: FC<{
       </Tooltip>
       <AddressBookDialog
         network={network}
-        address={address}
+        address={ address}
         open={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
       />
-      <Avatar alt={address} src={avatarUrl?.avatar} />
+      <Avatar alt={address} src={avatarUrl.data?.avatar} />
+      {console.log(ensAddress.data?.name)}
     </>
   );
 };
@@ -80,8 +85,9 @@ export const AddressBookDialog: FC<{
     address
   )
 
-  const getInitialNameTag = () => ensQuery?.name ?? existingEntry?.nameTag ?? "";
+  const getInitialNameTag = () => ensQuery.data?.name ?? existingEntry?.nameTag ?? "";
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag());
+
 
   // Fixes: https://github.com/superfluid-finance/superfluid-console/issues/21
   useEffect(() => {
@@ -107,6 +113,7 @@ export const AddressBookDialog: FC<{
           chainId: network.chainId,
           address: ethers.utils.getAddress(address),
           nameTag: nameTagTrimmed,
+          ensName: ensQuery.data?.name ?? ""
         })
       );
     }

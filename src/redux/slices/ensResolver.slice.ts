@@ -1,6 +1,6 @@
 import urlcat from 'urlcat'
 import { ethers } from "ethers";
-import { createApi, fetchBaseQuery, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi,  fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface NameInfo {
   rnsName: string
@@ -12,6 +12,10 @@ export interface ProfileInfo {
   avatar: string[]
   bio: string
   name: string
+}
+
+interface RSS3Info {
+  profile: ProfileInfo
 }
 
 
@@ -33,8 +37,8 @@ export const getAddressByName = async (id: string) => {
 export const getUserAvatar = async (address: string) => {
   if (!address) return ''
   const url = urlcat('https://hub.pass3.me/:address', { address })
-  const userInfo = (await (await fetch(url)).json()) as ProfileInfo
-  return userInfo.avatar
+  const rsp = (await (await fetch(url)).json()) as  RSS3Info
+  return rsp.profile
 
 }
 
@@ -80,7 +84,7 @@ export const ensApi = createApi({
         string
       >({
         queryFn: async (address) => {
-          const name = await getNameById(address) || await mainnetProvider.lookupAddress(address);
+          const name = await mainnetProvider.lookupAddress(address) ?? await getNameById(address)
           return {
             data: name
               ? {
@@ -95,11 +99,11 @@ export const ensApi = createApi({
       { address: string; avatar: string } | null,
       string>({
         queryFn: async (address) => {
-          const avatar = await getUserAvatar(address) || await mainnetProvider.getAvatar(address)
+          const dataAvatar = await getUserAvatar(address)
           return {
-            data: avatar ? {
+            data: dataAvatar ? {
               address,
-              avatar: avatar[0]
+              avatar: dataAvatar?.avatar[0]
             }
             : null,
           }
