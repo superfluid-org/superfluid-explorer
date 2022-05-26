@@ -5,29 +5,18 @@ import {
 import { Network } from '../networks';
 import {RootState} from "../store";
 import {REHYDRATE} from "redux-persist";
-import { ensApi } from './ensResolver.slice';
 import { add } from 'lodash';
 
 export interface AddressBookEntry {
   chainId: number,
   address: string,
-  nameTag: string,
-  ensName: string
+  nameTag: string
 }
 
-export const createEnsName = (address: string) => {
-  if (address !== null) {
-    const ensQuery = ensApi.useResolveNameQuery(
-      address
-    )
-    return ensQuery.name
-    }
-}
-
-export const createEntryId = (network: Network, address: string) => (`${network.chainId}_${address.toLowerCase()}_${createEnsName(address)}`);
+export const createEntryId = (network: Network, address: string) => (`${network.chainId}_${address.toLowerCase()}`);
 
 export const getEntryId = (addressBookEntry: AddressBookEntry) => {
-  return `${addressBookEntry.chainId}_${addressBookEntry.address.toLowerCase()}_${addressBookEntry.ensName}`;
+  return `${addressBookEntry.chainId}_${addressBookEntry.address.toLowerCase()}`;
 }
 
 export const addressBookAdapter = createEntityAdapter({

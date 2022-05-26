@@ -38,7 +38,7 @@ export const useSearchSubgraphByTokenSymbol = (searchTerm: string) => {
     searchTerm
   )
 
-  const isEnsAddress =  ensQuery !== null ? true : false
+  const isEnsAddress =  !!ensQuery.data?.address
 
   return networks.map((network) =>
     sfSubgraph.useCustomQuery(

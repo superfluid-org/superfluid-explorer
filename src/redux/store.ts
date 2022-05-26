@@ -57,18 +57,13 @@ export const makeStore = wrapMakeStore(() => {
     addressBookSlice.reducer
   );
 
-  const ensReducer = persistReducer(
-    { key: "ens-lockup", version: 1, storage: storageLocal },
-    ensApi.reducer
-  )
-
   const store = configureStore({
     reducer: {
       [rpcApi.reducerPath]: rpcApi.reducer,
       [sfSubgraph.reducerPath]: sfSubgraph.reducer,
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
-      [ensApi.reducerPath]: ensReducer,
+      [ensApi.reducerPath]: ensApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

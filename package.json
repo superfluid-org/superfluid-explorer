@@ -36,8 +36,7 @@
     "react-hotjar": "^4.0.0",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
-    "redux-persist": "^6.0.0",
-    "urlcat": "^2.0.4"
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",

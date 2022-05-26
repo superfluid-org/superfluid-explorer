@@ -2,45 +2,6 @@ import urlcat from 'urlcat'
 import { ethers } from "ethers";
 import { createApi,  fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export interface NameInfo {
-  rnsName: string
-  ensName: string | null
-  address: string
-}
-
-export interface ProfileInfo {
-  avatar: string[]
-  bio: string
-  name: string
-}
-
-interface RSS3Info {
-  profile: ProfileInfo
-}
-
-
-export const getNameById = async (id: string ) => {
-  if (!id) return ''
-    const url = urlcat('https://rss3.domains/address/:id', { id })
-    const rsp = (await (await fetch(url)).json()) as NameInfo
-    return rsp.ensName
-}
-
-export const getAddressByName = async (id: string) => {
-  if (!id) return ''
-  const url = urlcat('https://rss3.domains/name/:id', { id })
-  const rsp = (await (await fetch(url)).json()) as NameInfo
-  return rsp.address
-}
-
-
-export const getUserAvatar = async (address: string) => {
-  if (!address) return ''
-  const url = urlcat('https://hub.pass3.me/:address', { address })
-  const rsp = (await (await fetch(url)).json()) as  RSS3Info
-  return rsp.profile
-
-}
 
 
 export const ensApi = createApi({
@@ -67,7 +28,7 @@ export const ensApi = createApi({
             return { data: null };
           }
 
-          const address = await getAddressByName(name) || await mainnetProvider.resolveName(name)
+          const address =  await mainnetProvider.resolveName(name)
           return {
             data: address
               ? {
@@ -84,7 +45,7 @@ export const ensApi = createApi({
         string
       >({
         queryFn: async (address) => {
-          const name = await mainnetProvider.lookupAddress(address) ?? await getNameById(address)
+          const name = await mainnetProvider.lookupAddress(address)
           return {
             data: name
               ? {
@@ -99,11 +60,11 @@ export const ensApi = createApi({
       { address: string; avatar: string } | null,
       string>({
         queryFn: async (address) => {
-          const dataAvatar = await getUserAvatar(address)
+          const avatar = await mainnetProvider.getAvatar(address)
           return {
-            data: dataAvatar ? {
+            data: avatar ? {
               address,
-              avatar: dataAvatar?.avatar[0]
+              avatar: avatar
             }
             : null,
           }
