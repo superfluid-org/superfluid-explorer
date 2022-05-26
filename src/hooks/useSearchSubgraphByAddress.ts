@@ -6,6 +6,8 @@ import {ensApi} from "../redux/slices/ensResolver.slice";
 import {skipToken} from "@reduxjs/toolkit/query";
 import {gql} from "graphql-request";
 
+
+
 const searchByAddressDocument = gql`
   query Search($addressId: ID, $addressBytes: Bytes) {
     tokensByAddress: tokens(where: { id: $addressId, isSuperToken: true }) {
@@ -63,7 +65,7 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
 
   return networks.map((network) =>
     sfSubgraph.useCustomQuery(
-      isSearchTermAddress
+      isSearchTermAddress && !isEnsAddress
         ? {
           chainId: network.chainId,
           document: searchByAddressDocument,
@@ -73,14 +75,14 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
           },
         }
         :
-          isEnsAddress ? {
-            chainId: network.chainId,
-            document: searchByAddressDocument,
-            variables: {
-              addressId: ensAddress,
-              addressBytes: ensAddress
-            }
-          } : skipToken
+        {
+          chainId: network.chainId,
+          document: searchByAddressDocument,
+          variables: {
+            addressId: ensQuery.address,
+            addressBytes: ensQuery.address
+          }
+        }
     )
   );
 };

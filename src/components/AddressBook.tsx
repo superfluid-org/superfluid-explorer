@@ -11,6 +11,7 @@ import {
   SvgIconProps,
   TextField,
   Tooltip,
+  Avatar,
 } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
@@ -36,6 +37,10 @@ export const AddressBookButton: FC<{
   );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const avatarUrl = ensApi.useLookupAvatarQuery(
+    address
+  )
+
   return (
     <>
       <Tooltip
@@ -55,6 +60,7 @@ export const AddressBookButton: FC<{
         open={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
       />
+      <Avatar alt={address} src={avatarUrl?.avatar} />
     </>
   );
 };
@@ -70,7 +76,7 @@ export const AddressBookDialog: FC<{
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
 
-  const ensQuery = ensApi.useResolveNameQuery(
+  const ensQuery = ensApi.useLookupAddressQuery(
     address
   )
 

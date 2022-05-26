@@ -46,7 +46,7 @@ export const ensApi = createApi({
 
     const mainnetProvider = new ethers.providers.InfuraProvider(
       "mainnet",
-      "envInfuraKey"
+      "c44fac7726a64d5bbbb3a1c51f02d75b"
     );
 
     return {
