@@ -132,6 +132,16 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string => `https://arbiscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://arbiscan.io/address/${address}`
   },
+  {
+    displayName: "Avalanche C",
+    slugName: "avalanche-c",
+    chainId: 43114,
+    isTestnet: false,
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/avalanche-c",
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-avalanche-c",
+    getLinkForTransaction: (txHash: string): string => `https://avascan.info/blockchain/c/tx/${txHash}`,
+    getLinkForAddress: (address: string): string => `https://avascan.info/blockchain/c/address/${address}`
+  }
 ];
 
 export const networksByName = new Map(networks.map(x => [x.slugName.toLowerCase(), x]))
