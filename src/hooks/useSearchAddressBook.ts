@@ -16,6 +16,8 @@ export const useSearchAddressBook = (searchTerm: string) => {
     searchTerm
   )
 
+  const ensSearchTerm = ensQuery !== null ? ensQuery.address : searchTerm.toLocaleLowerCase()
+
   return networks.map((network) => {
     const addressBookEntries = useAppSelector((state) =>
       searchTerm !== "" && !isSearchTermAddress && !ensQuery
@@ -28,7 +30,7 @@ export const useSearchAddressBook = (searchTerm: string) => {
     return {
       network: network,
       accounts: addressBookEntries
-        .filter((x) => x.nameTag.toLowerCase().includes(searchTerm.toLowerCase()))
+        .filter((x) => x.nameTag.toLowerCase().includes(ensSearchTerm))
         .map((x) => ({id: x.address})),
     };
   });

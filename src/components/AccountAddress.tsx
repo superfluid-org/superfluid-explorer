@@ -70,6 +70,7 @@ export const AccountAddressFormatted: FC<{
     ? ellipsisAddress(ethers.utils.getAddress(address), ellipsis)
     : ethers.utils.getAddress(address);
 
+
   return <>{addressBookEntry?.nameTag || parsedAddress}</>;
 };
 

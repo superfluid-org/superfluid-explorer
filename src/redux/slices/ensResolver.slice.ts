@@ -43,6 +43,12 @@ export const ensApi = createApi({
   reducerPath: "ens",
   baseQuery: fakeBaseQuery(),
   endpoints: (builder) => {
+
+    const mainnetProvider = new ethers.providers.InfuraProvider(
+      "mainnet",
+      "envInfuraKey"
+    );
+
     return {
       resolveName: builder.query<
         { address: string; name: string } | null,
@@ -53,12 +59,17 @@ export const ensApi = createApi({
             return { data: null };
           }
 
-          const address = await getAddressByName(name);
+          if (!name.endsWith('.eth')) {
+            return { data: null };
+          }
+
+          const address = await getAddressByName(name) || await mainnetProvider.resolveName(name)
           return {
             data: address
               ? {
                   name,
                   address: address,
+
                 }
               : null,
           };
@@ -69,7 +80,7 @@ export const ensApi = createApi({
         string
       >({
         queryFn: async (address) => {
-          const name = await getNameById(address);
+          const name = await getNameById(address) || await mainnetProvider.lookupAddress(address);
           return {
             data: name
               ? {
@@ -84,7 +95,7 @@ export const ensApi = createApi({
       { address: string; avatar: string } | null,
       string>({
         queryFn: async (address) => {
-          const avatar = await getUserAvatar(address);
+          const avatar = await getUserAvatar(address) || await mainnetProvider.getAvatar(address)
           return {
             data: avatar ? {
               address,

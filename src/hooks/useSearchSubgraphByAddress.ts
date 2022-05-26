@@ -56,6 +56,11 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
     searchTerm ? searchTerm : skipToken
   )
 
+  const isEnsAddress = ensQuery !== null ? true : false
+
+  const ensAddress = ensQuery?.address ?? searchTerm.toLocaleLowerCase();
+
+
   return networks.map((network) =>
     sfSubgraph.useCustomQuery(
       isSearchTermAddress
@@ -67,15 +72,15 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
             addressBytes: searchTerm.toLowerCase(),
           },
         }
-        // : skipToken
-        : {
-          chainId: network.chainId,
-          document: searchByAddressDocument,
-          variables: {
-            addressId: ensQuery,
-            addressBytes: ensQuery
-          },
-        }
+        :
+          isEnsAddress ? {
+            chainId: network.chainId,
+            document: searchByAddressDocument,
+            variables: {
+              addressId: ensAddress,
+              addressBytes: ensAddress
+            }
+          } : skipToken
     )
   );
 };

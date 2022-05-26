@@ -24,6 +24,7 @@ import {
 } from "../redux/slices/addressBook.slice";
 import { Network } from "../redux/networks";
 import { ethers } from "ethers";
+import { ensApi } from "../redux/slices/ensResolver.slice";
 
 export const AddressBookButton: FC<{
   network: Network;
@@ -69,7 +70,11 @@ export const AddressBookDialog: FC<{
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
 
-  const getInitialNameTag = () => existingEntry?.nameTag ?? "";
+  const ensQuery = ensApi.useResolveNameQuery(
+    address
+  )
+
+  const getInitialNameTag = () => ensQuery?.name ?? existingEntry?.nameTag ?? "";
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag());
 
   // Fixes: https://github.com/superfluid-finance/superfluid-console/issues/21
