@@ -26,6 +26,7 @@ import { useAppSelector } from "../redux/hooks";
 import { addressBookSelectors } from "../redux/slices/addressBook.slice";
 import { searchBarPlaceholderText } from "./SearchBar";
 import { useSearch } from "../hooks/useSearch";
+import ConnectCeramicButton, { useLoadAddressBook } from "./ConnectCeramicButton";
 
 const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
   open,
@@ -116,6 +117,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
           onChange={(e) => setSearchTerm(e.currentTarget.value)}
         />
 
+        <ConnectCeramicButton />
         {networkSearchResults
           .filter((x) => x.tokens.length || x.accounts.length)
           .map((x) => (
