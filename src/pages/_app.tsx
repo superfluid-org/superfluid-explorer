@@ -20,6 +20,28 @@ import Error from "next/error";
 import NetworkContext from "../contexts/NetworkContext";
 import IdContext from "../contexts/IdContext";
 
+
+import type { ModelTypesToAliases, ModelTypeAliases } from '@glazed/types'
+import type { BasicProfile } from '@datamodels/identity-profile-basic'
+
+import { Provider as SelfIDProvider } from "@self.id/framework";
+import { aliases as modelAliases } from '../__generated__/aliases'
+
+// TODO: These types could be generated from the json-schema perhaps using zod
+type AddressBook = any
+type DIDToAddressBook = any
+type ModelTypes = ModelTypeAliases<
+  {
+    BasicProfile: BasicProfile
+    AddressBook: AddressBook
+  },
+  {
+    basicProfile: 'BasicProfile'
+    myAddressBook: 'AddressBook',
+  }
+>
+const aliases: ModelTypesToAliases<ModelTypes> = modelAliases
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -55,6 +77,7 @@ function MyApp(props: MyAppProps) {
   }, []);
 
   return (
+    <SelfIDProvider client={{ ceramic: "testnet-clay", aliases }}>
     <CacheProvider value={emotionCache}>
       <Head>
         <title>Superfluid Console</title>
@@ -87,6 +110,7 @@ function MyApp(props: MyAppProps) {
         </Box>
       </ThemeProvider>
     </CacheProvider>
+    </SelfIDProvider>
   );
 }
 
