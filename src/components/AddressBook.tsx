@@ -83,11 +83,10 @@ export const AddressBookDialog: FC<{
 
   const handleRemove = () => {
     if (existingEntry) {
-      const entry = getEntryId(existingEntry);
       dispatch(
-        addressBookSlice.actions.entryRemoved(entry)
+        addressBookSlice.actions.entryRemoved(getEntryId(existingEntry))
       );
-      addressBook.remove(entry);
+      addressBook.remove(existingEntry);
     }
     handleClose();
   };
