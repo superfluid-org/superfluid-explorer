@@ -17,10 +17,13 @@ import { FC, useState } from "react";
 import SubgraphIcon from "./SubgraphIcon";
 import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import SettingsDrawer from "./SettingsDrawer";
+import  { useLoadAddressBook } from "./ConnectCeramicButton";
 
 export const SfAppBar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  useLoadAddressBook()
 
   return (
     <>
