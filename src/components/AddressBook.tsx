@@ -25,6 +25,8 @@ import {
 import { Network } from "../redux/networks";
 import { ethers } from "ethers";
 
+import ConnectCeramicButton, { useAdressBookSync } from "./ConnectCeramicButton";
+
 export const AddressBookButton: FC<{
   network: Network;
   address: string;
@@ -68,6 +70,7 @@ export const AddressBookDialog: FC<{
   const existingEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
+  const addressBook = useAdressBookSync();
 
   const getInitialNameTag = () => existingEntry?.nameTag ?? "";
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag());
@@ -80,24 +83,28 @@ export const AddressBookDialog: FC<{
 
   const handleRemove = () => {
     if (existingEntry) {
+      const entry = getEntryId(existingEntry);
       dispatch(
-        addressBookSlice.actions.entryRemoved(getEntryId(existingEntry))
+        addressBookSlice.actions.entryRemoved(entry)
       );
     }
+    addressBook.remove(entry);
     handleClose();
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const nameTagTrimmed = nameTag.trim();
     // Only save non-empty names
     if (nameTagTrimmed) {
+      const entry = {
+        chainId: network.chainId,
+        address: ethers.utils.getAddress(address),
+        nameTag: nameTagTrimmed,
+      }
       dispatch(
-        addressBookSlice.actions.entryUpserted({
-          chainId: network.chainId,
-          address: ethers.utils.getAddress(address),
-          nameTag: nameTagTrimmed,
-        })
+        addressBookSlice.actions.entryUpserted(entry)
       );
+      addressBook.add(entry);
     }
     handleClose();
   };
@@ -111,8 +118,10 @@ export const AddressBookDialog: FC<{
           </DialogTitle>
         </Box>
         <Divider />
+        <ConnectCeramicButton />
         <DialogContent>
           <DialogContentText></DialogContentText>
+          {/* Wrap in a form to enable save with enter instead of clicking button */}
           <TextField
             autoFocus
             margin="dense"
