@@ -87,8 +87,8 @@ export const AddressBookDialog: FC<{
       dispatch(
         addressBookSlice.actions.entryRemoved(entry)
       );
+      addressBook.remove(entry);
     }
-    addressBook.remove(entry);
     handleClose();
   };
 
