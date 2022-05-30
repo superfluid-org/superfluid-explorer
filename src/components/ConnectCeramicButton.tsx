@@ -1,5 +1,11 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 import {
   EthereumAuthProvider,
   useViewerConnection,
@@ -80,7 +86,7 @@ export function useAdressBookSync() {
   return { add, remove };
 }
 
-// Load address book from Ceramic. Only runs once when app loads
+// Load address book from Ceramic. Only runs once when first connecting.
 export function useLoadAddressBook() {
   const [isSynced, setSynced] = useState(false);
   const [connection] = useViewerConnection();
@@ -128,8 +134,8 @@ const ConnectCeramicButton: FC<{}> = () => {
   }, [autoConnect, connect, connection]);
 
   const handleConnect = useCallback(async () => {
-    const { id } = await connectWallet(connect);
-    global.localStorage?.setItem("autoConnect", id);
+    const user = await connectWallet(connect);
+    global.localStorage?.setItem("autoConnect", user?.id);
   }, [connect]);
 
   const handleDisconnect = useCallback(async () => {
@@ -138,10 +144,15 @@ const ConnectCeramicButton: FC<{}> = () => {
   }, [disconnect]);
 
   return (
-    <Box p={2}>
+    <Box py={2}>
       <Typography mb={2}>
         Connect Ceramic to store address book on your connected wallet.
       </Typography>
+      {connection.status === "failed" ? (
+        <Box mb={2}>
+          <Alert severity="error">{connection.error.message}</Alert>
+        </Box>
+      ) : null}
       <Box display="flex" justifyContent="center">
         {connection.status === "connecting" ? (
           <CircularProgress size={36} />
@@ -152,7 +163,7 @@ const ConnectCeramicButton: FC<{}> = () => {
             {profile?.content?.name || truncate(connection.selfID.id)}
           </Button>
         ) : null}
-        {connection.status === "idle" ? (
+        {connection.status === "idle" || connection.status === "failed" ? (
           <Button variant="outlined" onClick={handleConnect}>
             Connect
           </Button>
