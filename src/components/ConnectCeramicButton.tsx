@@ -12,7 +12,6 @@ import {
 } from "../redux/slices/addressBook.slice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
-
 type Contact = {
   name: string;
   wallets: Wallet[];
@@ -35,8 +34,8 @@ async function connectWallet(connect: Function) {
   }
 }
 
-// Sync state with Ceramic. 
-// Another approach would be to listen to changes in addressBookEntries but 
+// Sync state with Ceramic.
+// Another approach would be to listen to changes in addressBookEntries but
 // wasn't able to make work in a good way.
 
 export function useAdressBookSync() {
@@ -61,6 +60,7 @@ export function useAdressBookSync() {
 
   const add = useCallback(
     async (entry: AddressBookEntry) => {
+      console.log("update address", entry);
       // Add entry and convert into AddressBookSchema for Ceramic
       update(toCeramicSchema(addressBookEntries.concat(entry)));
     },
@@ -104,7 +104,7 @@ export function useLoadAddressBook() {
     ) {
       // Adapt data to the format expected by the redux slice
       const contacts = fromCeramicSchema(record.content.contacts);
-      console.log("Ceramic data found", contacts);
+      console.log("Syncing Ceramic data", contacts);
       if (contacts.length) {
         // Add to redux store
         dispatch(addressBookSlice.actions.entryUpsertMany(contacts));
@@ -115,7 +115,6 @@ export function useLoadAddressBook() {
 }
 
 const ConnectCeramicButton: FC<{}> = () => {
-  useLoadAddressBook();
   const [autoConnect] = useState(() =>
     global.localStorage?.getItem("autoConnect")
   );
