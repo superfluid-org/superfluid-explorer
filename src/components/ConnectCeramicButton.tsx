@@ -37,7 +37,6 @@ async function connectWallet(connect: Function) {
 // Sync state with Ceramic.
 // Another approach would be to listen to changes in addressBookEntries but
 // wasn't able to make work in a good way.
-
 export function useAdressBookSync() {
   // @ts-ignore
   const record = useViewerRecord("myAddressBook");
@@ -60,7 +59,6 @@ export function useAdressBookSync() {
 
   const add = useCallback(
     async (entry: AddressBookEntry) => {
-      console.log("update address", entry);
       // Add entry and convert into AddressBookSchema for Ceramic
       update(toCeramicSchema(addressBookEntries.concat(entry)));
     },
@@ -82,6 +80,7 @@ export function useAdressBookSync() {
   return { add, remove };
 }
 
+// Load address book from Ceramic. Only runs once when app loads
 export function useLoadAddressBook() {
   const [isSynced, setSynced] = useState(false);
   const [connection] = useViewerConnection();

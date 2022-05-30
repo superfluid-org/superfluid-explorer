@@ -91,7 +91,7 @@ export const AddressBookDialog: FC<{
     handleClose();
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     const nameTagTrimmed = nameTag.trim();
     // Only save non-empty names
     if (nameTagTrimmed) {
