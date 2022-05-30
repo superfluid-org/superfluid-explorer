@@ -117,7 +117,9 @@ export const AddressBookDialog: FC<{
           </DialogTitle>
         </Box>
         <Divider />
-        <ConnectCeramicButton />
+        <Box px={3}>
+          <ConnectCeramicButton />
+        </Box>
         <DialogContent>
           <DialogContentText></DialogContentText>
           {/* Wrap in a form to enable save with enter instead of clicking button */}
