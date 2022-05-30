@@ -38,33 +38,36 @@ const AddressListItem: FC<AddressListItemProps> = ({
     <ListItemText
       data-cy={dataCy}
       primary={title}
-      secondary={
-        <Stack
-          direction="row"
-          alignItems="center"
-          sx={{ fontFamily: "Roboto Mono" }}
-        >
-          {address || "-"}
-          {address && (
-            <Stack direction="row" alignItems="center" gap={1}>
-              <CopyClipboard
-                copyText={address}
-                IconProps={{ sx: { fontSize: "16px" } }}
-              />
-              <Tooltip title="View on blockchain Explorer">
-                <Link
-                  href={network.getLinkForAddress(address)}
-                  target="_blank"
-                  sx={{ color: "inherit" }}
-                >
-                  <OpenInNewIcon sx={{ fontSize: "16px", display: "block" }} />
-                </Link>
-              </Tooltip>
-            </Stack>
-          )}
-        </Stack>
-      }
-    />
+      secondary={<Stack
+        component="span"
+        direction="row"
+        alignItems="center"
+        sx={{ fontFamily: "Roboto Mono" }}
+      >
+        {address || "-"}
+        {address && (
+          <Stack
+            component="span"
+            direction="row"
+            alignItems="center"
+            gap={1}
+          >
+            <CopyClipboard
+              copyText={address}
+              IconProps={{ sx: { fontSize: "16px" } }} />
+            <Tooltip title="View on blockchain Explorer">
+              <Link
+                // href={network.getLinkForAddress(address)}
+                target="_blank"
+                sx={{ color: "inherit" }}
+              >
+                <OpenInNewIcon
+                  sx={{ fontSize: "16px", display: "block" }} />
+              </Link>
+            </Tooltip>
+          </Stack>
+        )}
+      </Stack>} />
   </ListItem>
 );
 
@@ -215,7 +218,11 @@ const Protocol: FC = () => {
 
             <Card>
               <List
-                sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", pb: 2 }}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  pb: 2,
+                }}
               >
                 <AddressListItem
                   dataCy={"resolver-address"}
