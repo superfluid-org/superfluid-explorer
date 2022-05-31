@@ -2,6 +2,7 @@ import Head from "next/head";
 import { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider, EmotionCache } from "@emotion/react";
+import { Provider as SelfIDProvider} from '@self.id/framework';
 import createEmotionCache from "../utils/createEmotionCache";
 import { wrapper } from "../redux/store";
 import SfAppBar from "../components/SfAppBar";
@@ -19,6 +20,13 @@ import { isDynamicRoute } from "../utils/isDynamicRoute";
 import Error from "next/error";
 import NetworkContext from "../contexts/NetworkContext";
 import IdContext from "../contexts/IdContext";
+import type { ModelTypesToAliases, ModelTypeAliases } from '@glazed/types'
+import addressBookAliases from "../utils/ceramicModel.json"
+
+type AddressBook = any;
+type DIDToAddressBook = any;
+const aliases: ModelTypeAliases<{AddressBook: AddressBook, DIDToAddressBook: DIDToAddressBook },
+                                {myAddressBook: AddressBook, DIDToAddressBook: DIDToAddressBook }> = addressBookAliases;
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -55,38 +63,40 @@ function MyApp(props: MyAppProps) {
   }, []);
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>Superfluid Console</title>
-        {/* "theme-mode" is required to be in the head element by `useSfTheme`. */}
-        <meta id="theme-mode" name="theme-mode" content={theme.palette.mode} />
-        <meta name="theme-color" content={theme.palette.primary.main} />
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Box
-          sx={{
-            display: "flex",
-            flexFlow: "column",
-            maxHeight: "100vh",
-          }}
-        >
-          <SfAppBar />
+    <SelfIDProvider client={{ ceramic: 'testnet-clay', aliases }}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>Superfluid Console</title>
+          {/* "theme-mode" is required to be in the head element by `useSfTheme`. */}
+          <meta id="theme-mode" name="theme-mode" content={theme.palette.mode} />
+          <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
           <Box
-            ref={scrollableContentRef}
-            component="main"
-            sx={{ height: "100vh", overflow: "auto" }}
+            sx={{
+              display: "flex",
+              flexFlow: "column",
+              maxHeight: "100vh",
+            }}
           >
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-            <Footer />
+            <SfAppBar />
+            <Box
+              ref={scrollableContentRef}
+              component="main"
+              sx={{ height: "100vh", overflow: "auto" }}
+            >
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+              <Footer />
+            </Box>
           </Box>
-        </Box>
-      </ThemeProvider>
-    </CacheProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    </SelfIDProvider>
   );
 }
 

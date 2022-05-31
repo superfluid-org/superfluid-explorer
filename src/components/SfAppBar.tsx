@@ -17,6 +17,7 @@ import { FC, useState } from "react";
 import SubgraphIcon from "./SubgraphIcon";
 import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import SettingsDrawer from "./SettingsDrawer";
+import { CeramicConnectButton } from "./CeramicConnect";
 
 export const SfAppBar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -112,6 +113,7 @@ export const SfAppBar = () => {
                   Subgraph
                 </Typography>
               </AppLink>
+              <CeramicConnectButton/>
             </Stack>
             <Tooltip title="Settings" enterDelay={100}>
               <IconButton

@@ -26,7 +26,9 @@ import { useAppSelector } from "../redux/hooks";
 import { addressBookSelectors } from "../redux/slices/addressBook.slice";
 import { searchBarPlaceholderText } from "./SearchBar";
 import { useSearch } from "../hooks/useSearch";
+import { useViewerConnection } from "@self.id/framework";
 
+//Change search dialog
 const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
   open,
   close,
@@ -62,7 +64,8 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
   };
 
   const networkSearchResults = useSearch(searchTermDebounced);
-
+  console.log('network: ' + JSON.stringify(networkSearchResults))
+  const [ connection ] = useViewerConnection();
   useEffect(() => {
     const handleRouteChange = () => {
       handleClose();
@@ -115,7 +118,11 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
           }}
           onChange={(e) => setSearchTerm(e.currentTarget.value)}
         />
-
+        { connection.status !== 'connected' && 
+            (<Typography sx={{ p: 1, textAlign: 'center' }} variant="subtitle2" component="h3">
+                  Please Connect(top right) DID to Access Your Ceramic Address Book.
+            </Typography>)
+         }
         {networkSearchResults
           .filter((x) => x.tokens.length || x.accounts.length)
           .map((x) => (

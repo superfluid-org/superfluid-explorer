@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Card,
   Dialog,
   DialogActions,
   DialogContent,
@@ -11,19 +12,22 @@ import {
   SvgIconProps,
   TextField,
   Tooltip,
+  Typography
 } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useViewerConnection, useViewerRecord } from '@self.id/framework'
+import { useAppSelector } from "../redux/hooks";
 import {
   addressBookSelectors,
-  addressBookSlice,
   createEntryId,
   getEntryId,
 } from "../redux/slices/addressBook.slice";
 import { Network } from "../redux/networks";
 import { ethers } from "ethers";
+import useAddressBook from "../hooks/useAddressBook";
+
 
 export const AddressBookButton: FC<{
   network: Network;
@@ -64,13 +68,16 @@ export const AddressBookDialog: FC<{
   open: boolean;
   handleClose: () => void;
 }> = ({ network, address, open, handleClose }) => {
-  const dispatch = useAppDispatch();
   const existingEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
 
   const getInitialNameTag = () => existingEntry?.nameTag ?? "";
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag());
+
+  const [connection, connect, disconnect] = useViewerConnection()
+  const { addAddressBookEntry, removeAddressBookEntry } = useAddressBook();
+  const record = useViewerRecord('myAddressBook');
 
   // Fixes: https://github.com/superfluid-finance/superfluid-console/issues/21
   useEffect(() => {
@@ -80,24 +87,21 @@ export const AddressBookDialog: FC<{
 
   const handleRemove = () => {
     if (existingEntry) {
-      dispatch(
-        addressBookSlice.actions.entryRemoved(getEntryId(existingEntry))
-      );
+      removeAddressBookEntry(existingEntry, getEntryId(existingEntry))
     }
     handleClose();
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const nameTagTrimmed = nameTag.trim();
     // Only save non-empty names
     if (nameTagTrimmed) {
-      dispatch(
-        addressBookSlice.actions.entryUpserted({
-          chainId: network.chainId,
-          address: ethers.utils.getAddress(address),
-          nameTag: nameTagTrimmed,
-        })
-      );
+      const entry = {
+        chainId: network.chainId,
+        address: ethers.utils.getAddress(address),
+        nameTag: nameTagTrimmed,
+      }
+      addAddressBookEntry( entry )
     }
     handleClose();
   };
@@ -105,7 +109,14 @@ export const AddressBookDialog: FC<{
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={handleClose}>
       <Box sx={{ pb: 1 }}>
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
+        {connection.status !== 'connected' ? 
+        (
+        <Typography sx={{ p: 1, textAlign: 'center' }} variant="subtitle2" component="h3">
+              Please Connect(top right) DID to Access Your Ceramic Address Book.
+        </Typography>)
+
+        :(<div>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
           <DialogTitle>
             {existingEntry ? "Edit entry" : "Add entry"}
           </DialogTitle>
@@ -137,6 +148,8 @@ export const AddressBookDialog: FC<{
             Save
           </Button>
         </DialogActions>
+        </div>)
+      } 
       </Box>
     </Dialog>
   );

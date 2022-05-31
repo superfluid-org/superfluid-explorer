@@ -9,7 +9,7 @@ export const useSearchAddressBook = (searchTerm: string) => {
     () => ethers.utils.isAddress(searchTerm),
     [searchTerm]
   );
-
+    //add ceramic Address search
   return networks.map((network) => {
     const addressBookEntries = useAppSelector((state) =>
       searchTerm !== "" && !isSearchTermAddress

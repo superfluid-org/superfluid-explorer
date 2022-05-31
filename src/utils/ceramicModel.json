@@ -1,0 +1,11 @@
+{
+  "definitions": {
+    "myAddressBook": "kjzl6cwe1jw1487esfmzik6u8hd9swrut7i73a1b7e8m0gqza0xxuhd61l952hs",
+    "DIDToAddressBook": "kjzl6cwe1jw145wbun7wd2507nf00thucutl5wgrl5gtbq8mh852ux33z5si6j6"
+  },
+  "schemas": {
+    "AddressBook": "ceramic://k3y52l7qbv1frxxzi0b8ecysa2rlbtrzwt78blhu9grb9ywdnwda918psqxtc7xts",
+    "DIDToAddressBook": "ceramic://k3y52l7qbv1frydo84ulca4ps700j88id1roidw6j4vfnpln8mjo63694x0trtji8"
+  },
+  "tiles": {}
+}

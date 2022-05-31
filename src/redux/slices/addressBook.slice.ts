@@ -28,8 +28,10 @@ export const addressBookSlice = createSlice({
   name: sliceName,
   initialState: addressBookAdapter.getInitialState(),
   reducers: {
+    entryUpsertMany: addressBookAdapter.upsertMany,
     entryUpserted: addressBookAdapter.upsertOne,
-    entryRemoved: addressBookAdapter.removeOne
+    entryRemoved: addressBookAdapter.removeOne,
+    entryRemoveAll: addressBookAdapter.removeAll
   },
   extraReducers: {
     [REHYDRATE]: (state, {payload}) => ({
