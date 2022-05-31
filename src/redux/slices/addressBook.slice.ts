@@ -26,11 +26,19 @@ const sliceName = 'addressBook';
 
 export const addressBookSlice = createSlice({
   name: sliceName,
-  initialState: addressBookAdapter.getInitialState(),
+  initialState: addressBookAdapter.getInitialState({
+    isUploading: false,
+  }),
   reducers: {
     entryUpserted: addressBookAdapter.upsertOne,
     entryUpsertedMany: addressBookAdapter.upsertMany,
-    entryRemoved: addressBookAdapter.removeOne
+    entryRemoved: addressBookAdapter.removeOne,
+    startUploading(state) {
+      state.isUploading = true;
+    },
+    endUploading(state) {
+      state.isUploading = false;
+    },
   },
   extraReducers: {
     [REHYDRATE]: (state, {payload}) => ({

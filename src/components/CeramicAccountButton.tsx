@@ -1,12 +1,14 @@
-import { Button } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { FC, useCallback } from "react";
 import { EthereumAuthProvider, useViewerConnection } from "@self.id/framework";
+import { useAppSelector } from "../redux/hooks";
 
 interface CeramicAccountButtonProps {}
 
 const CeramicAccountButton: FC<CeramicAccountButtonProps> = () => {
   const [connection, connect, disconnect] = useViewerConnection();
+
+  const isUploading = useAppSelector((state) => state.addressBook.isUploading);
 
   const onClickConnect = useCallback(async () => {
     // @ts-ignore
@@ -20,9 +22,14 @@ const CeramicAccountButton: FC<CeramicAccountButtonProps> = () => {
 
   if (connection.status === "connected") {
     return (
-      <Button variant="outlined" onClick={disconnect}>
+      <LoadingButton
+        loading={isUploading}
+        loadingIndicator="Uploading"
+        variant="outlined"
+        onClick={disconnect}
+      >
         Disconnect
-      </Button>
+      </LoadingButton>
     );
   }
 

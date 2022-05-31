@@ -193,7 +193,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
           <Typography textAlign="center">
             {connection.status === "connected" && viewerId
               ? viewerId.id.substring(0, 40) + "..."
-              : "Connect Wallet to store your address book on Ceramic network."}
+              : "Connect Wallet to store your address book on Ceramic."}
           </Typography>
           <CeramicAccountButton />
         </Stack>

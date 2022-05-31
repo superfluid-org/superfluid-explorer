@@ -71,6 +71,9 @@ export const AddressBookDialog: FC<{
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
 
+  // do not allow new edit when still uploading the current state to Ceramic
+  const isUploading = useAppSelector((state) => state.addressBook.isUploading)
+
   // check if connecting to Ceramic
   const [connection] = useViewerConnection();
   const ceramicConnecting = connection.status === "connecting"
@@ -137,13 +140,13 @@ export const AddressBookDialog: FC<{
         </DialogContent>
         <DialogActions>
           {existingEntry ? (
-            <Button disabled={ceramicConnecting} data-cy={"address-remove"} onClick={handleRemove} variant="outlined">
+            <Button disabled={ceramicConnecting || isUploading} data-cy={"address-remove"} onClick={handleRemove} variant="outlined">
               Remove entry
             </Button>
           ) : (
             <Button data-cy={"address-cancel"} onClick={handleClose}>Cancel</Button>
           )}
-          <Button disabled={ceramicConnecting} data-cy={"address-save"} onClick={handleSave} variant="contained">
+          <Button disabled={ceramicConnecting || isUploading} data-cy={"address-save"} onClick={handleSave} variant="contained">
             Save
           </Button>
         </DialogActions>

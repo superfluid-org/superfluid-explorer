@@ -1,11 +1,12 @@
 import { useViewerRecord, useViewerConnection } from "@self.id/framework";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import type {
   ModelTypes,
   AddressBook as CeramicAddressBook,
 } from "crypto-address-book";
 import {
   addressBookSelectors,
+  addressBookSlice,
   getEntryId,
 } from "../redux/slices/addressBook.slice";
 import type { AddressBookEntry } from "../redux/slices/addressBook.slice";
@@ -16,6 +17,7 @@ const useCeramicAddressBookTrigger = () => {
   );
 
   const [connection] = useViewerConnection();
+  const dispatch = useAppDispatch();
 
   const { isLoading, isMutable, set } = useViewerRecord<
     ModelTypes,
@@ -27,9 +29,15 @@ const useCeramicAddressBookTrigger = () => {
       // convert format of Redux store data to Ceramic accepted format
       const contacts = convertToCeramic(store);
 
-      set(contacts).catch((error) => {
-        console.log(error);
-      });
+      dispatch(addressBookSlice.actions.startUploading());
+
+      set(contacts)
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          dispatch(addressBookSlice.actions.endUploading());
+        });
     }
   };
 
