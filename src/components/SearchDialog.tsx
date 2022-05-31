@@ -12,6 +12,7 @@ import {
   Card,
   Divider,
   ListItemText,
+  Stack
 } from "@mui/material";
 import { useRouter } from "next/router";
 import SearchIcon from "@mui/icons-material/Search";
@@ -26,6 +27,9 @@ import { useAppSelector } from "../redux/hooks";
 import { addressBookSelectors } from "../redux/slices/addressBook.slice";
 import { searchBarPlaceholderText } from "./SearchBar";
 import { useSearch } from "../hooks/useSearch";
+import CeramicAccountButton from "./CeramicAccountButton"
+import useCeramicAddressBook from "../hooks/useCeramicAddressBook"
+import { useViewerConnection, useViewerID } from "@self.id/framework";
 
 const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
   open,
@@ -34,6 +38,10 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
   const addressBookEntries = useAppSelector((state) =>
     addressBookSelectors.selectAll(state)
   );
+
+  const viewerId = useViewerID();
+  const [connection] = useViewerConnection();
+  useCeramicAddressBook();
 
   const handleClose = () => {
     close();
@@ -174,6 +182,21 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
               )}
             </Card>
           ))}
+
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={2}
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ my: 3 }}
+        >
+          <Typography textAlign="center">
+            {connection.status === "connected" && viewerId
+              ? viewerId.id.substring(0, 40) + "..."
+              : "Connect Wallet to store your address book on Ceramic network."}
+          </Typography>
+          <CeramicAccountButton />
+        </Stack>
 
         {!!addressBookEntries.length && (
           <Divider sx={{ my: 3, borderWidth: 1.25 }} />

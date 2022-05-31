@@ -24,6 +24,8 @@ import {
 } from "../redux/slices/addressBook.slice";
 import { Network } from "../redux/networks";
 import { ethers } from "ethers";
+import useCeramicAddressBookTrigger from "../hooks/useCeramicAddressBookTrigger"
+import { useViewerConnection } from "@self.id/framework";
 
 export const AddressBookButton: FC<{
   network: Network;
@@ -69,6 +71,12 @@ export const AddressBookDialog: FC<{
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
 
+  // check if connecting to Ceramic
+  const [connection] = useViewerConnection();
+  const ceramicConnecting = connection.status === "connecting"
+
+  const {triggerRemoved, triggerUpserted} = useCeramicAddressBookTrigger()
+
   const getInitialNameTag = () => existingEntry?.nameTag ?? "";
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag());
 
@@ -83,6 +91,7 @@ export const AddressBookDialog: FC<{
       dispatch(
         addressBookSlice.actions.entryRemoved(getEntryId(existingEntry))
       );
+      triggerRemoved(existingEntry)
     }
     handleClose();
   };
@@ -91,13 +100,14 @@ export const AddressBookDialog: FC<{
     const nameTagTrimmed = nameTag.trim();
     // Only save non-empty names
     if (nameTagTrimmed) {
-      dispatch(
+      const { payload: entry } = dispatch(
         addressBookSlice.actions.entryUpserted({
           chainId: network.chainId,
           address: ethers.utils.getAddress(address),
           nameTag: nameTagTrimmed,
         })
       );
+      triggerUpserted(entry);
     }
     handleClose();
   };
@@ -127,13 +137,13 @@ export const AddressBookDialog: FC<{
         </DialogContent>
         <DialogActions>
           {existingEntry ? (
-            <Button data-cy={"address-remove"} onClick={handleRemove} variant="outlined">
+            <Button disabled={ceramicConnecting} data-cy={"address-remove"} onClick={handleRemove} variant="outlined">
               Remove entry
             </Button>
           ) : (
             <Button data-cy={"address-cancel"} onClick={handleClose}>Cancel</Button>
           )}
-          <Button data-cy={"address-save"} onClick={handleSave} variant="contained">
+          <Button disabled={ceramicConnecting} data-cy={"address-save"} onClick={handleSave} variant="contained">
             Save
           </Button>
         </DialogActions>
