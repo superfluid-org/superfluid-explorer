@@ -9,10 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@3id/connect": "^0.4.1",
+    "@ceramicnetwork/3id-did-resolver": "^2.0.4",
+    "@ceramicnetwork/http-client": "^2.0.4",
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.7.1",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.6.0",
+    "@glazed/datamodel": "^0.3.0",
+    "@glazed/devtools": "^0.2.0",
+    "@glazed/did-datastore": "^0.3.1",
     "@mui/icons-material": "^5.3.1",
     "@mui/lab": "^5.0.0-alpha.67",
     "@mui/material": "^5.4.0",
@@ -39,7 +45,7 @@
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0"
   },
-  "devDependencies": {  
+  "devDependencies": {
     "@types/lodash": "^4.14.178",
     "@types/node": "^17.0.14",
     "@types/react": "^18.0.0",

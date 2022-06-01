@@ -12,6 +12,7 @@ import {
   Card,
   Divider,
   ListItemText,
+  Button,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import SearchIcon from "@mui/icons-material/Search";
@@ -26,6 +27,7 @@ import { useAppSelector } from "../redux/hooks";
 import { addressBookSelectors } from "../redux/slices/addressBook.slice";
 import { searchBarPlaceholderText } from "./SearchBar";
 import { useSearch } from "../hooks/useSearch";
+import CeramicScaffold from "./ceramic/CeramicScaffold";
 
 const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
   open,
@@ -55,6 +57,8 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
       _setSearchTermDebounced(searchTerm);
     }, 250)
   );
+
+  const [showCeramicModal, setShowCeramicModal] = useState(false);
 
   const setSearchTerm = (searchTerm: string) => {
     setSearchTermVisible(searchTerm);
@@ -175,6 +179,14 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
             </Card>
           ))}
 
+        <Button
+          onClick={() => {
+            setShowCeramicModal(true);
+          }}
+        >
+          Manage Your addresses with Ceramic Address Book
+        </Button>
+
         {!!addressBookEntries.length && (
           <Divider sx={{ my: 3, borderWidth: 1.25 }} />
         )}
@@ -208,6 +220,10 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
           </Card>
         ) : null}
       </DialogContent>
+      <CeramicScaffold
+        showCeramicModal={showCeramicModal}
+        setShowCeramicModal={setShowCeramicModal}
+      />
     </Dialog>
   );
 };
