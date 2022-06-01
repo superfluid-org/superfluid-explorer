@@ -51,19 +51,19 @@ export default function AddressBook({
     addressBookSelectors.selectAll(state)
   );
 
-  // useEffect(() => {
-  //   // Connect to a Ceramic node
+  useEffect(() => {
+    // Connect to a Ceramic node
 
-  //   // The `id` argument can be a stream ID (to load the latest version)
-  //   // or a commit ID (to load a specific version)
-  //   (async () => {
-  //     const c = await TileDocument.load(
-  //       ceramic,
-  //       "kjzl6cwe1jw149hy5kge1gqmp669kvn2c0xmnrr109wajqrwteg9mdmlalzaku4"
-  //     );
-  //     console.log(c.content);
-  //   })();
-  // });
+    // The `id` argument can be a stream ID (to load the latest version)
+    // or a commit ID (to load a specific version)
+    (async () => {
+      const c = await TileDocument.load(
+        ceramic,
+        "kjzl6cwe1jw149hy5kge1gqmp669kvn2c0xmnrr109wajqrwteg9mdmlalzaku4"
+      );
+      console.log(c.content);
+    })();
+  });
 
   // Retrieves Ceramic Address Book Stream.
   useEffect(() => {
