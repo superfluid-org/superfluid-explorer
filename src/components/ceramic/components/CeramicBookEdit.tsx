@@ -72,28 +72,24 @@ export default function CeramicBookEdit({
 
   // Saves the contact
   const saveContact = useCallback(() => {
-    if (
-      ceramicBook &&
-      editableName &&
-      editableWallets &&
-      editableAvatar &&
-      editableTag
-    ) {
-      const data = { ...ceramicBook };
+    const data = { ...ceramicBook };
 
-      const contacts = [...data.contacts];
-      const contact = {
-        name: editableName,
-        wallets: editableWallets,
-        avatar: editableAvatar,
-        tags: editableTag.length >= 1 ? editableTag.split(", ") : [""],
-        data: {},
-      };
-      contacts.splice(index, 1, contact);
+    const contacts = [...data.contacts];
+    const contact = {
+      name: editableName,
+      wallets: editableWallets,
+      avatar: editableAvatar,
+      tags:
+        editableTag && editableTag.length >= 1
+          ? editableTag?.split(", ")
+          : [""],
+      data: {},
+    };
 
-      data.contacts = contacts;
-      setCeramicBook(data);
-    }
+    (contacts as any).splice(index, 1, contact);
+
+    data.contacts = contacts;
+    setCeramicBook(data);
   }, [
     ceramicBook,
     setCeramicBook,
