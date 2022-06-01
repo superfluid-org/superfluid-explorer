@@ -21,8 +21,9 @@ export default function LocalBook({
       <h3>Local Address Book</h3>
       <ul>
         {unlinkedWallets &&
-          unlinkedWallets.map((unlinkedWallet: any) => (
+          unlinkedWallets.map((unlinkedWallet, index) => (
             <LocalBookTile
+              key={unlinkedWallet + index}
               editing={editing}
               setEditing={setEditing}
               ceramicBook={ceramicBook}

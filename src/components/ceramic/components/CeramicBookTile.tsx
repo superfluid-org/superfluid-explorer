@@ -190,9 +190,10 @@ export default function CeramicBookTile({
                 </p>
               </div>
               <div>
-                {wallets?.map(({ walletAddress, network }) => {
+                {wallets?.map(({ walletAddress, network }, index) => {
                   return (
                     <div
+                      key={walletAddress + index}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -215,8 +216,9 @@ export default function CeramicBookTile({
             <h3>Tags</h3>
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               {tags && tags.length >= 1 ? (
-                tags.map((tag) => (
+                tags.map((tag, index) => (
                   <div
+                    key={tag + index}
                     style={{
                       background: "#D9D9D9",
                       borderRadius: "23px",
