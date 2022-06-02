@@ -18,17 +18,20 @@ export default function CeramicBook({
       <h3>Ceramic Address Book</h3>
 
       <ul>
-        {ceramicBook?.contacts.map((contact, index) => (
-          <CeramicBookTile
-            key={index}
-            editing={editing}
-            setEditing={setEditing}
-            contact={contact}
-            index={index}
-            ceramicBook={ceramicBook}
-            setCeramicBook={setCeramicBook}
-          />
-        ))}
+        {ceramicBook?.contacts.map((contact, index) => {
+          console.log(contact);
+          return (
+            <CeramicBookTile
+              key={index}
+              editing={editing}
+              setEditing={setEditing}
+              contact={contact}
+              index={index}
+              ceramicBook={ceramicBook}
+              setCeramicBook={setCeramicBook}
+            />
+          );
+        })}
       </ul>
     </div>
   );
