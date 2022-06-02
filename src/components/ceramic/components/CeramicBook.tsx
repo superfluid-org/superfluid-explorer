@@ -19,7 +19,6 @@ export default function CeramicBook({
 
       <ul>
         {ceramicBook?.contacts.map((contact, index) => {
-          console.log(contact);
           return (
             <CeramicBookTile
               key={index}

@@ -22,16 +22,12 @@ export default function CeramicBookEdit({
   const [editableTag, setEditableTags] = useState<string>();
 
   useEffect(() => {
-    return () => {
-      if (contact !== null) {
-        setEditableName(contact.name);
-        setEditableAvatar(contact.avatar);
-        setEditableWallets([...contact.wallets]);
-        setEditableTags(
-          contact.tags?.length >= 1 ? contact.tags.join(", ") : ""
-        );
-      }
-    };
+    if (contact !== null) {
+      setEditableName(contact.name);
+      setEditableAvatar(contact.avatar);
+      setEditableWallets([...contact.wallets]);
+      setEditableTags(contact.tags?.length >= 1 ? contact.tags.join(", ") : "");
+    }
   }, [contact]);
 
   const addWallet = useCallback(() => {

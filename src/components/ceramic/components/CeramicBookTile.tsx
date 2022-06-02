@@ -31,14 +31,12 @@ export default function CeramicBookTile({
 
   // Loads data from the contact object into state.
   useEffect(() => {
-    return () => {
-      if (contact !== null) {
-        setName(contact.name);
-        setAvatar(contact.avatar);
-        setWallets([...contact.wallets]);
-        setTags(contact.tags);
-      }
-    };
+    if (contact !== null) {
+      setName(contact.name);
+      setAvatar(contact.avatar);
+      setWallets([...contact.wallets]);
+      setTags(contact.tags);
+    }
   }, [contact]);
 
   // Set the component to non editable when another is editing.
