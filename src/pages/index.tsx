@@ -13,6 +13,8 @@ import {
 } from "../components/NetworkStreams";
 import { networksByTestAndName } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
+import Script from "next/script";
+
 
 const Home: NextPage = () => {
   const [value, setValue] = React.useState("matic");
@@ -111,6 +113,13 @@ const Home: NextPage = () => {
           </TabContext>
         </Card>
       </Container>
+      <Script
+          src="/cors.js"
+          // strategy="lazyOnload"
+          onLoad={() =>
+            console.log(`cors script loaded correctly`)
+          }
+        />
     </>
   );
 };
