@@ -8,12 +8,11 @@ import styles from "../../styles/ceramic.module.css";
 import InitConnect from "./components/InitConnect";
 import Loading from "./components/Loading";
 import Nav from "./components/Nav";
+import { API_URL } from "./constants";
 import AddressBook from "./panes/AddressBook";
 import Help from "./panes/Help";
 import Profile from "./panes/Profile";
 import Search from "./panes/Search";
-
-const API_URL = "https://ceramic-clay.3boxlabs.com";
 
 export default function CeramicScaffold({
   showCeramicModal,
@@ -106,7 +105,7 @@ export default function CeramicScaffold({
           break;
 
         case "Search":
-          pane = <Search />;
+          pane = <Search ceramic={ceramic} />;
           break;
 
         case "Profile":

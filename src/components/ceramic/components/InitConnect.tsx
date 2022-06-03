@@ -10,7 +10,7 @@ export default function InitConnect({
 }) {
   return (
     <div className={styles.initConnect}>
-      <img src="/ceramic.svg" style={{ height: 350 }} alt="website logo" />
+      <img src="/ceramic.svg" style={{ height: 350 }} alt="ceramic dashboard logo" />
       <div className={styles.initConnectButtonGroup}>
         <h3
           onClick={() => {

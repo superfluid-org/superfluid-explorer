@@ -303,3 +303,63 @@
   border-radius: 7px;
   color: white;
 }
+
+/* Search */
+
+.search {
+  display: flex;
+  height: calc(80vh - 40px);
+  align-items: center;
+  justify-content: center;
+  background-image: url("/search.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto 350px;
+}
+
+.search h2 {
+  color: white;
+}
+
+.searchGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-top: 3rem;
+  height: 12rem;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: white;
+  border-radius: 7px;
+}
+
+.searchBar input {
+  border: none;
+  outline: none;
+  min-width: 15em;
+  font-size: 16px;
+  padding: 10px 5px;
+  border-radius: 7px;
+  color: #000000;
+  background-color: transparent;
+}
+
+.searchBar ::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #9c9c9c;
+  opacity: 1; /* Firefox */
+}
+
+.searchBar :-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #9c9c9c;
+}
+
+.searchBar ::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #9c9c9c;
+}

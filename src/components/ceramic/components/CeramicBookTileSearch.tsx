@@ -1,28 +1,19 @@
-import { Edit, Clear, Lock } from "@mui/icons-material";
+import { AddCircle } from "@mui/icons-material";
 import { useCallback, useEffect, useState } from "react";
-import ellipsisAddress from "../../../utils/ellipsisAddress";
 import styles from "../../../styles/ceramic.module.css";
+import ellipsisAddress from "../../../utils/ellipsisAddress";
 import { ICeramicBook, IContacts } from "../types";
-import CeramicBookEdit from "./CeramicBookEdit";
 
-export default function CeramicBookTile({
-  editing,
-  setEditing,
+export default function CeramicBookTileSearch({
   contact,
-  index,
   ceramicBook,
   setCeramicBook,
 }: {
-  editing: any;
-  setEditing: any;
   contact: IContacts;
-  index: number;
   ceramicBook: ICeramicBook;
-  setCeramicBook: any;
+  setCeramicBook: Function;
 }) {
   const [opened, setOpened] = useState(false);
-  const [tileType, setTileType] = useState("normal");
-  const [isEditing, setIsEditing] = useState(false);
 
   const [name, setName] = useState<string>();
   const [avatar, setAvatar] = useState<string>();
@@ -39,71 +30,14 @@ export default function CeramicBookTile({
     }
   }, [contact]);
 
-  // Set the component to non editable when another is editing.
-  useEffect(() => {
-    if (editing && !isEditing) {
-      setTileType("locked");
-    } else {
-      setTileType("normal");
+  const saveToCeramicBook = useCallback(() => {
+    if (ceramicBook && contact) {
+      const data = { ...ceramicBook };
+      (data as any).contacts.push(contact);
+      setCeramicBook(data);
     }
-  }, [editing, isEditing, setTileType]);
-
-  // Shows the appropriate button for each Tile Type.
-  const getButton = useCallback(() => {
-    let button: JSX.Element;
-
-    switch (tileType) {
-      case "normal":
-        button = (
-          <div
-            onClick={() => {
-              setIsEditing(true);
-              setEditing(true);
-
-              // Prevents race conditions between the onClick and useEffect.
-              setTimeout(() => {
-                setTileType("editing");
-              }, 20);
-            }}
-          >
-            <Edit />
-          </div>
-        );
-        break;
-
-      case "editing":
-        button = (
-          <div
-            onClick={() => {
-              setTileType("normal");
-              setIsEditing(false);
-              setEditing(false);
-            }}
-          >
-            <Clear />
-          </div>
-        );
-        break;
-
-      case "locked":
-        button = (
-          <div>
-            <Lock />
-          </div>
-        );
-        break;
-
-      default:
-        button = (
-          <div onClick={() => setTileType("editing")}>
-            <Edit />
-          </div>
-        );
-        break;
-    }
-
-    return button;
-  }, [tileType, setTileType, setEditing]);
+    alert("added to your address book");
+  }, [ceramicBook, contact]);
 
   const svgNoImg = (
     <svg
@@ -123,18 +57,6 @@ export default function CeramicBookTile({
     </svg>
   );
 
-  if (tileType === "editing") {
-    return (
-      <CeramicBookEdit
-        contact={contact}
-        index={index}
-        ceramicBook={ceramicBook}
-        setCeramicBook={setCeramicBook}
-        getButton={getButton}
-      />
-    );
-  }
-
   return (
     <li className={opened ? styles.accordionItemOpened : styles.accordionItem}>
       <div onClick={() => setOpened(!opened)}>
@@ -146,14 +68,18 @@ export default function CeramicBookTile({
         >
           {avatar ? (
             <img width={100} src={avatar} alt={"image of" + name} />
-            ) : (
+          ) : (
             svgNoImg
           )}
           <div>
             <h3 style={{ margin: "0", marginLeft: "0.5rem" }}>{name}</h3>
           </div>
           <div style={{ flex: 1 }}></div>
-          {getButton()}
+          <AddCircle
+            onClick={() => {
+              saveToCeramicBook();
+            }}
+          />
         </div>
       </div>
       <div className={styles.accordionItemInner}>

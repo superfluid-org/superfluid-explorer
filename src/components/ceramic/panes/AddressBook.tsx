@@ -1,5 +1,4 @@
 import { CeramicClient } from "@ceramicnetwork/http-client";
-import { TileDocument } from "@ceramicnetwork/stream-tile";
 import { DataModel } from "@glazed/datamodel";
 import { DIDDataStore } from "@glazed/did-datastore";
 import {
@@ -16,23 +15,8 @@ import styles from "../../../styles/ceramic.module.css";
 import CeramicBook from "../components/CeramicBook";
 import LocalBook from "../components/LocalBook";
 import QuickInfo from "../components/QuickInfo";
+import { aliases } from "../constants";
 import { ICeramicBook, IQuickInfo } from "../types";
-
-const aliases = {
-  definitions: {
-    myAddressBook:
-      "kjzl6cwe1jw149hy5kge1gqmp669kvn2c0xmnrr109wajqrwteg9mdmlalzaku4",
-    DIDToAddressBook:
-      "kjzl6cwe1jw147ff7ga8wa97ytivguq3cb2umpwkvdbuyydx7drpnaitmtvhx8r",
-  },
-  schemas: {
-    AddressBook:
-      "ceramic://k3y52l7qbv1frxycyoblevfvx12ws5t0iuqmrwiadl36p20ectvw9yuhs4g9uruv4",
-    DIDToAddressBook:
-      "ceramic://k3y52l7qbv1fry9pcj5rymkn9686buqtmaley7qujeyd4atyy2huvrzumsc9jc2kg",
-  },
-  tiles: {},
-};
 
 export default function AddressBook({
   ceramic,
@@ -50,20 +34,6 @@ export default function AddressBook({
   const addressBookEntries = useAppSelector((state: any) =>
     addressBookSelectors.selectAll(state)
   );
-
-  // useEffect(() => {
-  //   // Connect to a Ceramic node
-
-  //   // The `id` argument can be a stream ID (to load the latest version)
-  //   // or a commit ID (to load a specific version)
-  //   (async () => {
-  //     const c = await TileDocument.load(
-  //       ceramic,
-  //       "kjzl6cwe1jw149hy5kge1gqmp669kvn2c0xmnrr109wajqrwteg9mdmlalzaku4"
-  //     );
-  //     console.log(c.content);
-  //   })();
-  // });
 
   // Retrieves Ceramic Address Book Stream.
   useEffect(() => {
