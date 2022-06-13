@@ -68,6 +68,34 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const [listedStatus, setListedStatus] = useState<ListedStatus | null>(null);
 
+  const setUrlQueryParam = (newFilter: Token_Filter) => {
+    const { name_contains, isListed, symbol_contains } = newFilter;
+    const url = new URL(window.location.href);
+
+    name_contains && url.searchParams.set("name_contains", name_contains);
+    if (name_contains?.length === 1) url.searchParams.delete("name_contains");
+
+    if (isListed != undefined)
+      url.searchParams.set("isListed", isListed.toString());
+
+    symbol_contains && url.searchParams.set("symbol_contains", symbol_contains);
+    if (symbol_contains?.length === 1)
+      url.searchParams.delete("symbol_contains");
+
+    window.history.replaceState({}, "", url.toString());
+  };
+
+  const deleteUrlQueryParam = (param: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete(param);
+    window.history.replaceState({}, "", url.toString());
+  };
+
+  const resetUrl = () => {
+    const url = new URL(window.location.origin + window.location.pathname);
+    window.history.replaceState({}, "", url.toString());
+  };
+
   const createDefaultArg = (): RequiredTokensQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
@@ -129,6 +157,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   };
 
   const onFilterChange = (newFilter: Token_Filter) => {
+    setUrlQueryParam(newFilter);
     onQueryArgsChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
@@ -138,8 +167,10 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const clearFilterField =
     (...fields: Array<keyof Token_Filter>) =>
-    () =>
+    () => {
       onFilterChange(omit(fields, queryArg.filter));
+      deleteUrlQueryParam(fields[0]);
+    };
 
   const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
@@ -187,7 +218,10 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   const onListedStatusChange = (_event: unknown, newStatus: ListedStatus) =>
     changeListedStatus(newStatus);
 
-  const clearListedStatusFilter = () => changeListedStatus(null);
+  const clearListedStatusFilter = () => {
+    changeListedStatus(null);
+    deleteUrlQueryParam("isListed");
+  };
 
   const openFilter = () => setShowFilterMenu(true);
   const closeFilter = () => setShowFilterMenu(false);
@@ -201,6 +235,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     clearListedStatusFilter();
     onFilterChange(defaultFilter);
     closeFilter();
+    resetUrl();
   };
 
   const hasNextPage = !!queryResult.data?.nextPaging;
