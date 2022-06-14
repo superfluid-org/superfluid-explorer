@@ -104,7 +104,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   const urlQueryParams = new URLSearchParams(window.location.search);
   const defaultFilter: Token_Filter = {
     isSuperToken: true,
-    ...(urlQueryParams.get("isListed") && {isListed: urlQueryParams.get("isListed") === "true"}),
+    ...(urlQueryParams.get("isListed") && {isListed: urlQueryParams.get("isListed") === "true"}), // if the param exists, convert to bool and add to object
     ...(urlQueryParams.get("name_contains") && {name_contains: urlQueryParams.get("name_contains")}),
     ...(urlQueryParams.get("symbol_contains") && {symbol_contains: urlQueryParams.get("symbol_contains")}),
   };
@@ -162,7 +162,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
       take: queryArg.pagination.take,
       skip: (newPage - 1) * queryArg.pagination.take,
     }
-    newPage != 1 ? setUrlQueryParam(urlParams) : deleteUrlQueryParams(["skip", "take"]);
+    newPage === 1 ? deleteUrlQueryParams(["skip", "take"]) : setUrlQueryParam(urlParams); // Don't add params for page 1
     onQueryArgsChanged(
       set("pagination.skip", (newPage - 1) * queryArg.pagination.take, queryArg)
     );
@@ -193,7 +193,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const onFilterChange = (newFilter: Token_Filter) => {
     setUrlQueryParam(newFilter);
-    deleteUrlQueryParams(["take", "skip"]);
+    deleteUrlQueryParams(["take", "skip"]); // Pagination resets when filter changes
     onQueryArgsChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
