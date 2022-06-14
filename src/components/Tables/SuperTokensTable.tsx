@@ -54,9 +54,6 @@ type RequiredTokensQuery = Required<Omit<TokensQuery, "block">>;
 
 const defaultOrdering = {} as Ordering<Token_OrderBy>;
 
-const defaultFilter: Token_Filter = {
-  isSuperToken: true,
-};
 
 export const defaultPaging = createSkipPaging({
   take: 10,
@@ -96,6 +93,14 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     window.history.replaceState({}, "", url.toString());
   };
 
+  const urlQueryParams = new URLSearchParams(window.location.search);
+  const defaultFilter: Token_Filter = {
+    isSuperToken: true,
+    ...(urlQueryParams.get("isListed") && {isListed: urlQueryParams.get("isListed") === "true"}),
+    ...(urlQueryParams.get("name_contains") && {name_contains: urlQueryParams.get("name_contains")}),
+    ...(urlQueryParams.get("symbol_contains") && {symbol_contains: urlQueryParams.get("symbol_contains")}),
+  };
+
   const createDefaultArg = (): RequiredTokensQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
@@ -126,6 +131,11 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   useEffect(() => {
     onQueryArgsChanged(createDefaultArg());
+    const isListedQueryParam = urlQueryParams.get("isListed");
+    if(isListedQueryParam) {
+      const isListedQueryParamBoolean = isListedQueryParam === "true";
+      isListedQueryParamBoolean ? setListedStatus(ListedStatus.Listed) : setListedStatus(ListedStatus.NotListed);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network]);
 
