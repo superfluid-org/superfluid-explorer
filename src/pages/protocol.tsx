@@ -57,7 +57,7 @@ const AddressListItem: FC<AddressListItemProps> = ({
               IconProps={{ sx: { fontSize: "16px" } }} />
             <Tooltip title="View on blockchain Explorer">
               <Link
-                // href={network.getLinkForAddress(address)}
+                href={network.getLinkForAddress(address)}
                 target="_blank"
                 sx={{ color: "inherit" }}
               >
