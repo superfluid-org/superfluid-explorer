@@ -59,14 +59,19 @@ export const defaultPaging = createSkipPaging({
   take: 10,
 });
 
+interface UrlParamsObject extends Token_Filter {
+  skip?: number;
+  take?: number;
+}
+
 const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   const filterAnchorRef = useRef(null);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
   const [listedStatus, setListedStatus] = useState<ListedStatus | null>(null);
 
-  const setUrlQueryParam = (newFilter: Token_Filter) => {
-    const { name_contains, isListed, symbol_contains } = newFilter;
+  const setUrlQueryParam = (paramObject: UrlParamsObject) => {
+    const { name_contains, isListed, symbol_contains, skip, take } = paramObject;
     const url = new URL(window.location.href);
 
     name_contains && url.searchParams.set("name_contains", name_contains);
@@ -79,12 +84,15 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     if (symbol_contains?.length === 1)
       url.searchParams.delete("symbol_contains");
 
+    skip && url.searchParams.set("skip", skip.toString());
+    take && url.searchParams.set("take", take.toString());
+
     window.history.replaceState({}, "", url.toString());
   };
 
-  const deleteUrlQueryParam = (param: string) => {
+  const deleteUrlQueryParams = (params : string[]) => {
     const url = new URL(window.location.href);
-    url.searchParams.delete(param);
+    params.forEach(param => url.searchParams.delete(param));
     window.history.replaceState({}, "", url.toString());
   };
 
@@ -101,10 +109,20 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     ...(urlQueryParams.get("symbol_contains") && {symbol_contains: urlQueryParams.get("symbol_contains")}),
   };
 
+  const createDefaultPaging = () => {
+    const take = urlQueryParams.get("take");
+    const skip = urlQueryParams.get("skip");
+    return {
+      ...defaultPaging,
+      ...(take && {take: parseInt(take)}),
+      ...(skip && {skip: parseInt(skip)}),
+    }
+  }
+
   const createDefaultArg = (): RequiredTokensQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: defaultPaging,
+    pagination: createDefaultPaging(),
     order: defaultOrdering,
   });
 
@@ -139,10 +157,17 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network]);
 
-  const setPage = (newPage: number) =>
+  const setPage = (newPage: number) => {
+    const urlParams = {
+      take: queryArg.pagination.take,
+      skip: (newPage - 1) * queryArg.pagination.take,
+    }
+    newPage != 1 ? setUrlQueryParam(urlParams) : deleteUrlQueryParams(["skip", "take"]);
     onQueryArgsChanged(
       set("pagination.skip", (newPage - 1) * queryArg.pagination.take, queryArg)
     );
+  }
+
 
   const setPageSize = (newPageSize: number) =>
     onQueryArgsChanged(set("pagination.take", newPageSize, queryArg));
@@ -168,6 +193,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const onFilterChange = (newFilter: Token_Filter) => {
     setUrlQueryParam(newFilter);
+    deleteUrlQueryParams(["take", "skip"]);
     onQueryArgsChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
@@ -179,7 +205,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     (...fields: Array<keyof Token_Filter>) =>
     () => {
       onFilterChange(omit(fields, queryArg.filter));
-      deleteUrlQueryParam(fields[0]);
+      deleteUrlQueryParams([fields[0]]);
     };
 
   const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -230,7 +256,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const clearListedStatusFilter = () => {
     changeListedStatus(null);
-    deleteUrlQueryParam("isListed");
+    deleteUrlQueryParams(["isListed"]);
   };
 
   const openFilter = () => setShowFilterMenu(true);
