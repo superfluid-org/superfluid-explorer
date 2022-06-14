@@ -74,15 +74,12 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     const { name_contains, isListed, symbol_contains, skip, take } = paramObject;
     const url = new URL(window.location.href);
 
-    name_contains && url.searchParams.set("name_contains", name_contains);
-    if (name_contains?.length === 1) url.searchParams.delete("name_contains");
+    name_contains && (name_contains.length != 1) && url.searchParams.set("name_contains", name_contains);
 
     if (isListed != undefined)
       url.searchParams.set("isListed", isListed.toString());
 
-    symbol_contains && url.searchParams.set("symbol_contains", symbol_contains);
-    if (symbol_contains?.length === 1)
-      url.searchParams.delete("symbol_contains");
+    symbol_contains && (symbol_contains.length != 1) && url.searchParams.set("symbol_contains", symbol_contains);
 
     skip && url.searchParams.set("skip", skip.toString());
     take && url.searchParams.set("take", take.toString());
