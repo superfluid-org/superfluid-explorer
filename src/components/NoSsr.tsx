@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
-import { FC } from "react";
+import { FC, PropsWithChildren } from "react";
 
-const Noop: FC = ({ children }) => {
+const Noop: FC<PropsWithChildren<unknown>> = ({ children }) => {
     return <>{children}</>
 }
 

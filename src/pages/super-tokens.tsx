@@ -1,5 +1,5 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Card, CardContent, Container, Tab } from "@mui/material";
+import { Box, Card, CardContent, Container, NoSsr, Tab } from "@mui/material";
 import { FC, SyntheticEvent, useState } from "react";
 import SuperTokensTable from "../components/Tables/SuperTokensTable";
 import { networksByTestAndName } from "../redux/networks";
@@ -41,7 +41,9 @@ const SuperTokens: FC<SuperTokensProps> = ({}) => {
           >
             <Card>
               <CardContent>
-                <SuperTokensTable network={network} />
+                <NoSsr>
+                  <SuperTokensTable network={network} />
+                </NoSsr>
               </CardContent>
             </Card>
           </TabPanel>

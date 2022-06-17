@@ -15,18 +15,26 @@ const moduleExports = {
   }
 };
 
-const sentryWebpackPluginOptions = {
-  // Additional config options for the Sentry Webpack plugin. Keep in mind that
-  // the following options are set automatically, and overriding them is not
-  // recommended:
-  //   release, url, org, project, authToken, configFile, stripPrefix,
-  //   urlPrefix, include, ignore
+const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN;
 
-  silent: true, // Suppresses all logs
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options.
-};
+if (SENTRY_AUTH_TOKEN) {
+  const sentryWebpackPluginOptions = {
+    // Additional config options for the Sentry Webpack plugin. Keep in mind that
+    // the following options are set automatically, and overriding them is not
+    // recommended:
+    //   release, url, org, project, authToken, configFile, stripPrefix,
+    //   urlPrefix, include, ignore
 
-// Make sure adding Sentry options is the last code to run before exporting, to
-// ensure that your source maps include changes from all other Webpack plugins
-module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);
+    silent: true, // Suppresses all logs
+    // For all available options, see:
+    // https://github.com/getsentry/sentry-webpack-plugin#options.
+  };
+  // Make sure adding Sentry options is the last code to run before exporting, to
+  // ensure that your source maps include changes from all other Webpack plugins
+  module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);
+} else {
+  console.warn(
+    "Sentry release not created because SENTRY_AUTH_TOKEN is not set."
+  );
+  module.exports = moduleExports;
+}

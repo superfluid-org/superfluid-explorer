@@ -1,9 +1,9 @@
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 
-const SearchBar: FC = ({ children}) => {
+const SearchBar: FC<PropsWithChildren<unknown>> = ({ children}) => {
     return (
         <Search>
             <SearchIconWrapper>

@@ -1,5 +1,11 @@
-import React, { SyntheticEvent, useEffect, useState } from "react";
-import GraphiQL, { Fetcher, FetcherParams } from "graphiql";
+import React, {
+  FC,
+  PropsWithChildren,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
+import GraphiQL, { FetcherParams } from "graphiql";
 import {
   buildClientSchema,
   getIntrospectionQuery,
@@ -101,7 +107,7 @@ const getGraphQLIntrospectionClientSchemaMemoized = _.memoize(
     )
 );
 
-const SubgraphExplorer: React.FC = () => {
+const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
   const router = useRouter();
   const { _network, _query, _variables } = router.query;
 
@@ -249,6 +255,7 @@ const SubgraphExplorer: React.FC = () => {
             onToggleExplorer={() => setIsExplorerOpen(!isExplorerOpen)}
           />
           {schema && (
+            // @ts-ignore React 18 children prop issue (9th of May 2022)
             <GraphiQL
               ref={graphiql}
               schema={schema}
@@ -270,6 +277,7 @@ const SubgraphExplorer: React.FC = () => {
                   title="Explorer Toggle"
                   label="Explorer"
                 />
+                {/** @ts-ignore React 18 children prop issue (9th of May 2022) */}
                 <GraphiQL.Menu
                   label={isNetworkLoading ? "Loading..." : network.displayName}
                   title="Select Network"
@@ -283,9 +291,11 @@ const SubgraphExplorer: React.FC = () => {
                     />
                   ))}
                 </GraphiQL.Menu>
+                {/** @ts-ignore React 18 children prop issue (9th of May 2022) */}
                 <GraphiQL.Menu label="Examples" title="Select Example Queries">
                   {ExampleQueries.map((val) => {
                     return (
+                      // @ts-ignore React 18 children prop issue (9th of May 2022)
                       <GraphiQL.MenuItem
                         key={val.name}
                         label={val.name}
@@ -297,9 +307,11 @@ const SubgraphExplorer: React.FC = () => {
                     );
                   })}
                 </GraphiQL.Menu>
+                {/** @ts-ignore React 18 children prop issue (9th of May 2022) */}
                 <GraphiQL.Menu label="Superfluid Docs" title="Superfluid Docs">
                   {DocumentationLinks.map((val) => {
                     return (
+                      // @ts-ignore React 18 children prop issue (9th of May 2022)
                       <GraphiQL.MenuItem
                         key={val.name}
                         label={val.name}

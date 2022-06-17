@@ -508,7 +508,7 @@ export const IndexSubscriptionDistributions: FC<{
       (subscriptionUnitsUpdatedEventsQuery.data?.data ?? []).find(
         (x) => x.units === "0"
       )?.timestamp,
-    [subscriptionUnitsUpdatedEventsQuery]
+    [subscriptionUnitsUpdatedEventsQuery.data]
   );
 
   const subscriptionStartTime = useMemo<number | undefined>(
@@ -522,7 +522,7 @@ export const IndexSubscriptionDistributions: FC<{
 
   const subscriptionUnitsUpdatedEvents:
     | SubscriptionUnitsUpdatedEvent[]
-    | undefined = subscriptionUnitsUpdatedEventsQuery.data?.data ?? [];
+    | undefined = useMemo(() => subscriptionUnitsUpdatedEventsQuery.data?.items ?? [], [subscriptionUnitsUpdatedEventsQuery.data]);
 
   const indexUpdatedEventsQuery = sfSubgraph.useIndexUpdatedEventsQuery(
     index && subscriptionStartTime

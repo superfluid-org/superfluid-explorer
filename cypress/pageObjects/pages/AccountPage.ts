@@ -220,7 +220,7 @@ export class AccountPage extends BasePage {
     cy.fixture("toolTipStringsAndLinks").then(fixture => {
       cy.get("[data-cy=" + tooltip + "-tooltip]").trigger("mouseover").then(el => {
         cy.wrap(el).should("have.attr", "aria-labelledby").then(attr => {
-          this.hasText("#" + attr, fixture[tooltip + "-tooltip"])
+          this.hasText(`[id="${attr}"]`, fixture[tooltip + "-tooltip"])
           this.hasAttributeWithValue("[data-cy=" + tooltip + "-tooltip-link]", "href", fixture[tooltip + "-tooltip-link"])
         })
       })

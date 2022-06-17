@@ -1,5 +1,5 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Card, Divider, Stack, Tab } from "@mui/material";
+import { Card, Divider, NoSsr, Stack, Tab } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -103,7 +103,9 @@ const Home: NextPage = () => {
                 value={network.slugName}
                 data-cy={`${network.slugName}-streams`}
               >
-                <NetworkStreams network={network} />
+                <NoSsr>
+                  <NetworkStreams network={network} />
+                </NoSsr>
               </TabPanel>
             ))}
           </TabContext>

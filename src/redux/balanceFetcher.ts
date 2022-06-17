@@ -80,7 +80,7 @@ const createFetching = (
                 balance: ethers.BigNumber.from(
                   realtimeBalanceOfNowCall.returnValues[0]
                 ).toString(),
-                balanceTimestamp: realtimeBalanceOfNowCall.returnValues[3],
+                balanceTimestamp: ethers.BigNumber.from(realtimeBalanceOfNowCall.returnValues[3]).toNumber(),
                 flowRate: ethers.BigNumber.from(
                   getNetFlowCall.returnValues[0]
                 ).toString(),
