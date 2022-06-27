@@ -1,4 +1,3 @@
-import CloseIcon from "@mui/icons-material/Close";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Box,
@@ -51,7 +50,7 @@ interface SuperTokensTableProps {
   network: Network;
 }
 
-type RequiredTokensQuery = Required<Omit<TokensQuery, "block">>;
+export type RequiredTokensQuery = Required<Omit<TokensQuery, "block">>;
 
 const defaultOrdering = {} as Ordering<Token_OrderBy>;
 
@@ -89,7 +88,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     if(urlFilter != null) {
       const urlFilterObject: RequiredTokensQuery = JSON.parse(urlFilter);
       return urlFilterObject;
-      }
+    }
     return defaultArg;
   }
 
@@ -107,7 +106,6 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
       }
     };
     setUrlQueryParam(queryArg);
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryArg])
 
