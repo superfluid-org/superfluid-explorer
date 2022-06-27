@@ -31,6 +31,7 @@ import { TokensQuery } from "@superfluid-finance/sdk-redux";
 import isEqual from "lodash/fp/isEqual";
 import omit from "lodash/fp/omit";
 import set from "lodash/fp/set";
+import { useRouter } from "next/router";
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import { Network } from "../../redux/networks";
@@ -62,13 +63,14 @@ export const defaultPaging = createSkipPaging({
 const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   const filterAnchorRef = useRef(null);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
-
   const [listedStatus, setListedStatus] = useState<ListedStatus | null>(null);
+  const router = useRouter();
 
   const defaultFilter: Token_Filter = {
     isSuperToken: true,
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const defaultArg: RequiredTokensQuery = {
     chainId: network.chainId,
     filter: defaultFilter,
@@ -76,28 +78,17 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     order: defaultOrdering,
   }
 
-  const setUrlQueryParam = (paramObject: RequiredTokensQuery) => {
-    // Dont set the url if the query is the same as the default
-    if(paramObject != defaultArg){
-      const url = new URL(window.location.href);
-      url.searchParams.set("filter", JSON.stringify(paramObject))
-      window.history.replaceState({}, "", url.toString());
-    }
-  };
-
   const resetUrl = () => {
     const url = new URL(window.location.origin + window.location.pathname);
-    window.history.replaceState({}, "", url.toString());
+    router.replace(url.toString(), undefined, { scroll: false });
   };
 
-  const urlQueryParams = new URLSearchParams(window.location.search);
-
   const createDefaultArg = (): RequiredTokensQuery => {
-
+    const urlQueryParams = new URLSearchParams(window.location.search);
     const urlFilter = urlQueryParams.get("filter");
     if(urlFilter != null) {
       const urlFilterObject: RequiredTokensQuery = JSON.parse(urlFilter);
-      return urlFilterObject
+      return urlFilterObject;
       }
     return defaultArg;
   }
@@ -106,13 +97,26 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     createDefaultArg()
   );
 
+  useEffect(() => {
+    const setUrlQueryParam = (paramObject: RequiredTokensQuery) => {
+      // Dont set the url if the query is the same as the default
+      if(paramObject != defaultArg){
+        const url = new URL(window.location.href);
+        url.searchParams.set("filter", JSON.stringify(paramObject));
+        router.replace(url.toString(), undefined, { scroll: false });
+      }
+    };
+    setUrlQueryParam(queryArg);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryArg])
+
   const [queryTrigger, queryResult] = sfSubgraph.useLazyTokensQuery();
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250);
 
   const onQueryArgsChanged = (newArgs: RequiredTokensQuery) => {
     setQueryArg(newArgs);
-    setUrlQueryParam(newArgs);
     if (
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
@@ -129,7 +133,10 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
       const listedStatus = defaultArgs.filter.isListed ? ListedStatus.Listed : ListedStatus.NotListed;
       setListedStatus(listedStatus);
     }
-    onQueryArgsChanged(defaultArgs);
+    onQueryArgsChanged({
+      ...defaultArgs,
+      chainId: network.chainId
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network]);
 
@@ -168,7 +175,6 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
       pagination: { ...queryArg.pagination, skip: 0 },
       filter: newFilter,
     }
-    setUrlQueryParam(filter);
     onQueryArgsChanged(filter);
   };
 
