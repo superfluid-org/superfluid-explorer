@@ -37,7 +37,7 @@ export class IndexSubscriptionPage extends BasePage {
   static validateSubscriptionDistributions(network: string) {
     cy.fixture("accountData").then(fixture => {
       fixture[network].superApp.indexes.publications[0].details.subscriptions[0].details.distributions.forEach((distribution: any, index: number) => {
-        cy.get(DISTRIBUTIONS_AMOUNT_RECEIVED).eq(index).should("contain.text", distribution.amountReceived)
+        cy.get(DISTRIBUTIONS_AMOUNT_RECEIVED).eq(index).should("be.visible").and("contain.text", distribution.amountReceived)
       })
     })
   }
