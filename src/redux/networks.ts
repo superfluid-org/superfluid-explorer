@@ -17,7 +17,7 @@ export const networks: Network[] = [
     slugName: "ropsten",
     chainId: 3,
     isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/ropsten`,
+    rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-ropsten`,
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-ropsten",
     getLinkForTransaction: (txHash: string): string => `https://ropsten.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://ropsten.etherscan.io/address/${address}`
@@ -27,7 +27,7 @@ export const networks: Network[] = [
     slugName: "rinkeby",
     chainId: 4,
     isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/rinkeby`,
+    rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-rinkeby`,
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-rinkeby",
     getLinkForTransaction: (txHash: string): string => `https://rinkeby.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://rinkeby.etherscan.io/address/${address}`
@@ -37,7 +37,7 @@ export const networks: Network[] = [
     slugName: "goerli",
     chainId: 5,
     isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/goerli`,
+    rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-goerli`,
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-goerli",
     getLinkForTransaction: (txHash: string): string => `https://goerli.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://goerli.etherscan.io/address/${address}`
@@ -47,7 +47,7 @@ export const networks: Network[] = [
     slugName: "kovan",
     chainId: 42,
     isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/kovan`,
+    rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-kovan`,
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-kovan",
     getLinkForTransaction: (txHash: string): string => `https://kovan.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://kovan.etherscan.io/address/${address}`
@@ -57,7 +57,7 @@ export const networks: Network[] = [
     slugName: "xdai",
     chainId: 100,
     isTestnet: false,
-    rpcUrl: "https://rpc-endpoints.superfluid.dev/xdai",
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/xdai-mainnet",
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-xdai",
     getLinkForTransaction: (txHash: string): string => `https://blockscout.com/xdai/mainnet/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://blockscout.com/xdai/mainnet/address/${address}`
@@ -67,7 +67,7 @@ export const networks: Network[] = [
     slugName: "matic",
     chainId: 137,
     isTestnet: false,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/matic`,
+    rpcUrl: `https://rpc-endpoints.superfluid.dev/polygon-mainnet`,
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-matic",
     getLinkForTransaction: (txHash: string): string => `https://polygonscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://polygonscan.com/address/${address}`
@@ -77,7 +77,7 @@ export const networks: Network[] = [
     slugName: "mumbai",
     chainId: 80001,
     isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/mumbai`,
+    rpcUrl: `https://rpc-endpoints.superfluid.dev/polygon-mumbai`,
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-mumbai",
     getLinkForTransaction: (txHash: string): string => `https://mumbai.polygonscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://mumbai.polygonscan.com/address/${address}`
