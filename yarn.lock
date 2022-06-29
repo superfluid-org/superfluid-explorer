@@ -1977,10 +1977,10 @@
   dependencies:
     "@sentry/cli" "^1.73.0"
 
-"@superfluid-finance/sdk-core@0.4.4-dev.7dc62cd.0":
-  version "0.4.4-dev.7dc62cd.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.4.4-dev.7dc62cd.0.tgz#bac1944d304ae3e73ca1e494e23455d70ca586ad"
-  integrity sha512-BWfU1D/tAiiGd+c0npvaJntIRitWy0YIzQZJO046CKmAqhAcx0feaiWhsm2XriOQxqseu8Hz6Ydm7PThlJilNQ==
+"@superfluid-finance/sdk-core@0.4.4-dev.ce099c3.0":
+  version "0.4.4-dev.ce099c3.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.4.4-dev.ce099c3.0.tgz#133a1556180872fc378bb80b0e92c0ec73ea1241"
+  integrity sha512-sFUOHFc1sJh2wFzUk6K0qMeqbBLmobWXiHmkK38lys4RP91/ygo53484d9IN4ES5l2/ZA3r5zs37k6LtaNf0TQ==
   dependencies:
     ajv "^8.11.0"
     browserify "^17.0.0"

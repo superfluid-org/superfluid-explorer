@@ -141,6 +141,16 @@ export const networks: Network[] = [
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-avalanche-c",
     getLinkForTransaction: (txHash: string): string => `https://avascan.info/blockchain/c/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://avascan.info/blockchain/c/address/${address}`
+  },
+  {
+    displayName: "BNB Smart Chain",
+    slugName: "bnb-smart-chain",
+    chainId: 56,
+    isTestnet: false,
+    rpcUrl: `https://bsc-dataseed1.binance.org`,
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-bsc-mainnet",
+    getLinkForTransaction: (txHash: string): string => `https://bscscan.com/tx/${txHash}`,
+    getLinkForAddress: (address: string): string => `https://bscscan.com/address/${address}`
   }
 ];
 

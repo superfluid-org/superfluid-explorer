@@ -123,6 +123,15 @@ const protocolContracts: NetworkContracts = {
     superfluidLoaderv1: "0x2601E69a2D16C8Ccc8aEe8cE9F59d24a59986B9E",
     TOGA: "0x3D9A67D5ec1E72CEcA8157e028855056786b6159",
   },
+  "bnb-smart-chain": {
+    resolver: "0x69604aA4e9e8BF44A73C680997205Edb03A92E41",
+    host: "0xd1e2cFb6441680002Eb7A44223160aB9B67d7E6E",
+    CFAv1: "0x49c38108870e74Cb9420C0991a85D3edd6363F75",
+    IDAv1: "0x594ed9Cd773584B645aC1F5B11020d3b32cDF07d",
+    superTokenFactory: "0x8bde47397301F0Cd31b9000032fD517a39c946Eb",
+    superfluidLoaderv1: "0x3C26e5bEbc68EaAf4efcd88F8E5A6Aeb77b65579",
+    TOGA: "0xFCD84210f5d51Cd40a30443d44d6A5500d5D10dF",
+  },
 };
 
 export default protocolContracts;
