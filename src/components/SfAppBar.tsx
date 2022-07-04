@@ -1,7 +1,6 @@
 import {
   Box,
   AppBar,
-  Button,
   Toolbar,
   Container,
   Stack,
@@ -14,7 +13,6 @@ import SearchDialog from "./SearchDialog";
 import Image from "next/image";
 import SearchBar from "./SearchBar";
 import { FC, useState } from "react";
-import SubgraphIcon from "./SubgraphIcon";
 import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import SettingsDrawer from "./SettingsDrawer";
 

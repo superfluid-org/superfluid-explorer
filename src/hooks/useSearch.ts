@@ -4,6 +4,7 @@ import {ethers} from "ethers";
 import {useSearchAddressBook} from "./useSearchAddressBook";
 import {SubgraphSearchByAddressResult, useSearchSubgraphByAddress} from "./useSearchSubgraphByAddress";
 import {SubgraphSearchByTokenSymbolResult, useSearchSubgraphByTokenSymbol} from "./useSearchSubgraphByTokenSymbol";
+import { ResolveAddressToEnsSearch, ResolveEnsToAddressSearch } from "./useEnsSearch";
 import { SerializedError } from "@reduxjs/toolkit";
 
 export type NetworkSearchResult = {
@@ -22,6 +23,11 @@ export type NetworkSearchResult = {
 };
 
 export const useSearch = (searchTerm: string) => {
+
+  if(searchTerm){
+    ResolveEnsToAddressSearch(searchTerm);
+  }
+
   const subgraphSearchByAddressResults = useSearchSubgraphByAddress(searchTerm);
   const subgraphSearchByTokenSymbolResults =
     useSearchSubgraphByTokenSymbol(searchTerm);

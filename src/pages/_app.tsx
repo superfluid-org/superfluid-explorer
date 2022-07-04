@@ -5,7 +5,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import createEmotionCache from "../utils/createEmotionCache";
 import { wrapper } from "../redux/store";
 import SfAppBar from "../components/SfAppBar";
-import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import "../styles/graphiql.min.css";
 import "../styles/app.css";
