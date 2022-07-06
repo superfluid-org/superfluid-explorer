@@ -18,6 +18,7 @@ import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { addressBookSlice } from "./slices/addressBook.slice";
 import { networks } from "./networks";
 import storageLocal from "redux-persist/lib/storage";
+import { ensApi } from "./slices/ensResolver.slice";
 import {
   FLUSH,
   PAUSE,
@@ -61,7 +62,9 @@ export const makeStore = wrapMakeStore(() => {
       [rpcApi.reducerPath]: rpcApi.reducer,
       [sfSubgraph.reducerPath]: sfSubgraph.reducer,
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
-      [addressBookSlice.name]: addressBookReducer
+      [addressBookSlice.name]: addressBookReducer,
+      [addressBookSlice.name]: addressBookReducer,
+      [ensApi.reducerPath]: ensApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -85,7 +88,8 @@ export const makeStore = wrapMakeStore(() => {
           })
         )
         .concat(rpcApi.middleware)
-        .concat(sfSubgraph.middleware),
+        .concat(sfSubgraph.middleware)
+        .concat(ensApi.middleware),
   });
 
   if (!isServer()) {

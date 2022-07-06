@@ -11,6 +11,7 @@ import {
   SvgIconProps,
   TextField,
   Tooltip,
+  Avatar,
 } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
@@ -23,6 +24,7 @@ import {
   getEntryId,
 } from "../redux/slices/addressBook.slice";
 import { Network } from "../redux/networks";
+import { ensApi } from "../redux/slices/ensResolver.slice";
 import { ethers } from "ethers";
 
 export const AddressBookButton: FC<{
@@ -34,6 +36,14 @@ export const AddressBookButton: FC<{
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const avatarUrl = ensApi.useLookupAvatarQuery(
+    address
+  )
+
+  const ensAddress = ensApi.useLookupAddressQuery(
+    address
+  )
 
   return (
     <>
@@ -52,8 +62,11 @@ export const AddressBookButton: FC<{
         network={network}
         address={address}
         open={isDialogOpen}
+        // @ts-expect-error
+        description={ensAddress.data?.name}
         handleClose={() => setIsDialogOpen(false)}
       />
+      {avatarUrl.data ? <Avatar alt={address} src={avatarUrl.data?.avatar} /> : ''}
     </>
   );
 };
@@ -62,14 +75,20 @@ export const AddressBookDialog: FC<{
   network: Network;
   address: string;
   open: boolean;
+  description: string;
   handleClose: () => void;
-}> = ({ network, address, open, handleClose }) => {
+}> = ({ network, address, open, handleClose, description }) => {
   const dispatch = useAppDispatch();
   const existingEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
 
-  const getInitialNameTag = () => existingEntry?.nameTag ?? "";
+  const ensQuery = ensApi.useLookupAddressQuery(
+    address
+  )
+
+  const getInitialNameTag = () => existingEntry?.nameTag ??  ensQuery.data?.name ?? "";
+
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag());
 
   // Fixes: https://github.com/superfluid-finance/superfluid-console/issues/21
@@ -112,7 +131,7 @@ export const AddressBookDialog: FC<{
         </Box>
         <Divider />
         <DialogContent>
-          <DialogContentText></DialogContentText>
+          <DialogContentText>{description}</DialogContentText>
           <TextField
             autoFocus
             margin="dense"

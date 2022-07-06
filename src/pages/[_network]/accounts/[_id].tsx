@@ -35,6 +35,8 @@ import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetwo
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
+import { ensApi } from '../../../redux/slices/ensResolver.slice';
+
 import {
   incomingStreamOrderingDefault,
   incomingStreamPagingDefault,
@@ -64,6 +66,9 @@ import ellipsisAddress from "../../../utils/ellipsisAddress";
 const AccountPage: NextPage = () => {
   const network = useContext(NetworkContext);
   const address = useContext(IdContext);
+
+  const ensAddressQuery = ensApi.useLookupAddressQuery(address);
+  const ensName = ensAddressQuery.data?.name
 
   const accountQuery = sfSubgraph.useAccountQuery({
     chainId: network.chainId,
@@ -147,6 +152,7 @@ const AccountPage: NextPage = () => {
           <Stack direction="row" alignItems="center">
             <AddressBookButton
               network={network}
+              description={ensName}
               address={accountQuery.data.id}
             />
             <Typography
