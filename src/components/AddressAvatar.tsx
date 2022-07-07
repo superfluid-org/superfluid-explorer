@@ -1,6 +1,6 @@
 import { Avatar, AvatarProps } from "@mui/material";
 import { memo } from "react";
-import { ensApi } from "../../src/redux/slices/ensApi.slice";
+import { ensApi } from "../../src/redux/slices/ensResolver.slice";
 import Blockies from "react-blockies";
 import {getAddress} from '@ethersproject/address';
 
@@ -13,13 +13,13 @@ export default memo(function AddressAvatar({
   address,
   AvatarProps = {},
 }: AddressAvatarProps) {
-  const { data: ensAvatarUrl } = ensApi.useGetAvatarQuery(address);
+  const { data: ensAvatarUrl } = ensApi.useLookupAvatarQuery(address);
   if (ensAvatarUrl) {
     return (
       <Avatar
         alt="ens avatar"
         variant="rounded"
-        src={ensAvatarUrl}
+        src={ensAvatarUrl.avatar}
         {...AvatarProps}
       />
     );

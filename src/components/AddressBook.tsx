@@ -30,18 +30,15 @@ import { ethers } from "ethers";
 export const AddressBookButton: FC<{
   network: Network;
   address: string;
+  description: any;
   iconProps?: SvgIconProps;
-}> = ({ network, address, iconProps }) => {
+}> = ({ network, address, iconProps, description }) => {
   const entry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const avatarUrl = ensApi.useLookupAvatarQuery(
-    address
-  )
-
-  const ensAddress = ensApi.useLookupAddressQuery(
     address
   )
 
@@ -62,8 +59,7 @@ export const AddressBookButton: FC<{
         network={network}
         address={address}
         open={isDialogOpen}
-        // @ts-expect-error
-        description={ensAddress.data?.name}
+        description={description}
         handleClose={() => setIsDialogOpen(false)}
       />
       {avatarUrl.data ? <Avatar alt={address} src={avatarUrl.data?.avatar} /> : ''}
@@ -83,11 +79,7 @@ export const AddressBookDialog: FC<{
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
 
-  const ensQuery = ensApi.useLookupAddressQuery(
-    address
-  )
-
-  const getInitialNameTag = () => existingEntry?.nameTag ??  ensQuery.data?.name ?? "";
+  const getInitialNameTag = () => existingEntry?.nameTag ??  description ?? "";
 
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag());
 
@@ -131,7 +123,6 @@ export const AddressBookDialog: FC<{
         </Box>
         <Divider />
         <DialogContent>
-          <DialogContentText>{description}</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -140,7 +131,7 @@ export const AddressBookDialog: FC<{
             type="text"
             fullWidth
             variant="standard"
-            value={nameTag}
+            value={`${nameTag}`}
             onChange={(event) => setNameTag(event.target.value)}
           />
         </DialogContent>

@@ -3,7 +3,6 @@ import {ethers} from "ethers";
 import {networks} from "../redux/networks";
 import {sfSubgraph} from "../redux/store";
 import {skipToken} from "@reduxjs/toolkit/query";
-import {ensApi} from "../redux/slices/ensResolver.slice";
 import {gql} from "graphql-request";
 
 const searchByAddressDocument = gql`
@@ -52,25 +51,9 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
     [searchTerm]
   );
 
-  const ensQuery = ensApi.useResolveNameQuery(
-    searchTerm ? searchTerm : skipToken
-  )
-
-  const isEnsAddress = ensQuery !== null ? true : false
-
-
-  let ensAddress: any = ''
-    console.log(ensQuery)
-
-  if(ensQuery){
-    ensAddress = ensQuery.data?.address;
-    console.log(ensAddress)
-  }
-
-
   return networks.map((network) =>
     sfSubgraph.useCustomQuery(
-      isSearchTermAddress && !isEnsAddress
+      isSearchTermAddress
         ? {
           chainId: network.chainId,
           document: searchByAddressDocument,
@@ -80,14 +63,7 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
           },
         }
         :
-        {
-          chainId: network.chainId,
-          document: searchByAddressDocument,
-          variables: {
-            addressId: ensAddress ? ensAddress : '',
-            addressBytes: ensAddress ? ensAddress : ''
-          }
-        }
+        skipToken
     )
   );
 };

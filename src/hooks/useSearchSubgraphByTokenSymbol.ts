@@ -4,7 +4,6 @@ import {networks} from "../redux/networks";
 import {sfSubgraph} from "../redux/store";
 import {skipToken} from "@reduxjs/toolkit/query";
 import {gql} from "graphql-request";
-import {ensApi} from "../redux/slices/ensApi.slice";
 
 const searchByTokenSymbolDocument = gql`
   query Search($tokenSymbol: String) {
@@ -34,15 +33,9 @@ export const useSearchSubgraphByTokenSymbol = (searchTerm: string) => {
     [searchTerm]
   );
 
-  const ensQuery = ensApi.useResolveNameQuery(
-    searchTerm
-  )
-
-  const isEnsAddress =  !!ensQuery.data?.address
-
   return networks.map((network) =>
     sfSubgraph.useCustomQuery(
-      !isSearchTermAddress && searchTerm.length > 2 && !isEnsAddress
+      !isSearchTermAddress && searchTerm.length > 2
         ? {
           chainId: network.chainId,
           document: searchByTokenSymbolDocument,

@@ -68,6 +68,7 @@ const AccountPage: NextPage = () => {
   const address = useContext(IdContext);
 
   const ensAddressQuery = ensApi.useLookupAddressQuery(address);
+
   const ensName = ensAddressQuery.data?.name
 
   const accountQuery = sfSubgraph.useAccountQuery({
@@ -161,12 +162,16 @@ const AccountPage: NextPage = () => {
               component="h1"
               sx={{ mx: 1 }}
             >
-              {addressBookEntry
+                {
+                  ensName
+                }
+                <br />
+                {addressBookEntry
                 ? addressBookEntry.nameTag
                 : ellipsisAddress(
                     ethers.utils.getAddress(accountQuery.data.id),
                     6
-                  )}
+                )}
             </Typography>
             <CopyIconBtn
               copyText={ethers.utils.getAddress(accountQuery.data.id)}

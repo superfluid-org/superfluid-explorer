@@ -65,7 +65,6 @@ export const AccountAddressFormatted: FC<{
   const addressBookEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
-
   const parsedAddress = ellipsis
     ? ellipsisAddress(ethers.utils.getAddress(address), ellipsis)
     : ethers.utils.getAddress(address);

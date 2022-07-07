@@ -1,4 +1,3 @@
-import urlcat from 'urlcat'
 import { ethers } from "ethers";
 import { createApi,  fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -6,12 +5,32 @@ export const ensApi = createApi({
   reducerPath: "ens",
   baseQuery: fakeBaseQuery(),
   endpoints: (builder) => {
-
-    const mainnetProvider = new ethers.providers.InfuraProvider(
-      "mainnet",
-      "c44fac7726a64d5bbbb3a1c51f02d75b"
+    const mainnetProvider = new ethers.providers.FallbackProvider(
+      [
+        {
+          provider: new ethers.providers.JsonRpcBatchProvider(
+            "https://eth-mainnet.public.blastapi.io",
+            "mainnet"
+          ),
+          priority: 1,
+        },
+        {
+          provider: new ethers.providers.JsonRpcBatchProvider(
+            "https://eth-rpc.gateway.pokt.network",
+            "mainnet"
+          ),
+          priority: 1,
+        },
+        {
+          provider: new ethers.providers.JsonRpcBatchProvider(
+            "https://cloudflare-eth.com",
+            "mainnet"
+          ),
+          priority: 1,
+        },
+      ],
+      1
     );
-
     return {
       resolveName: builder.query<
         { address: string; name: string } | null,

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import useAddressName from "../hooks/useAddressName";
+import { useAddressName } from "../hooks/useAddressENS";
 import {shortenHex} from "../utils/shortenHex";
 
 export interface AddressNameProps {

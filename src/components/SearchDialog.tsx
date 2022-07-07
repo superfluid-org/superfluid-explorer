@@ -22,6 +22,7 @@ import _ from "lodash";
 import NextLink from "next/link";
 import NetworkFormatted from "./NetworkDisplay";
 import { networksByChainId } from "../redux/networks";
+import { useAddressName } from "../hooks/useAddressENS";
 import { useAppSelector } from "../redux/hooks";
 import { addressBookSelectors } from "../redux/slices/addressBook.slice";
 import { searchBarPlaceholderText } from "./SearchBar";
@@ -61,15 +62,15 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
     setSearchTermDebounced(searchTerm.trim());
   };
 
-  const networkSearchResults = useSearch(searchTermDebounced);
+
+  const addressNameResults = useAddressName(searchTermDebounced)
+  const networkSearchResults = useSearch(addressNameResults.addressChecksummed, addressNameResults.name);
 
   useEffect(() => {
     const handleRouteChange = () => {
       handleClose();
     };
-
     router.events.on("routeChangeStart", handleRouteChange);
-
     // If the component is unmounted, unsubscribe
     // from the event with the `off` method:
     return () => {
@@ -140,6 +141,8 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                         passHref
                       >
                         <ListItemButton component="a">
+                          <h4>{account.ENS}</h4>
+                          <h1 style={{opacity: '1%'}}>`&apos;`</h1>
                           <AccountAddressFormatted
                             network={x.network}
                             address={account.id}

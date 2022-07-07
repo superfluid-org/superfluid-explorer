@@ -21,8 +21,7 @@ export type NetworkSearchResult = {
   }[];
 };
 
-export const useSearch = (searchTerm: string) => {
-
+export const useSearch = (searchTerm: string, name: string) => {
   const subgraphSearchByAddressResults = useSearchSubgraphByAddress(searchTerm);
   const subgraphSearchByTokenSymbolResults =
     useSearchSubgraphByTokenSymbol(searchTerm);
@@ -120,7 +119,7 @@ export const useSearch = (searchTerm: string) => {
       accounts: _.uniqBy(
         searchByAddressMappedResult.accounts
           .concat(addressBookResult.accounts)
-          .map((x) => ({...x, id: ethers.utils.getAddress(x.id)})),
+          .map((x) => ({...x, id: ethers.utils.getAddress(x.id), ENS: name})),
         (x) => x.id
       ),
     };
