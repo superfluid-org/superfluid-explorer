@@ -38,7 +38,7 @@ export const ensApi = createApi({
       >({
         queryFn: async (name) => {
 
-          if (!name.endsWith('.eth')) {
+          if (!name.endsWith('.eth') || !name.endsWith('.xyz') || !name.endsWith('.luxe') || !name.endsWith('.kred')) {
             return { data: null };
           }
 
