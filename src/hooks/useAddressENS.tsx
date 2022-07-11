@@ -5,6 +5,7 @@ import {ethers} from "ethers";
 interface AddressNameResult {
   addressChecksummed: string;
   name: string;
+  avatar: string;
 }
 
 export const useAddressName = (address: string): AddressNameResult => {
@@ -19,6 +20,7 @@ export const useAddressName = (address: string): AddressNameResult => {
     return {
       addressChecksummed: address,
       name: ensLookupQuery.data?.name ?? "",
+      avatar: "",
     };
   }
   else{
@@ -26,8 +28,8 @@ export const useAddressName = (address: string): AddressNameResult => {
     return {
       addressChecksummed: ensAddressQuery.data?.address ?? "",
       name: address,
+      avatar: '',
     };
-
   }
 };
 

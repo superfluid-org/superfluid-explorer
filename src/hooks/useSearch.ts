@@ -1,6 +1,7 @@
 import {Network, networks, networksByChainId} from "../redux/networks";
 import _ from "lodash";
 import {ethers} from "ethers";
+import { useAddressName } from "./useAddressENS";
 import {useSearchAddressBook} from "./useSearchAddressBook";
 import {SubgraphSearchByAddressResult, useSearchSubgraphByAddress} from "./useSearchSubgraphByAddress";
 import {SubgraphSearchByTokenSymbolResult, useSearchSubgraphByTokenSymbol} from "./useSearchSubgraphByTokenSymbol";
@@ -21,8 +22,11 @@ export type NetworkSearchResult = {
   }[];
 };
 
-export const useSearch = (searchTerm: string, name: string) => {
-  const subgraphSearchByAddressResults = useSearchSubgraphByAddress(searchTerm);
+export const useSearch = (searchTerm: string) => {
+
+  const searchResults = useAddressName(searchTerm)
+
+  const subgraphSearchByAddressResults = useSearchSubgraphByAddress(searchResults.addressChecksummed);
   const subgraphSearchByTokenSymbolResults =
     useSearchSubgraphByTokenSymbol(searchTerm);
   const addressBookResults = useSearchAddressBook(searchTerm);
@@ -119,7 +123,7 @@ export const useSearch = (searchTerm: string, name: string) => {
       accounts: _.uniqBy(
         searchByAddressMappedResult.accounts
           .concat(addressBookResult.accounts)
-          .map((x) => ({...x, id: ethers.utils.getAddress(x.id), ENS: name})),
+      .map((x) => ({...x, id: ethers.utils.getAddress(x.id), ENS: searchResults.name})),
         (x) => x.id
       ),
     };

@@ -34,9 +34,8 @@ import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
+import { ensApi } from "../../../redux/slices/ensResolver.slice";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
-import { ensApi } from '../../../redux/slices/ensResolver.slice';
-
 import {
   incomingStreamOrderingDefault,
   incomingStreamPagingDefault,
@@ -66,15 +65,14 @@ import ellipsisAddress from "../../../utils/ellipsisAddress";
 const AccountPage: NextPage = () => {
   const network = useContext(NetworkContext);
   const address = useContext(IdContext);
-
-  const ensAddressQuery = ensApi.useLookupAddressQuery(address);
-
-  const ensName = ensAddressQuery.data?.name
-
   const accountQuery = sfSubgraph.useAccountQuery({
     chainId: network.chainId,
     id: address,
   });
+
+  const ensAddressQuery = ensApi.useLookupAddressQuery(address);
+
+  const ensName = ensAddressQuery.data?.name
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams");
   const prefetchIndexesQuery = sfSubgraph.usePrefetch("indexes");
@@ -152,8 +150,8 @@ const AccountPage: NextPage = () => {
         {network && accountQuery.data ? (
           <Stack direction="row" alignItems="center">
             <AddressBookButton
+              description={''}
               network={network}
-              description={ensName}
               address={accountQuery.data.id}
             />
             <Typography
