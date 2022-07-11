@@ -161,9 +161,14 @@ const AccountPage: NextPage = () => {
               sx={{ mx: 1 }}
             >
                 {
-                  ensName
+                  ensName ?
+                  <>
+                  {ensName}
+                  <br />
+                  </>
+                  :
+                  ''
                 }
-                <br />
                 {addressBookEntry
                 ? addressBookEntry.nameTag
                 : ellipsisAddress(
