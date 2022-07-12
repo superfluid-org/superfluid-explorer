@@ -154,26 +154,28 @@ const AccountPage: NextPage = () => {
               address={accountQuery.data.id}
             />
             <Typography
+               data-cy={"ensName"}
+               variant="h3"
+               component="h1"
+               sx={{ mx: 1 }}
+            >
+              {
+                addressBookEntry ?
+                  addressBookEntry.nameTag
+                  :
+                  ensName
+              }
+            </Typography>
+            <Typography
               data-cy={"address"}
-              variant="h4"
-              component="h1"
+              variant={addressBookEntry ? "h4" : "h6"}
+              component="h2"
               sx={{ mx: 1 }}
             >
-                {
-                  ensName ?
-                  <>
-                  {ensName}
-                  <br />
-                  </>
-                  :
-                  ''
-                }
-                {addressBookEntry
-                ? addressBookEntry.nameTag
-                : ellipsisAddress(
-                    ethers.utils.getAddress(accountQuery.data.id),
-                    6
-                )}
+              {ellipsisAddress(
+                  ethers.utils.getAddress(accountQuery.data.id),
+                  6
+              )}
             </Typography>
             <CopyIconBtn
               copyText={ethers.utils.getAddress(accountQuery.data.id)}

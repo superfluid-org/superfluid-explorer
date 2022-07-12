@@ -59,7 +59,7 @@ export const AddressBookButton: FC<{
         open={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
       />
-      {avatarUrl.data ? <Avatar alt={address} src={avatarUrl.data?.avatar} /> : ''}
+      {avatarUrl.currentData ? <Avatar alt={address} src={avatarUrl.currentData?.avatar} /> : ''}
     </>
   );
 };
