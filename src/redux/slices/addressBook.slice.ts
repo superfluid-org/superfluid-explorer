@@ -5,7 +5,6 @@ import {
 import { Network } from '../networks';
 import {RootState} from "../store";
 import {REHYDRATE} from "redux-persist";
-import { add } from 'lodash';
 
 export interface AddressBookEntry {
   chainId: number,

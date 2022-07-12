@@ -63,7 +63,6 @@ export const makeStore = wrapMakeStore(() => {
       [sfSubgraph.reducerPath]: sfSubgraph.reducer,
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
-      [addressBookSlice.name]: addressBookReducer,
       [ensApi.reducerPath]: ensApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>

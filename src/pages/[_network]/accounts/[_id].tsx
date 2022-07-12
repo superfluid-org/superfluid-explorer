@@ -72,7 +72,7 @@ const AccountPage: NextPage = () => {
 
   const ensAddressQuery = ensApi.useLookupAddressQuery(address);
 
-  const ensName = ensAddressQuery.data?.name
+  const ensName = ensAddressQuery.currentData?.name
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams");
   const prefetchIndexesQuery = sfSubgraph.usePrefetch("indexes");
@@ -150,7 +150,6 @@ const AccountPage: NextPage = () => {
         {network && accountQuery.data ? (
           <Stack direction="row" alignItems="center">
             <AddressBookButton
-              description={''}
               network={network}
               address={accountQuery.data.id}
             />

@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   IconButton,
@@ -30,9 +29,8 @@ import { ethers } from "ethers";
 export const AddressBookButton: FC<{
   network: Network;
   address: string;
-  description: any;
   iconProps?: SvgIconProps;
-}> = ({ network, address, iconProps, description }) => {
+}> = ({ network, address, iconProps }) => {
   const entry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
@@ -59,7 +57,6 @@ export const AddressBookButton: FC<{
         network={network}
         address={address}
         open={isDialogOpen}
-        description={description}
         handleClose={() => setIsDialogOpen(false)}
       />
       {avatarUrl.data ? <Avatar alt={address} src={avatarUrl.data?.avatar} /> : ''}
@@ -71,15 +68,14 @@ export const AddressBookDialog: FC<{
   network: Network;
   address: string;
   open: boolean;
-  description: string;
   handleClose: () => void;
-}> = ({ network, address, open, handleClose, description }) => {
+}> = ({ network, address, open, handleClose }) => {
   const dispatch = useAppDispatch();
   const existingEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
 
-  const getInitialNameTag = () => existingEntry?.nameTag ??  description ?? "";
+  const getInitialNameTag = () => existingEntry?.nameTag ?? "";
 
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag());
 

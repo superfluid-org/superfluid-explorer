@@ -24,7 +24,7 @@ export type NetworkSearchResult = {
 
 export const useSearch = (searchTerm: string) => {
 
-  const searchResults = useAddressName(searchTerm)
+  const searchResults = useAddressName(searchTerm);
 
   const subgraphSearchByAddressResults = useSearchSubgraphByAddress(searchResults.addressChecksummed);
   const subgraphSearchByTokenSymbolResults =
