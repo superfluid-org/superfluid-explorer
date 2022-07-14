@@ -137,9 +137,12 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                         href={`/${x.network.slugName}/accounts/${account.id}`}
                         passHref
                       >
-                        <ListItemButton component="a">
-                         <h4>{account.ENS}</h4>
-                          <h1 style={{opacity: '1%'}}>`&apos;`</h1>
+                        <ListItemButton component="a"
+                        sx={{ display: 'flex', alignItems: 'flex-start',
+                        flexDirection: 'column', justifyContent: 'flex-start' }}>
+                          <Typography  sx={{ mr: 2, mb: 0.5 }} variant={"h5"} component="h2">
+                            {account.ENS}
+                          </Typography>
                           <AccountAddressFormatted
                             network={x.network}
                             address={account.id}

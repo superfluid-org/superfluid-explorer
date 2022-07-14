@@ -6,6 +6,7 @@ interface AddressNameResult {
   addressChecksummed: string;
   name: string;
   avatar: string;
+  isFetching: boolean;
 }
 
 export const useAddressName = (address: string): AddressNameResult => {
@@ -30,14 +31,26 @@ export const useName = (address: string): AddressNameResult => {
     addressChecksummed: ensAddressQuery.data?.address ?? "",
     name: address,
     avatar: '',
+    isFetching: false,
   };
 }
 
 export const useAddress = (address: string): AddressNameResult => {
-  const ensLookupQuery = ensApi.useLookupAddressQuery(address);
-  return {
-    addressChecksummed: address,
-    name: ensLookupQuery.data?.name ?? "",
-    avatar: "",
-  };
+  try{
+    const ensLookupQuery = ensApi.useLookupAddressQuery(address);
+    return {
+      addressChecksummed: address,
+      name: ensLookupQuery.data?.name ?? "",
+      avatar: "",
+      isFetching: false,
+    };
+  }
+  catch(e){
+    return {
+      addressChecksummed: address,
+      name: address,
+      avatar: "",
+      isFetching: true,
+    };
+  }
 }

@@ -106,7 +106,8 @@ export const useSearch = (searchTerm: string) => {
       network: network,
       isFetching:
         searchByAddressMappedResult.isFetching ||
-        searchByTokenSymbolMappedResult.isFetching,
+        searchByTokenSymbolMappedResult.isFetching ||
+        searchResults.isFetching,
       error:
         searchByAddressMappedResult.error &&
         searchByTokenSymbolMappedResult.error,

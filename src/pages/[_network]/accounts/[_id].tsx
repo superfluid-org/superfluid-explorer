@@ -113,7 +113,7 @@ const AccountPage: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue]);
 
-  const addressBookEntry = useAppSelector((state) =>
+  const addressBookEntry = useAppSelector((state: any) =>
     network
       ? addressBookSelectors.selectById(state, createEntryId(network, address))
       : undefined
@@ -170,7 +170,7 @@ const AccountPage: NextPage = () => {
               data-cy={"address"}
               variant={addressBookEntry ? "h4" : "h6"}
               component="h2"
-              sx={{ mx: 1 }}
+              sx={{ mx: 1, mt: 1.5 }}
             >
               {ellipsisAddress(
                   ethers.utils.getAddress(accountQuery.data.id),
