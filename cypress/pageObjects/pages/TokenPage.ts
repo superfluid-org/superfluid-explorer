@@ -297,6 +297,8 @@ export class TokenPage extends BasePage {
   }
 
   static validateOverallTokenData() {
+    cy.get("[class*=MuiSkeleton]").should("not.exist")
+    cy.wait("@tokenStatistics")
     cy.get("@tokenStatistics").its("response").then(res => {
       let stats = res.body.data.tokenStatistics[0]
       this.hasText(TOTAL_TRANSFERRED, (ethers.utils.formatEther(stats.totalAmountTransferredUntilUpdatedAt)).toString())
@@ -313,7 +315,7 @@ export class TokenPage extends BasePage {
   }
 
   static saveTokenStatisticsQueriesOn(network: string) {
-    cy.intercept("POST", "**protocol-dev-" + network, (req) => {
+    cy.intercept("POST", "**protocol-**-" + network, (req) => {
       if (req.body.operationName === "tokenStatistics") {
         req.alias = "tokenStatistics"
       }
