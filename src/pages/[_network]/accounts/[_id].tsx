@@ -155,8 +155,8 @@ const AccountPage: NextPage = () => {
             />
             <Typography
                data-cy={"ensName"}
-               variant="h3"
-               component="h1"
+               variant="h4"
+              component="h1"
                sx={{ mx: 1 }}
             >
               {
@@ -168,9 +168,9 @@ const AccountPage: NextPage = () => {
             </Typography>
             <Typography
               data-cy={"address"}
-              variant={addressBookEntry ? "h4" : "h6"}
-              component="h2"
-              sx={{ mx: 1, mt: 1.5 }}
+              variant="h4"
+              component="h1"
+              sx={{ mx: 1 }}
             >
               {ellipsisAddress(
                   ethers.utils.getAddress(accountQuery.data.id),

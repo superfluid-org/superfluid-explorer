@@ -33,6 +33,7 @@ export const useName = (address: string): AddressNameResult => {
     avatar: '',
     isFetching: false,
   };
+
 }
 
 export const useAddress = (address: string): AddressNameResult => {
