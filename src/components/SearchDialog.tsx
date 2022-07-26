@@ -45,7 +45,6 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
   };
 
   const router = useRouter();
-
   const [searchTermVisible, setSearchTermVisible] = useState("");
   const [searchTermDebounced, _setSearchTermDebounced] =
     useState(searchTermVisible);

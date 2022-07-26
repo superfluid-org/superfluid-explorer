@@ -5,6 +5,7 @@ import { useAddressName } from "./useAddressENS";
 import {useSearchAddressBook} from "./useSearchAddressBook";
 import {SubgraphSearchByAddressResult, useSearchSubgraphByAddress} from "./useSearchSubgraphByAddress";
 import {SubgraphSearchByTokenSymbolResult, useSearchSubgraphByTokenSymbol} from "./useSearchSubgraphByTokenSymbol";
+import { useEffect } from "react";
 import { SerializedError } from "@reduxjs/toolkit";
 
 export type NetworkSearchResult = {

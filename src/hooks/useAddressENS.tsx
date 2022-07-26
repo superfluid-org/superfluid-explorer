@@ -1,5 +1,5 @@
 import { ensApi } from "../redux/slices/ensResolver.slice";
-import {useMemo} from "react";
+import { useMemo } from "react";
 import {ethers} from "ethers";
 
 interface AddressNameResult {
@@ -10,7 +10,6 @@ interface AddressNameResult {
 }
 
 export const useAddressName = (address: string): AddressNameResult => {
-
   const isSearchTermAddress = useMemo(
     () => ethers.utils.isAddress(address),
     [address]
@@ -26,14 +25,23 @@ export const useAddressName = (address: string): AddressNameResult => {
 };
 
 export const useName = (address: string): AddressNameResult => {
-  const ensAddressQuery = ensApi.useResolveNameQuery(address);
-  return {
-    addressChecksummed: ensAddressQuery.data?.address ?? "",
-    name: address,
-    avatar: '',
-    isFetching: false,
-  };
-
+  try{
+    const ensAddressQuery = ensApi.useResolveNameQuery(address);
+    return {
+      addressChecksummed: ensAddressQuery.currentData?.address ?? "",
+      name: address,
+      avatar: '',
+      isFetching: ensAddressQuery.isFetching,
+    };
+  }
+  catch(e){
+    return {
+      addressChecksummed: address,
+      name: address,
+      avatar: "",
+      isFetching: false,
+    };
+  }
 }
 
 export const useAddress = (address: string): AddressNameResult => {
@@ -43,7 +51,7 @@ export const useAddress = (address: string): AddressNameResult => {
       addressChecksummed: address,
       name: ensLookupQuery.data?.name ?? "",
       avatar: "",
-      isFetching: false,
+      isFetching: ensLookupQuery.isFetching,
     };
   }
   catch(e){
@@ -51,7 +59,7 @@ export const useAddress = (address: string): AddressNameResult => {
       addressChecksummed: address,
       name: address,
       avatar: "",
-      isFetching: true,
+      isFetching: false,
     };
   }
 }
