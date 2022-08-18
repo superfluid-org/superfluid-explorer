@@ -5,31 +5,9 @@ export const ensApi = createApi({
   reducerPath: "ens",
   baseQuery: fakeBaseQuery(),
   endpoints: (builder) => {
-    const mainnetProvider = new ethers.providers.FallbackProvider(
-      [
-        {
-          provider: new ethers.providers.JsonRpcBatchProvider(
-            "https://eth-mainnet.public.blastapi.io",
-            "mainnet"
-          ),
-          priority: 1,
-        },
-        {
-          provider: new ethers.providers.JsonRpcBatchProvider(
-            "https://eth-rpc.gateway.pokt.network",
-            "mainnet"
-          ),
-          priority: 1,
-        },
-        {
-          provider: new ethers.providers.JsonRpcBatchProvider(
-            "https://cloudflare-eth.com",
-            "mainnet"
-          ),
-          priority: 1,
-        },
-      ],
-      1
+    const mainnetProvider = new ethers.providers.JsonRpcBatchProvider(
+      "https://rpc-endpoints.superfluid.dev/eth-mainnet",
+      "mainnet"
     );
     return {
       resolveName: builder.query<
