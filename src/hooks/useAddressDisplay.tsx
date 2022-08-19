@@ -9,7 +9,9 @@ interface AddressDisplayResult {
   isFetching: boolean;
 }
 
-export const useAddressDisplay = (addressOrName: string): AddressDisplayResult => {
+export const useAddressDisplay = (
+  addressOrName: string
+): AddressDisplayResult => {
   const isSearchTermAddress = useMemo(
     () => ethers.utils.isAddress(addressOrName.toLowerCase()),
     [addressOrName]
@@ -26,7 +28,7 @@ export const useName = (name: string): AddressDisplayResult => {
   const ensAddressQuery = ensApi.useResolveNameQuery(name);
   return {
     addressChecksummed: ensAddressQuery.currentData?.address,
-    ensName: name,
+    ensName: !!ensAddressQuery.currentData?.address ? name : null,
     avatar: undefined,
     isFetching: ensAddressQuery.isFetching,
   };
