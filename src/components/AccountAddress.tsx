@@ -15,7 +15,7 @@ const AccountAddress: FC<{
   address: string;
   ellipsis?: number;
   dataCy?: string;
-}> = ({ network, address, ellipsis , dataCy}) => {
+}> = ({ network, address, ellipsis, dataCy }) => {
   const prefetchAccountQuery = sfSubgraph.usePrefetch("account", {
     ifOlderThan: 45,
   });
@@ -61,7 +61,8 @@ export const AccountAddressFormatted: FC<{
   network: Network;
   address: string;
   ellipsis?: number;
-}> = ({ network, address, ellipsis }) => {
+  format?: "nameOnly" | "addressPlusName" | "namePlusAddress";
+}> = ({ network, address, ellipsis, format = "nameOnly" }) => {
   const addressBookEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   );
@@ -69,6 +70,28 @@ export const AccountAddressFormatted: FC<{
     ? ellipsisAddress(ethers.utils.getAddress(address), ellipsis)
     : ethers.utils.getAddress(address);
 
+  if (format === "addressPlusName") {
+    return (
+      <>
+        {parsedAddress}
+        {!!addressBookEntry?.nameTag && ` (${addressBookEntry.nameTag})`}
+      </>
+    );
+  }
+
+  if (format === "namePlusAddress") {
+    if (!addressBookEntry?.nameTag) {
+      return <>{parsedAddress}</>;
+    } else {
+      return (
+        <>
+          {addressBookEntry.nameTag} ({parsedAddress})
+        </>
+      );
+    }
+  }
+
+  // "nameOnly" is default
   return <>{addressBookEntry?.nameTag || parsedAddress}</>;
 };
 

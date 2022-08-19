@@ -12,6 +12,7 @@ import {
   Card,
   Divider,
   ListItemText,
+  Grid,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import SearchIcon from "@mui/icons-material/Search";
@@ -145,19 +146,27 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                             justifyContent: "flex-start",
                           }}
                         >
-                          {account.ENS && (
-                            <Typography
-                              sx={{ mr: 2, mb: 0.5 }}
-                              variant={"h5"}
-                              component="h2"
-                            >
-                              {account.ENS}
-                            </Typography>
+                          {account.ENS ? (
+                            <Grid container>
+                              <Grid item xs={12}>
+                                {account.ENS}
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Typography variant="caption" component="span">
+                                  <AccountAddressFormatted
+                                    network={x.network}
+                                    address={account.id}
+                                    format={"addressPlusName"}
+                                  />
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          ) : (
+                            <AccountAddressFormatted
+                              network={x.network}
+                              address={account.id}
+                            />
                           )}
-                          <AccountAddressFormatted
-                            network={x.network}
-                            address={account.id}
-                          />
                         </ListItemButton>
                       </NextLink>
                     </ListItem>
