@@ -127,7 +127,7 @@ export const AddressBookDialog: FC<{
             type="text"
             fullWidth
             variant="standard"
-            value={`${nameTag}`}
+            value={nameTag}
             onChange={(event) => setNameTag(event.target.value)}
           />
         </DialogContent>

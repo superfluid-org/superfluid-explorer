@@ -1,11 +1,16 @@
-import {Network, networks, networksByChainId} from "../redux/networks";
+import { Network, networks, networksByChainId } from "../redux/networks";
 import _ from "lodash";
-import {ethers} from "ethers";
-import { useAddressName } from "./useAddressENS";
-import {useSearchAddressBook} from "./useSearchAddressBook";
-import {SubgraphSearchByAddressResult, useSearchSubgraphByAddress} from "./useSearchSubgraphByAddress";
-import {SubgraphSearchByTokenSymbolResult, useSearchSubgraphByTokenSymbol} from "./useSearchSubgraphByTokenSymbol";
-import { useEffect } from "react";
+import { ethers } from "ethers";
+import { useAddressDisplay } from "./useAddressDisplay";
+import { useSearchAddressBook } from "./useSearchAddressBook";
+import {
+  SubgraphSearchByAddressResult,
+  useSearchSubgraphByAddress,
+} from "./useSearchSubgraphByAddress";
+import {
+  SubgraphSearchByTokenSymbolResult,
+  useSearchSubgraphByTokenSymbol,
+} from "./useSearchSubgraphByTokenSymbol";
 import { SerializedError } from "@reduxjs/toolkit";
 
 export type NetworkSearchResult = {
@@ -24,10 +29,9 @@ export type NetworkSearchResult = {
 };
 
 export const useSearch = (searchTerm: string) => {
+  const addressDisplay = useAddressDisplay(searchTerm);
 
-  const searchResults = useAddressName(searchTerm);
-
-  const subgraphSearchByAddressResults = useSearchSubgraphByAddress(searchResults.addressChecksummed);
+  const subgraphSearchByAddressResults = useSearchSubgraphByAddress(addressDisplay.addressChecksummed ?? "skip");
   const subgraphSearchByTokenSymbolResults =
     useSearchSubgraphByTokenSymbol(searchTerm);
   const addressBookResults = useSearchAddressBook(searchTerm);
@@ -99,7 +103,7 @@ export const useSearch = (searchTerm: string) => {
 
     const addressBookResult = addressBookMappedResultsDictionary[
       network.slugName
-      ] ?? {
+    ] ?? {
       accounts: [],
     };
 
@@ -108,7 +112,7 @@ export const useSearch = (searchTerm: string) => {
       isFetching:
         searchByAddressMappedResult.isFetching ||
         searchByTokenSymbolMappedResult.isFetching ||
-        searchResults.isFetching,
+        addressDisplay.isFetching,
       error:
         searchByAddressMappedResult.error &&
         searchByTokenSymbolMappedResult.error,
@@ -116,7 +120,7 @@ export const useSearch = (searchTerm: string) => {
         _.uniqBy(
           searchByAddressMappedResult.tokens
             .concat(searchByTokenSymbolMappedResult.tokens)
-            .map((x) => ({...x, id: ethers.utils.getAddress(x.id)})),
+            .map((x) => ({ ...x, id: ethers.utils.getAddress(x.id) })),
           (x) => x.id
         ),
         (x) => x.isListed,
@@ -125,7 +129,11 @@ export const useSearch = (searchTerm: string) => {
       accounts: _.uniqBy(
         searchByAddressMappedResult.accounts
           .concat(addressBookResult.accounts)
-      .map((x) => ({...x, id: ethers.utils.getAddress(x.id), ENS: searchResults.name})),
+          .map((x) => ({
+            ...x,
+            id: ethers.utils.getAddress(x.id),
+            ENS: addressDisplay.ensName,
+          })),
         (x) => x.id
       ),
     };

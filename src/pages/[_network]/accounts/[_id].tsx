@@ -72,7 +72,7 @@ const AccountPage: NextPage = () => {
 
   const ensAddressQuery = ensApi.useLookupAddressQuery(address);
 
-  const ensName = ensAddressQuery.currentData?.name
+  const ensName = ensAddressQuery.currentData?.name;
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams");
   const prefetchIndexesQuery = sfSubgraph.usePrefetch("indexes");
@@ -154,17 +154,13 @@ const AccountPage: NextPage = () => {
               address={accountQuery.data.id}
             />
             <Typography
-               data-cy={"ensName"}
-               variant="h4"
+              data-cy={"ensName"}
+              variant="h4"
               component="h1"
-               sx={{ mx: 1 }}
+              sx={{ mx: 1 }}
             >
-              {
-                addressBookEntry ?
-                  addressBookEntry.nameTag
-                  :
-                  ensName
-              }
+              {/* TODO(KK): When there's an address book entry then ENS name is not displayed anywhere. Not sure if I like it...  */}
+              {addressBookEntry ? addressBookEntry.nameTag : ensName}
             </Typography>
             <Typography
               data-cy={"address"}
@@ -173,8 +169,8 @@ const AccountPage: NextPage = () => {
               sx={{ mx: 1 }}
             >
               {ellipsisAddress(
-                  ethers.utils.getAddress(accountQuery.data.id),
-                  6
+                ethers.utils.getAddress(accountQuery.data.id),
+                6
               )}
             </Typography>
             <CopyIconBtn
@@ -284,7 +280,7 @@ const AccountPage: NextPage = () => {
                       placeholder={{
                         balance: tokenSnapshot.balanceUntilUpdatedAt,
                         balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
-                        flowRate: tokenSnapshot.totalNetFlowRate
+                        flowRate: tokenSnapshot.totalNetFlowRate,
                       }}
                       TokenChipProps={{
                         network,

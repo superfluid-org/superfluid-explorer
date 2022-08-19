@@ -20,7 +20,7 @@ const SearchBar: FC<PropsWithChildren<unknown>> = ({ children}) => {
 
 export default SearchBar;
 
-export const searchBarPlaceholderText = "Search any ENS, address on any network..."
+export const searchBarPlaceholderText = "Search by address, ENS or token symbol"
 
 // NOTE: Search bar UI is inspired by: https://mui.com/components/app-bar/#app-bar-with-a-primary-search-field
 

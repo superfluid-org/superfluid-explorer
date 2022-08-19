@@ -1,6 +1,6 @@
 import { FC, useContext, useMemo } from "react";
 import { AppDataGrid } from "./AppDataGrid";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import {
   Index,
   IndexUpdatedEvent_OrderBy,
@@ -9,7 +9,7 @@ import {
   SkipPaging,
 } from "@superfluid-finance/sdk-core";
 import { IndexUpdatedEvent } from "@superfluid-finance/sdk-core";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import TimeAgo from "./TimeAgo";
 import SuperTokenAddress from "./SuperTokenAddress";
 import NetworkContext from "../contexts/NetworkContext";
@@ -86,7 +86,7 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
         },
       },
     ],
-    [index]
+    [index, network]
   );
 
   const rows: Distribution[] =

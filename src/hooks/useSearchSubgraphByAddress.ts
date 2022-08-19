@@ -1,9 +1,9 @@
-import {useMemo} from "react";
-import {ethers} from "ethers";
-import {networks} from "../redux/networks";
-import {sfSubgraph} from "../redux/store";
-import {skipToken} from "@reduxjs/toolkit/query";
-import {gql} from "graphql-request";
+import { useMemo } from "react";
+import { ethers } from "ethers";
+import { networks } from "../redux/networks";
+import { sfSubgraph } from "../redux/store";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { gql } from "graphql-request";
 
 const searchByAddressDocument = gql`
   query Search($addressId: ID, $addressBytes: Bytes) {
@@ -55,15 +55,14 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
     sfSubgraph.useCustomQuery(
       isSearchTermAddress
         ? {
-          chainId: network.chainId,
-          document: searchByAddressDocument,
-          variables: {
-            addressId: searchTerm.toLowerCase(),
-            addressBytes: searchTerm.toLowerCase(),
-          },
-        }
-        :
-        skipToken
+            chainId: network.chainId,
+            document: searchByAddressDocument,
+            variables: {
+              addressId: searchTerm.toLowerCase(),
+              addressBytes: searchTerm.toLowerCase(),
+            },
+          }
+        : skipToken
     )
   );
 };
