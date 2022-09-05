@@ -13,26 +13,6 @@ export type Network = {
 
 export const networks: Network[] = [
   {
-    displayName: "Ropsten",
-    slugName: "ropsten",
-    chainId: 3,
-    isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-ropsten`,
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-ropsten",
-    getLinkForTransaction: (txHash: string): string => `https://ropsten.etherscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string => `https://ropsten.etherscan.io/address/${address}`
-  },
-  {
-    displayName: "Rinkeby",
-    slugName: "rinkeby",
-    chainId: 4,
-    isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-rinkeby`,
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-rinkeby",
-    getLinkForTransaction: (txHash: string): string => `https://rinkeby.etherscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string => `https://rinkeby.etherscan.io/address/${address}`
-  },
-  {
     displayName: "Goerli",
     slugName: "goerli",
     chainId: 5,
@@ -41,16 +21,6 @@ export const networks: Network[] = [
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-goerli",
     getLinkForTransaction: (txHash: string): string => `https://goerli.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://goerli.etherscan.io/address/${address}`
-  },
-  {
-    displayName: "Kovan",
-    slugName: "kovan",
-    chainId: 42,
-    isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-kovan`,
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-kovan",
-    getLinkForTransaction: (txHash: string): string => `https://kovan.etherscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string => `https://kovan.etherscan.io/address/${address}`
   },
   {
     displayName: "Gnosis Chain",
@@ -81,26 +51,6 @@ export const networks: Network[] = [
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-mumbai",
     getLinkForTransaction: (txHash: string): string => `https://mumbai.polygonscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://mumbai.polygonscan.com/address/${address}`
-  },
-  {
-    displayName: "Arbitrum-Rinkeby",
-    slugName: "arbitrum-rinkeby",
-    chainId: 421611,
-    isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/arbitrum-rinkeby`,
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-arbitrum-rinkeby",
-    getLinkForTransaction: (txHash: string): string => `https://rinkeby-explorer.arbitrum.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string => `https://rinkeby-explorer.arbitrum.io/address/${address}`
-  },
-  {
-    displayName: "Optimism-Kovan",
-    slugName: "optimism-kovan",
-    chainId: 69,
-    isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/optimism-kovan`,
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-optimism-kovan",
-    getLinkForTransaction: (txHash: string): string => `https://kovan-optimistic.etherscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string => `https://kovan-optimistic.etherscan.io/address/${address}`
   },
   {
     displayName: "Avalanche-Fuji",
