@@ -165,7 +165,6 @@ export class LandingPage extends BasePage {
   }
 
   static switchLatestStreamNetwork(network: string) {
-    this.click(NETWORK_RIGHT_ARROW)
     this.click("[data-cy=" + network + "-landing-button]")
     this.hasAttributeWithValue("[data-cy=" + network + "-landing-button]", "aria-selected", "true")
     this.hasLength(ADDRESS_LINKS, 20)

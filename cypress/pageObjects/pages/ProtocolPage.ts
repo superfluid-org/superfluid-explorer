@@ -20,7 +20,6 @@ const SUPERFLUID_LOADER_V1 = "[data-cy=SuperLoaderV1-address] p"
 export class ProtocolPage extends BasePage {
 
   static switchLNetwork(network: string) {
-    this.click(NETWORK_RIGHT_ARROW)
     this.click("[data-cy=" + network + "-landing-button]")
     this.hasAttributeWithValue("[data-cy=" + network + "-landing-button]", "aria-selected", "true")
   }

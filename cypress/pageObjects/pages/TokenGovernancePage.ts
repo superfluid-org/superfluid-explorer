@@ -23,7 +23,6 @@ export class TokenGovernancePage extends BasePage {
 
   static switchNetworkAndValidateTokens(network: string) {
     this.isNotVisible(LOADING_SPINNER)
-    this.click(NETWORK_RIGHT_ARROW)
     this.click("[data-cy=" + network + "-landing-button]")
     this.hasAttributeWithValue("[data-cy=" + network + "-landing-button]", "aria-selected", "true")
     this.isNotVisible(LOADING_SPINNER)

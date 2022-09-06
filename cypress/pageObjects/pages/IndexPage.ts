@@ -29,8 +29,13 @@ export class IndexPage extends BasePage {
     cy.fixture("accountData").then(fixture => {
       cy.wrap(fixture[network].superApp.indexes.publications[0]).then((index: any) => {
         this.hasText(TOTAL_UNITS, index.totalUnits)
-        this.hasText(TOTAL_UNITS_APPROVED, index.details.totalUnitsApproved)
-        this.hasText(TOTAL_UNITS_PENDING, index.details.totalUnitsPending)
+        cy.get(TOTAL_UNITS_APPROVED).then(el => {
+          let approvedUnits = parseInt(el.text())
+          cy.get(TOTAL_UNITS_PENDING).then(el => {
+            let pendingUnits = parseInt(el.text())
+            cy.get(TOTAL_UNITS).should("have.text",approvedUnits + pendingUnits)
+          })
+        })
         this.replaceSpacesAndAssertText(TOTAL_AMOUNT_DISTRIBUTED, index.token + index.totalDistributed)
       })
     })

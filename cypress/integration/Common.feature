@@ -13,14 +13,9 @@ Feature: Test cases for common elements and functionalities
       | xdai             |
       | arbitrum-one     |
       | optimism-mainnet |
-      | arbitrum-rinkeby |
       | avalanche-fuji   |
       | goerli           |
-      | kovan            |
       | mumbai           |
-      | optimism-kovan   |
-      | rinkeby          |
-      | ropsten          |
 
   Scenario: Searching for a listed token
     Given User has opened the "landing" page

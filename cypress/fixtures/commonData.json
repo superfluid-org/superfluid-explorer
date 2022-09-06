@@ -3,15 +3,10 @@
   "ongoingStreamsAccount": "0xEb85888b31FADF79CB264d065EdcB4a14551c28d",
   "allNetworks": [
     "goerli",
-    "ropsten",
-    "rinkeby",
-    "kovan",
     "mumbai",
     "xdai",
     "matic",
     "avalanche-fuji",
-    "arbitrum-rinkeby",
-    "optimism-kovan",
     "arbitrum-one",
     "optimism-mainnet"
   ]
