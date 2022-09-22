@@ -1,5 +1,6 @@
+import ScienceIcon from "@mui/icons-material/Science";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Card, Divider, NoSsr, Stack, Tab } from "@mui/material";
+import { Badge, Card, Divider, NoSsr, Stack, Tab } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -11,6 +12,7 @@ import {
   defaultStreamQueryPaging,
   NetworkStreams,
 } from "../components/NetworkStreams";
+import { useAppSelector } from "../redux/hooks";
 import { networksByTestAndName } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
 
@@ -20,6 +22,12 @@ const Home: NextPage = () => {
   const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams", {
     ifOlderThan: 45,
   });
+
+  const displayedTestnetChainIds = useAppSelector((state) =>
+    Object.entries(state.appPreferences.displayedTestNets)
+      .filter(([_, isDisplayed]) => isDisplayed)
+      .map(([chainId]) => Number(chainId))
+  );
 
   return (
     <>
@@ -80,21 +88,46 @@ const Home: NextPage = () => {
                 data-cy={"landing-page-networks"}
                 onChange={(_event, newValue: string) => setValue(newValue)}
               >
-                {networksByTestAndName.map((network) => (
-                  <Tab
-                    data-cy={`${network.slugName}-landing-button`}
-                    key={`Tab_${network.slugName}`}
-                    label={network.displayName}
-                    value={network.slugName}
-                    onMouseEnter={() =>
-                      prefetchStreamsQuery({
-                        chainId: network.chainId,
-                        order: defaultStreamQueryOrdering,
-                        pagination: defaultStreamQueryPaging,
-                      })
-                    }
-                  />
-                ))}
+                {networksByTestAndName
+                  .filter(
+                    (network) =>
+                      !network.isTestnet ||
+                      displayedTestnetChainIds.includes(network.chainId)
+                  )
+                  .map((network) => (
+                    <Tab
+                      data-cy={`${network.slugName}-landing-button`}
+                      key={`Tab_${network.slugName}`}
+                      label={
+                        <Badge
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right",
+                          }}
+                          invisible={!network.isTestnet}
+                          badgeContent={
+                            <ScienceIcon sx={{ fontSize: "16px" }} />
+                          }
+                          sx={{
+                            "& .MuiBadge-badge": {
+                              bottom: "4px",
+                              paddingLeft: "20px",
+                            },
+                          }}
+                        >
+                          {network.displayName}
+                        </Badge>
+                      }
+                      value={network.slugName}
+                      onMouseEnter={() =>
+                        prefetchStreamsQuery({
+                          chainId: network.chainId,
+                          order: defaultStreamQueryOrdering,
+                          pagination: defaultStreamQueryPaging,
+                        })
+                      }
+                    />
+                  ))}
               </TabList>
             </Box>
             {networksByTestAndName.map((network) => (

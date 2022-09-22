@@ -1,3 +1,7 @@
+import CloseIcon from "@mui/icons-material/Close";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import {
   Box,
   Divider,
@@ -8,16 +12,18 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import Switch from "@mui/material/Switch";
+import sortBy from "lodash/sortBy";
 import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { networksByChainId } from "../redux/networks";
 import {
-  changeThemePreference,
-  changeStreamGranularity,
+  changeDisplayedTestnets,
   changeEtherDecimalPlaces,
+  changeStreamGranularity,
+  changeThemePreference,
 } from "../redux/slices/appPreferences.slice";
 import InfoTooltipBtn from "./InfoTooltipBtn";
 
@@ -53,6 +59,13 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
   );
   const currentEtherDecimalPlaces = useAppSelector(
     (state) => state.appPreferences.etherDecimalPlaces
+  );
+
+  const currentDisplayedTestNets = useAppSelector((state) =>
+    sortBy(
+      Object.entries(state.appPreferences.displayedTestNets),
+      ([chainId]) => networksByChainId.get(Number(chainId))?.displayName
+    )
   );
 
   return (
@@ -107,7 +120,10 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
 
         <Heading gutterBottom>
           Stream Granularity
-          <InfoTooltipBtn dataCy={"stream-granularity-tooltip"} title="Representation of calculated stream flow in selected time span." />
+          <InfoTooltipBtn
+            dataCy={"stream-granularity-tooltip"}
+            title="Representation of calculated stream flow in selected time span."
+          />
         </Heading>
         <ToggleButtonGroup
           data-cy={"stream-granularity-button-group"}
@@ -161,6 +177,25 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
           <IconToggleButton value="9">9</IconToggleButton>
           <IconToggleButton value="5">5</IconToggleButton>
         </ToggleButtonGroup>
+      </Box>
+      <Box sx={{ pl: 2, pr: 2 }}>
+        <Heading gutterBottom>Display Testnets</Heading>
+        <FormGroup>
+          {currentDisplayedTestNets.map(([chainId, isDisplayed]) => {
+            const numericChainId = Number(chainId);
+
+            return (
+              <FormControlLabel
+                key={chainId}
+                control={<Switch checked={isDisplayed} />}
+                onChange={() =>
+                  dispatch(changeDisplayedTestnets(numericChainId))
+                }
+                label={networksByChainId.get(numericChainId)?.displayName}
+              />
+            );
+          })}
+        </FormGroup>
       </Box>
     </Drawer>
   );
