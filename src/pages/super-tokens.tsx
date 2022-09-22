@@ -1,8 +1,9 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Card, CardContent, Container, NoSsr, Tab } from "@mui/material";
-import { FC, SyntheticEvent, useState } from "react";
-import SuperTokensTable from "../components/Tables/SuperTokensTable";
-import { networksByTestAndName } from "../redux/networks";
+import { useRouter } from "next/router";
+import { FC, SyntheticEvent, useEffect, useState } from "react";
+import SuperTokensTable, { RequiredTokensQuery } from "../components/Tables/SuperTokensTable";
+import { networksByTestAndName, tryGetNetwork } from "../redux/networks";
 
 interface SuperTokensProps {}
 
@@ -11,6 +12,19 @@ const SuperTokens: FC<SuperTokensProps> = ({}) => {
 
   const onTabChange = (_event: SyntheticEvent, newValue: string) =>
     setActiveTab(newValue);
+
+  useEffect(() => {
+    const urlQueryParams = new URLSearchParams(window.location.search);
+    const urlFilter = urlQueryParams.get("filter");
+    if(typeof urlFilter === "string"){
+      const { chainId }: RequiredTokensQuery = JSON.parse(urlFilter);
+      const networkSlug = tryGetNetwork(chainId);
+      if(networkSlug != null) {
+        const { slugName } = networkSlug;
+        setActiveTab(slugName);
+      }
+    }
+  }, [setActiveTab])
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
