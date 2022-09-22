@@ -82,53 +82,55 @@ const Home: NextPage = () => {
           <Divider />
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <TabList
-                variant="scrollable"
-                scrollButtons="auto"
-                data-cy={"landing-page-networks"}
-                onChange={(_event, newValue: string) => setValue(newValue)}
-              >
-                {networksByTestAndName
-                  .filter(
-                    (network) =>
-                      !network.isTestnet ||
-                      displayedTestnetChainIds.includes(network.chainId)
-                  )
-                  .map((network) => (
-                    <Tab
-                      data-cy={`${network.slugName}-landing-button`}
-                      key={`Tab_${network.slugName}`}
-                      label={
-                        <Badge
-                          anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "right",
-                          }}
-                          invisible={!network.isTestnet}
-                          badgeContent={
-                            <ScienceIcon sx={{ fontSize: "16px" }} />
-                          }
-                          sx={{
-                            "& .MuiBadge-badge": {
-                              bottom: "4px",
-                              paddingLeft: "20px",
-                            },
-                          }}
-                        >
-                          {network.displayName}
-                        </Badge>
-                      }
-                      value={network.slugName}
-                      onMouseEnter={() =>
-                        prefetchStreamsQuery({
-                          chainId: network.chainId,
-                          order: defaultStreamQueryOrdering,
-                          pagination: defaultStreamQueryPaging,
-                        })
-                      }
-                    />
-                  ))}
-              </TabList>
+              <NoSsr>
+                <TabList
+                  variant="scrollable"
+                  scrollButtons="auto"
+                  data-cy={"landing-page-networks"}
+                  onChange={(_event, newValue: string) => setValue(newValue)}
+                >
+                  {networksByTestAndName
+                    .filter(
+                      (network) =>
+                        !network.isTestnet ||
+                        displayedTestnetChainIds.includes(network.chainId)
+                    )
+                    .map((network) => (
+                      <Tab
+                        data-cy={`${network.slugName}-landing-button`}
+                        key={`Tab_${network.slugName}`}
+                        label={
+                          <Badge
+                            anchorOrigin={{
+                              vertical: "bottom",
+                              horizontal: "right",
+                            }}
+                            invisible={!network.isTestnet}
+                            badgeContent={
+                              <ScienceIcon sx={{ fontSize: "16px" }} />
+                            }
+                            sx={{
+                              "& .MuiBadge-badge": {
+                                bottom: "4px",
+                                paddingLeft: "20px",
+                              },
+                            }}
+                          >
+                            {network.displayName}
+                          </Badge>
+                        }
+                        value={network.slugName}
+                        onMouseEnter={() =>
+                          prefetchStreamsQuery({
+                            chainId: network.chainId,
+                            order: defaultStreamQueryOrdering,
+                            pagination: defaultStreamQueryPaging,
+                          })
+                        }
+                      />
+                    ))}
+                </TabList>
+              </NoSsr>
             </Box>
             {networksByTestAndName.map((network) => (
               <TabPanel
