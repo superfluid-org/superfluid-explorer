@@ -4,6 +4,7 @@ import { Badge, Card, Divider, NoSsr, Stack, Tab } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import isEqual from "lodash/isEqual";
 import type { NextPage } from "next";
 import * as React from "react";
 import AppLink from "../components/AppLink";
@@ -23,10 +24,12 @@ const Home: NextPage = () => {
     ifOlderThan: 45,
   });
 
-  const displayedTestnetChainIds = useAppSelector((state) =>
-    Object.entries(state.appPreferences.displayedTestNets)
-      .filter(([_, isDisplayed]) => isDisplayed)
-      .map(([chainId]) => Number(chainId))
+  const displayedTestnetChainIds = useAppSelector(
+    (state) =>
+      Object.entries(state.appPreferences.displayedTestNets)
+        .filter(([_, isDisplayed]) => isDisplayed)
+        .map(([chainId]) => Number(chainId)),
+    isEqual
   );
 
   return (

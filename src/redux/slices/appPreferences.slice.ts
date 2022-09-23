@@ -56,7 +56,7 @@ export const themePreferenceSlice = createSlice({
     changeEtherDecimalPlaces(state, action: PayloadAction<etherDecimalPlaces>) {
       state.etherDecimalPlaces = action.payload;
     },
-    changeDisplayedTestnets(state, action: PayloadAction<Network["chainId"]>) {
+    toggleDisplayedTestnets(state, action: PayloadAction<Network["chainId"]>) {
       state.displayedTestNets[action.payload] =
         !state.displayedTestNets[action.payload];
     },
@@ -73,5 +73,5 @@ export const {
   changeThemePreference,
   changeStreamGranularity,
   changeEtherDecimalPlaces,
-  changeDisplayedTestnets,
+  toggleDisplayedTestnets,
 } = themePreferenceSlice.actions;

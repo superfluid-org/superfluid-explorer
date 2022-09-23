@@ -1,6 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import ScienceIcon from "@mui/icons-material/Science";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import {
   Box,
@@ -15,15 +16,16 @@ import {
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import Switch from "@mui/material/Switch";
+import isEqual from "lodash/isEqual";
 import sortBy from "lodash/sortBy";
 import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { networksByChainId } from "../redux/networks";
 import {
-  changeDisplayedTestnets,
   changeEtherDecimalPlaces,
   changeStreamGranularity,
   changeThemePreference,
+  toggleDisplayedTestnets,
 } from "../redux/slices/appPreferences.slice";
 import InfoTooltipBtn from "./InfoTooltipBtn";
 
@@ -61,11 +63,13 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
     (state) => state.appPreferences.etherDecimalPlaces
   );
 
-  const currentDisplayedTestNets = useAppSelector((state) =>
-    sortBy(
-      Object.entries(state.appPreferences.displayedTestNets),
-      ([chainId]) => networksByChainId.get(Number(chainId))?.displayName
-    )
+  const currentDisplayedTestNets = useAppSelector(
+    (state) =>
+      sortBy(
+        Object.entries(state.appPreferences.displayedTestNets),
+        ([chainId]) => networksByChainId.get(Number(chainId))?.displayName
+      ),
+    isEqual
   );
 
   return (
@@ -179,7 +183,10 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
         </ToggleButtonGroup>
       </Box>
       <Box sx={{ pl: 2, pr: 2 }}>
-        <Heading gutterBottom>Display Testnets</Heading>
+        <Heading gutterBottom display="flex" alignItems="flex-end">
+          Display Testnets
+          <ScienceIcon sx={{ fontSize: "16px", marginLeft: "4px" }} />
+        </Heading>
         <FormGroup>
           {currentDisplayedTestNets.map(([chainId, isDisplayed]) => {
             const numericChainId = Number(chainId);
@@ -189,7 +196,7 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
                 key={chainId}
                 control={<Switch checked={isDisplayed} />}
                 onChange={() =>
-                  dispatch(changeDisplayedTestnets(numericChainId))
+                  dispatch(toggleDisplayedTestnets(numericChainId))
                 }
                 label={networksByChainId.get(numericChainId)?.displayName}
               />
