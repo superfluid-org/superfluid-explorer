@@ -1,24 +1,25 @@
-import Head from "next/head";
-import { AppProps } from "next/app";
-import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import createEmotionCache from "../utils/createEmotionCache";
-import { wrapper } from "../redux/store";
-import SfAppBar from "../components/SfAppBar";
-import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
-import "../styles/graphiql.min.css";
-import "../styles/app.css";
+import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-import useSfTheme from "../styles/useSfTheme";
+import { AppProps } from "next/app";
+import Error from "next/error";
+import Head from "next/head";
+import Router, { useRouter } from "next/router";
+import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import { hotjar } from "react-hotjar";
 import Footer from "../components/Footer";
-import Router, { useRouter } from "next/router";
-import { tryGetNetwork, tryGetString } from "../redux/networks";
-import { isDynamicRoute } from "../utils/isDynamicRoute";
-import Error from "next/error";
-import NetworkContext from "../contexts/NetworkContext";
+import SfAppBar from "../components/SfAppBar";
 import IdContext from "../contexts/IdContext";
+import NetworkContext from "../contexts/NetworkContext";
+import { useMatomo } from "../hooks/useMatomo";
+import { tryGetNetwork, tryGetString } from "../redux/networks";
+import { wrapper } from "../redux/store";
+import "../styles/app.css";
+import "../styles/graphiql.min.css";
+import useSfTheme from "../styles/useSfTheme";
+import createEmotionCache from "../utils/createEmotionCache";
+import { isDynamicRoute } from "../utils/isDynamicRoute";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -31,6 +32,8 @@ function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const theme = useSfTheme();
   const scrollableContentRef = useRef<HTMLElement>(null);
+
+  useMatomo();
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_HJID && process.env.NEXT_PUBLIC_HJSV) {

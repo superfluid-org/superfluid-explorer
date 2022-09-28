@@ -1977,6 +1977,11 @@
   dependencies:
     "@sentry/cli" "^1.73.0"
 
+"@socialgouv/matomo-next@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@socialgouv/matomo-next/-/matomo-next-1.4.0.tgz#9c428b542671542686b56f4ebdca1aa0896af628"
+  integrity sha512-S+kNX7dwo/cL0VE7GWY8Gnf3t7aeXD4CzallRz9IEttjHJDJI2S8xOrcyaGimYpInr3nDNo+WqeYrafKUdsn1g==
+
 "@superfluid-finance/sdk-core@0.4.3":
   version "0.4.3"
   resolved "https://registry.npmjs.org/@superfluid-finance/sdk-core/-/sdk-core-0.4.3.tgz"

@@ -3,7 +3,7 @@
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-const { withSentryConfig } = require('@sentry/nextjs');
+const { withSentryConfig } = require("@sentry/nextjs");
 
 /** @type {import('next').NextConfig} */
 const moduleExports = {
@@ -12,7 +12,11 @@ const moduleExports = {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
     ignoreDuringBuilds: false,
-  }
+  },
+  env: {
+    MATOMO_URL: process.env.MATOMO_URL,
+    MATOMO_SITE_ID: process.env.MATOMO_SITE_ID,
+  },
 };
 
 const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN;
