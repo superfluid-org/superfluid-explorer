@@ -27,8 +27,6 @@ const registerEvent = (
 
 export const useMatomo = () => {
   useEffect(() => {
-    console.log({ url, siteId });
-
     if (url && siteId) {
       init({ url, siteId });
     }
