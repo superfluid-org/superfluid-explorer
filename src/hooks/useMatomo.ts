@@ -43,10 +43,9 @@ type TrackerFunction = (
   options?: TrackerFunctionOptions
 ) => typeof handler;
 
-export const track: TrackerFunction = (eventName, handler, options) => {
-  return (event, ...args: any[]) => {
+export const track: TrackerFunction =
+  (eventName, handler, options) =>
+  (event, ...args: any[]) => {
     registerEvent(options?.tracker, eventName, ...args);
-
     handler(event, ...args);
   };
-};
