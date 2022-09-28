@@ -35,20 +35,17 @@ export const useMatomo = () => {
   }, []);
 };
 
-type TrackerFunction = (
-  eventName: string,
-  handler: (event: SyntheticEvent, ...args: any[]) => void
-) => typeof handler;
-
 type TrackerFunctionOptions = {
   tracker: MatomoTracker;
 };
 
-export const track: TrackerFunction = (
-  eventName,
-  handler,
+type TrackerFunction = (
+  eventName: string,
+  handler: (event: SyntheticEvent, ...args: any[]) => void,
   options?: TrackerFunctionOptions
-) => {
+) => typeof handler;
+
+export const track: TrackerFunction = (eventName, handler, options) => {
   return (event, ...args: any[]) => {
     registerEvent(options?.tracker, eventName, ...args);
 
