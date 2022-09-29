@@ -17,12 +17,12 @@ type MatomoTracker =
   | "trackContentInteraction"
   | "trackGoal";
 
-const registerEvent = (
+export const register = (
   type: MatomoTracker = "trackEvent",
-  eventName: string,
+  id: string,
   ...args: any[]
 ) => {
-  push([type, eventName, ...args]);
+  push([type, id, ...args]);
 };
 
 export const useMatomo = () => {
@@ -38,14 +38,14 @@ type TrackerFunctionOptions = {
 };
 
 type TrackerFunction = (
-  eventName: string,
+  id: string,
   handler: (event: SyntheticEvent, ...args: any[]) => void,
   options?: TrackerFunctionOptions
 ) => typeof handler;
 
 export const track: TrackerFunction =
-  (eventName, handler, options) =>
+  (id, handler, options) =>
   (event, ...args: any[]) => {
-    registerEvent(options?.tracker, eventName, ...args);
+    register(options?.tracker, id, ...args);
     handler(event, ...args);
   };
