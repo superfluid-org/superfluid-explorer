@@ -1,5 +1,5 @@
 import { init, push } from "@socialgouv/matomo-next";
-import { SyntheticEvent, useEffect } from "react";
+import { SyntheticEvent, useEffect, useRef } from "react";
 
 const url = process.env.NEXT_PUBLIC_MATOMO_URL;
 const siteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
@@ -26,9 +26,13 @@ export const register = (
 };
 
 export const useMatomo = () => {
+  // Keeps Matomo from initializing multiple times in devMode.
+  const initialized = useRef(false);
+
   useEffect(() => {
-    if (url && siteId) {
+    if (url && siteId && !initialized.current) {
       init({ url, siteId });
+      initialized.current = true;
     }
   }, []);
 };
