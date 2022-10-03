@@ -13,10 +13,6 @@ const moduleExports = {
     // your project has ESLint errors.
     ignoreDuringBuilds: false,
   },
-  env: {
-    MATOMO_URL: process.env.MATOMO_URL,
-    MATOMO_SITE_ID: process.env.MATOMO_SITE_ID,
-  },
 };
 
 const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN;

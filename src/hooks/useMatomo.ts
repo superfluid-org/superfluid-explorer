@@ -1,8 +1,8 @@
 import { init, push } from "@socialgouv/matomo-next";
 import { SyntheticEvent, useEffect } from "react";
 
-const url = process.env.MATOMO_URL;
-const siteId = process.env.MATOMO_SITE_ID;
+const url = process.env.NEXT_PUBLIC_MATOMO_URL;
+const siteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
 
 type MatomoTracker =
   | "trackEvent"
@@ -37,8 +37,10 @@ type TrackerFunctionOptions = {
   tracker: MatomoTracker;
 };
 
+type TrackerId = "network-tab-change";
+
 type TrackerFunction = (
-  id: string,
+  id: TrackerId,
   handler: (event: SyntheticEvent, ...args: any[]) => void,
   options?: TrackerFunctionOptions
 ) => typeof handler;
