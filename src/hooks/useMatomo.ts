@@ -19,7 +19,7 @@ type MatomoTracker =
 
 export const register = (
   type: MatomoTracker = "trackEvent",
-  id: string,
+  id: TrackerId,
   ...args: any[]
 ) => {
   push([type, id, ...args]);
