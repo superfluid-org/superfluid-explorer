@@ -1,6 +1,5 @@
-import ScienceIcon from "@mui/icons-material/Science";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Badge, Card, Divider, NoSsr, Stack, Tab } from "@mui/material";
+import { Card, Divider, NoSsr, Stack, Tab } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -8,6 +7,7 @@ import isEqual from "lodash/isEqual";
 import type { NextPage } from "next";
 import * as React from "react";
 import AppLink from "../components/AppLink";
+import NetworkDisplay from "../components/NetworkDisplay";
 import {
   defaultStreamQueryOrdering,
   defaultStreamQueryPaging,
@@ -102,26 +102,7 @@ const Home: NextPage = () => {
                       <Tab
                         data-cy={`${network.slugName}-landing-button`}
                         key={`Tab_${network.slugName}`}
-                        label={
-                          <Badge
-                            anchorOrigin={{
-                              vertical: "bottom",
-                              horizontal: "right",
-                            }}
-                            invisible={!network.isTestnet}
-                            badgeContent={
-                              <ScienceIcon sx={{ fontSize: "16px" }} />
-                            }
-                            sx={{
-                              "& .MuiBadge-badge": {
-                                bottom: "4px",
-                                paddingLeft: "20px",
-                              },
-                            }}
-                          >
-                            {network.displayName}
-                          </Badge>
-                        }
+                        label={<NetworkDisplay network={network} />}
                         value={network.slugName}
                         onMouseEnter={() =>
                           prefetchStreamsQuery({

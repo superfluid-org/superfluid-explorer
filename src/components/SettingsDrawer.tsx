@@ -28,6 +28,7 @@ import {
   toggleDisplayedTestnets,
 } from "../redux/slices/appPreferences.slice";
 import InfoTooltipBtn from "./InfoTooltipBtn";
+import NetworkDisplay from "./NetworkDisplay";
 
 const Heading = styled(Typography)(({ theme }) => ({
   margin: "20px 0 10px",
@@ -185,12 +186,10 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
       <Box sx={{ pl: 2, pr: 2 }}>
         <Heading gutterBottom display="flex" alignItems="flex-end">
           Display Testnets
-          <ScienceIcon sx={{ fontSize: "16px", marginLeft: "4px" }} />
         </Heading>
         <FormGroup>
           {currentDisplayedTestNets.map(([chainId, isDisplayed]) => {
             const numericChainId = Number(chainId);
-
             return (
               <FormControlLabel
                 key={chainId}
@@ -198,7 +197,11 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
                 onChange={() =>
                   dispatch(toggleDisplayedTestnets(numericChainId))
                 }
-                label={networksByChainId.get(numericChainId)?.displayName}
+                label={
+                  <NetworkDisplay
+                    network={networksByChainId.get(numericChainId)!}
+                  />
+                }
               />
             );
           })}
