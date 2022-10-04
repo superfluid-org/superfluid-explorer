@@ -1,24 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { Framework } from "@superfluid-finance/sdk-core";
 import {
   allSubgraphEndpoints,
   createApiWithReactHooks,
-  setFrameworkForSdkRedux,
+  initializeRpcApiSlice,
   initializeSubgraphApiSlice,
-  initializeRpcApiSlice
+  setFrameworkForSdkRedux,
 } from "@superfluid-finance/sdk-redux";
-import { Framework } from "@superfluid-finance/sdk-core";
 import { ethers } from "ethers";
-import { createWrapper } from "next-redux-wrapper";
 import {
   nextReduxCookieMiddleware,
   SERVE_COOKIES,
   wrapMakeStore,
 } from "next-redux-cookie-wrapper";
-import { themePreferenceSlice } from "./slices/appPreferences.slice";
-import { addressBookSlice } from "./slices/addressBook.slice";
-import { networks } from "./networks";
-import storageLocal from "redux-persist/lib/storage";
-import { ensApi } from "./slices/ensResolver.slice";
+import { createWrapper } from "next-redux-wrapper";
 import {
   FLUSH,
   PAUSE,
@@ -29,11 +24,18 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import { isServer } from "../utils/isServer";
+import storageLocal from "redux-persist/lib/storage";
 import { addDays } from "../utils/dateTime";
+import { isServer } from "../utils/isServer";
+import { networks } from "./networks";
 import { newRpcApiEndpoints } from "./newRpcApiEndpoints";
+import { addressBookSlice } from "./slices/addressBook.slice";
+import { themePreferenceSlice } from "./slices/appPreferences.slice";
+import { ensApi } from "./slices/ensResolver.slice";
 
-export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks).injectEndpoints(newRpcApiEndpoints);
+export const rpcApi = initializeRpcApiSlice(
+  createApiWithReactHooks
+).injectEndpoints(newRpcApiEndpoints);
 export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
 ).injectEndpoints(allSubgraphEndpoints);
@@ -83,7 +85,7 @@ export const makeStore = wrapMakeStore(() => {
           nextReduxCookieMiddleware({
             compress: true,
             subtrees: ["appPreferences"],
-            expires: addDays(new Date(), 14)
+            expires: addDays(new Date(), 14),
           })
         )
         .concat(rpcApi.middleware)

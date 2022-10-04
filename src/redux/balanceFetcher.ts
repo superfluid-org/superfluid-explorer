@@ -1,5 +1,5 @@
+import { providers } from "@0xsequence/multicall";
 import { getFramework } from "@superfluid-finance/sdk-redux";
-import { ContractCallContext, Multicall } from "ethereum-multicall";
 import { ethers } from "ethers";
 import { networks } from "./networks";
 
@@ -9,6 +9,7 @@ export type RealtimeBalance = {
   balance: string;
   balanceTimestamp: number;
   flowRate: string;
+  e;
 };
 
 export type BalanceQueryParams = {
@@ -33,66 +34,52 @@ const mutableNetworkStates: Record<
 /**
  * Creates a promise that will batch together super token balance related RPC calls.
  */
-const createFetching = (
-  chainId: number
-): Promise<Record<string, RealtimeBalance>> => {
-  return new Promise(async (resolve) => {
-    setTimeout(async () => {
-      const state = mutableNetworkStates[chainId];
-      state.nextFetching = null;
+const createFetching = async (chainId: number) => {
+  const state = mutableNetworkStates[chainId];
+  state.nextFetching = null;
 
-      if (state.queryBatch.length) {
-        const queries = state.queryBatch.splice(0, state.queryBatch.length); // Makes a copy of the queries and empties the original array.
-        const framework = await getFramework(chainId);
+  if (state.queryBatch.length) {
+    const queries = state.queryBatch.splice(0, state.queryBatch.length); // Makes a copy of the queries and empties the original array.
+    const framework = await getFramework(chainId);
 
-        const realtimeBalanceCalls = (
-          await Promise.all(
-            queries
-              .filter((x) => x.isSuperToken)
-              .map((x) =>
-                createRealtimeBalanceCalls(
-                  framework.settings.config.cfaV1Address,
-                  x.params
-                )
-              )
-          )
-        ).flat();
+    const provider = new providers.MulticallProvider(
+      framework.settings.provider
+    );
 
-        const multicall = new Multicall({
-          ethersProvider: framework.settings.provider,
-          tryAggregate: false,
-          multicallCustomContractAddress: multicallContractAddress,
-        });
+    const results = await Promise.all(
+      queries
+        .filter((x) => x.isSuperToken)
+        .map((x) =>
+          Promise.all([
+            x.params,
+            framework.cfaV1.getNetFlow({
+              account: x.params.accountAddress,
+              superToken: x.params.tokenAddress,
+              providerOrSigner: provider,
+            }),
+            provider.getBalance(x.params.tokenAddress),
+          ])
+        )
+    );
 
-        const results = (await multicall.call(realtimeBalanceCalls)).results;
+    const mappedResult: Record<string, RealtimeBalance> = Object.fromEntries(
+      results.map(([params, netFlow, realtimeBalanceOfNow]) => {
+        console.log(params, netFlow, realtimeBalanceOfNow);
+        return [
+          getKey(params),
+          {
+            balance: ethers.BigNumber.from(realtimeBalanceOfNow).toString(),
+            balanceTimestamp: ethers.BigNumber.from("0").toNumber(),
+            flowRate: ethers.BigNumber.from(netFlow).toString(),
+          } as RealtimeBalance,
+        ];
+      })
+    );
 
-        const mappedResult = Object.fromEntries(
-          queries.map((x) => {
-            const getNetFlowCall =
-              results[getKey(x.params) + "-getNetFlow"].callsReturnContext[0];
-            const realtimeBalanceOfNowCall =
-              results[getKey(x.params) + "-realtimeBalanceOfNow"]
-                .callsReturnContext[0];
+    return mappedResult;
+  }
 
-            return [
-              getKey(x.params),
-              {
-                balance: ethers.BigNumber.from(
-                  realtimeBalanceOfNowCall.returnValues[0]
-                ).toString(),
-                balanceTimestamp: ethers.BigNumber.from(realtimeBalanceOfNowCall.returnValues[3]).toNumber(),
-                flowRate: ethers.BigNumber.from(
-                  getNetFlowCall.returnValues[0]
-                ).toString(),
-              },
-            ];
-          })
-        );
-
-        resolve(mappedResult);
-      }
-    }, 100);
-  });
+  return {};
 };
 
 export const balanceFetcher = {
@@ -107,99 +94,4 @@ export const balanceFetcher = {
     state.nextFetching = state.nextFetching || createFetching(params.chainId);
     return (await state.nextFetching)[getKey(params)] as RealtimeBalance;
   },
-};
-
-const createRealtimeBalanceCalls = async (
-  cfaContractAddress: string,
-  params: BalanceQueryParams
-): Promise<[ContractCallContext, ContractCallContext]> => {
-  return [
-    {
-      reference: getKey(params) + "-realtimeBalanceOfNow",
-      contractAddress: ethers.utils.getAddress(params.tokenAddress),
-      abi: [
-        {
-          name: "realtimeBalanceOfNow",
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          outputs: [
-            {
-              internalType: "int256",
-              name: "availableBalance",
-              type: "int256",
-            },
-            {
-              internalType: "uint256",
-              name: "deposit",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "owedDeposit",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "timestamp",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      calls: [
-        {
-          reference: "realtimeBalanceOfNowCall",
-          methodName: "realtimeBalanceOfNow",
-          methodParameters: [ethers.utils.getAddress(params.accountAddress)],
-        },
-      ],
-    },
-    {
-      reference: getKey(params) + "-getNetFlow",
-      contractAddress: cfaContractAddress,
-      abi: [
-        {
-          name: "getNetFlow",
-          inputs: [
-            {
-              internalType: "contract ISuperfluidToken",
-              name: "token",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          outputs: [
-            {
-              internalType: "int96",
-              name: "flowRate",
-              type: "int96",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      calls: [
-        {
-          reference: "getNetFlowCall",
-          methodName: "getNetFlow",
-          methodParameters: [
-            ethers.utils.getAddress(params.tokenAddress),
-            ethers.utils.getAddress(params.accountAddress),
-          ],
-        },
-      ],
-    },
-  ];
 };
