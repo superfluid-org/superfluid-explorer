@@ -65,6 +65,9 @@ const createFetching = async (chainId: number) => {
       },
     ])
   );
+
+  state.queryBatch = [];
+
   return mappedResults;
 };
 
@@ -77,7 +80,9 @@ export const balanceFetcher = {
       params,
       isSuperToken: true,
     });
-    state.nextFetching = state.nextFetching || createFetching(params.chainId);
-    return (await state.nextFetching)[getKey(params)] as RealtimeBalance;
+
+    return (await createFetching(params.chainId))[
+      getKey(params)
+    ] as RealtimeBalance;
   },
 };
