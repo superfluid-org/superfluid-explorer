@@ -3,15 +3,18 @@ import { Card, Divider, NoSsr, Stack, Tab } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import isEqual from "lodash/isEqual";
 import type { NextPage } from "next";
 import * as React from "react";
 import AppLink from "../components/AppLink";
+import NetworkDisplay from "../components/NetworkDisplay";
 import {
   defaultStreamQueryOrdering,
   defaultStreamQueryPaging,
   NetworkStreams,
 } from "../components/NetworkStreams";
 import { track } from "../hooks/useMatomo";
+import { useAppSelector } from "../redux/hooks";
 import { networksByTestAndName } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
 
@@ -21,6 +24,14 @@ const Home: NextPage = () => {
   const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams", {
     ifOlderThan: 45,
   });
+
+  const displayedTestnetChainIds = useAppSelector(
+    (state) =>
+      Object.entries(state.appPreferences.displayedTestNets)
+        .filter(([_, isDisplayed]) => isDisplayed)
+        .map(([chainId]) => Number(chainId)),
+    isEqual
+  );
 
   return (
     <>
@@ -75,31 +86,39 @@ const Home: NextPage = () => {
           <Divider />
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <TabList
-                variant="scrollable"
-                scrollButtons="auto"
-                data-cy={"landing-page-networks"}
-                onChange={track(
+              <NoSsr>
+                <TabList
+                  variant="scrollable"
+                  scrollButtons="auto"
+                  data-cy={"landing-page-networks"}
+                  onChange={track(
                   "network-tab-change",
                   (_event, newValue: string) => setValue(newValue)
-                )}
-              >
-                {networksByTestAndName.map((network) => (
-                  <Tab
-                    data-cy={`${network.slugName}-landing-button`}
-                    key={`Tab_${network.slugName}`}
-                    label={network.displayName}
-                    value={network.slugName}
-                    onMouseEnter={() =>
-                      prefetchStreamsQuery({
-                        chainId: network.chainId,
-                        order: defaultStreamQueryOrdering,
-                        pagination: defaultStreamQueryPaging,
-                      })
-                    }
-                  />
-                ))}
-              </TabList>
+                 )}
+                >
+                  {networksByTestAndName
+                    .filter(
+                      (network) =>
+                        !network.isTestnet ||
+                        displayedTestnetChainIds.includes(network.chainId)
+                    )
+                    .map((network) => (
+                      <Tab
+                        data-cy={`${network.slugName}-landing-button`}
+                        key={`Tab_${network.slugName}`}
+                        label={<NetworkDisplay network={network} />}
+                        value={network.slugName}
+                        onMouseEnter={() =>
+                          prefetchStreamsQuery({
+                            chainId: network.chainId,
+                            order: defaultStreamQueryOrdering,
+                            pagination: defaultStreamQueryPaging,
+                          })
+                        }
+                      />
+                    ))}
+                </TabList>
+              </NoSsr>
             </Box>
             {networksByTestAndName.map((network) => (
               <TabPanel
