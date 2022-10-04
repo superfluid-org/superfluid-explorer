@@ -1,3 +1,4 @@
+import { providers } from "@0xsequence/multicall";
 import { configureStore } from "@reduxjs/toolkit";
 import { Framework } from "@superfluid-finance/sdk-core";
 import {
@@ -45,7 +46,9 @@ const infuraProviders = networks.map((network) => ({
   frameworkGetter: () =>
     Framework.create({
       chainId: network.chainId,
-      provider: new ethers.providers.JsonRpcProvider(network.rpcUrl),
+      provider: new providers.MulticallProvider(
+        new ethers.providers.JsonRpcProvider(network.rpcUrl)
+      ),
     }),
 }));
 

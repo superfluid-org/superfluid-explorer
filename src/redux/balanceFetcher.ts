@@ -1,4 +1,3 @@
-import { providers } from "@0xsequence/multicall";
 import { getFramework } from "@superfluid-finance/sdk-redux";
 import { networks } from "./networks";
 
@@ -37,7 +36,7 @@ const createFetching = async (chainId: number) => {
   const queries = state.queryBatch;
   const framework = await getFramework(chainId);
 
-  const provider = new providers.MulticallProvider(framework.settings.provider);
+  const { provider } = framework.settings;
 
   const results = await Promise.all(
     queries
