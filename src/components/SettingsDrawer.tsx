@@ -192,6 +192,7 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
             const numericChainId = Number(chainId);
             return (
               <FormControlLabel
+                data-cy={"testnet-switch"}
                 key={chainId}
                 control={<Switch checked={isDisplayed} />}
                 onChange={() =>

@@ -81,3 +81,6 @@ Given(`User has opened the {string} read more page`, (page) => {
 Then(`There are no elements containing {string}`, (text) => {
   BasePage.notContains(text)
 });
+Given(`User enables all of the testnets`,  () => {
+  CommonElements.enableAllTestnets()
+});
