@@ -81,8 +81,6 @@ export const balanceFetcher = {
       isSuperToken: true,
     });
 
-    return (await createFetching(params.chainId))[
-      getKey(params)
-    ] as RealtimeBalance;
+    return (await createFetching(params.chainId))[getKey(params)];
   },
 };
