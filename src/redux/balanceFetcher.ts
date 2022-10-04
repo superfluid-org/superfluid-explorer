@@ -1,8 +1,6 @@
 import { getFramework } from "@superfluid-finance/sdk-redux";
 import { networks } from "./networks";
 
-const multicallContractAddress = "0xcA11bde05977b3631167028862bE2a173976CA11";
-
 export type RealtimeBalance = {
   balance: string;
   balanceTimestamp: number;
