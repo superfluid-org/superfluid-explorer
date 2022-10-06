@@ -436,6 +436,22 @@ const SuperTokenPage: NextPage = () => {
               }
             />
           </ListItem>
+          
+          <ListItem>
+            <ListItemText
+              data-cy={"total-flow-rate"}
+              secondary="Total Flow Rate"
+              primary={
+                tokenStatistics ? (
+                  <EtherFormatted
+                    wei={tokenStatistics.totalOutflowRate}
+                  />
+                ) : (
+                  <Skeleton sx={{ width: "200px" }} />
+                )
+              }
+            />
+          </ListItem>
 
           <ListItem>
             <ListItemText
