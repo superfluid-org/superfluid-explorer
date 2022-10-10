@@ -45,7 +45,7 @@ export class LandingPage extends BasePage {
         break;
       }
       case "tokens" : {
-        cy.visit("/super-tokens")
+        cy.visit("/supertokens")
         break;
       }
       case "protocol" : {
