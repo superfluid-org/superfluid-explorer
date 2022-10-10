@@ -12,13 +12,16 @@ import AppLink from "./AppLink";
 import SearchDialog from "./SearchDialog";
 import Image from "next/image";
 import SearchBar from "./SearchBar";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import SettingsDrawer from "./SettingsDrawer";
+import { useRouter } from "next/router";
 
 export const SfAppBar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const router = useRouter();
+  const { _network = "matic" } = router.query;
 
   return (
     <>
@@ -67,7 +70,7 @@ export const SfAppBar = () => {
             spacing={6}
           >
             <Stack direction="row" alignItems="center" spacing={4}>
-              <AppLink data-cy="token-page-button" href="/super-tokens" sx={{ textDecoration: "none" }}>
+              <AppLink data-cy="token-page-button" href={`/${ _network }/supertokens`} sx={{ textDecoration: "none" }}>
                 <Typography
                   variant="button"
                   sx={{
@@ -80,7 +83,7 @@ export const SfAppBar = () => {
                   Tokens
                 </Typography>
               </AppLink>
-              <AppLink data-cy={"protocol-button"} href="/protocol" sx={{ textDecoration: "none" }}>
+              <AppLink data-cy={"protocol-button"} href={`/${ _network }/protocol`} sx={{ textDecoration: "none" }}>
                 <Typography
                   variant="button"
                   sx={{

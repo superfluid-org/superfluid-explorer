@@ -103,14 +103,20 @@ const Layout: FC<PropsWithChildren<unknown>> = ({ children }) => {
       const network = tryGetNetwork(_network);
       const id = tryGetString(_id);
 
-      if (!network || !id) {
-        return <Error statusCode={404} />;
-      } else {
+      if (network && id) {
         return (
           <NetworkContext.Provider value={network}>
             <IdContext.Provider value={id}>{children}</IdContext.Provider>
           </NetworkContext.Provider>
         );
+      } else if (network) {
+        return (
+          <NetworkContext.Provider value={network}>
+            {children}
+          </NetworkContext.Provider>
+        );
+      } else {
+        return <Error statusCode={404} />;
       }
     } else {
       return (
