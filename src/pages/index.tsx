@@ -14,7 +14,7 @@ import {
   NetworkStreams,
 } from "../components/NetworkStreams";
 import { useAppSelector } from "../redux/hooks";
-import { networksByTestAndName } from "../redux/networks";
+import { networks } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
 
 const Home: NextPage = () => {
@@ -92,7 +92,7 @@ const Home: NextPage = () => {
                   data-cy={"landing-page-networks"}
                   onChange={(_event, newValue: string) => setValue(newValue)}
                 >
-                  {networksByTestAndName
+                  {networks
                     .filter(
                       (network) =>
                         !network.isTestnet ||
@@ -116,7 +116,7 @@ const Home: NextPage = () => {
                 </TabList>
               </NoSsr>
             </Box>
-            {networksByTestAndName.map((network) => (
+            {networks.map((network) => (
               <TabPanel
                 key={`TabPanel_${network.slugName}`}
                 value={network.slugName}

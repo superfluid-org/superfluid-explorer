@@ -21,7 +21,7 @@ import { FC, SyntheticEvent, useContext, useState } from "react";
 import NetworkContext from "../../contexts/NetworkContext";
 import CopyClipboard from "../../components/CopyClipboard";
 import InfoTooltipBtn from "../../components/InfoTooltipBtn";
-import { Network, networksByTestAndName } from "../../redux/networks";
+import { Network, networks } from "../../redux/networks";
 import protocolContracts from "../../redux/protocolContracts";
 
 interface AddressListItemProps {
@@ -106,7 +106,7 @@ const Protocol: NextPage = () => {
             data-cy={"landing-page-networks"}
             onChange={onTabChange}
           >
-            {networksByTestAndName.map((network) => (
+            {networks.map((network) => (
               <Tab
                 data-cy={`${network.slugName}-landing-button`}
                 key={`Tab_${network.slugName}`}
@@ -117,7 +117,7 @@ const Protocol: NextPage = () => {
           </TabList>
         </Card>
 
-        {networksByTestAndName.map((network) => (
+        {networks.map((network) => (
           <TabPanel
             key={network.slugName}
             value={network.slugName}

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { SyntheticEvent, useContext, useState } from "react";
 import SuperTokensTable from "../../components/Tables/SuperTokensTable";
 import NetworkContext from "../../contexts/NetworkContext";
-import { networksByTestAndName } from "../../redux/networks";
+import { networks } from "../../redux/networks";
 
 const SuperTokens: NextPage = ({}) => {
   const network = useContext(NetworkContext);
@@ -29,7 +29,7 @@ const SuperTokens: NextPage = ({}) => {
             data-cy={"landing-page-networks"}
             onChange={onTabChange}
           >
-            {networksByTestAndName.map((network) => (
+            {networks.map((network) => (
               <Tab
                 data-cy={`${network.slugName}-landing-button`}
                 key={`Tab_${network.slugName}`}
@@ -40,7 +40,7 @@ const SuperTokens: NextPage = ({}) => {
           </TabList>
         </Card>
 
-        {networksByTestAndName.map((network) => (
+        {networks.map((network) => (
           <TabPanel
             key={network.slugName}
             value={network.slugName}

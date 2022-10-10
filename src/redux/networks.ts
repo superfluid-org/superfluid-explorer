@@ -12,16 +12,7 @@ export type Network = {
 }
 
 export const networks: Network[] = [
-  {
-    displayName: "Goerli",
-    slugName: "goerli",
-    chainId: 5,
-    isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-goerli`,
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-goerli",
-    getLinkForTransaction: (txHash: string): string => `https://goerli.etherscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string => `https://goerli.etherscan.io/address/${address}`
-  },
+  // mainnets
   {
     displayName: "Gnosis Chain",
     slugName: "xdai",
@@ -41,26 +32,6 @@ export const networks: Network[] = [
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-matic",
     getLinkForTransaction: (txHash: string): string => `https://polygonscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://polygonscan.com/address/${address}`
-  },
-  {
-    displayName: "Mumbai",
-    slugName: "mumbai",
-    chainId: 80001,
-    isTestnet: true,
-    rpcUrl: `https://rpc-endpoints.superfluid.dev/polygon-mumbai`,
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-mumbai",
-    getLinkForTransaction: (txHash: string): string => `https://mumbai.polygonscan.com/tx/${txHash}`,
-    getLinkForAddress: (address: string): string => `https://mumbai.polygonscan.com/address/${address}`
-  },
-  {
-    displayName: "Avalanche-Fuji",
-    slugName: "avalanche-fuji",
-    chainId: 43113,
-    isTestnet: true,
-    rpcUrl: "https://rpc-endpoints.superfluid.dev/avalanche-fuji",
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-avalanche-fuji",
-    getLinkForTransaction: (txHash: string): string => `https://testnet.snowtrace.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string => `https://testnet.snowtrace.io/address/${address}`
   },
   {
     displayName: "Optimism",
@@ -101,6 +72,38 @@ export const networks: Network[] = [
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-bsc-mainnet",
     getLinkForTransaction: (txHash: string): string => `https://bscscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://bscscan.com/address/${address}`
+  },
+
+  // testnets
+  {
+    displayName: "Goerli",
+    slugName: "goerli",
+    chainId: 5,
+    isTestnet: true,
+    rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-goerli`,
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-goerli",
+    getLinkForTransaction: (txHash: string): string => `https://goerli.etherscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string => `https://goerli.etherscan.io/address/${address}`
+  },
+  {
+    displayName: "Mumbai",
+    slugName: "mumbai",
+    chainId: 80001,
+    isTestnet: true,
+    rpcUrl: `https://rpc-endpoints.superfluid.dev/polygon-mumbai`,
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-mumbai",
+    getLinkForTransaction: (txHash: string): string => `https://mumbai.polygonscan.com/tx/${txHash}`,
+    getLinkForAddress: (address: string): string => `https://mumbai.polygonscan.com/address/${address}`
+  },
+  {
+    displayName: "Avalanche Fuji",
+    slugName: "avalanche-fuji",
+    chainId: 43113,
+    isTestnet: true,
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/avalanche-fuji",
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-avalanche-fuji",
+    getLinkForTransaction: (txHash: string): string => `https://testnet.snowtrace.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string => `https://testnet.snowtrace.io/address/${address}`
   }
 ];
 
