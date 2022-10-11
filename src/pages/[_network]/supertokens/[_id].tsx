@@ -407,13 +407,15 @@ const SuperTokenPage: NextPage = () => {
 
           <ListItem divider>
             <ListItemText
-              data-cy={"token-total-distributed"}
-              secondary="Total amount distributed"
+              data-cy={"total-flow-rate"}
+              secondary="Total flow rate"
               primary={
                 tokenStatistics ? (
+                  <>
                   <EtherFormatted
-                    wei={tokenStatistics.totalAmountDistributedUntilUpdatedAt}
-                  />
+                    wei={tokenStatistics.totalOutflowRate}
+                  />{"/sec"}
+                  </>
                 ) : (
                   <Skeleton sx={{ width: "200px" }} />
                 )
@@ -421,7 +423,7 @@ const SuperTokenPage: NextPage = () => {
             />
           </ListItem>
 
-          <ListItem>
+          <ListItem divider>
             <ListItemText
               data-cy={"total-transferred"}
               secondary="Total amount transferred"
@@ -436,15 +438,15 @@ const SuperTokenPage: NextPage = () => {
               }
             />
           </ListItem>
-          
-          <ListItem>
+
+          <ListItem divider>
             <ListItemText
-              data-cy={"total-flow-rate"}
-              secondary="Total Flow Rate"
+              data-cy={"token-total-distributed"}
+              secondary="Total amount distributed"
               primary={
                 tokenStatistics ? (
                   <EtherFormatted
-                    wei={tokenStatistics.totalOutflowRate}
+                    wei={tokenStatistics.totalAmountDistributedUntilUpdatedAt}
                   />
                 ) : (
                   <Skeleton sx={{ width: "200px" }} />
