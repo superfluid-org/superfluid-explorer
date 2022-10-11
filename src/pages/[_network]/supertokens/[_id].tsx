@@ -23,7 +23,7 @@ import { NextPage } from "next";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import AppLink from "../../../components/AppLink";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import { gql } from "graphql-request";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
@@ -39,6 +39,8 @@ import SuperTokenIndexes from "../../../components/SuperTokenIndexes";
 import SuperTokenStreams from "../../../components/SuperTokenStreams";
 import IdContext from "../../../contexts/IdContext";
 import NetworkContext from "../../../contexts/NetworkContext";
+import { useAppSelector } from "../../../redux/hooks";
+import { streamGranularityInSeconds } from "../../../redux/slices/appPreferences.slice";
 
 const SuperTokenPage: NextPage = () => {
   const network = useContext(NetworkContext);
@@ -49,12 +51,28 @@ const SuperTokenPage: NextPage = () => {
     id: address,
   });
 
+  const superToken: Token | null | undefined = tokenQuery.data;
+
   const tokenStatisticsQuery = sfSubgraph.useTokenStatisticQuery({
     chainId: network.chainId,
     id: address,
   });
 
-  const superToken: Token | null | undefined = tokenQuery.data;
+  const tokenStatistics = tokenStatisticsQuery.data;
+
+  const flowRateBigNumber = tokenStatistics
+    ? BigNumber.from(tokenStatistics.totalOutflowRate)
+    : undefined;
+
+  const streamGranularity = useAppSelector(
+    (state) => state.appPreferences.streamGranularity
+  );
+
+  const flowRateConverted = flowRateBigNumber
+    ? flowRateBigNumber
+        .mul(streamGranularityInSeconds[streamGranularity])
+        .toString()
+    : undefined;
 
   const router = useRouter();
   const { tab } = router.query;
@@ -80,8 +98,6 @@ const SuperTokenPage: NextPage = () => {
   ) {
     return <Error statusCode={404} />;
   }
-
-  const tokenStatistics = tokenStatisticsQuery.data;
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
@@ -410,11 +426,10 @@ const SuperTokenPage: NextPage = () => {
               data-cy={"total-flow-rate"}
               secondary="Total flow rate"
               primary={
-                tokenStatistics ? (
+                flowRateConverted ? (
                   <>
-                  <EtherFormatted
-                    wei={tokenStatistics.totalOutflowRate}
-                  />{"/sec"}
+                    <EtherFormatted wei={flowRateConverted} />/
+                    {streamGranularity}
                   </>
                 ) : (
                   <Skeleton sx={{ width: "200px" }} />
