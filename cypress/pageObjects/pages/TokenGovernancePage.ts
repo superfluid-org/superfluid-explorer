@@ -56,7 +56,7 @@ export class TokenGovernancePage extends BasePage {
       this.isNotVisible(LOADING_SPINNER)
       cy.get(SUPER_TOKENS_SYMBOL).each((
         $el) => {
-        cy.wrap($el.text()).should('contain', supertokens[network].TokenSymbol)
+        cy.wrap($el.text().toLowerCase()).should('contain', supertokens[network].TokenSymbol.toLowerCase())
       })
     })
   }

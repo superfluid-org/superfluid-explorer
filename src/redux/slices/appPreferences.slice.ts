@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import { Network, networksByTestAndName } from "../networks";
+import { Network, networks } from "../networks";
 
 export interface IAppPreferences {
   themePreference: "system" | "light" | "dark";
@@ -24,7 +24,7 @@ const initialState: IAppPreferences = {
   themePreference: "system",
   streamGranularity: "day",
   etherDecimalPlaces: 18,
-  displayedTestNets: networksByTestAndName
+  displayedTestNets: networks
     .filter((n) => n.isTestnet)
     .reduce(
       (acc, n) => ({

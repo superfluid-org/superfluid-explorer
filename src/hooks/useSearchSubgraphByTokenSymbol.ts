@@ -8,7 +8,7 @@ import {gql} from "graphql-request";
 const searchByTokenSymbolDocument = gql`
   query Search($tokenSymbol: String) {
     tokensBySymbol: tokens(
-      where: { isSuperToken: true, symbol_contains: $tokenSymbol }
+      where: { isSuperToken: true, symbol_contains_nocase: $tokenSymbol }
     ) {
       id
       symbol

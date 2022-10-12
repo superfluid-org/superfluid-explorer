@@ -15,7 +15,7 @@ import {
 } from "../components/NetworkStreams";
 import { track } from "../hooks/useMatomo";
 import { useAppSelector } from "../redux/hooks";
-import { networksByTestAndName } from "../redux/networks";
+import { networks } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
 
 const Home: NextPage = () => {
@@ -96,7 +96,7 @@ const Home: NextPage = () => {
                   (_event, newValue: string) => setValue(newValue)
                  )}
                 >
-                  {networksByTestAndName
+                  {networks
                     .filter(
                       (network) =>
                         !network.isTestnet ||
@@ -120,7 +120,7 @@ const Home: NextPage = () => {
                 </TabList>
               </NoSsr>
             </Box>
-            {networksByTestAndName.map((network) => (
+            {networks.map((network) => (
               <TabPanel
                 key={`TabPanel_${network.slugName}`}
                 value={network.slugName}
