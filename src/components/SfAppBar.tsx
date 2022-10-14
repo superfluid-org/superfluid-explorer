@@ -1,21 +1,21 @@
+import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import {
-  Box,
   AppBar,
-  Toolbar,
+  Box,
   Container,
-  Stack,
-  Tooltip,
   IconButton,
+  Stack,
+  Toolbar,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import AppLink from "./AppLink";
-import SearchDialog from "./SearchDialog";
 import Image from "next/image";
-import SearchBar from "./SearchBar";
-import { FC, useContext, useState } from "react";
-import SettingsIcon from "@mui/icons-material/SettingsOutlined";
-import SettingsDrawer from "./SettingsDrawer";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import AppLink from "./AppLink";
+import SearchBar from "./SearchBar";
+import SearchDialog from "./SearchDialog";
+import SettingsDrawer from "./SettingsDrawer";
 
 export const SfAppBar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -70,7 +70,11 @@ export const SfAppBar = () => {
             spacing={6}
           >
             <Stack direction="row" alignItems="center" spacing={4}>
-              <AppLink data-cy="token-page-button" href={`/${ _network }/supertokens`} sx={{ textDecoration: "none" }}>
+              <AppLink
+                data-cy="token-page-button"
+                href={`/${_network}/supertokens`}
+                sx={{ textDecoration: "none" }}
+              >
                 <Typography
                   variant="button"
                   sx={{
@@ -83,7 +87,11 @@ export const SfAppBar = () => {
                   Tokens
                 </Typography>
               </AppLink>
-              <AppLink data-cy={"protocol-button"} href={`/${ _network }/protocol`} sx={{ textDecoration: "none" }}>
+              <AppLink
+                data-cy={"protocol-button"}
+                href={`/${_network}/protocol`}
+                sx={{ textDecoration: "none" }}
+              >
                 <Typography
                   variant="button"
                   sx={{
@@ -119,6 +127,7 @@ export const SfAppBar = () => {
                 sx={{ ml: 1 }}
                 color="inherit"
                 onClick={() => setSettingsOpen(true)}
+                data-cy="settings-cog"
               >
                 <SettingsIcon />
               </IconButton>

@@ -1,7 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import ScienceIcon from "@mui/icons-material/Science";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import {
   Box,
@@ -190,19 +189,17 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
         <FormGroup>
           {currentDisplayedTestNets.map(([chainId, isDisplayed]) => {
             const numericChainId = Number(chainId);
+            const network = networksByChainId.get(numericChainId)!;
             return (
               <FormControlLabel
-                data-cy={"testnet-switch"}
+                data-cy={`testnet-switch-${network.slugName}`}
+                data-cy-state={isDisplayed ? "on" : "off"}
                 key={chainId}
                 control={<Switch checked={isDisplayed} />}
                 onChange={() =>
                   dispatch(toggleDisplayedTestnets(numericChainId))
                 }
-                label={
-                  <NetworkDisplay
-                    network={networksByChainId.get(numericChainId)!}
-                  />
-                }
+                label={<NetworkDisplay network={network} />}
               />
             );
           })}
