@@ -1,5 +1,5 @@
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { TabContext, TabPanel } from "@mui/lab";
 import {
   Box,
   Card,
@@ -11,16 +11,16 @@ import {
   ListItem,
   ListItemText,
   Stack,
-  Tab,
   Tooltip,
   Typography,
 } from "@mui/material";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FC, SyntheticEvent, useContext, useState } from "react";
-import NetworkContext from "../../contexts/NetworkContext";
+import { FC, useContext } from "react";
 import CopyClipboard from "../../components/CopyClipboard";
 import InfoTooltipBtn from "../../components/InfoTooltipBtn";
+import NetworkTabs from "../../components/NetworkTabs";
+import NetworkContext from "../../contexts/NetworkContext";
 import { Network, networks } from "../../redux/networks";
 import protocolContracts from "../../redux/protocolContracts";
 
@@ -41,36 +41,34 @@ const AddressListItem: FC<AddressListItemProps> = ({
     <ListItemText
       data-cy={dataCy}
       primary={title}
-      secondary={<Stack
-        component="span"
-        direction="row"
-        alignItems="center"
-        sx={{ fontFamily: "Roboto Mono" }}
-      >
-        {address || "-"}
-        {address && (
-          <Stack
-            component="span"
-            direction="row"
-            alignItems="center"
-            gap={1}
-          >
-            <CopyClipboard
-              copyText={address}
-              IconProps={{ sx: { fontSize: "16px" } }} />
-            <Tooltip title="View on blockchain Explorer">
-              <Link
-                href={network.getLinkForAddress(address)}
-                target="_blank"
-                sx={{ color: "inherit" }}
-              >
-                <OpenInNewIcon
-                  sx={{ fontSize: "16px", display: "block" }} />
-              </Link>
-            </Tooltip>
-          </Stack>
-        )}
-      </Stack>} />
+      secondary={
+        <Stack
+          component="span"
+          direction="row"
+          alignItems="center"
+          sx={{ fontFamily: "Roboto Mono" }}
+        >
+          {address || "-"}
+          {address && (
+            <Stack component="span" direction="row" alignItems="center" gap={1}>
+              <CopyClipboard
+                copyText={address}
+                IconProps={{ sx: { fontSize: "16px" } }}
+              />
+              <Tooltip title="View on blockchain Explorer">
+                <Link
+                  href={network.getLinkForAddress(address)}
+                  target="_blank"
+                  sx={{ color: "inherit" }}
+                >
+                  <OpenInNewIcon sx={{ fontSize: "16px", display: "block" }} />
+                </Link>
+              </Tooltip>
+            </Stack>
+          )}
+        </Stack>
+      }
+    />
   </ListItem>
 );
 
@@ -78,12 +76,12 @@ const Protocol: NextPage = () => {
   const network = useContext(NetworkContext);
   const router = useRouter();
 
-  const onTabChange = (_event: SyntheticEvent, newValue: string) =>
+  const onTabChange = (newValue: string) =>
     router.replace({
       query: {
         ...router.query,
-        "_network": newValue
-      }
+        _network: newValue,
+      },
     });
 
   const {
@@ -100,21 +98,10 @@ const Protocol: NextPage = () => {
     <Container component={Box} sx={{ my: 2, py: 2 }}>
       <TabContext value={network.slugName}>
         <Card>
-          <TabList
-            variant="scrollable"
-            scrollButtons="auto"
-            data-cy={"landing-page-networks"}
-            onChange={onTabChange}
-          >
-            {networks.map((network) => (
-              <Tab
-                data-cy={`${network.slugName}-landing-button`}
-                key={`Tab_${network.slugName}`}
-                label={network.displayName}
-                value={network.slugName}
-              />
-            ))}
-          </TabList>
+          <NetworkTabs
+            activeTab={network.slugName}
+            setActiveTab={onTabChange}
+          />
         </Card>
 
         {networks.map((network) => (

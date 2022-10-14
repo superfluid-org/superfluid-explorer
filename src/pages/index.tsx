@@ -1,37 +1,17 @@
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Card, Divider, NoSsr, Stack, Tab } from "@mui/material";
+import { TabContext, TabPanel } from "@mui/lab";
+import { Card, Divider, NoSsr, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import isEqual from "lodash/isEqual";
 import type { NextPage } from "next";
 import * as React from "react";
 import AppLink from "../components/AppLink";
-import NetworkDisplay from "../components/NetworkDisplay";
-import {
-  defaultStreamQueryOrdering,
-  defaultStreamQueryPaging,
-  NetworkStreams,
-} from "../components/NetworkStreams";
-import { track } from "../hooks/useMatomo";
-import { useAppSelector } from "../redux/hooks";
+import { NetworkStreams } from "../components/NetworkStreams";
+import NetworkTabs from "../components/NetworkTabs";
 import { networks } from "../redux/networks";
-import { sfSubgraph } from "../redux/store";
 
 const Home: NextPage = () => {
-  const [value, setValue] = React.useState("matic");
-
-  const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams", {
-    ifOlderThan: 45,
-  });
-
-  const displayedTestnetChainIds = useAppSelector(
-    (state) =>
-      Object.entries(state.appPreferences.displayedTestNets)
-        .filter(([_, isDisplayed]) => isDisplayed)
-        .map(([chainId]) => Number(chainId)),
-    isEqual
-  );
+  const [activeTab, setActiveTab] = React.useState("matic");
 
   return (
     <>
@@ -84,41 +64,9 @@ const Home: NextPage = () => {
             Latest Streams
           </Typography>
           <Divider />
-          <TabContext value={value}>
+          <TabContext value={activeTab}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <NoSsr>
-                <TabList
-                  variant="scrollable"
-                  scrollButtons="auto"
-                  data-cy={"landing-page-networks"}
-                  onChange={track(
-                  "network-tab-change",
-                  (_event, newValue: string) => setValue(newValue)
-                 )}
-                >
-                  {networks
-                    .filter(
-                      (network) =>
-                        !network.isTestnet ||
-                        displayedTestnetChainIds.includes(network.chainId)
-                    )
-                    .map((network) => (
-                      <Tab
-                        data-cy={`${network.slugName}-landing-button`}
-                        key={`Tab_${network.slugName}`}
-                        label={<NetworkDisplay network={network} />}
-                        value={network.slugName}
-                        onMouseEnter={() =>
-                          prefetchStreamsQuery({
-                            chainId: network.chainId,
-                            order: defaultStreamQueryOrdering,
-                            pagination: defaultStreamQueryPaging,
-                          })
-                        }
-                      />
-                    ))}
-                </TabList>
-              </NoSsr>
+              <NetworkTabs activeTab={activeTab} setActiveTab={setActiveTab} />
             </Box>
             {networks.map((network) => (
               <TabPanel
