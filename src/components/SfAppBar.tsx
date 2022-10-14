@@ -128,6 +128,7 @@ export const SfAppBar = () => {
                 color="inherit"
                 onClick={() => setSettingsOpen(true)}
                 data-cy="settings-cog"
+                data-cy-state={settingsOpen ? "open" : "closed"}
               >
                 <SettingsIcon />
               </IconButton>

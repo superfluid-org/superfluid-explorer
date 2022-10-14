@@ -24,15 +24,22 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+Cypress.Commands.add("toggleSettings", () => {
+  cy.get(`[data-cy="settings-cog"]`).click();
+});
+
 Cypress.Commands.add("toggleTestNet", (network, setTo) => {
+  cy.toggleSettings();
+
   if (setTo) {
-    const elem = cy.get(`[data-cy="settings-cog-${setTo}"]`);
+    const elem = cy
+      .get(`[data-cy="testnet-switch-${network}"]`)
+      .get(`[data-cy-state="$${setTo}"]`);
 
     if (elem) {
       return;
     }
   }
 
-  cy.get('[data-cy="settings-cog"]').click();
   cy.get(`[data-cy="network-switch-${network}"]`).click();
 });

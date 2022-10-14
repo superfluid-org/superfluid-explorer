@@ -6,6 +6,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       toggleTestnet(network: TestNet, setTo?: "on" | "off"): Chainable<Element>;
+      toggleSettings(): Chainable<Element>;
     }
   }
 }
