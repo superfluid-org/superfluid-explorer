@@ -7,7 +7,7 @@ Given(`User has opened the {string} page`, (page) => {
 });
 
 Then("User switches network for {string}", (network) => {
-  ProtocolPage.switchLNetwork(network);
+  ProtocolPage.switchNetwork(network);
 });
 
 Then(
@@ -17,10 +17,6 @@ Then(
     ProtocolPage.validateContractAddresses(network);
   }
 );
-
-Then("User turns on {string} network", (network) => {
-  ProtocolPage.turnOnTestnet(network);
-});
 
 Given("User clicks on the protocol button", () => {
   ProtocolPage.clickProtocolButton();

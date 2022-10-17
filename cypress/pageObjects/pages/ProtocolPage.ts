@@ -17,17 +17,13 @@ const IDA_V1 = "[data-cy=IDAv1-address] p";
 const SUPERFLUID_LOADER_V1 = "[data-cy=SuperLoaderV1-address] p";
 
 export class ProtocolPage extends BasePage {
-  static switchLNetwork(network: string) {
+  static switchNetwork(network: string) {
     this.click("[data-cy=" + network + "-landing-button]");
     this.hasAttributeWithValue(
       "[data-cy=" + network + "-landing-button]",
       "aria-selected",
       "true"
     );
-  }
-
-  static turnOnTestnet(network: TestNet) {
-    cy.toggleTestnet(network, "on");
   }
 
   static validateGovernanceParameters(network: string) {
