@@ -325,3 +325,7 @@ $RECYCLE.BIN/
 # Sentry
 .sentryclirc
 
+# Cypress
+
+cypress/screenshots
+cypress/videos
