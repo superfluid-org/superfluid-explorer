@@ -1,5 +1,4 @@
 import protocolContracts from "../../../src/redux/protocolContracts";
-import { TestNet } from "../../support";
 import { BasePage } from "../BasePage";
 
 const PROTOCOL_BUTTON = '[data-cy="protocol-button"]';
