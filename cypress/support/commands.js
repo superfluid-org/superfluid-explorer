@@ -32,14 +32,6 @@ Cypress.Commands.add("closeSettings", () => {
   cy.get(`[data-cy="settings-close"]`).click();
 });
 
-Cypress.Commands.add("exists", (...selectors) => {
-  return cy.window().then((win) => {
-    const elem = win.document.querySelector(selectors.join(","));
-
-    return elem ? true : false;
-  });
-});
-
 Cypress.Commands.add("toggleTestnet", (network, setTo) => {
   cy.openSettings();
 
