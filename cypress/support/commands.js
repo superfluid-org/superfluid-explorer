@@ -24,22 +24,38 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("toggleSettings", () => {
+Cypress.Commands.add("openSettings", () => {
   cy.get(`[data-cy="settings-cog"]`).click();
 });
 
-Cypress.Commands.add("toggleTestNet", (network, setTo) => {
-  cy.toggleSettings();
+Cypress.Commands.add("closeSettings", () => {
+  cy.get(`[data-cy="settings-close"]`).click();
+});
+
+Cypress.Commands.add("exists", (...selectors) => {
+  return cy.window().then((win) => {
+    const elem = win.document.querySelector(selectors.join(","));
+
+    return elem ? true : false;
+  });
+});
+
+Cypress.Commands.add("toggleTestnet", (network, setTo) => {
+  cy.openSettings();
+
+  const elem = cy.get(`[data-cy="testnet-switch-${network}"]`);
 
   if (setTo) {
-    const elem = cy
-      .get(`[data-cy="testnet-switch-${network}"]`)
-      .get(`[data-cy-state="$${setTo}"]`);
+    elem.then(($switch) => {
+      if ($switch.attr(`[data-cy="${setTo}]`)) {
+        return;
+      }
 
-    if (elem) {
-      return;
-    }
+      $switch.click();
+    });
+  } else {
+    elem.click();
   }
 
-  cy.get(`[data-cy="network-switch-${network}"]`).click();
+  cy.closeSettings();
 });

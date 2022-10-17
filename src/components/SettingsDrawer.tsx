@@ -85,7 +85,12 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
         <Typography variant="body1" fontWeight="500">
           Settings
         </Typography>
-        <IconButton color="inherit" onClick={onClose} edge="end">
+        <IconButton
+          color="inherit"
+          onClick={onClose}
+          edge="end"
+          data-cy="settings-close"
+        >
           <CloseIcon color="primary" fontSize="small" />
         </IconButton>
       </Box>
