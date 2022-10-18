@@ -1,6 +1,7 @@
-import { Network, networks, networksByChainId } from "../redux/networks";
-import _ from "lodash";
+import { SerializedError } from "@reduxjs/toolkit";
 import { ethers } from "ethers";
+import _ from "lodash";
+import { Network, networks, networksByChainId } from "../redux/networks";
 import { useAddressDisplay } from "./useAddressDisplay";
 import { useSearchAddressBook } from "./useSearchAddressBook";
 import {
@@ -11,7 +12,6 @@ import {
   SubgraphSearchByTokenSymbolResult,
   useSearchSubgraphByTokenSymbol,
 } from "./useSearchSubgraphByTokenSymbol";
-import { SerializedError } from "@reduxjs/toolkit";
 
 export type NetworkSearchResult = {
   network: Network;
@@ -31,7 +31,9 @@ export type NetworkSearchResult = {
 export const useSearch = (searchTerm: string) => {
   const addressDisplay = useAddressDisplay(searchTerm);
 
-  const subgraphSearchByAddressResults = useSearchSubgraphByAddress(addressDisplay.addressChecksummed ?? "skip");
+  const subgraphSearchByAddressResults = useSearchSubgraphByAddress(
+    addressDisplay.addressChecksummed ?? "skip"
+  );
   const subgraphSearchByTokenSymbolResults =
     useSearchSubgraphByTokenSymbol(searchTerm);
   const addressBookResults = useSearchAddressBook(searchTerm);
@@ -63,7 +65,7 @@ export const useSearch = (searchTerm: string) => {
       .filter((x) => !!x.originalArgs)
       .map((searchQuery) => {
         const searchResult: SubgraphSearchByTokenSymbolResult =
-          (searchQuery.data as SubgraphSearchByTokenSymbolResult) ?? {
+          (searchQuery.currentData as SubgraphSearchByTokenSymbolResult) ?? {
             tokensBySymbol: [],
           };
 

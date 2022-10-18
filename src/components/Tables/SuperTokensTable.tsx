@@ -52,7 +52,7 @@ interface SuperTokensTableProps {
 
 type RequiredTokensQuery = Required<Omit<TokensQuery, "block">>;
 
-const defaultOrdering = {} as Ordering<Token_OrderBy>;
+const defaultOrdering = { orderBy: "isListed", orderDirection: "desc" } as Ordering<Token_OrderBy>;
 
 const defaultFilter: Token_Filter = {
   isSuperToken: true,
@@ -145,10 +145,10 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     if (e.target.value) {
       onFilterChange({
         ...queryArg.filter,
-        name_contains: e.target.value,
+        name_contains_nocase: e.target.value,
       });
     } else {
-      onFilterChange(omit("name_contains", queryArg.filter));
+      onFilterChange(omit("name_contains_nocase", queryArg.filter));
     }
   };
 
@@ -156,10 +156,10 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     if (e.target.value) {
       onFilterChange({
         ...queryArg.filter,
-        symbol_contains: e.target.value,
+        symbol_contains_nocase: e.target.value,
       });
     } else {
-      onFilterChange(omit("symbol_contains", queryArg.filter));
+      onFilterChange(omit("symbol_contains_nocase", queryArg.filter));
     }
   };
 
@@ -220,27 +220,27 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
         </Typography>
 
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mx: 2 }}>
-          {filter.name_contains && (
+          {filter.name_contains_nocase && (
             <Chip
               label={
                 <>
-                  Name: <b data-cy={"chip-name"}>{filter.name_contains}</b>
+                  Name: <b data-cy={"chip-name"}>{filter.name_contains_nocase}</b>
                 </>
               }
               size="small"
-              onDelete={clearFilterField("name_contains")}
+              onDelete={clearFilterField("name_contains_nocase")}
             />
           )}
 
-          {filter.symbol_contains && (
+          {filter.symbol_contains_nocase && (
             <Chip
               label={
                 <>
-                  Symbol: <b data-cy={"chip-symbol"}>{filter.symbol_contains}</b>
+                  Symbol: <b data-cy={"chip-symbol"}>{filter.symbol_contains_nocase}</b>
                 </>
               }
               size="small"
-              onDelete={clearFilterField("symbol_contains")}
+              onDelete={clearFilterField("symbol_contains_nocase")}
             />
           )}
 
@@ -287,12 +287,12 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 autoFocus
                 fullWidth
                 size="small"
-                value={filter.name_contains || ""}
+                value={filter.name_contains_nocase || ""}
                 onChange={onNameChange}
                 endAdornment={
-                  filter.name_contains && (
+                  filter.name_contains_nocase && (
                     <ClearInputAdornment
-                      onClick={clearFilterField("name_contains")}
+                      onClick={clearFilterField("name_contains_nocase")}
                     />
                   )
                 }
@@ -307,12 +307,12 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 data-cy={"filter-symbol-input"}
                 fullWidth
                 size="small"
-                value={filter.symbol_contains || ""}
+                value={filter.symbol_contains_nocase || ""}
                 onChange={onSymbolChange}
                 endAdornment={
-                  filter.symbol_contains && (
+                  filter.symbol_contains_nocase && (
                     <ClearInputAdornment
-                      onClick={clearFilterField("symbol_contains")}
+                      onClick={clearFilterField("symbol_contains_nocase")}
                     />
                   )
                 }
@@ -337,8 +337,8 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             </Box>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {(filter.name_contains ||
-                filter.symbol_contains ||
+              {(filter.name_contains_nocase ||
+                filter.symbol_contains_nocase ||
                 listedStatus !== null) && (
                 <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
                   Reset

@@ -81,3 +81,13 @@ Given(`User has opened the {string} read more page`, (page) => {
 Then(`There are no elements containing {string}`, (text) => {
   BasePage.notContains(text)
 });
+
+Given(`User enables all of the testnets`,  () => {
+  CommonElements.enableAllTestnets()
+});
+
+Given(/^User toggles the test network "([^"]*)" in settings$/, (slugName) => {
+  CommonElements.openSettingsMenu()
+  CommonElements.toggleTestnetBySlug(slugName)
+  CommonElements.closeSettingsMenu()
+});

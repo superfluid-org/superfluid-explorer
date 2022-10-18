@@ -1,56 +1,13 @@
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Card, CardContent, Container, NoSsr, Tab } from "@mui/material";
-import { FC, SyntheticEvent, useState } from "react";
-import SuperTokensTable from "../components/Tables/SuperTokensTable";
-import { networksByTestAndName } from "../redux/networks";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-interface SuperTokensProps {}
+// redirects the legacy url /super-tokens to the default network specific page
+const SuperTokensLegacyRedirect: NextPage = () => {
+    const router = useRouter();
+    useEffect(() => void router.replace("/matic/supertokens") ,[]);
 
-const SuperTokens: FC<SuperTokensProps> = ({}) => {
-  const [activeTab, setActiveTab] = useState("matic");
-
-  const onTabChange = (_event: SyntheticEvent, newValue: string) =>
-    setActiveTab(newValue);
-
-  return (
-    <Container component={Box} sx={{ my: 2, py: 2 }}>
-      <TabContext value={activeTab}>
-        <Card>
-          <TabList
-            variant="scrollable"
-            scrollButtons="auto"
-            data-cy={"landing-page-networks"}
-            onChange={onTabChange}
-          >
-            {networksByTestAndName.map((network) => (
-              <Tab
-                data-cy={`${network.slugName}-landing-button`}
-                key={`Tab_${network.slugName}`}
-                label={network.displayName}
-                value={network.slugName}
-              />
-            ))}
-          </TabList>
-        </Card>
-
-        {networksByTestAndName.map((network) => (
-          <TabPanel
-            key={network.slugName}
-            value={network.slugName}
-            sx={{ px: 0 }}
-          >
-            <Card>
-              <CardContent>
-                <NoSsr>
-                  <SuperTokensTable network={network} />
-                </NoSsr>
-              </CardContent>
-            </Card>
-          </TabPanel>
-        ))}
-      </TabContext>
-    </Container>
-  );
+    return null;
 };
 
-export default SuperTokens;
+export default SuperTokensLegacyRedirect;

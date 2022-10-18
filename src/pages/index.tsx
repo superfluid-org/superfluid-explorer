@@ -1,25 +1,17 @@
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Card, Divider, NoSsr, Stack, Tab } from "@mui/material";
+import { TabContext, TabPanel } from "@mui/lab";
+import { Card, Divider, NoSsr, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import * as React from "react";
 import AppLink from "../components/AppLink";
-import {
-  defaultStreamQueryOrdering,
-  defaultStreamQueryPaging,
-  NetworkStreams,
-} from "../components/NetworkStreams";
-import { networksByTestAndName } from "../redux/networks";
-import { sfSubgraph } from "../redux/store";
+import { NetworkStreams } from "../components/NetworkStreams";
+import NetworkTabs from "../components/NetworkTabs";
+import { networks } from "../redux/networks";
 
 const Home: NextPage = () => {
-  const [value, setValue] = React.useState("matic");
-
-  const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams", {
-    ifOlderThan: 45,
-  });
+  const [activeTab, setActiveTab] = React.useState("matic");
 
   return (
     <>
@@ -72,32 +64,11 @@ const Home: NextPage = () => {
             Latest Streams
           </Typography>
           <Divider />
-          <TabContext value={value}>
+          <TabContext value={activeTab}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <TabList
-                variant="scrollable"
-                scrollButtons="auto"
-                data-cy={"landing-page-networks"}
-                onChange={(_event, newValue: string) => setValue(newValue)}
-              >
-                {networksByTestAndName.map((network) => (
-                  <Tab
-                    data-cy={`${network.slugName}-landing-button`}
-                    key={`Tab_${network.slugName}`}
-                    label={network.displayName}
-                    value={network.slugName}
-                    onMouseEnter={() =>
-                      prefetchStreamsQuery({
-                        chainId: network.chainId,
-                        order: defaultStreamQueryOrdering,
-                        pagination: defaultStreamQueryPaging,
-                      })
-                    }
-                  />
-                ))}
-              </TabList>
+              <NetworkTabs activeTab={activeTab} setActiveTab={setActiveTab} />
             </Box>
-            {networksByTestAndName.map((network) => (
+            {networks.map((network) => (
               <TabPanel
                 key={`TabPanel_${network.slugName}`}
                 value={network.slugName}
