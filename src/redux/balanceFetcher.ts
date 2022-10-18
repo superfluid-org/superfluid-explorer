@@ -1,3 +1,4 @@
+import { SuperToken__factory } from "@superfluid-finance/sdk-core";
 import { getFramework } from "@superfluid-finance/sdk-redux";
 import { networks } from "./networks";
 
@@ -42,7 +43,10 @@ const createFetching = async (chainId: number) => {
       .map(({ params }) =>
         Promise.all([
           getKey(params),
-          provider.getBalance(params.tokenAddress),
+          SuperToken__factory.connect(
+            params.tokenAddress,
+            provider
+          ).realtimeBalanceOfNow(params.accountAddress),
           framework.cfaV1.getNetFlow({
             superToken: params.tokenAddress,
             account: params.accountAddress,
@@ -56,8 +60,8 @@ const createFetching = async (chainId: number) => {
     results.map(([key, balance, flowRate]) => [
       key,
       {
-        balance: balance.toString(),
-        balanceTimestamp: 0,
+        balance: balance[0].toString(),
+        balanceTimestamp: balance[3].toNumber(),
         flowRate,
       },
     ])

@@ -23,7 +23,7 @@
     "@mui/x-data-grid": "^5.4.0",
     "@reduxjs/toolkit": "^1.7.1",
     "@sentry/nextjs": "^6.17.4",
-    "@superfluid-finance/sdk-core": "0.5.6",
+    "@superfluid-finance/sdk-core": "0.5.8-dev.b990476.0",
     "@superfluid-finance/sdk-redux": "0.3.0",
     "decimal.js": "^10.3.1",
     "ethereum-multicall": "^2.10.0",
