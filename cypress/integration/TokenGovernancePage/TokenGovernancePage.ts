@@ -1,6 +1,7 @@
 import {Given, Then} from "cypress-cucumber-preprocessor/steps";
 import {TokenGovernancePage} from "../../pageObjects/pages/TokenGovernancePage";
 import {LandingPage} from "../../pageObjects/pages/LandingPage";
+import {CommonElements} from "../../pageObjects/components/CommonElements";
 
 Given(`User has opened the {string} page`, (page) => {
   LandingPage.openPage(page)
@@ -32,4 +33,10 @@ Then("User filters super tokens by not listed", () => {
 
 Given("User clicks on the tokens button", () => {
   LandingPage.openTokenGovernancePage()
+});
+
+Given(/^User toggles the test network "([^"]*)" in settings$/, (slugName) => {
+  CommonElements.openSettingsMenu()
+  CommonElements.toggleTestnetBySlug(slugName)
+  CommonElements.closeSettingsMenu()
 });
