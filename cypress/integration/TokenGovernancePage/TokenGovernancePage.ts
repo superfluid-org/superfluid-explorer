@@ -6,8 +6,6 @@ Given(`User has opened the {string} page`, (page) => {
   LandingPage.openPage(page)
 });
 
-Given(`And network {string} is turned on`, (network) => {});
-
 Then("User switches network for {string} and validates data", (network) => {
   TokenGovernancePage.switchNetworkAndValidateTokens(network)
 })
