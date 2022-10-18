@@ -2,6 +2,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Menu, Stack } from "@mui/material";
 import sortBy from "lodash/fp/sortBy";
 import { memo, useRef, useState } from "react";
+import { useAppSelector } from "../../redux/hooks";
 import { Network, networks } from "../../redux/networks";
 import { sfSubgraph } from "../../redux/store";
 import NetworkSelectItem from "./NetworkSelectItem";
@@ -20,6 +21,10 @@ export default memo<AccountNetworkSelectProps>(function AccountNetworkSelect({
   activeNetwork,
   address,
 }) {
+  const displayedTestnetChainIds = useAppSelector(
+    (state) => state.appPreferences.displayedTestNets
+  );
+
   const ref = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -27,6 +32,7 @@ export default memo<AccountNetworkSelectProps>(function AccountNetworkSelect({
   const closeMenu = () => setMenuOpen(false);
 
   const mappedNetworkAccounts = networksOrdered
+
     .map((n) => ({
       network: n,
       account: sfSubgraph.useAccountQuery({
@@ -34,7 +40,11 @@ export default memo<AccountNetworkSelectProps>(function AccountNetworkSelect({
         id: address,
       }),
     }))
-    .filter(({ account }) => account.isLoading || !!account.data);
+    .filter(
+      ({ account, network }) =>
+        (account.isLoading || !!account.data) &&
+        (!network.isTestnet || displayedTestnetChainIds[network.chainId])
+    );
 
   return (
     <>
