@@ -47,7 +47,7 @@ const infuraProviders = networks.map((network) => ({
     Framework.create({
       chainId: network.chainId,
       provider: new providers.MulticallProvider(
-        new ethers.providers.JsonRpcProvider(network.rpcUrl)
+        new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
     }),
 }));
