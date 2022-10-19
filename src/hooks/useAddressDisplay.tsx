@@ -17,15 +17,20 @@ export const useAddressDisplay = (
     [addressOrName]
   );
 
+  const addressSearch = useAddress(addressOrName, !isSearchTermAddress);
+  const nameSearch = useName(addressOrName, isSearchTermAddress);
+
   if (isSearchTermAddress) {
-    return useAddress(addressOrName);
+    return addressSearch;
   } else {
-    return useName(addressOrName);
+    return nameSearch;
   }
 };
 
-export const useName = (name: string): AddressDisplayResult => {
-  const ensAddressQuery = ensApi.useResolveNameQuery(name);
+export const useName = (name: string, skip: boolean): AddressDisplayResult => {
+  const ensAddressQuery = ensApi.useResolveNameQuery(name, {
+    skip,
+  });
   return {
     addressChecksummed: ensAddressQuery.currentData?.address,
     ensName: !!ensAddressQuery.currentData?.address ? name : null,
@@ -34,10 +39,17 @@ export const useName = (name: string): AddressDisplayResult => {
   };
 };
 
-export const useAddress = (address: string): AddressDisplayResult => {
-  const ensLookupQuery = ensApi.useLookupAddressQuery(address);
+export const useAddress = (
+  address: string,
+  skip: boolean
+): AddressDisplayResult => {
+  const ensLookupQuery = ensApi.useLookupAddressQuery(address, {
+    skip,
+  });
   return {
-    addressChecksummed: ethers.utils.getAddress(address.toLowerCase()),
+    addressChecksummed: !skip
+      ? ethers.utils.getAddress(address.toLowerCase())
+      : undefined,
     ensName: ensLookupQuery.data?.name,
     avatar: undefined,
     isFetching: ensLookupQuery.isFetching,

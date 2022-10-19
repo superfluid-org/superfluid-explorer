@@ -29,14 +29,14 @@ import storageLocal from "redux-persist/lib/storage";
 import { addDays } from "../utils/dateTime";
 import { isServer } from "../utils/isServer";
 import { networks } from "./networks";
-import { newRpcApiEndpoints } from "./newRpcApiEndpoints";
+import { balanceRpcApiEndpoints } from "./balanceRpcApiEndpoints";
 import { addressBookSlice } from "./slices/addressBook.slice";
 import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { ensApi } from "./slices/ensResolver.slice";
 
 export const rpcApi = initializeRpcApiSlice(
   createApiWithReactHooks
-).injectEndpoints(newRpcApiEndpoints);
+).injectEndpoints(balanceRpcApiEndpoints);
 export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
 ).injectEndpoints(allSubgraphEndpoints);
