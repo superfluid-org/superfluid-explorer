@@ -49,6 +49,7 @@ const infuraProviders = networks.map((network) => ({
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
+      // some commentary about what's going on here may be helpful
       customSubgraphQueriesEndpoint:
         network.chainId === 100 && new Date() < new Date(2022, 10, 4, 12)
           ? "https://subgraph.satsuma-prod.com/superfluid/xdai/api"
