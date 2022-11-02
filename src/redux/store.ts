@@ -49,10 +49,11 @@ const infuraProviders = networks.map((network) => ({
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
-      // some commentary about what's going on here may be helpful
       customSubgraphQueriesEndpoint:
-        network.chainId === 100 && new Date() < new Date(2022, 10, 4, 12)
+        network.chainId === 100 && new Date() < new Date(2022, 10, 4, 12) // Use Satsuma endpoint for Gnosis Chain for trial period
           ? "https://subgraph.satsuma-prod.com/superfluid/xdai/api"
+          : network.chainId === 1 // Set endpoint manually for mainnet until it gets implemented in SDK-core.
+          ? "https://subgraph.satsuma-prod.com/superfluid/eth-mainnet/api"
           : undefined,
     }),
 }));
