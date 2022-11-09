@@ -41,6 +41,7 @@
     "react-dom": "^18.0.0",
     "react-hotjar": "^4.0.0",
     "react-redux": "^7.2.6",
+    "reactflow": "^11.2.0",
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0"
   },

@@ -25,6 +25,7 @@ import { useContext, useEffect, useState } from "react";
 import AccountIndexes from "../../../components/AccountIndexes";
 import AccountStreams from "../../../components/AccountStreams";
 import AccountTokenBalance from "../../../components/AccountTokenBalance";
+import AccountMap from "../../../components/AccountMap";
 import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
 import CopyIconBtn from "../../../components/CopyIconBtn";
@@ -360,6 +361,7 @@ const AccountPage: NextPage = () => {
                 value="tokens"
               />
               <Tab data-cy={"events-tab"} label="Events" value="events" />
+              <Tab data-cy={"map-tab"} label="Map" value="map" />
             </TabList>
           </Box>
 
@@ -375,6 +377,9 @@ const AccountPage: NextPage = () => {
             </TabPanel>
             <TabPanel value="indexes">
               <AccountIndexes network={network} accountAddress={address} />
+            </TabPanel>
+            <TabPanel value="map">
+              <AccountMap network={network} accountAddress={address} />
             </TabPanel>
           </Box>
         </TabContext>
