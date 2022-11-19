@@ -1,4 +1,5 @@
 import { useCallback, FC, ReactElement } from 'react';
+import ellipsisAddress from '../../utils/ellipsisAddress';
 import ReactFlow, {
   Controls,
   Background,
@@ -22,6 +23,7 @@ import {
 import useDebounce from '../../hooks/useDebounce';
 import { Network } from "../../redux/networks";
 import { sfSubgraph } from "../../redux/store";
+import { table } from 'console';
 
 type RequiredStreamQuery = Required<Omit<StreamsQuery, "block">>;
 
@@ -44,12 +46,13 @@ const Map: FC<{
   accountAddress: string;
 }> = ({network, accountAddress}): ReactElement => {
 
+  const [data, setData] = useState();
 
-const initialNodes = [
-  { id: accountAddress, position: { x: 500, y: 200 }, data: { label: accountAddress } },
-];
+  const initialNodes = [
+    { id: accountAddress, position: { x: 500, y: 200 }, data: { label: ellipsisAddress(accountAddress) } },
+  ];
 
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+  const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -93,6 +96,37 @@ const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
   }, [network, accountAddress]);
 
   const tableRows = streamsQueryResult.data?.data || [];
+
+  useEffect(() => {
+    if(!tableRows){
+      return;
+    }
+    //@ts-ignore
+    setData(tableRows)
+    let nodeList: any = [];
+    let edgeList: any = [];
+
+    tableRows.map((row, i) => {
+      let node = {id: row.sender, position: {x: i*100, y: i*100}, data: ellipsisAddress(row.sender)}
+      nodeList.push(node);
+    })
+    //@ts-ignore
+    nodeList.map((node, i) => {
+      if(i === nodeList.length){
+        return;
+      }
+      let edge = {id: ``, source: node.id, target: accountAddress}
+      edgeList.push(edge);
+    })
+
+    console.log('nodeList', nodeList, 'edgeList', edgeList);
+    setNodes(nodeList);
+    setEdges(edgeList);
+    console.log(nodes, edges, 'eee')
+  }, [tableRows])
+
+
+
 
   console.log('look here', tableRows);
 
