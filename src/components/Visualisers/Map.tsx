@@ -23,9 +23,11 @@ import {
 import useDebounce from '../../hooks/useDebounce';
 import { Network } from "../../redux/networks";
 import { sfSubgraph } from "../../redux/store";
-import { table } from 'console';
+import { ethers } from 'ethers'
 
 type RequiredStreamQuery = Required<Omit<StreamsQuery, "block">>;
+
+//Incoming streams
 
 export const incomingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
   orderBy: "updatedAtTimestamp",
@@ -35,6 +37,18 @@ export const incomingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
 export const incomingStreamPagingDefault = createSkipPaging({
   take: 10,
 });
+
+//Outgoing streams
+
+export const outgoingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
+  orderBy: "updatedAtTimestamp",
+  orderDirection: "desc",
+};
+
+export const outgoingStreamPagingDefault = createSkipPaging({
+  take: 10,
+});
+
 
 export enum StreamStatus {
   Active,
@@ -63,6 +77,8 @@ const Map: FC<{
     receiver: accountAddress,
   };
 
+  //Incoming streams
+
   const createDefaultArg = (): RequiredStreamQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
@@ -73,7 +89,7 @@ const Map: FC<{
   const [streamsQueryArg, setStreamsQueryArg] = useState<RequiredStreamQuery>(createDefaultArg());
 
   const [streamsQueryTrigger, streamsQueryResult] =
-    sfSubgraph.useLazyStreamsQuery();
+  sfSubgraph.useLazyStreamsQuery();
 
   const streamsQueryTriggerDebounced = useDebounce(streamsQueryTrigger, 250);
 
@@ -95,40 +111,109 @@ const Map: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network, accountAddress]);
 
-  const tableRows = streamsQueryResult.data?.data || [];
+  const IncomingStreams = streamsQueryResult.data?.data || [];
+
+  //Outgoing streams
+
+  const createOutgoingDefaultArg = (): RequiredStreamQuery => ({
+    chainId: network.chainId,
+    filter: defaultFilter,
+    pagination: outgoingStreamPagingDefault,
+    order: outgoingStreamOrderingDefault,
+  });
+
+  const [streamsOutgoingQueryArg, setOutgoingStreamsQueryArg] = useState<RequiredStreamQuery>(createOutgoingDefaultArg());
+
+  const [streamsOutgoingQueryTrigger, streamsOutgoingQueryResult] =
+  sfSubgraph.useLazyStreamsQuery();
+
+  const streamsOutgoingQueryTriggerDebounced = useDebounce(streamsOutgoingQueryTrigger, 250);
+
+  const onOutgoingStreamQueryArgsChanged = (newArgs: RequiredStreamQuery) => {
+    setOutgoingStreamsQueryArg(newArgs);
+
+    if (
+      streamsOutgoingQueryResult.originalArgs &&
+      !isEqual(streamsOutgoingQueryResult.originalArgs.filter, newArgs.filter)
+    ) {
+      streamsOutgoingQueryTriggerDebounced(newArgs, true);
+    } else {
+      streamsOutgoingQueryTrigger(newArgs, true);
+    }
+  };
 
   useEffect(() => {
-    if(!tableRows){
+    onOutgoingStreamQueryArgsChanged(createDefaultArg());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [network, accountAddress]);
+
+  const OutgoingStreams = streamsOutgoingQueryResult.data?.data || [];
+
+  console.log('outgoing', OutgoingStreams, 'incoming', IncomingStreams);
+
+  useEffect(() => {
+    if(!IncomingStreams || !OutgoingStreams){
       return;
     }
-    //@ts-ignore
-    setData(tableRows)
-    let nodeList: any = [];
+    let incomingNodeList: any = [initialNodes[0]];
+    let outgoingNodeList: any = [];
+    let outgoingEdgeList: any = [];
     let edgeList: any = [];
 
-    tableRows.map((row, i) => {
-      let node = {id: row.sender, position: {x: i*100, y: i*100}, data: ellipsisAddress(row.sender)}
-      nodeList.push(node);
+    IncomingStreams.map((row, i) => {
+      if (row.currentFlowRate === '0') {
+        return
+      }
+      let humanizedFlowRate: any = +row.currentFlowRate
+      humanizedFlowRate = +humanizedFlowRate / 3600 / 24 / 30
+      let node = {
+        id: row.sender,
+        position: {x: i*100, y: 100},
+        data: {label: ellipsisAddress(row.sender)},
+        flowRate: humanizedFlowRate,
+      }
+      incomingNodeList.push(node);
     })
-    //@ts-ignore
-    nodeList.map((node, i) => {
-      if(i === nodeList.length){
+
+    OutgoingStreams.map((row, i) => {
+      if (row.currentFlowRate === '0') {
+        return
+      }
+      let humanizedFlowRate: any = +row.currentFlowRate
+      humanizedFlowRate = +humanizedFlowRate / 3600 / 24 / 30
+      let node = {
+        id: row.receiver,
+        position: {x: i*300, y: 300},
+        data: {label: ellipsisAddress(row.receiver)},
+        flowRate: humanizedFlowRate,
+      }
+      outgoingNodeList.push(node);
+    })
+
+    incomingNodeList.map((node: any, i: any) => {
+      if(i === incomingNodeList.length){
         return;
       }
-      let edge = {id: ``, source: node.id, target: accountAddress}
+      let edge = {
+        id: `e${node.id}-${accountAddress}`,
+        label: node.flowRate,
+        source: node.id,
+        target: accountAddress,
+        animated: true
+      }
       edgeList.push(edge);
     })
 
-    console.log('nodeList', nodeList, 'edgeList', edgeList);
-    setNodes(nodeList);
+    console.log('nodeList', incomingNodeList, 'edgeList', edgeList);
+    setNodes([...incomingNodeList]);
     setEdges(edgeList);
     console.log(nodes, edges, 'eee')
-  }, [tableRows])
+  }, [IncomingStreams, OutgoingStreams])
 
 
 
 
-  console.log('look here', tableRows);
+  console.log('look here', IncomingStreams);
 
   return (
     <ReactFlow
