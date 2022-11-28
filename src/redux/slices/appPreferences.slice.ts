@@ -29,7 +29,7 @@ const initialState: IAppPreferences = {
     .reduce(
       (acc, n) => ({
         ...acc,
-        [n.chainId]: false,
+        [n.chainId]: true,
       }),
       {}
     ),
