@@ -2129,7 +2129,7 @@
 
 "@superfluid-finance/metadata@git+https://github.com/superfluid-finance/metadata.git":
   version "1.1.0"
-  resolved "git+https://github.com/superfluid-finance/metadata.git#daa48fcc3a395f4de7c12fb3d4add7ed3da0de38"
+  resolved "git+https://github.com/superfluid-finance/metadata.git#680a8020da870e28853182de5ae7f297992ac498"
 
 "@superfluid-finance/sdk-core@^0.5.8":
   version "0.5.8"

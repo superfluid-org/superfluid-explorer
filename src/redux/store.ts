@@ -49,10 +49,6 @@ const infuraProviders = networks.map((network) => ({
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
-      customSubgraphQueriesEndpoint:
-        network.chainId === 100 // Use Satsuma for Gnosis Chain.
-          ? "https://subgraph.satsuma-prod.com/superfluid/xdai/api"
-          : undefined,
     }),
 }));
 
