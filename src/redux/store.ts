@@ -48,11 +48,7 @@ const infuraProviders = networks.map((network) => ({
       chainId: network.chainId,
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
-      ),
-      customSubgraphQueriesEndpoint:
-        network.chainId === 100 && new Date() < new Date(2022, 10, 4, 12)
-          ? "https://subgraph.satsuma-prod.com/superfluid/xdai/api"
-          : undefined,
+      )
     }),
 }));
 
