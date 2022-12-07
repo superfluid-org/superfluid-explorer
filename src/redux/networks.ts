@@ -19,7 +19,7 @@ export const networks: Network[] = [
     chainId: 100,
     isTestnet: false,
     rpcUrl: "https://rpc-endpoints.superfluid.dev/xdai-mainnet",
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-xdai",
+    subgraphUrl: "https://subgraph.satsuma-prod.com/superfluid/xdai/api",
     getLinkForTransaction: (txHash: string): string => `https://gnosisscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://gnosisscan.io/address/${address}`
   },
