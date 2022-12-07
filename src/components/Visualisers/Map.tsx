@@ -60,8 +60,6 @@ const Map: FC<{
   accountAddress: string;
 }> = ({network, accountAddress}): ReactElement => {
 
-  const [data, setData] = useState();
-
   const initialNodes = [
     { id: accountAddress, position: { x: 500, y: 200 }, data: { label: ellipsisAddress(accountAddress) } },
   ];
@@ -113,46 +111,8 @@ const Map: FC<{
 
   const IncomingStreams = streamsQueryResult.data?.data || [];
 
-  //Outgoing streams
-
-  const createOutgoingDefaultArg = (): RequiredStreamQuery => ({
-    chainId: network.chainId,
-    filter: defaultFilter,
-    pagination: outgoingStreamPagingDefault,
-    order: outgoingStreamOrderingDefault,
-  });
-
-  const [streamsOutgoingQueryArg, setOutgoingStreamsQueryArg] = useState<RequiredStreamQuery>(createOutgoingDefaultArg());
-
-  const [streamsOutgoingQueryTrigger, streamsOutgoingQueryResult] =
-  sfSubgraph.useLazyStreamsQuery();
-
-  const streamsOutgoingQueryTriggerDebounced = useDebounce(streamsOutgoingQueryTrigger, 250);
-
-  const onOutgoingStreamQueryArgsChanged = (newArgs: RequiredStreamQuery) => {
-    setOutgoingStreamsQueryArg(newArgs);
-
-    if (
-      streamsOutgoingQueryResult.originalArgs &&
-      !isEqual(streamsOutgoingQueryResult.originalArgs.filter, newArgs.filter)
-    ) {
-      streamsOutgoingQueryTriggerDebounced(newArgs, true);
-    } else {
-      streamsOutgoingQueryTrigger(newArgs, true);
-    }
-  };
-
   useEffect(() => {
-    onOutgoingStreamQueryArgsChanged(createDefaultArg());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, accountAddress]);
-
-  const OutgoingStreams = streamsOutgoingQueryResult.data?.data || [];
-
-  console.log('outgoing', OutgoingStreams, 'incoming', IncomingStreams);
-
-  useEffect(() => {
-    if(!IncomingStreams || !OutgoingStreams){
+    if (!IncomingStreams) {
       return;
     }
     let incomingNodeList: any = [initialNodes[0]];
@@ -164,32 +124,19 @@ const Map: FC<{
       if (row.currentFlowRate === '0') {
         return
       }
-      let humanizedFlowRate: any = +row.currentFlowRate
-      humanizedFlowRate = +humanizedFlowRate / 3600 / 24 / 30
+      console.log('row', row);
+      let ethersFlowRate = ethers.utils.formatEther(row.currentFlowRate);
+      console.log('ethers', ethersFlowRate);
+      let humanizedFlowRate = +ethersFlowRate * 3600 * 24
       let node = {
-        id: row.sender,
-        position: {x: i*100, y: 100},
+        id: `${row.sender}-${i}`,
+        position: {x: i*250, y: 100},
         data: {label: ellipsisAddress(row.sender)},
-        flowRate: humanizedFlowRate,
+        flowRate: humanizedFlowRate.toFixed(2),
       }
       incomingNodeList.push(node);
     })
-
-    OutgoingStreams.map((row, i) => {
-      if (row.currentFlowRate === '0') {
-        return
-      }
-      let humanizedFlowRate: any = +row.currentFlowRate
-      humanizedFlowRate = +humanizedFlowRate / 3600 / 24 / 30
-      let node = {
-        id: row.receiver,
-        position: {x: i*300, y: 300},
-        data: {label: ellipsisAddress(row.receiver)},
-        flowRate: humanizedFlowRate,
-      }
-      outgoingNodeList.push(node);
-    })
-
+    console.log('nodeList', incomingNodeList);
     incomingNodeList.map((node: any, i: any) => {
       if(i === incomingNodeList.length){
         return;
@@ -208,7 +155,7 @@ const Map: FC<{
     setNodes([...incomingNodeList]);
     setEdges(edgeList);
     console.log(nodes, edges, 'eee')
-  }, [IncomingStreams, OutgoingStreams])
+  }, [IncomingStreams])
 
 
 
