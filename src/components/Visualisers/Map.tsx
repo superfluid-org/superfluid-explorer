@@ -127,12 +127,12 @@ const Map: FC<{
       console.log('row', row);
       let ethersFlowRate = ethers.utils.formatEther(row.currentFlowRate);
       console.log('ethers', ethersFlowRate);
-      let humanizedFlowRate = +ethersFlowRate * 3600 * 24
+      let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30
       let node = {
         id: `${row.sender}-${i}`,
-        position: {x: i*250, y: 100},
+        position: {x: i*300, y: 100},
         data: {label: ellipsisAddress(row.sender)},
-        flowRate: humanizedFlowRate.toFixed(2),
+        flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${row.tokenSymbol}`,
       }
       incomingNodeList.push(node);
     })
