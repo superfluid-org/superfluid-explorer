@@ -56,15 +56,30 @@ export enum StreamStatus {
   Inactive,
 }
 
+interface edge {
+  id: string,
+  source: string,
+  target: string,
+  label?: string,
+  animated?: boolean
+}
+
+interface node {
+  id: string,
+  position: {x: number, y: number},
+  data: {label: ReactElement},
+  flowRate?: string,
+}
+
 const Map: FC<{
   network: Network;
   accountAddress: string;
 }> = ({network, accountAddress}): ReactElement => {
 
-  const initialNodes = [
+  const initialNodes: node[] = [
     {
       id: accountAddress,
-      position: { x: 500, y: 200 },
+      position: { x: 500, y: 300 },
       data: {
         label:
           <NextLink
@@ -76,8 +91,7 @@ const Map: FC<{
       }
     },
   ];
-
-  const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+  const initialEdges: edge[] = [{ id: 'e1-2', source: '1', target: '2' }];
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -128,15 +142,18 @@ const Map: FC<{
     if (!IncomingStreams) {
       return;
     }
-    let incomingNodeList: any = [initialNodes[0]];
-    let edgeList: any = [];
 
-    IncomingStreams.map((row, i) => {
+    let incomingNodeList: node[] = [initialNodes[0]];
+    let edgeList: edge[] = [];
+
+    IncomingStreams.map((row, i: number) => {
       if (row.currentFlowRate === '0') {
         return
       }
       let ethersFlowRate = ethers.utils.formatEther(row.currentFlowRate);
-      let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30
+      //Convert to humanized monthly amount
+      let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30;
+      //Create a node object with relevant data
       let node = {
         id: `${row.sender}-${i}`,
         position: {x: i*300, y: 100},
@@ -153,9 +170,9 @@ const Map: FC<{
       }
       incomingNodeList.push(node);
     })
-    console.log('nodeList', incomingNodeList);
-    incomingNodeList.map((node: any, i: any) => {
-      if(i === incomingNodeList.length){
+
+    incomingNodeList.map((node: node, i: number) => {
+      if (i === incomingNodeList.length) {
         return;
       }
       let edge = {
@@ -168,10 +185,8 @@ const Map: FC<{
       edgeList.push(edge);
     })
 
-    console.log('nodeList', incomingNodeList, 'edgeList', edgeList);
     setNodes([...incomingNodeList]);
     setEdges(edgeList);
-    console.log(nodes, edges, 'eee')
   }, [IncomingStreams])
 
   return (
