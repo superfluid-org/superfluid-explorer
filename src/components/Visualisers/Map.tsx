@@ -22,6 +22,7 @@ import {
 } from "react";
 import useDebounce from '../../hooks/useDebounce';
 import { Network } from "../../redux/networks";
+import NextLink from 'next/link';
 import { sfSubgraph } from "../../redux/store";
 import { ethers } from 'ethers'
 
@@ -61,7 +62,19 @@ const Map: FC<{
 }> = ({network, accountAddress}): ReactElement => {
 
   const initialNodes = [
-    { id: accountAddress, position: { x: 500, y: 200 }, data: { label: ellipsisAddress(accountAddress) } },
+    {
+      id: accountAddress,
+      position: { x: 500, y: 200 },
+      data: {
+        label:
+          <NextLink
+            href={`/${network.slugName}/accounts/${accountAddress}`}
+            passHref
+          >
+            {ellipsisAddress(accountAddress)}
+          </NextLink>
+      }
+    },
   ];
 
   const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
@@ -116,22 +129,26 @@ const Map: FC<{
       return;
     }
     let incomingNodeList: any = [initialNodes[0]];
-    let outgoingNodeList: any = [];
-    let outgoingEdgeList: any = [];
     let edgeList: any = [];
 
     IncomingStreams.map((row, i) => {
       if (row.currentFlowRate === '0') {
         return
       }
-      console.log('row', row);
       let ethersFlowRate = ethers.utils.formatEther(row.currentFlowRate);
-      console.log('ethers', ethersFlowRate);
       let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30
       let node = {
         id: `${row.sender}-${i}`,
         position: {x: i*300, y: 100},
-        data: {label: ellipsisAddress(row.sender)},
+        data: {
+          label:
+            <NextLink
+              href={`/${network.slugName}/accounts/${row.sender}`}
+              passHref
+            >
+              {ellipsisAddress(row.sender)}
+            </NextLink>
+        },
         flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${row.tokenSymbol}`,
       }
       incomingNodeList.push(node);
@@ -156,11 +173,6 @@ const Map: FC<{
     setEdges(edgeList);
     console.log(nodes, edges, 'eee')
   }, [IncomingStreams])
-
-
-
-
-  console.log('look here', IncomingStreams);
 
   return (
     <ReactFlow
