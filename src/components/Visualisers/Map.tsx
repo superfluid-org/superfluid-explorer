@@ -156,7 +156,6 @@ const Map: FC<{
               href={`/${network.slugName}/accounts/${row.receiver}`}
               passHref
             >
-              {/* TODO add blockies */}
               {ellipsisAddress(row.receiver)}
             </NextLink>
         },
