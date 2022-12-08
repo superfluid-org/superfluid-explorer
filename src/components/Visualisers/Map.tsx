@@ -1,4 +1,4 @@
-import { useCallback, FC, ReactElement } from 'react';
+import { useCallback, FC, ReactElement, useEffect, useState } from 'react';
 import ellipsisAddress from '../../utils/ellipsisAddress';
 import ReactFlow, {
   Controls,
@@ -9,47 +9,10 @@ import ReactFlow, {
 } from 'reactflow';
 // 👇 you need to import the reactflow styles
 import 'reactflow/dist/style.css';
-import {
-  createSkipPaging,
-  Ordering,
-  Stream_OrderBy,
-} from "@superfluid-finance/sdk-core";
-import { StreamsQuery } from "@superfluid-finance/sdk-redux";
-import isEqual from "lodash/isEqual";
-import {
-  useEffect,
-  useState,
-} from "react";
-import useDebounce from '../../hooks/useDebounce';
 import { Network } from "../../redux/networks";
 import NextLink from 'next/link';
 import { sfSubgraph } from "../../redux/store";
 import { ethers } from 'ethers'
-
-type RequiredStreamQuery = Required<Omit<StreamsQuery, "block">>;
-
-//Incoming streams
-
-export const incomingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
-  orderBy: "updatedAtTimestamp",
-  orderDirection: "desc",
-};
-
-export const incomingStreamPagingDefault = createSkipPaging({
-  take: 10,
-});
-
-//Outgoing streams
-
-export const outgoingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
-  orderBy: "updatedAtTimestamp",
-  orderDirection: "desc",
-};
-
-export const outgoingStreamPagingDefault = createSkipPaging({
-  take: 10,
-});
-
 
 export enum StreamStatus {
   Active,
@@ -99,44 +62,6 @@ const Map: FC<{
 
   const onConnect = useCallback((params: any) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
-  const defaultFilter = {
-    receiver: accountAddress,
-  };
-
-  //Incoming streams  THIS NEEDS REVISITING
-
-  const createDefaultArg = (): RequiredStreamQuery => ({
-    chainId: network.chainId,
-    filter: defaultFilter,
-    pagination: incomingStreamPagingDefault,
-    order: incomingStreamOrderingDefault,
-  });
-
-  const [streamsQueryArg, setStreamsQueryArg] = useState<RequiredStreamQuery>(createDefaultArg());
-
-  const [streamsQueryTrigger, streamsQueryResult] =
-  sfSubgraph.useLazyStreamsQuery();
-
-  const streamsQueryTriggerDebounced = useDebounce(streamsQueryTrigger, 250);
-
-  const onStreamQueryArgsChanged = (newArgs: RequiredStreamQuery) => {
-    setStreamsQueryArg(newArgs);
-
-    if (
-      streamsQueryResult.originalArgs &&
-      !isEqual(streamsQueryResult.originalArgs.filter, newArgs.filter)
-    ) {
-      streamsQueryTriggerDebounced(newArgs, true);
-    } else {
-      streamsQueryTrigger(newArgs, true);
-    }
-  };
-
-  useEffect(() => {
-    onStreamQueryArgsChanged(createDefaultArg());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, accountAddress]);
-
   // New stuff with kaspar
 
   const outgoingStreams = sfSubgraph.useStreamsQuery({
@@ -149,10 +74,20 @@ const Map: FC<{
     }
   });
 
-  const OutgoingStreams = outgoingStreams.data?.data || [];
-  const IncomingStreams = streamsQueryResult.data?.data || [];
+  const incomingStreams = sfSubgraph.useStreamsQuery({
+    chainId: network.chainId,
+    filter: {
+      receiver: accountAddress
+    },
+    pagination: {
+      take: Infinity
+    }
+  });
 
-  console.log('new query with sf', OutgoingStreams)
+  const OutgoingStreams = outgoingStreams.data?.data.filter((row) => row.currentFlowRate !== '0') || [];
+  const IncomingStreams = incomingStreams.data?.data.filter((row) => row.currentFlowRate !== '0') || [];
+
+  console.log('new query with sf', OutgoingStreams, 'new incoming streams', IncomingStreams);
 
   useEffect(() => {
     if (!IncomingStreams) {
@@ -160,7 +95,9 @@ const Map: FC<{
     }
 
     let incomingNodeList: node[] = [initialNodes[0]];
+    let outgoingNodeList: node[] = [initialNodes[0]];
     let edgeList: edge[] = [];
+    let outgoingEdgeList: edge[] = [];
 
     IncomingStreams.map((row, i: number) => {
       if (row.currentFlowRate === '0') {
@@ -202,9 +139,49 @@ const Map: FC<{
       edgeList.push(edge);
     })
 
-    setNodes([...incomingNodeList]);
+    OutgoingStreams.map((row, i: number) => {
+      if (row.currentFlowRate === '0') {
+        return
+      }
+      let ethersFlowRate = ethers.utils.formatEther(row.currentFlowRate);
+      //Convert to humanized monthly amount
+      let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30;
+      //Create a node object with relevant data
+      let node = {
+        id: `${row.receiver}-${i}`,
+        position: {x: i*200, y: 600},
+        data: {
+          label:
+            <NextLink
+              href={`/${network.slugName}/accounts/${row.receiver}`}
+              passHref
+            >
+              {/* TODO add blockies */}
+              {ellipsisAddress(row.receiver)}
+            </NextLink>
+        },
+        flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${row.tokenSymbol}`,
+      }
+      outgoingNodeList.push(node);
+    })
+
+    outgoingNodeList.map((node: node, i: number) => {
+      if (i === outgoingNodeList.length) {
+        return;
+      }
+      let edge = {
+        id: `e${node.id}-${accountAddress}`,
+        label: node.flowRate,
+        source: node.id,
+        target: accountAddress,
+        animated: true
+      }
+      edgeList.push(edge);
+    })
+
+    setNodes([...incomingNodeList, ...outgoingNodeList]);
     setEdges(edgeList);
-  }, [IncomingStreams])
+  }, [IncomingStreams, OutgoingStreams])
 
   return (
     <ReactFlow
