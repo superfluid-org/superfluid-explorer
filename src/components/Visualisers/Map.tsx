@@ -91,6 +91,7 @@ const Map: FC<{
       }
     },
   ];
+
   const initialEdges: edge[] = [{ id: 'e1-2', source: '1', target: '2' }];
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -102,7 +103,7 @@ const Map: FC<{
     receiver: accountAddress,
   };
 
-  //Incoming streams
+  //Incoming streams  THIS NEEDS REVISITING
 
   const createDefaultArg = (): RequiredStreamQuery => ({
     chainId: network.chainId,
@@ -136,7 +137,22 @@ const Map: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network, accountAddress]);
 
+  // New stuff with kaspar
+
+  const outgoingStreams = sfSubgraph.useStreamsQuery({
+    chainId: network.chainId,
+    filter: {
+      sender: accountAddress
+    },
+    pagination: {
+      take: Infinity
+    }
+  });
+
+  const OutgoingStreams = outgoingStreams.data?.data || [];
   const IncomingStreams = streamsQueryResult.data?.data || [];
+
+  console.log('new query with sf', OutgoingStreams)
 
   useEffect(() => {
     if (!IncomingStreams) {
@@ -163,6 +179,7 @@ const Map: FC<{
               href={`/${network.slugName}/accounts/${row.sender}`}
               passHref
             >
+              {/* TODO add blockies */}
               {ellipsisAddress(row.sender)}
             </NextLink>
         },
