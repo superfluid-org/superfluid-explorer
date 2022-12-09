@@ -1,4 +1,4 @@
-import { useCallback, FC, ReactElement, useEffect, useState } from 'react';
+import { useCallback, FC, ReactElement, useEffect, useMemo, memo } from 'react';
 import ellipsisAddress from '../../utils/ellipsisAddress';
 import ReactFlow, {
   Controls,
@@ -13,6 +13,9 @@ import { Network } from "../../redux/networks";
 import NextLink from 'next/link';
 import { sfSubgraph } from "../../redux/store";
 import { ethers } from 'ethers'
+import Block from './Blockies';
+import UserBlock from './UserBlock';
+import { Typography, Box } from '@mui/material';
 
 export enum StreamStatus {
   Active,
@@ -45,12 +48,7 @@ const Map: FC<{
       position: { x: 500, y: 300 },
       data: {
         label:
-          <NextLink
-            href={`/${network.slugName}/accounts/${accountAddress}`}
-            passHref
-          >
-            {ellipsisAddress(accountAddress)}
-          </NextLink>
+        <UserBlock network={network!} address={accountAddress} />
       }
     },
   ];
@@ -62,8 +60,7 @@ const Map: FC<{
 
   const onConnect = useCallback((params: any) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
-  // New stuff with kaspar
-
+  //query incoming and outgoing streams on user address
   const outgoingStreams = sfSubgraph.useStreamsQuery({
     chainId: network.chainId,
     filter: {
@@ -84,13 +81,14 @@ const Map: FC<{
     }
   });
 
-  const OutgoingStreams = outgoingStreams.data?.data.filter((row) => row.currentFlowRate !== '0') || [];
-  const IncomingStreams = incomingStreams.data?.data.filter((row) => row.currentFlowRate !== '0') || [];
+  //Filter out 0 current flow rate streams
+  const OutgoingStreams: any = useMemo(() => (outgoingStreams.data?.data.filter((row) => row.currentFlowRate !== '0') || []), [outgoingStreams.data]);
+  const IncomingStreams: any = useMemo(() => (incomingStreams.data?.data.filter((row) => row.currentFlowRate !== '0') || []), [incomingStreams.data]);
 
-  console.log('new query with sf', OutgoingStreams, 'new incoming streams', IncomingStreams);
 
+  //Set up edges and nodes with streams
   useEffect(() => {
-    if (!IncomingStreams) {
+    if (!IncomingStreams || !OutgoingStreams) {
       return;
     }
 
@@ -99,7 +97,7 @@ const Map: FC<{
     let edgeList: edge[] = [];
     let outgoingEdgeList: edge[] = [];
 
-    IncomingStreams.map((row, i: number) => {
+    IncomingStreams.map((row: any, i: number) => {
       if (row.currentFlowRate === '0') {
         return
       }
@@ -111,20 +109,14 @@ const Map: FC<{
         id: `${row.sender}-${i}`,
         position: {x: i*300, y: 100},
         data: {
-          label:
-            <NextLink
-              href={`/${network.slugName}/accounts/${row.sender}`}
-              passHref
-            >
-              {/* TODO add blockies */}
-              {ellipsisAddress(row.sender)}
-            </NextLink>
+          label: <UserBlock network={network} address={row.sender}/>
         },
         flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${row.tokenSymbol}`,
       }
       incomingNodeList.push(node);
     })
 
+    //Make these come out from TOP of Node
     incomingNodeList.map((node: node, i: number) => {
       if (i === incomingNodeList.length) {
         return;
@@ -139,7 +131,7 @@ const Map: FC<{
       edgeList.push(edge);
     })
 
-    OutgoingStreams.map((row, i: number) => {
+    OutgoingStreams.map((row: any, i: number) => {
       if (row.currentFlowRate === '0') {
         return
       }
@@ -151,19 +143,14 @@ const Map: FC<{
         id: `${row.receiver}-${i}`,
         position: {x: i*200, y: 600},
         data: {
-          label:
-            <NextLink
-              href={`/${network.slugName}/accounts/${row.receiver}`}
-              passHref
-            >
-              {ellipsisAddress(row.receiver)}
-            </NextLink>
+          label: <UserBlock network={network} address={row.receiver}/>
         },
         flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${row.tokenSymbol}`,
       }
       outgoingNodeList.push(node);
     })
 
+    //Make these come out from bottom of Node
     outgoingNodeList.map((node: node, i: number) => {
       if (i === outgoingNodeList.length) {
         return;
@@ -175,11 +162,11 @@ const Map: FC<{
         target: accountAddress,
         animated: true
       }
-      edgeList.push(edge);
+      outgoingEdgeList.push(edge);
     })
 
     setNodes([...incomingNodeList, ...outgoingNodeList]);
-    setEdges(edgeList);
+    setEdges([...edgeList, ...outgoingEdgeList]);
   }, [IncomingStreams, OutgoingStreams])
 
   return (
@@ -201,4 +188,4 @@ const Map: FC<{
   );
 }
 
-export default Map;
+export default memo(Map);

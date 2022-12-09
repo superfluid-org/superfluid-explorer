@@ -379,7 +379,7 @@ const AccountPage: NextPage = () => {
               <AccountIndexes network={network} accountAddress={address} />
             </TabPanel>
             <TabPanel value="map">
-              <AccountMap network={network} accountAddress={address} />
+              <AccountMap network={network} accountAddress={address} key={`${network}-${address}`} />
             </TabPanel>
           </Box>
         </TabContext>
