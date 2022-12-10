@@ -212,8 +212,6 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
   const tableRows = streamsQueryResult.data?.data || [];
   const hasNextPage = !!streamsQueryResult.data?.nextPaging;
 
-  console.log(streamsQueryResult, 'tester');
-
   const { filter, order, pagination } = streamsQueryArg;
 
   const {

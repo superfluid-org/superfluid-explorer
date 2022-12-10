@@ -1,5 +1,4 @@
 import { useCallback, FC, ReactElement, useEffect, useMemo, memo } from 'react';
-import ellipsisAddress from '../../utils/ellipsisAddress';
 import ReactFlow, {
   Controls,
   Background,
@@ -10,19 +9,16 @@ import ReactFlow, {
 // 👇 you need to import the reactflow styles
 import 'reactflow/dist/style.css';
 import { Network } from "../../redux/networks";
-import NextLink from 'next/link';
 import { sfSubgraph } from "../../redux/store";
 import { ethers } from 'ethers'
-import Block from './Blockies';
 import UserBlock from './UserBlock';
-import { Typography, Box } from '@mui/material';
 
 export enum StreamStatus {
   Active,
   Inactive,
 }
 
-interface edge {
+interface Edge {
   id: string,
   source: string,
   target: string,
@@ -30,11 +26,26 @@ interface edge {
   animated?: boolean
 }
 
-interface node {
+interface Node {
   id: string,
   position: {x: number, y: number},
   data: {label: ReactElement},
   flowRate?: string,
+}
+
+interface Stream {
+  createdAtBlockNumber: number,
+  createdAtTimestamp: number,
+  currentFlowRate: string,
+  deposit: string,
+  id: string,
+  receiver: string,
+  sender: string,
+  streamedUntilUpdatedAt: string,
+  token: string,
+  tokenSymbol: string,
+  updatedAtBlockNumber: number,
+  updatedAtTimestamp: number,
 }
 
 const Map: FC<{
@@ -42,7 +53,7 @@ const Map: FC<{
   accountAddress: string;
 }> = ({network, accountAddress}): ReactElement => {
 
-  const initialNodes: node[] = [
+  const initialNodes: Node[] = [
     {
       id: accountAddress,
       position: { x: 500, y: 300 },
@@ -53,7 +64,7 @@ const Map: FC<{
     },
   ];
 
-  const initialEdges: edge[] = [{ id: 'e1-2', source: '1', target: '2' }];
+  const initialEdges: Edge[] = [{ id: 'e1-2', source: '1', target: '2' }];
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -64,7 +75,8 @@ const Map: FC<{
   const outgoingStreams = sfSubgraph.useStreamsQuery({
     chainId: network.chainId,
     filter: {
-      sender: accountAddress
+      sender: accountAddress,
+      currentFlowRate_not: "0"
     },
     pagination: {
       take: Infinity
@@ -74,17 +86,16 @@ const Map: FC<{
   const incomingStreams = sfSubgraph.useStreamsQuery({
     chainId: network.chainId,
     filter: {
-      receiver: accountAddress
+      receiver: accountAddress,
+      currentFlowRate_not: "0"
     },
     pagination: {
       take: Infinity
     }
   });
 
-  //Filter out 0 current flow rate streams
-  const OutgoingStreams: any = useMemo(() => (outgoingStreams.data?.data.filter((row) => row.currentFlowRate !== '0') || []), [outgoingStreams.data]);
-  const IncomingStreams: any = useMemo(() => (incomingStreams.data?.data.filter((row) => row.currentFlowRate !== '0') || []), [incomingStreams.data]);
-
+  const OutgoingStreams: Stream[] = useMemo(() => (outgoingStreams.data?.data || []), [outgoingStreams.data]);
+  const IncomingStreams: Stream[] = useMemo(() => (incomingStreams.data?.data || []), [incomingStreams.data]);
 
   //Set up edges and nodes with streams
   useEffect(() => {
@@ -92,32 +103,29 @@ const Map: FC<{
       return;
     }
 
-    let incomingNodeList: node[] = [initialNodes[0]];
-    let outgoingNodeList: node[] = [initialNodes[0]];
-    let edgeList: edge[] = [];
-    let outgoingEdgeList: edge[] = [];
+    let incomingNodeList: Node[] = [initialNodes[0]];
+    let outgoingNodeList: Node[] = [initialNodes[0]];
+    let edgeList: Edge[] = [];
+    let outgoingEdgeList: Edge[] = [];
 
-    IncomingStreams.map((row: any, i: number) => {
-      if (row.currentFlowRate === '0') {
-        return
-      }
-      let ethersFlowRate = ethers.utils.formatEther(row.currentFlowRate);
+    IncomingStreams.forEach((stream: Stream, i: number) => {
+      let ethersFlowRate = ethers.utils.formatEther(stream.currentFlowRate);
       //Convert to humanized monthly amount
       let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30;
       //Create a node object with relevant data
       let node = {
-        id: `${row.sender}-${i}`,
+        id: `${stream.sender}-${i}`,
         position: {x: i*300, y: 100},
         data: {
-          label: <UserBlock network={network} address={row.sender}/>
+          label: <UserBlock network={network} address={stream.sender}/>
         },
-        flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${row.tokenSymbol}`,
+        flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${stream.tokenSymbol}`,
       }
       incomingNodeList.push(node);
     })
 
     //Make these come out from TOP of Node
-    incomingNodeList.map((node: node, i: number) => {
+    incomingNodeList.forEach((node: Node, i: number) => {
       if (i === incomingNodeList.length) {
         return;
       }
@@ -131,27 +139,23 @@ const Map: FC<{
       edgeList.push(edge);
     })
 
-    OutgoingStreams.map((row: any, i: number) => {
-      if (row.currentFlowRate === '0') {
-        return
-      }
-      let ethersFlowRate = ethers.utils.formatEther(row.currentFlowRate);
+    OutgoingStreams.forEach((stream: Stream, i: number) => {
+      let ethersFlowRate = ethers.utils.formatEther(stream.currentFlowRate);
       //Convert to humanized monthly amount
       let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30;
       //Create a node object with relevant data
       let node = {
-        id: `${row.receiver}-${i}`,
+        id: `${stream.receiver}-${i}`,
         position: {x: i*200, y: 600},
         data: {
-          label: <UserBlock network={network} address={row.receiver}/>
+          label: <UserBlock network={network} address={stream.receiver}/>
         },
-        flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${row.tokenSymbol}`,
+        flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${stream.tokenSymbol}`,
       }
       outgoingNodeList.push(node);
     })
 
-    //Make these come out from bottom of Node
-    outgoingNodeList.map((node: node, i: number) => {
+    outgoingNodeList.forEach((node: Node, i: number) => {
       if (i === outgoingNodeList.length) {
         return;
       }

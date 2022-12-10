@@ -1,15 +1,16 @@
+import { FC } from 'react';
 import Blockies from 'react-blockies';
 
-const Block = (props: any) => {
+interface BlockProps {
+  address: string;
+}
+
+const Block:FC<BlockProps> = ({ address }) => {
   return (
     <Blockies
-      seed={props.address}
+      seed={address}
       size={12}
       scale={3}
-      color="#dfe"
-      bgColor="#ffe"
-      spotColor="#abc"
-      className="identicon"
     />
   )
 }
