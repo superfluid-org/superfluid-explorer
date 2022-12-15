@@ -14,8 +14,8 @@ export type Network = {
 export const networks: Network[] = [
   // mainnets
   {
-    displayName: "Mainnet",
-    slugName: "eth-mainnet",
+    displayName: "Ethereum",
+    slugName: "ethereum",
     chainId: 1,
     isTestnet: false,
     rpcUrl: "https://rpc-endpoints.superfluid.dev/eth-mainnet",
