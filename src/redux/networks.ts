@@ -14,6 +14,16 @@ export type Network = {
 export const networks: Network[] = [
   // mainnets
   {
+    displayName: "Mainnet",
+    slugName: "eth-mainnet",
+    chainId: 1,
+    isTestnet: false,
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/eth-mainnet",
+    subgraphUrl: "https://subgraph.satsuma-prod.com/superfluid/eth-mainnet/api",
+    getLinkForTransaction: (txHash: string): string => `https://etherscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string => `https://etherscan.io/address/${address}`,
+  },
+  {
     displayName: "Gnosis Chain",
     slugName: "xdai",
     chainId: 100,
@@ -104,7 +114,7 @@ export const networks: Network[] = [
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-avalanche-fuji",
     getLinkForTransaction: (txHash: string): string => `https://testnet.snowtrace.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://testnet.snowtrace.io/address/${address}`
-  }
+  },
 ];
 
 export const networksByName = new Map(networks.map(x => [x.slugName.toLowerCase(), x]))
