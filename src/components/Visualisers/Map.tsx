@@ -59,7 +59,7 @@ const Map: FC<{
       position: { x: 500, y: 300 },
       data: {
         label:
-        <UserBlock network={network!} address={accountAddress} />
+        <UserBlock network={network!} address={accountAddress} color={'#00991F'} />
       }
     },
   ];
@@ -120,6 +120,7 @@ const Map: FC<{
           label: <UserBlock network={network} address={stream.sender}/>
         },
         flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${stream.tokenSymbol}`,
+        sourcePosition: 'bottom',
       }
       incomingNodeList.push(node);
     })
@@ -146,11 +147,12 @@ const Map: FC<{
       //Create a node object with relevant data
       let node = {
         id: `${stream.receiver}-${i}`,
-        position: {x: i*200, y: 600},
+        position: {x: i*150, y: 500},
         data: {
           label: <UserBlock network={network} address={stream.receiver}/>
         },
         flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${stream.tokenSymbol}`,
+        sourcePosition: 'top',
       }
       outgoingNodeList.push(node);
     })
@@ -162,8 +164,8 @@ const Map: FC<{
       let edge = {
         id: `e${node.id}-${accountAddress}`,
         label: node.flowRate,
-        source: node.id,
-        target: accountAddress,
+        source: accountAddress,
+        target: node.id,
         animated: true
       }
       outgoingEdgeList.push(edge);

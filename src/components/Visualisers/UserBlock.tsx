@@ -8,9 +8,10 @@ import ellipsisAddress from '../../utils/ellipsisAddress';
 interface UserBlockProps {
     network: Network;
     address: string;
+    color?: string;
 }
 
-const UserBlock:FC<UserBlockProps> = ({ network, address }) => {
+const UserBlock:FC<UserBlockProps> = ({ network, address, color }) => {
   return (
     <NextLink
         href={`/${network.slugName}/accounts/${address}?tab=streams`}
@@ -18,7 +19,7 @@ const UserBlock:FC<UserBlockProps> = ({ network, address }) => {
     >
         <Box>
         <Block address={address}/>
-        <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
+        <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2" color={color}>
             {ellipsisAddress(address)}
         </Typography>
         </Box>
