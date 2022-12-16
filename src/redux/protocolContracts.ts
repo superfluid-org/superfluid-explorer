@@ -13,7 +13,7 @@ interface NetworkContracts {
 }
 
 const protocolContracts: NetworkContracts = {
-  "eth-mainnet": {
+  ethereum: {
     resolver: "0xeE4cD028f5fdaAdeA99f8fc38e8bA8A57c90Be53",
     host: "0x4E583d9390082B65Bef884b629DFA426114CED6d",
     CFAv1: "0x2844c1BBdA121E9E43105630b9C8310e5c72744b",
