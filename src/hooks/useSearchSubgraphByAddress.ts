@@ -1,7 +1,8 @@
 import { skipToken } from "@reduxjs/toolkit/query";
 import { ethers } from "ethers";
 import { gql } from "graphql-request";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import { useAvailableNetworks } from "../contexts/AvailableNetworksContext";
 import { useAppSelector } from "../redux/hooks";
 import { networks } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
@@ -47,9 +48,17 @@ export type SubgraphSearchByAddressResult = {
 };
 
 export const useSearchSubgraphByAddress = (searchTerm: string) => {
+  const { availableNetworks } = useAvailableNetworks();
+
   const isSearchTermAddress = useMemo(
     () => ethers.utils.isAddress(searchTerm),
     [searchTerm]
+  );
+
+  const isNetworkAvailable = useCallback(
+    (chainId: number) =>
+      availableNetworks.some((network) => network.chainId === chainId),
+    [availableNetworks]
   );
 
   const currentDisplayedNetworks = useAppSelector(
@@ -59,6 +68,7 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
   return networks.map((network) =>
     sfSubgraph.useCustomQuery(
       isSearchTermAddress &&
+        isNetworkAvailable(network.chainId) &&
         (!network.isTestnet || currentDisplayedNetworks[network.chainId])
         ? {
             chainId: network.chainId,

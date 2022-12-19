@@ -36,7 +36,6 @@ import { AppDataGrid } from "../../../components/AppDataGrid";
 import AppLink from "../../../components/AppLink";
 import BalanceWithToken from "../../../components/BalanceWithToken";
 import CopyLink from "../../../components/CopyLink";
-import EtherFormatted from "../../../components/EtherFormatted";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
@@ -44,14 +43,14 @@ import SubscriptionUnitsUpdatedEventDataGrid from "../../../components/Subscript
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import TimeAgo from "../../../components/TimeAgo";
 import IdContext from "../../../contexts/IdContext";
-import NetworkContext from "../../../contexts/NetworkContext";
+import { useNetworkContext } from "../../../contexts/NetworkContext";
 import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
 import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceived";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 
 const IndexSubscriptionPage: NextPage = () => {
-  const network = useContext(NetworkContext);
+  const network = useNetworkContext();
   const indexSubscriptionId = useContext(IdContext);
 
   return (
@@ -522,7 +521,10 @@ export const IndexSubscriptionDistributions: FC<{
 
   const subscriptionUnitsUpdatedEvents:
     | SubscriptionUnitsUpdatedEvent[]
-    | undefined = useMemo(() => subscriptionUnitsUpdatedEventsQuery.data?.items ?? [], [subscriptionUnitsUpdatedEventsQuery.data]);
+    | undefined = useMemo(
+    () => subscriptionUnitsUpdatedEventsQuery.data?.items ?? [],
+    [subscriptionUnitsUpdatedEventsQuery.data]
+  );
 
   const indexUpdatedEventsQuery = sfSubgraph.useIndexUpdatedEventsQuery(
     index && subscriptionStartTime

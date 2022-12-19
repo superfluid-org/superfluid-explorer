@@ -16,11 +16,11 @@ import {
 } from "@mui/material";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FC, useContext } from "react";
+import { FC } from "react";
 import CopyClipboard from "../../components/CopyClipboard";
 import InfoTooltipBtn from "../../components/InfoTooltipBtn";
 import NetworkTabs from "../../components/NetworkTabs";
-import NetworkContext from "../../contexts/NetworkContext";
+import { useNetworkContext } from "../../contexts/NetworkContext";
 import { Network, networks } from "../../redux/networks";
 import protocolContracts from "../../redux/protocolContracts";
 
@@ -73,7 +73,7 @@ const AddressListItem: FC<AddressListItemProps> = ({
 );
 
 const Protocol: NextPage = () => {
-  const network = useContext(NetworkContext);
+  const network = useNetworkContext();
   const router = useRouter();
 
   const onTabChange = (newValue: string) =>

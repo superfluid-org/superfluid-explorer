@@ -5,9 +5,9 @@ import {
   defaultStreamQueryOrdering,
   defaultStreamQueryPaging,
 } from "../components/NetworkStreams";
+import { useAvailableNetworks } from "../contexts/AvailableNetworksContext";
 import { track } from "../hooks/useMatomo";
 import { useAppSelector } from "../redux/hooks";
-import { networks } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
 import NetworkDisplay from "./NetworkDisplay";
 
@@ -17,6 +17,8 @@ type NetworkTabsProps = {
 };
 
 const NetworkTabs: React.FC<NetworkTabsProps> = ({ setActiveTab }) => {
+  const { availableNetworks } = useAvailableNetworks();
+
   const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams", {
     ifOlderThan: 45,
   });
@@ -39,7 +41,7 @@ const NetworkTabs: React.FC<NetworkTabsProps> = ({ setActiveTab }) => {
           setActiveTab(newValue)
         )}
       >
-        {networks
+        {availableNetworks
           .filter(
             (network) =>
               !network.isTestnet ||

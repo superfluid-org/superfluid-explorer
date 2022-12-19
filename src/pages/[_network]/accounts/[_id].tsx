@@ -34,7 +34,6 @@ import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
-import { ensApi } from "../../../redux/slices/ensResolver.slice";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import {
   incomingStreamOrderingDefault,
@@ -53,17 +52,18 @@ import {
   publishedIndexPagingDefault,
 } from "../../../components/Tables/Account/AccountPublishedIndexesTable";
 import IdContext from "../../../contexts/IdContext";
-import NetworkContext from "../../../contexts/NetworkContext";
+import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { useAppSelector } from "../../../redux/hooks";
 import {
   addressBookSelectors,
   createEntryId,
 } from "../../../redux/slices/addressBook.slice";
+import { ensApi } from "../../../redux/slices/ensResolver.slice";
 import { sfSubgraph } from "../../../redux/store";
 import ellipsisAddress from "../../../utils/ellipsisAddress";
 
 const AccountPage: NextPage = () => {
-  const network = useContext(NetworkContext);
+  const network = useNetworkContext();
   const address = useContext(IdContext);
   const accountQuery = sfSubgraph.useAccountQuery({
     chainId: network.chainId,

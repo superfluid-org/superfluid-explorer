@@ -1,7 +1,9 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Menu, Stack } from "@mui/material";
+import { skipToken } from "@reduxjs/toolkit/dist/query";
 import sortBy from "lodash/fp/sortBy";
-import { memo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { useAvailableNetworks } from "../../contexts/AvailableNetworksContext";
 import { useAppSelector } from "../../redux/hooks";
 import { Network, networks } from "../../redux/networks";
 import { sfSubgraph } from "../../redux/store";
@@ -21,6 +23,8 @@ export default memo<AccountNetworkSelectProps>(function AccountNetworkSelect({
   activeNetwork,
   address,
 }) {
+  const { availableNetworks } = useAvailableNetworks();
+
   const displayedTestnetChainIds = useAppSelector(
     (state) => state.appPreferences.displayedTestNets
   );
@@ -31,14 +35,23 @@ export default memo<AccountNetworkSelectProps>(function AccountNetworkSelect({
   const openMenu = () => setMenuOpen(true);
   const closeMenu = () => setMenuOpen(false);
 
-  const mappedNetworkAccounts = networksOrdered
+  const isNetworkAvailable = useCallback(
+    (chainId: number) =>
+      availableNetworks.some((network) => network.chainId === chainId),
+    [availableNetworks]
+  );
 
+  const mappedNetworkAccounts = networksOrdered
     .map((n) => ({
       network: n,
-      account: sfSubgraph.useAccountQuery({
-        chainId: n.chainId,
-        id: address,
-      }),
+      account: sfSubgraph.useAccountQuery(
+        isNetworkAvailable(n.chainId)
+          ? {
+              chainId: n.chainId,
+              id: address,
+            }
+          : skipToken
+      ),
     }))
     .filter(
       ({ account, network }) =>
