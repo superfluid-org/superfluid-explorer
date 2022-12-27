@@ -38,6 +38,7 @@ import { flagsSlice } from "./slices/flags.slice";
 export const rpcApi = initializeRpcApiSlice(
   createApiWithReactHooks
 ).injectEndpoints(balanceRpcApiEndpoints);
+
 export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
 ).injectEndpoints(allSubgraphEndpoints);
@@ -50,6 +51,7 @@ const infuraProviders = networks.map((network) => ({
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
+      customSubgraphQueriesEndpoint: network.subgraphUrl,
     }),
 }));
 

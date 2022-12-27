@@ -8,6 +8,9 @@ const { withSentryConfig } = require("@sentry/nextjs");
 /** @type {import('next').NextConfig} */
 const moduleExports = {
   reactStrictMode: true, // Known issue -- causes double __NEXT_REDUX_WRAPPER_HYDRATE__ dispatch but this ONLY affects development : https://github.com/kirill-konshin/next-redux-wrapper/issues/422
+  env: {
+    NEXT_PUBLIC_APP_URL: process.env.VERCEL_URL,
+  },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
