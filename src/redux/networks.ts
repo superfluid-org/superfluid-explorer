@@ -1,12 +1,9 @@
 import sortBy from "lodash/fp/sortBy";
 
 // We are using Satsuma endpoints when the app is deployed to *.superfluid.finance domain
-const useSatsumaEndpoints = (() => {
-  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "").trim();
-  if (!appUrl) return false;
-  const url = new URL(appUrl);
-  return url.hostname.includes(".superfluid.finance");
-})();
+const useSatsumaEndpoints = (process.env.NEXT_PUBLIC_APP_URL || "").match(
+  /^(?:https?:\/\/)?(?:[^.]+\.)?superfluid\.finance(\/.*)?$/g
+);
 
 const getSubgraphUrl = (satsumaUrl: string, graphUrl: string) =>
   useSatsumaEndpoints ? satsumaUrl : graphUrl;
