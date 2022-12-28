@@ -1,7 +1,7 @@
 import sortBy from "lodash/fp/sortBy";
 
 // We are using Satsuma endpoints when the app is deployed to *.superfluid.finance domain
-const useSatsumaEndpoints = (process.env.NEXT_PUBLIC_APP_URL || "").match(
+const useSatsumaEndpoints = (globalThis.window?.location.href || "").match(
   /^(?:https?:\/\/)?(?:[^.]+\.)?superfluid\.finance(\/.*)?$/g
 );
 
