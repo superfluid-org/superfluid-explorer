@@ -28,8 +28,8 @@ import {
 import storageLocal from "redux-persist/lib/storage";
 import { addDays } from "../utils/dateTime";
 import { isServer } from "../utils/isServer";
-import { networks } from "./networks";
 import { balanceRpcApiEndpoints } from "./balanceRpcApiEndpoints";
+import { networks } from "./networks";
 import { addressBookSlice } from "./slices/addressBook.slice";
 import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { ensApi } from "./slices/ensResolver.slice";
@@ -51,6 +51,7 @@ const infuraProviders = networks.map((network) => ({
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
+      customSubgraphQueriesEndpoint: network.subgraphUrl,
     }),
 }));
 
