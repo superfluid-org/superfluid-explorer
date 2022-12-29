@@ -51,6 +51,7 @@ const infuraProviders = networks.map((network) => ({
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
+      customSubgraphQueriesEndpoint: network.subgraphUrl,
     }),
 }));
 
