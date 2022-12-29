@@ -8,15 +8,15 @@ const useSatsumaEndpoints = (globalThis.window?.location.href || "").match(
 const getSubgraphUrl = (satsumaUrl: string, graphUrl: string) => useSatsumaEndpoints ? satsumaUrl : graphUrl;
 
 export type Network = {
-  displayName: string;
-  slugName: string;
-  chainId: number;
-  rpcUrl: string;
-  subgraphUrl: string;
+  displayName: string,
+  slugName: string,
+  chainId: number,
+  rpcUrl: string,
+  subgraphUrl: string
   getLinkForTransaction(txHash: string): string;
   getLinkForAddress(adderss: string): string;
-  isTestnet: boolean;
-};
+  isTestnet: boolean
+}
 
 export const networks: Network[] = [
   // mainnets
@@ -124,11 +124,9 @@ export const networks: Network[] = [
   },
 ];
 
-export const networksByName = new Map(
-  networks.map((x) => [x.slugName.toLowerCase(), x])
-);
+export const networksByName = new Map(networks.map(x => [x.slugName.toLowerCase(), x]))
 
-export const networksByChainId = new Map(networks.map((x) => [x.chainId, x]));
+export const networksByChainId = new Map(networks.map(x => [x.chainId, x]))
 
 export const networksByTestAndName = sortBy(
   [(x) => x.isTestnet, (x) => x.slugName],
@@ -147,10 +145,10 @@ export const tryGetNetwork = (x: unknown): Network | undefined => {
   }
 
   return network;
-};
+}
 
 export const tryGetString = (x: unknown): string | undefined => {
   if (typeof x === "string") {
     return x;
   }
-};
+}
