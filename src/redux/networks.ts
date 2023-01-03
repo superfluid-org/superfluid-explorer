@@ -1,12 +1,5 @@
 import sortBy from "lodash/fp/sortBy";
 
-// We are using Satsuma endpoints when the app is deployed to *.superfluid.finance domain
-const useSatsumaEndpoints = (globalThis.window?.location.href || "").match(
-  /^(?:https?:\/\/)?(?:[^.]+\.)?superfluid\.finance(\/.*)?$/g
-);
-
-const getSubgraphUrl = (satsumaUrl: string, graphUrl: string) => useSatsumaEndpoints ? satsumaUrl : graphUrl;
-
 export type Network = {
   displayName: string,
   slugName: string,
@@ -26,7 +19,7 @@ export const networks: Network[] = [
     chainId: 1,
     isTestnet: false,
     rpcUrl: "https://rpc-endpoints.superfluid.dev/eth-mainnet",
-    subgraphUrl: getSubgraphUrl("https://subgraph.satsuma-prod.com/superfluid/eth-mainnet/api", "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-eth-mainnet"),
+    subgraphUrl: "https://subgraph.satsuma-prod.com/c5br3jaVlJI6/superfluid/eth-mainnet/api",
     getLinkForTransaction: (txHash: string): string => `https://etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://etherscan.io/address/${address}`,
   },
@@ -36,7 +29,7 @@ export const networks: Network[] = [
     chainId: 100,
     isTestnet: false,
     rpcUrl: "https://rpc-endpoints.superfluid.dev/xdai-mainnet",
-    subgraphUrl: getSubgraphUrl("https://subgraph.satsuma-prod.com/superfluid/xdai/api", "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-xdai"),
+    subgraphUrl: "https://subgraph.satsuma-prod.com/c5br3jaVlJI6/superfluid/xdai/api",
     getLinkForTransaction: (txHash: string): string => `https://gnosisscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string => `https://gnosisscan.io/address/${address}`,
   },
