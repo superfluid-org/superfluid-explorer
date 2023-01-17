@@ -27,7 +27,6 @@ import AccountAddress from "../../../components/AccountAddress";
 import AppLink from "../../../components/AppLink";
 import BalanceWithToken from "../../../components/BalanceWithToken";
 import CopyLink from "../../../components/CopyLink";
-import EtherFormatted from "../../../components/EtherFormatted";
 import IndexSubscriptionDataGrid from "../../../components/IndexSubscriptionDataGrid";
 import IndexUpdatedEventDataGrid from "../../../components/IndexUpdatedEventDataGrid";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
@@ -36,12 +35,12 @@ import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import TimeAgo from "../../../components/TimeAgo";
 import IdContext from "../../../contexts/IdContext";
-import NetworkContext from "../../../contexts/NetworkContext";
+import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 
 const IndexPage: NextPage = () => {
-  const network = useContext(NetworkContext);
+  const network = useNetworkContext();
   const indexId = useContext(IdContext);
 
   return <IndexPageContent indexId={indexId} network={network} />;

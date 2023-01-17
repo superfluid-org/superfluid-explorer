@@ -2,14 +2,13 @@ import { TabContext, TabPanel } from "@mui/lab";
 import { Box, Card, CardContent, Container, NoSsr } from "@mui/material";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext } from "react";
 import NetworkTabs from "../../components/NetworkTabs";
 import SuperTokensTable from "../../components/Tables/SuperTokensTable";
-import NetworkContext from "../../contexts/NetworkContext";
+import { useNetworkContext } from "../../contexts/NetworkContext";
 import { networks } from "../../redux/networks";
 
 const SuperTokens: NextPage = ({}) => {
-  const network = useContext(NetworkContext);
+  const network = useNetworkContext();
 
   const router = useRouter();
   const onTabChange = (newValue: string) =>

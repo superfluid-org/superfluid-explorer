@@ -13,6 +13,14 @@ interface NetworkContracts {
 }
 
 const protocolContracts: NetworkContracts = {
+  ethereum: {
+    resolver: "0xeE4cD028f5fdaAdeA99f8fc38e8bA8A57c90Be53",
+    host: "0x4E583d9390082B65Bef884b629DFA426114CED6d",
+    CFAv1: "0x2844c1BBdA121E9E43105630b9C8310e5c72744b",
+    IDAv1: "0xbCF9cfA8Da20B591790dF27DE65C1254Bf91563d",
+    superTokenFactory: "0x0422689cc4087b6B7280e0a7e7F655200ec86Ae1",
+    superfluidLoaderv1: "0x9775EEBdfF8AE845e7Ad3d1D04B85e6c6d284aCB",
+  },
   matic: {
     resolver: "0xE0cc76334405EE8b39213E620587d815967af39C",
     host: "0x3E14dC1b13c488a8d5D310918780c983bD5982E7",

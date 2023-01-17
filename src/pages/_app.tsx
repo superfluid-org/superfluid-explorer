@@ -10,8 +10,10 @@ import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import { hotjar } from "react-hotjar";
 import Footer from "../components/Footer";
 import SfAppBar from "../components/SfAppBar";
+import { AvailableNetworksProvider } from "../contexts/AvailableNetworksContext";
+import { FeatureFlagProvider } from "../contexts/FeatureFlagContext";
 import IdContext from "../contexts/IdContext";
-import NetworkContext from "../contexts/NetworkContext";
+import { NetworkContext } from "../contexts/NetworkContext";
 import { useMatomo } from "../hooks/useMatomo";
 import { tryGetNetwork, tryGetString } from "../redux/networks";
 import { wrapper } from "../redux/store";
@@ -69,25 +71,29 @@ function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Box
-          sx={{
-            display: "flex",
-            flexFlow: "column",
-            maxHeight: "100vh",
-          }}
-        >
-          <SfAppBar />
-          <Box
-            ref={scrollableContentRef}
-            component="main"
-            sx={{ height: "100vh", overflow: "auto" }}
-          >
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-            <Footer />
-          </Box>
-        </Box>
+        <FeatureFlagProvider>
+          <AvailableNetworksProvider>
+            <Box
+              sx={{
+                display: "flex",
+                flexFlow: "column",
+                maxHeight: "100vh",
+              }}
+            >
+              <SfAppBar />
+              <Box
+                ref={scrollableContentRef}
+                component="main"
+                sx={{ height: "100vh", overflow: "auto" }}
+              >
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+                <Footer />
+              </Box>
+            </Box>
+          </AvailableNetworksProvider>
+        </FeatureFlagProvider>
       </ThemeProvider>
     </CacheProvider>
   );

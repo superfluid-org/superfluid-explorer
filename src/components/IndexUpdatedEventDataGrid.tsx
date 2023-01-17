@@ -1,19 +1,19 @@
-import { FC, useContext, useMemo } from "react";
-import { AppDataGrid } from "./AppDataGrid";
 import { GridColDef } from "@mui/x-data-grid";
 import {
   Index,
+  IndexUpdatedEvent,
   IndexUpdatedEvent_OrderBy,
   Ordering,
   PagedResult,
   SkipPaging,
 } from "@superfluid-finance/sdk-core";
-import { IndexUpdatedEvent } from "@superfluid-finance/sdk-core";
 import { BigNumber } from "ethers";
-import TimeAgo from "./TimeAgo";
-import SuperTokenAddress from "./SuperTokenAddress";
-import NetworkContext from "../contexts/NetworkContext";
+import { FC, useMemo } from "react";
+import { useNetworkContext } from "../contexts/NetworkContext";
+import { AppDataGrid } from "./AppDataGrid";
 import EtherFormatted from "./EtherFormatted";
+import SuperTokenAddress from "./SuperTokenAddress";
+import TimeAgo from "./TimeAgo";
 
 interface Props {
   index: Index | null | undefined;
@@ -51,7 +51,7 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
   ordering,
   setOrdering,
 }) => {
-  const network = useContext(NetworkContext);
+  const network = useNetworkContext();
 
   const columns: GridColDef[] = useMemo(
     () => [
@@ -72,7 +72,8 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
         renderCell: (params) => {
           return (
             <>
-              <EtherFormatted wei={params.value} />&nbsp;
+              <EtherFormatted wei={params.value} />
+              &nbsp;
               {index && (
                 <SuperTokenAddress
                   network={network}

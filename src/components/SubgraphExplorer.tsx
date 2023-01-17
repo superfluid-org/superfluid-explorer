@@ -24,6 +24,7 @@ import _ from "lodash";
 import { networks, networksByName } from "../redux/networks";
 import { useRouter } from "next/router";
 import CloseIcon from "@mui/icons-material/Close";
+import { useAvailableNetworks } from "../contexts/AvailableNetworksContext";
 
 const DocumentationLinks = [
   {
@@ -108,6 +109,7 @@ const getGraphQLIntrospectionClientSchemaMemoized = _.memoize(
 );
 
 const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
+  const { availableNetworks } = useAvailableNetworks();
   const router = useRouter();
   const { _network, _query, _variables } = router.query;
 
@@ -282,7 +284,7 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
                   label={isNetworkLoading ? "Loading..." : network.displayName}
                   title="Select Network"
                 >
-                  {Object.values(networks).map((network) => (
+                  {Object.values(availableNetworks).map((network) => (
                     <GraphiQL.MenuItem
                       key={network.chainId}
                       label={network.displayName}

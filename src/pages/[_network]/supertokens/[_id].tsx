@@ -1,5 +1,3 @@
-import { useContext, useEffect, useState } from "react";
-import { sfSubgraph } from "../../../redux/store";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
@@ -19,31 +17,33 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Token } from "@superfluid-finance/sdk-core";
+import { BigNumber, ethers } from "ethers";
+import { gql } from "graphql-request";
 import { NextPage } from "next";
 import Error from "next/error";
 import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import AppLink from "../../../components/AppLink";
-import { BigNumber, ethers } from "ethers";
-import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
-import { gql } from "graphql-request";
-import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import CopyClipboard from "../../../components/CopyClipboard";
 import CopyLink from "../../../components/CopyLink";
 import EtherFormatted from "../../../components/EtherFormatted";
 import EventList from "../../../components/EventList";
 import FlowingBalance from "../../../components/FlowingBalance";
+import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import NetworkDisplay from "../../../components/NetworkDisplay";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SkeletonTokenName from "../../../components/skeletons/SkeletonTokenName";
+import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import SuperTokenIndexes from "../../../components/SuperTokenIndexes";
 import SuperTokenStreams from "../../../components/SuperTokenStreams";
 import IdContext from "../../../contexts/IdContext";
-import NetworkContext from "../../../contexts/NetworkContext";
+import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { useAppSelector } from "../../../redux/hooks";
 import { streamGranularityInSeconds } from "../../../redux/slices/appPreferences.slice";
+import { sfSubgraph } from "../../../redux/store";
 
 const SuperTokenPage: NextPage = () => {
-  const network = useContext(NetworkContext);
+  const network = useNetworkContext();
   const address = useContext(IdContext);
 
   const tokenQuery = sfSubgraph.useTokenQuery({

@@ -28,15 +28,17 @@ import {
 import storageLocal from "redux-persist/lib/storage";
 import { addDays } from "../utils/dateTime";
 import { isServer } from "../utils/isServer";
-import { networks } from "./networks";
 import { balanceRpcApiEndpoints } from "./balanceRpcApiEndpoints";
+import { networks } from "./networks";
 import { addressBookSlice } from "./slices/addressBook.slice";
 import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { ensApi } from "./slices/ensResolver.slice";
+import { flagsSlice } from "./slices/flags.slice";
 
 export const rpcApi = initializeRpcApiSlice(
   createApiWithReactHooks
 ).injectEndpoints(balanceRpcApiEndpoints);
+
 export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
 ).injectEndpoints(allSubgraphEndpoints);
@@ -49,6 +51,7 @@ const infuraProviders = networks.map((network) => ({
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
+      customSubgraphQueriesEndpoint: network.subgraphUrl,
     }),
 }));
 
@@ -62,6 +65,11 @@ export const makeStore = wrapMakeStore(() => {
     addressBookSlice.reducer
   );
 
+  const flagsPersistedReducer = persistReducer(
+    { key: "flags", version: 1, storage: storageLocal },
+    flagsSlice.reducer
+  );
+
   const store = configureStore({
     reducer: {
       [rpcApi.reducerPath]: rpcApi.reducer,
@@ -69,6 +77,7 @@ export const makeStore = wrapMakeStore(() => {
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
       [ensApi.reducerPath]: ensApi.reducer,
+      [flagsSlice.name]: flagsPersistedReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

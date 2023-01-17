@@ -25,7 +25,6 @@ import { FC, useContext, useState } from "react";
 import AccountAddress from "../../../components/AccountAddress";
 import AppLink from "../../../components/AppLink";
 import CopyLink from "../../../components/CopyLink";
-import FlowingBalance from "../../../components/FlowingBalance";
 import FlowingBalanceWithToken from "../../../components/FlowingBalanceWithToken";
 import FlowRate from "../../../components/FlowRate";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
@@ -35,13 +34,12 @@ import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import TimeAgo from "../../../components/TimeAgo";
 import IdContext from "../../../contexts/IdContext";
-import NetworkContext from "../../../contexts/NetworkContext";
+import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
-import ellipsisAddress from "../../../utils/ellipsisAddress";
 
 const StreamPage: NextPage = () => {
-  const network = useContext(NetworkContext);
+  const network = useNetworkContext();
   const streamId = useContext(IdContext);
 
   return <StreamPageContent streamId={streamId} network={network} />;
@@ -255,7 +253,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                       flowRate={stream.currentFlowRate}
                       TokenChipProps={{
                         network,
-                        tokenAddress: stream.token
+                        tokenAddress: stream.token,
                       }}
                     />
                   </>
