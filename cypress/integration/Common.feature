@@ -2,7 +2,6 @@ Feature: Test cases for common elements and functionalities
 
   Scenario Outline: Searching for an address
     Given User has opened the "landing" page
-    And User enables all of the testnets
     And User opens search dialog
     And User searches for static balance account
     And User opens the "<network>" account result

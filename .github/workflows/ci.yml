@@ -21,10 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup firefox
-        uses: browser-actions/setup-firefox@latest
-        if: ${{ matrix.browser == 'firefox' }}
-
       - name: Use Node.js 16.x
         uses: actions/setup-node@v1
         with:
