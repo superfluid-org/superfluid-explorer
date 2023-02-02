@@ -212,20 +212,6 @@ const Map: FC<{
     incomingStreamsQuery.isSuccess,
   ]);
 
-  outgoingNodeList.forEach((node: Node, i: number) => {
-    if (i === outgoingNodeList.length) {
-      return;
-    }
-    let edge = {
-      id: `e${node.id}-${accountAddress}`,
-      label: node.flowRate,
-      source: accountAddress,
-      target: node.id,
-      animated: true,
-    };
-    outgoingEdgeList.push(edge);
-  });
-
   return (
     <ReactFlow
       style={{
