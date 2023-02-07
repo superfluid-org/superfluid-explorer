@@ -6,6 +6,8 @@ import _ from "lodash";
 
 const ANIMATION_MINIMUM_STEP_TIME = 80;
 
+//imortant comment
+
 export interface FlowingBalanceProps {
   balance: string;
   /**
