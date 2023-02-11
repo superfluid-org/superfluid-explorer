@@ -68,6 +68,8 @@ interface AccountPublishedIndexesTableProps {
   accountAddress: string;
 }
 
+
+//This is where we are getting a query ID
 type RequiredIndexesQuery = Required<Omit<IndexesQuery, "block">>;
 
 const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({

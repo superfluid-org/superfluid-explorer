@@ -52,6 +52,8 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
   indexId,
   network,
 }) => {
+
+  console.log(indexId, 'indexId');
   const indexQuery = sfSubgraph.useIndexQuery({
     chainId: network.chainId,
     id: indexId,
