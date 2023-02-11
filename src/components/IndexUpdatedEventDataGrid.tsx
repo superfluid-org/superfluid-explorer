@@ -9,6 +9,8 @@ import {
 } from "@superfluid-finance/sdk-core";
 import { BigNumber } from "ethers";
 import { FC, useMemo } from "react";
+import DetailsButton from "../components/DetailsButton";
+import { DistributionDetailsDialog } from "../components/DistributionDetails";
 import { useNetworkContext } from "../contexts/NetworkContext";
 import { AppDataGrid } from "./AppDataGrid";
 import EtherFormatted from "./EtherFormatted";
@@ -85,6 +87,20 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
             </>
           );
         },
+      },
+      {
+        field: "details",
+        headerName: "Details",
+        flex: 0.5,
+        sortable: false,
+        renderCell: (cellParams) => (
+          <DistributionDetailsDialog
+            network={network}
+            distributionId={cellParams.id.toString()}
+          >
+            {(onClick) => <DetailsButton onClick={onClick} />}
+          </DistributionDetailsDialog>
+        ),
       },
     ],
     [index, network]
