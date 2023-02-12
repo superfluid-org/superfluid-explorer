@@ -36,12 +36,9 @@ import { AppDataGrid } from "../../../components/AppDataGrid";
 import AppLink from "../../../components/AppLink";
 import BalanceWithToken from "../../../components/BalanceWithToken";
 import CopyLink from "../../../components/CopyLink";
-import DetailsButton from "../../../components/DetailsButton";
-import { DistributionDetailsDialog } from "../../../components/DistributionDetails";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
-import SubscriptionUnitsUpdatedEventDataGrid from "../../../components/SubscriptionUnitsUpdatedEventDataGrid";
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import TimeAgo from "../../../components/TimeAgo";
 import IdContext from "../../../contexts/IdContext";
@@ -50,29 +47,83 @@ import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
 import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceived";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
+import { getDistributionDetails } from "./getDistributionDetailsQuery";
 
-const IndexSubscriptionPage: NextPage = () => {
+interface Subscriber {
+  units: string;
+  totalAmountReceivedUntilUpdatedAt: string;
+  subscriber: {
+    id: string;
+  };
+}
+
+interface DistributionDetails {
+  id: string;
+  indexId: string;
+  publisher: string;
+  indexValue: string;
+  subscriptions: Subscriber[];
+  createdAtTimestamp: string;
+  totalAmountDistributedUntilUpdatedAt: string;
+  totalSubscriptionsWithUnits: number;
+  totalUnits: string;
+  token: {
+    id: string;
+  };
+}
+
+const DistributionsPage: NextPage = () => {
   const network = useNetworkContext();
-  const indexSubscriptionId = useContext(IdContext);
+  const distributionId = useContext(IdContext);
 
   return (
-    <IndexSubscriptionPageContent
-      indexSubscriptionId={indexSubscriptionId}
+    <DistributionsPageContent
+      distributionId={distributionId}
       network={network}
     />
   );
 };
 
-export default IndexSubscriptionPage;
+export default DistributionsPage;
 
-export const IndexSubscriptionPageContent: FC<{
-  indexSubscriptionId: string;
+export const DistributionsPageContent: FC<{
+  distributionId: string;
   network: Network;
-}> = ({ indexSubscriptionId, network }) => {
+}> = ({ distributionId, network }) => {
   const indexSubscriptionQuery = sfSubgraph.useIndexSubscriptionQuery({
     chainId: network.chainId,
-    id: indexSubscriptionId,
+    id: distributionId,
   });
+
+  const [distributionDetails, setDistributionDetails] =
+    useState<DistributionDetails>();
+
+  const baseUrl =
+    "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-matic";
+
+  useEffect(() => {
+    console.log("id", distributionId);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(baseUrl, {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json",
+          }),
+          body: JSON.stringify({
+            query: `${getDistributionDetails(distributionId)}`,
+          }),
+        }).then((res) => res.json());
+        console.log({ response });
+        const distribution: DistributionDetails = response.data;
+        setDistributionDetails(distribution);
+        console.log({ distributionDetails });
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    fetchData();
+  }, [distributionId]);
 
   const indexSubscription: IndexSubscription | undefined | null =
     indexSubscriptionQuery.data;
@@ -107,7 +158,7 @@ export const IndexSubscriptionPageContent: FC<{
     sfSubgraph.useSubscriptionUnitsUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        subscription: indexSubscriptionId.toLowerCase(),
+        subscription: distributionId.toLowerCase(),
       },
       pagination: subscriptionUnitsUpdatedEventPaging,
       order: subscriptionUnitsUpdatedEventPagingOrdering,
@@ -139,17 +190,13 @@ export const IndexSubscriptionPageContent: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indexSubscription && index]);
 
-  if (
-    !indexQuery.isUninitialized &&
-    !indexQuery.isLoading &&
-    !indexQuery.data
-  ) {
+  if (!distributionDetails) {
     return <Error statusCode={404} />;
   }
 
   return (
     <Container
-      data-cy={"index-subscription-container"}
+      data-cy={"distribution-container"}
       component={Box}
       sx={{ my: 2, py: 2 }}
     >
@@ -158,13 +205,13 @@ export const IndexSubscriptionPageContent: FC<{
           <Typography color="text.secondary">
             {network && network.displayName}
           </Typography>
-          <Typography color="text.secondary">Index Subscriptions</Typography>
+          <Typography color="text.secondary">Distribution Details</Typography>
           <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
-            {indexSubscriptionId.substring(0, 6) + "..."}
+            {distributionId.substring(0, 6) + "..."}
           </Typography>
         </Breadcrumbs>
         <CopyLink
-          localPath={`/${network.slugName}/index-subscriptions/${indexSubscriptionId}`}
+          localPath={`/${network.slugName}/distributions/${distributionId}`}
         />
       </Stack>
 
@@ -175,21 +222,36 @@ export const IndexSubscriptionPageContent: FC<{
         sx={{ mt: 1 }}
       >
         <Typography variant="h4" component="h1">
-          Index Subscription
+          Distribution
         </Typography>
         <SubgraphQueryLink
           network={network}
           query={gql`
             query ($id: ID!) {
-              indexSubscription(id: $id) {
-                indexValueUntilUpdatedAt
-                approved
-                totalAmountReceivedUntilUpdatedAt
-                units
+              index(id: $id) {
+                indexId
+                indexValue
+                totalAmountDistributedUntilUpdatedAt
+                totalSubscriptionsWithUnits
+                totalUnits
+                subscriptions(where: { units_not: "0" }) {
+                  units
+                  totalAmountReceivedUntilUpdatedAt
+                  subscriber {
+                    id
+                  }
+                }
+                createdAtTimestamp
+                token {
+                  id
+                }
+                publisher {
+                  id
+                }
               }
             }
           `}
-          variables={`{ "id": "${indexSubscriptionId.toLowerCase()}" }`}
+          variables={`{ "id": "${distributionId.toLowerCase()}" }`}
         />
       </Stack>
 
@@ -197,15 +259,15 @@ export const IndexSubscriptionPageContent: FC<{
         <Grid item xs={12} md={6}>
           <Card elevation={2}>
             <List>
-              <ListItem data-cy={"index-subscription-short-hash"} divider>
+              <ListItem data-cy={"distribution-short-hash"} divider>
                 <ListItemText
                   secondary="Index"
                   primary={
-                    indexSubscription && index ? (
+                    distributionDetails ? (
                       <AppLink
-                        href={`/${network.slugName}/indexes/${index.id}`}
-                      >{`${index.id.substring(0, 6)}... (${
-                        index.indexId
+                        href={`/${network.slugName}/distributions/${distributionId}`}
+                      >{`${distributionId.substring(0, 6)}... (${
+                        distributionDetails?.indexId
                       })`}</AppLink>
                     ) : (
                       <Skeleton sx={{ width: "50px" }} />
@@ -213,14 +275,14 @@ export const IndexSubscriptionPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem data-cy={"index-subscription-token"} divider>
+              <ListItem data-cy={"distribution-token"} divider>
                 <ListItemText
                   secondary="Token"
                   primary={
-                    indexSubscription ? (
+                    distributionDetails ? (
                       <SuperTokenAddress
                         network={network}
-                        address={indexSubscription.token}
+                        address={distributionDetails?.token?.id}
                       />
                     ) : (
                       <SkeletonAddress />
@@ -253,25 +315,10 @@ export const IndexSubscriptionPageContent: FC<{
                     </>
                   }
                   primary={
-                    indexSubscription ? (
+                    distributionDetails ? (
                       <AccountAddress
                         network={network}
-                        address={indexSubscription.publisher}
-                      />
-                    ) : (
-                      <SkeletonAddress />
-                    )
-                  }
-                />
-              </ListItem>
-              <ListItem data-cy={"subscription-subscriber"} divider>
-                <ListItemText
-                  secondary="Subscriber"
-                  primary={
-                    indexSubscription ? (
-                      <AccountAddress
-                        network={network}
-                        address={indexSubscription.subscriber}
+                        address={distributionDetails.publisher}
                       />
                     ) : (
                       <SkeletonAddress />
@@ -283,27 +330,13 @@ export const IndexSubscriptionPageContent: FC<{
                 <Grid item xs={6}>
                   <ListItem>
                     <ListItemText
-                      secondary="Last Updated At"
+                      secondary="Distributed At"
                       primary={
-                        indexSubscription ? (
+                        distributionDetails ? (
                           <TimeAgo
-                            subgraphTime={indexSubscription.updatedAtTimestamp}
-                          />
-                        ) : (
-                          <Skeleton sx={{ width: "80px" }} />
-                        )
-                      }
-                    />
-                  </ListItem>
-                </Grid>
-                <Grid item xs={6}>
-                  <ListItem>
-                    <ListItemText
-                      secondary="Created At"
-                      primary={
-                        indexSubscription ? (
-                          <TimeAgo
-                            subgraphTime={indexSubscription.createdAtTimestamp}
+                            subgraphTime={Number(
+                              distributionDetails.createdAtTimestamp
+                            )}
                           />
                         ) : (
                           <Skeleton sx={{ width: "80px" }} />
@@ -358,33 +391,9 @@ export const IndexSubscriptionPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem data-cy={"subscription-approval"} divider>
-                <ListItemText
-                  secondary={
-                    <>
-                      Approved
-                      <InfoTooltipBtn
-                        dataCy={"approval-tooltip"}
-                        title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
-                      />
-                    </>
-                  }
-                  primary={
-                    indexSubscription ? (
-                      indexSubscription.approved ? (
-                        "Yes"
-                      ) : (
-                        "No"
-                      )
-                    ) : (
-                      <Skeleton sx={{ width: "25px" }} />
-                    )
-                  }
-                />
-              </ListItem>
               <ListItem data-cy={"subscription-total-amount-received"}>
                 <ListItemText
-                  secondary="Total Amount Received"
+                  secondary="Total Amount Distributed"
                   primary={
                     indexSubscription && index && totalWeiAmountReceived ? (
                       <>
@@ -428,23 +437,9 @@ export const IndexSubscriptionPageContent: FC<{
         </Typography>
 
         <Card elevation={2}>
-          <IndexSubscriptionDistributions
+          <DistributionsGrid
             network={network}
-            indexSubscriptionId={indexSubscriptionId}
-          />
-        </Card>
-      </Box>
-
-      <Box data-cy={"units-updated-grid"} sx={{ mt: 3 }}>
-        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-          Units Updated (i.e. Pool % Updated)
-        </Typography>
-        <Card elevation={2}>
-          <SubscriptionUnitsUpdatedEventDataGrid
-            queryResult={subscriptionUnitsUpdatedEventQuery}
-            setPaging={setSubscriptionUnitsUpdatedEventPaging}
-            ordering={subscriptionUnitsUpdatedEventPagingOrdering}
-            setOrdering={setSubscriptionUnitsUpdatedEventOrdering}
+            distributionId={distributionId}
           />
         </Card>
       </Box>
@@ -452,14 +447,15 @@ export const IndexSubscriptionPageContent: FC<{
   );
 };
 
-export const IndexSubscriptionDistributions: FC<{
+export const DistributionsGrid: FC<{
   network: Network;
-  indexSubscriptionId: string;
-}> = ({ network, indexSubscriptionId }) => {
+  distributionId: string;
+}> = ({ network, distributionId }) => {
   const indexSubscriptionQuery = sfSubgraph.useIndexSubscriptionQuery({
     chainId: network.chainId,
-    id: indexSubscriptionId,
+    id: distributionId,
   });
+
   const indexSubscription: IndexSubscription | undefined | null =
     indexSubscriptionQuery.data;
 
@@ -486,12 +482,11 @@ export const IndexSubscriptionDistributions: FC<{
     orderBy: "timestamp",
     orderDirection: "desc",
   });
-
   const subscriptionUnitsUpdatedEventsQuery =
     sfSubgraph.useSubscriptionUnitsUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        subscription: indexSubscriptionId,
+        subscription: distributionId,
       },
       pagination: {
         take: 999,
@@ -552,14 +547,14 @@ export const IndexSubscriptionDistributions: FC<{
     () => [
       { field: "id", hide: true, sortable: false, flex: 1 },
       {
-        field: "timestamp",
-        headerName: "Distribution Date",
+        field: "addresses",
+        headerName: "Subscriber Addresses",
         sortable: true,
         flex: 0.5,
         renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
       },
       {
-        field: "newIndexValue",
+        field: "amount",
         headerName: "Amount Received",
         hide: false,
         sortable: false,
@@ -626,18 +621,10 @@ export const IndexSubscriptionDistributions: FC<{
         },
       },
       {
-        field: "details",
-        headerName: "Details",
+        field: "pool-percentage",
+        headerName: "Pool Percentage",
+        sortable: true,
         flex: 0.5,
-        sortable: false,
-        renderCell: (cellParams) => (
-          <DistributionDetailsDialog
-            network={network}
-            distributionId={cellParams.id.toString()}
-          >
-            {(onClick) => <DetailsButton onClick={onClick} />}
-          </DistributionDetailsDialog>
-        ),
       },
     ],
     [network, index, subscriptionUnitsUpdatedEvents]
