@@ -93,14 +93,13 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
         flex: 0.5,
         sortable: false,
         renderCell: (params) => {
-          const distribution = queryResult?.data?.data.find(
+          const distribution: IndexUpdatedEvent | undefined = queryResult?.data?.data.find(
             (indexUpdatedEvent) => indexUpdatedEvent.id === params.id
           );
-          const distributionId = `${distribution?.publisher}-${distribution?.token}-${distribution?.indexId}`;
           return (
             <DistributionDetailsDialog
               network={network}
-              distributionId={distributionId}
+              distribution={distribution}
             >
               {(onClick) => <DetailsButton onClick={onClick} />}
             </DistributionDetailsDialog>

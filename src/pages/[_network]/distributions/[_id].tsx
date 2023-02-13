@@ -36,13 +36,12 @@ import { AppDataGrid } from "../../../components/AppDataGrid";
 import AppLink from "../../../components/AppLink";
 import BalanceWithToken from "../../../components/BalanceWithToken";
 import CopyLink from "../../../components/CopyLink";
-import { DistributionDetailsDialog } from "../../../components/DistributionDetails";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import TimeAgo from "../../../components/TimeAgo";
-import IdContext from "../../../contexts/IdContext";
+import DistributionContext from "../../../contexts/DistributionContext";
 import { useNetworkContext } from "../../../contexts/NetworkContext";
 import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
 import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceived";
@@ -77,62 +76,58 @@ interface DistributionDetails {
 
 const DistributionsPage: NextPage = () => {
   const network = useNetworkContext();
-  const distributionId = useContext(IdContext);
+  const distribution = useContext(DistributionContext);
 
   return (
-    <DistributionsPageContent
-      distributionId={distributionId}
-      network={network}
-    />
+    <DistributionsPageContent distribution={distribution} network={network} />
   );
 };
 
 export default DistributionsPage;
 
 export const DistributionsPageContent: FC<{
-  distributionId: string;
+  distribution: IndexUpdatedEvent | undefined;
   network: Network;
-}> = ({ distributionId, network }) => {
+}> = ({ distribution, network }) => {
   const indexSubscriptionQuery = sfSubgraph.useIndexSubscriptionQuery({
     chainId: network.chainId,
-    id: distributionId,
+    id: "",
   });
-
-  const [distributionDetails, setDistributionDetails] = useState<DistributionDetails>();
+  const [distributionId, setDistributionId] = useState<string>(
+    `${distribution?.publisher}-${distribution?.token}-${distribution?.indexId}`
+  );
+  const [distributionDetails, setDistributionDetails] =
+    useState<DistributionDetails>();
 
   const handleSetDistributionDetails = (data: DistributionDetails) => {
-    console.log(data)
     if (!data) return;
     setDistributionDetails(data);
-    console.log(distributionDetails, data, 'made it in');
-  }
-
-  useEffect(() => {
-    console.log(distributionDetails);
-  }, [distributionDetails])
+    console.log({ distributionDetails, data, distribution });
+  };
 
   const baseUrl =
     "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-matic";
 
   useEffect(() => {
-    if (!distributionId) return;
+    if (!distribution) return;
     const fetchData = async () => {
-
-        await fetch(baseUrl, {
-          method: "POST",
-          headers: new Headers({
-            "Content-Type": "application/json",
-          }),
-          body: JSON.stringify({
-            query: `${getDistributionDetails(distributionId)}`,
-          }),
-        }).then((res) => res.json()).then((res) => {
+      await fetch(baseUrl, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({
+          query: `${getDistributionDetails(distributionId)}`,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
           const distribution = res.data.index;
           if (distribution) {
             handleSetDistributionDetails(distribution);
           }
         });
-        /* const distribution: DistributionDetails = response.data;
+      /* const distribution: DistributionDetails = response.data;
         setDistributionDetails(distribution);
         console.log({ distributionDetails }); */
     };
@@ -296,7 +291,7 @@ export const DistributionsPageContent: FC<{
                     distributionDetails ? (
                       <SuperTokenAddress
                         network={network}
-                        address={distributionDetails?.token?.id ?? ''}
+                        address={distributionDetails?.token?.id ?? ""}
                       />
                     ) : (
                       <SkeletonAddress />
@@ -332,7 +327,7 @@ export const DistributionsPageContent: FC<{
                     distributionDetails ? (
                       <AccountAddress
                         network={network}
-                        address={distributionDetails.publisher.id ?? ''}
+                        address={distributionDetails.publisher.id ?? ""}
                       />
                     ) : (
                       <SkeletonAddress />
@@ -346,11 +341,9 @@ export const DistributionsPageContent: FC<{
                     <ListItemText
                       secondary="Distributed At"
                       primary={
-                        distributionDetails ? (
+                        distribution ? (
                           <TimeAgo
-                            subgraphTime={Number(
-                              distributionDetails.totalAmountDistributedUntilUpdatedAt
-                            )}
+                            subgraphTime={Number(distribution.timestamp)}
                           />
                         ) : (
                           <Skeleton sx={{ width: "80px" }} />
@@ -367,40 +360,22 @@ export const DistributionsPageContent: FC<{
         <Grid item xs={12} lg={6}>
           <Card elevation={2}>
             <List>
-              <ListItem data-cy={"subscription-units"} divider>
+              <ListItem data-cy={"total-units"} divider>
                 <ListItemText
                   secondary={
                     <>
-                      Units (Pool %)
+                      Total Units
                       <InfoTooltipBtn
-                        dataCy={"units-tooltip"}
-                        title={
-                          <>
-                            Amount of units compared to the total pool. Funds
-                            will be distributed depending on the portion of
-                            units an account has.{" "}
-                            <AppLink
-                              data-cy={"units-tooltip-link"}
-                              href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
-                              target="_blank"
-                            >
-                              Read more
-                            </AppLink>
-                          </>
-                        }
+                        dataCy={"total-units-tooltip"}
+                        title="The sum of total pending and approved units issued to subscribers."
                       />
                     </>
                   }
                   primary={
-                    indexSubscription && index ? (
-                      <>
-                        {indexSubscription.units} / {index.totalUnits} (
-                        {poolPercentage &&
-                          poolPercentage.toDP(2).toString() + " %"}
-                        )
-                      </>
+                    distributionDetails ? (
+                      distributionDetails.totalUnits
                     ) : (
-                      <Skeleton sx={{ width: "150px" }} />
+                      <Skeleton sx={{ width: "75px" }} />
                     )
                   }
                 />
@@ -409,12 +384,14 @@ export const DistributionsPageContent: FC<{
                 <ListItemText
                   secondary="Total Amount Distributed"
                   primary={
-                    indexSubscription && index && totalWeiAmountReceived ? (
+                    distributionDetails ? (
                       <>
                         <BalanceWithToken
-                          wei={totalWeiAmountReceived}
+                          wei={
+                            distributionDetails?.totalAmountDistributedUntilUpdatedAt
+                          }
                           network={network}
-                          tokenAddress={index.token}
+                          tokenAddress={distributionDetails?.token?.id}
                         />
                       </>
                     ) : (
@@ -566,12 +543,9 @@ export const DistributionsGrid: FC<{
         field: "addresses",
         headerName: "Subscriber Addresses",
         sortable: true,
-        id: '',
-        flex: 1,
-        renderCell: (params) => <AccountAddress
-          network={network}
-          address={params?.subscriber!}
-        />,
+        id: "",
+        flex: 0.5,
+        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
       },
       {
         field: "amount",
@@ -652,8 +626,7 @@ export const DistributionsGrid: FC<{
 
   return (
     <AppDataGrid
-      //@ts-ignore
-      rows={distributionDetails.subscriptions}
+      rows={indexUpdatedEvents}
       columns={columns}
       queryResult={indexUpdatedEventsQuery}
       setOrdering={(x) => setIndexUpdatedEventOrdering(x as any)}

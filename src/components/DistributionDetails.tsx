@@ -1,10 +1,11 @@
+import { IndexUpdatedEvent } from "@superfluid-finance/sdk-core";
 import { FC, ReactNode, useState } from "react";
 import { DistributionsPageContent } from "../pages/[_network]/distributions/[_id]";
 import { Network } from "../redux/networks";
 import DetailsDialog from "./DetailsDialog";
 
 export const DistributionDetailsDialog: FC<{
-  distributionId: string;
+  distribution: IndexUpdatedEvent | undefined;
   network: Network;
   children: (onClick: () => void) => ReactNode;
 }> = ({ children, ...props }) => {
