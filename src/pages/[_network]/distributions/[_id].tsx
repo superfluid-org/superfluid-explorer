@@ -36,6 +36,7 @@ import { AppDataGrid } from "../../../components/AppDataGrid";
 import AppLink from "../../../components/AppLink";
 import BalanceWithToken from "../../../components/BalanceWithToken";
 import CopyLink from "../../../components/CopyLink";
+import { DistributionDetailsDialog } from "../../../components/DistributionDetails";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
@@ -60,7 +61,9 @@ interface Subscriber {
 interface DistributionDetails {
   id: string;
   indexId: string;
-  publisher: string;
+  publisher: {
+    id: string;
+  };
   indexValue: string;
   subscriptions: Subscriber[];
   createdAtTimestamp: string;
@@ -95,17 +98,27 @@ export const DistributionsPageContent: FC<{
     id: distributionId,
   });
 
-  const [distributionDetails, setDistributionDetails] =
-    useState<DistributionDetails>();
+  const [distributionDetails, setDistributionDetails] = useState<DistributionDetails>();
+
+  const handleSetDistributionDetails = (data: DistributionDetails) => {
+    console.log(data)
+    if (!data) return;
+    setDistributionDetails(data);
+    console.log(distributionDetails, data, 'made it in');
+  }
+
+  useEffect(() => {
+    console.log(distributionDetails);
+  }, [distributionDetails])
 
   const baseUrl =
     "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-matic";
 
   useEffect(() => {
-    console.log("id", distributionId);
+    if (!distributionId) return;
     const fetchData = async () => {
-      try {
-        const response = await fetch(baseUrl, {
+
+        await fetch(baseUrl, {
           method: "POST",
           headers: new Headers({
             "Content-Type": "application/json",
@@ -113,14 +126,15 @@ export const DistributionsPageContent: FC<{
           body: JSON.stringify({
             query: `${getDistributionDetails(distributionId)}`,
           }),
-        }).then((res) => res.json());
-        console.log({ response });
-        const distribution: DistributionDetails = response.data;
+        }).then((res) => res.json()).then((res) => {
+          const distribution = res.data.index;
+          if (distribution) {
+            handleSetDistributionDetails(distribution);
+          }
+        });
+        /* const distribution: DistributionDetails = response.data;
         setDistributionDetails(distribution);
-        console.log({ distributionDetails });
-      } catch (error) {
-        console.error("Error:", error);
-      }
+        console.log({ distributionDetails }); */
     };
     fetchData();
   }, [distributionId]);
@@ -282,7 +296,7 @@ export const DistributionsPageContent: FC<{
                     distributionDetails ? (
                       <SuperTokenAddress
                         network={network}
-                        address={distributionDetails?.token?.id}
+                        address={distributionDetails?.token?.id ?? ''}
                       />
                     ) : (
                       <SkeletonAddress />
@@ -318,7 +332,7 @@ export const DistributionsPageContent: FC<{
                     distributionDetails ? (
                       <AccountAddress
                         network={network}
-                        address={distributionDetails.publisher}
+                        address={distributionDetails.publisher.id ?? ''}
                       />
                     ) : (
                       <SkeletonAddress />
@@ -335,7 +349,7 @@ export const DistributionsPageContent: FC<{
                         distributionDetails ? (
                           <TimeAgo
                             subgraphTime={Number(
-                              distributionDetails.createdAtTimestamp
+                              distributionDetails.totalAmountDistributedUntilUpdatedAt
                             )}
                           />
                         ) : (
@@ -440,6 +454,7 @@ export const DistributionsPageContent: FC<{
           <DistributionsGrid
             network={network}
             distributionId={distributionId}
+            distributionDetails={distributionDetails}
           />
         </Card>
       </Box>
@@ -448,9 +463,10 @@ export const DistributionsPageContent: FC<{
 };
 
 export const DistributionsGrid: FC<{
+  distributionDetails: DistributionDetails;
   network: Network;
   distributionId: string;
-}> = ({ network, distributionId }) => {
+}> = ({ network, distributionId, distributionDetails }) => {
   const indexSubscriptionQuery = sfSubgraph.useIndexSubscriptionQuery({
     chainId: network.chainId,
     id: distributionId,
@@ -550,8 +566,12 @@ export const DistributionsGrid: FC<{
         field: "addresses",
         headerName: "Subscriber Addresses",
         sortable: true,
-        flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+        id: '',
+        flex: 1,
+        renderCell: (params) => <AccountAddress
+          network={network}
+          address={params?.subscriber!}
+        />,
       },
       {
         field: "amount",
@@ -632,7 +652,8 @@ export const DistributionsGrid: FC<{
 
   return (
     <AppDataGrid
-      rows={indexUpdatedEvents}
+      //@ts-ignore
+      rows={distributionDetails.subscriptions}
       columns={columns}
       queryResult={indexUpdatedEventsQuery}
       setOrdering={(x) => setIndexUpdatedEventOrdering(x as any)}
