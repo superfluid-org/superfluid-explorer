@@ -5,6 +5,7 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   addEdge,
+  Position,
 } from "reactflow";
 // 👇 you need to import the reactflow styles
 import "reactflow/dist/style.css";
@@ -31,21 +32,7 @@ interface Node {
   position: { x: number; y: number };
   data: { label: ReactElement };
   flowRate?: string;
-}
-
-interface Stream {
-  createdAtBlockNumber: number;
-  createdAtTimestamp: number;
-  currentFlowRate: string;
-  deposit: string;
-  id: string;
-  receiver: string;
-  sender: string;
-  streamedUntilUpdatedAt: string;
-  token: string;
-  tokenSymbol: string;
-  updatedAtBlockNumber: number;
-  updatedAtTimestamp: number;
+  sourcePosition?: Position;
 }
 
 const Map: FC<{
@@ -78,119 +65,152 @@ const Map: FC<{
     [setEdges]
   );
 
-  const { outgoingStreams, ...outgoingStreamsQuery } =
-    sfSubgraph.useStreamsQuery(
-      {
-        chainId: network.chainId,
-        filter: {
-          sender: accountAddress,
-          currentFlowRate_not: "0",
-        },
-        pagination: {
-          take: Infinity,
-        },
+  const {
+    outgoingStreams,
+    outgoingNodeList,
+    outgoingEdgeList,
+    ...outgoingStreamsQuery
+  } = sfSubgraph.useStreamsQuery(
+    {
+      chainId: network.chainId,
+      filter: {
+        sender: accountAddress,
+        currentFlowRate_not: "0",
       },
-      {
-        selectFromResult: (queryResult) => ({
-          ...queryResult,
-          outgoingStreams: queryResult.data?.items ?? [],
-        }),
-      }
-    );
-
-  const { incomingStreams, ...incomingStreamsQuery } =
-    sfSubgraph.useStreamsQuery(
-      {
-        chainId: network.chainId,
-        filter: {
-          receiver: accountAddress,
-          currentFlowRate_not: "0",
-        },
-        pagination: {
-          take: Infinity,
-        },
+      pagination: {
+        take: Infinity,
       },
-      {
-        selectFromResult: (queryResult) => ({
-          ...queryResult,
-          incomingStreams: queryResult.data?.items ?? [],
-        }),
-      }
-    );
+    },
+    {
+      selectFromResult: (queryResult) => {
+        const outgoingStreams = queryResult.data?.items ?? [];
 
-  //Set up edges and nodes with streams
+        const outgoingNodeList = [
+          initialNodes[0],
+          ...outgoingStreams.map((stream, i: number) => {
+            let ethersFlowRate = ethers.utils.formatEther(
+              stream.currentFlowRate
+            );
+            //Convert to humanized monthly amount
+            let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30;
+            //Create a node object with relevant data
+            let node: Node = {
+              id: `${stream.receiver}-${i}`,
+              position: { x: i * 150, y: 500 },
+              data: {
+                label: (
+                  <UserBlock network={network} address={stream.receiver} />
+                ),
+              },
+              flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${
+                stream.tokenSymbol
+              }`,
+              sourcePosition: Position.Top,
+            };
+            return node;
+          }),
+        ];
+
+        const outgoingEdgeList: Edge[] = outgoingNodeList.map((node) => ({
+          id: `e${node.id}-${accountAddress}`,
+          label: node.flowRate,
+          source: accountAddress,
+          target: node.id,
+          animated: true,
+        }));
+
+        return {
+          ...queryResult,
+          outgoingStreams,
+          outgoingNodeList,
+          outgoingEdgeList,
+        };
+      },
+    }
+  );
+
+  const {
+    incomingStreams,
+    incomingNodeList,
+    incomingEdgeList,
+    ...incomingStreamsQuery
+  } = sfSubgraph.useStreamsQuery(
+    {
+      chainId: network.chainId,
+      filter: {
+        receiver: accountAddress,
+        currentFlowRate_not: "0",
+      },
+      pagination: {
+        take: Infinity,
+      },
+    },
+    {
+      selectFromResult: (queryResult) => {
+        const incomingStreams = queryResult.data?.items ?? [];
+
+        const incomingNodeList = [
+          initialNodes[0],
+          ...incomingStreams.map((stream, i: number) => {
+            const ethersFlowRate = ethers.utils.formatEther(
+              stream.currentFlowRate
+            );
+            //Convert to humanized monthly amount
+            const humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30;
+            //Create a node object with relevant data
+            const node: Node = {
+              id: `${stream.sender}-${i}`,
+              position: { x: i * 300, y: 100 },
+              data: {
+                label: <UserBlock network={network} address={stream.sender} />,
+              },
+              flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${
+                stream.tokenSymbol
+              }`,
+              sourcePosition: Position.Bottom,
+            };
+            return node;
+          }),
+        ];
+
+        const incomingEdgeList: Edge[] = incomingNodeList.map((node) => ({
+          id: `e${node.id}-${accountAddress}`,
+          label: node.flowRate,
+          source: node.id,
+          target: accountAddress,
+          animated: true,
+        }));
+
+        return {
+          ...queryResult,
+          incomingStreams,
+          incomingNodeList,
+          incomingEdgeList,
+        };
+      },
+    }
+  );
+
   useEffect(() => {
-    let incomingNodeList: Node[] = [initialNodes[0]];
-    let outgoingNodeList: Node[] = [initialNodes[0]];
-    let edgeList: Edge[] = [];
-    let outgoingEdgeList: Edge[] = [];
+    if (outgoingStreamsQuery.isSuccess && incomingStreamsQuery.isSuccess) {
+      let edges = [...incomingEdgeList, ...outgoingEdgeList];
 
-    incomingStreams.forEach((stream: Stream, i: number) => {
-      let ethersFlowRate = ethers.utils.formatEther(stream.currentFlowRate);
-      //Convert to humanized monthly amount
-      let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30;
-      //Create a node object with relevant data
-      let node = {
-        id: `${stream.sender}-${i}`,
-        position: { x: i * 300, y: 100 },
-        data: {
-          label: <UserBlock network={network} address={stream.sender} />,
-        },
-        flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${stream.tokenSymbol}`,
-        sourcePosition: "bottom",
-      };
-      incomingNodeList.push(node);
-    });
-
-    //Make these come out from TOP of Node
-    incomingNodeList.forEach((node: Node, i: number) => {
-      if (i === incomingNodeList.length) {
-        return;
+      // Disable animation if too many edges.
+      if (edges.length > 50) {
+        edges = edges.map((x) => ({ ...x, animated: false }));
       }
-      let edge = {
-        id: `e${node.id}-${accountAddress}`,
-        label: node.flowRate,
-        source: node.id,
-        target: accountAddress,
-        animated: true,
-      };
-      edgeList.push(edge);
-    });
 
-    outgoingStreams.forEach((stream: Stream, i: number) => {
-      let ethersFlowRate = ethers.utils.formatEther(stream.currentFlowRate);
-      //Convert to humanized monthly amount
-      let humanizedFlowRate = +ethersFlowRate * 3600 * 24 * 30;
-      //Create a node object with relevant data
-      let node = {
-        id: `${stream.receiver}-${i}`,
-        position: { x: i * 150, y: 500 },
-        data: {
-          label: <UserBlock network={network} address={stream.receiver} />,
-        },
-        flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${stream.tokenSymbol}`,
-        sourcePosition: "top",
-      };
-      outgoingNodeList.push(node);
-    });
-
-    outgoingNodeList.forEach((node: Node, i: number) => {
-      if (i === outgoingNodeList.length) {
-        return;
-      }
-      let edge = {
-        id: `e${node.id}-${accountAddress}`,
-        label: node.flowRate,
-        source: accountAddress,
-        target: node.id,
-        animated: true,
-      };
-      outgoingEdgeList.push(edge);
-    });
-
-    setNodes([...incomingNodeList, ...outgoingNodeList]);
-    setEdges([...edgeList, ...outgoingEdgeList]);
-  }, [incomingStreams, outgoingStreams]);
+      setNodes([...incomingNodeList, ...outgoingNodeList]);
+      setEdges(edges);
+    }
+  }, [
+    outgoingNodeList,
+    incomingNodeList,
+    outgoingEdgeList,
+    incomingEdgeList,
+    outgoingStreamsQuery.isSuccess,
+    incomingStreamsQuery.isSuccess,
+  ]);
 
   return (
     <ReactFlow
