@@ -33,6 +33,7 @@ import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import AccountTokenBalance from "../../AccountTokenBalance";
+import AccountTokenFlowRate from "../../AccountTokenFlowRate";
 import AppLink from "../../AppLink";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
@@ -409,7 +410,28 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
         <TableHead>
           <TableRow>
             <TableCell>Token</TableCell>
-            <TableCell>Balance</TableCell>
+            <TableCell>
+                Balance
+                <InfoTooltipBtn
+                  title={
+                    <>
+                      The balance this account holds of this supertoken, at the current time{" "}
+                    </>
+                  }
+                  iconSx={{ mb: 0, mr: 0.5 }}
+                />                
+            </TableCell>
+            <TableCell>
+                Net Flow
+                <InfoTooltipBtn
+                  title={
+                    <>
+                      The change in balance of this supertoken{" "}
+                    </>
+                  }
+                  iconSx={{ mb: 0, mr: 0.5 }}
+                />
+            </TableCell>
             <TableCell width="160px">
               <TableSortLabel
                 active={order?.orderBy === "totalNumberOfActiveStreams"}
@@ -488,6 +510,21 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                   TokenChipProps={null}
                 />
               </TableCell>
+
+              <TableCell>
+                <AccountTokenFlowRate
+                  network={network}
+                  accountAddress={accountAddress}
+                  tokenAddress={tokenSnapshot.token}
+                  placeholder={{
+                    balance: tokenSnapshot.balanceUntilUpdatedAt,
+                    balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
+                    flowRate: tokenSnapshot.totalNetFlowRate,
+                  }}
+                  TokenChipProps={null}
+                />
+              </TableCell>
+
               <TableCell data-cy={"active-streams"}>
                 {tokenSnapshot.totalNumberOfActiveStreams}
               </TableCell>
@@ -520,7 +557,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
         {tableRows.length > 0 && (
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={5} align="right">
+              <TableCell colSpan={6} align="right">
                 <InfinitePagination
                   page={skip / take + 1}
                   pageSize={pagination.take}
