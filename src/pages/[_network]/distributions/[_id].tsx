@@ -199,7 +199,7 @@ export const DistributionsPageContent: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indexSubscription && index]);
 
-  if (!distributionDetails) {
+  if (!distributionDetails && !distribution) {
     return <Error statusCode={404} />;
   }
 
