@@ -431,7 +431,7 @@ export const DistributionsPageContent: FC<{
           <DistributionsGrid
             network={network}
             distributionId={distributionId}
-            distributionDetails={distributionDetails}
+            distributionDetails={distributionDetails!}
           />
         </Card>
       </Box>
