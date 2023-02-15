@@ -27,7 +27,6 @@ import {
 import Decimal from "decimal.js";
 import { BigNumber, BigNumberish } from "ethers";
 import { gql } from "graphql-request";
-import _ from "lodash";
 import { NextPage } from "next";
 import Error from "next/error";
 import { FC, useContext, useEffect, useMemo, useState } from "react";
@@ -55,6 +54,14 @@ interface Subscriber {
   subscriber: {
     id: string;
   };
+}
+
+interface Subscription {
+  id: string;
+  units: string;
+  token: string;
+  totalUnits: string;
+  totalAmountReceivedUntilUpdatedAt: string;
 }
 
 interface DistributionDetails {
@@ -102,7 +109,6 @@ export const DistributionsPageContent: FC<{
   const handleSetDistributionDetails = (data: DistributionDetails) => {
     if (!data) return;
     setDistributionDetails(data);
-    console.log({ distributionDetails, data, distribution });
   };
 
   const baseUrl =
@@ -536,6 +542,17 @@ export const DistributionsGrid: FC<{
   const indexUpdatedEvents: IndexUpdatedEvent[] | undefined =
     indexUpdatedEventsQuery.data?.data ?? [];
 
+  const rows: Subscription[] = distributionDetails
+    ? distributionDetails.subscriptions.map((subscription) => ({
+        id: subscription.subscriber.id,
+        units: subscription.units,
+        totalAmountReceivedUntilUpdatedAt:
+          subscription.totalAmountReceivedUntilUpdatedAt,
+        token: distributionDetails.token.id,
+        totalUnits: distributionDetails.totalUnits,
+      }))
+    : [];
+
   const columns: GridColDef[] = useMemo(
     () => [
       { field: "id", hide: true, sortable: false, flex: 1 },
@@ -545,7 +562,9 @@ export const DistributionsGrid: FC<{
         sortable: true,
         id: "",
         flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+        renderCell: (params) => (
+          <AccountAddress network={network} address={params.row.id} />
+        ),
       },
       {
         field: "amount",
@@ -554,62 +573,11 @@ export const DistributionsGrid: FC<{
         sortable: false,
         flex: 1,
         renderCell: (params) => {
-          if (!index || !subscriptionUnitsUpdatedEvents?.length) {
-            return <Skeleton sx={{ width: "100px" }} />;
-          }
-
-          // Very touchy logic below...
-
-          const indexUpdatedEvent = params.row as IndexUpdatedEvent;
-
-          let closestSubscriptionUnitsUpdatedEvent =
-            subscriptionUnitsUpdatedEvents.find(
-              (x) => x.timestamp <= indexUpdatedEvent.timestamp
-            )!;
-
-          if (
-            indexUpdatedEvent.timestamp ===
-            closestSubscriptionUnitsUpdatedEvent.timestamp
-          ) {
-            // *sigh* the timestamps match so we have to look at log indexes as well to know which came first...
-
-            const indexUpdatedEventLogIndex = Number(
-              _.last(indexUpdatedEvent.id.split("-"))
-            );
-            const subscriptionUnitsUpdatedEventLogIndex = Number(
-              _.last(closestSubscriptionUnitsUpdatedEvent.id.split("-"))
-            );
-
-            if (
-              subscriptionUnitsUpdatedEventLogIndex > indexUpdatedEventLogIndex
-            ) {
-              closestSubscriptionUnitsUpdatedEvent =
-                subscriptionUnitsUpdatedEvents.find(
-                  (x) => x.timestamp < indexUpdatedEvent.timestamp
-                )!;
-            }
-          }
-
-          if (!closestSubscriptionUnitsUpdatedEvent) {
-            return <>0</>;
-          }
-
-          const subscriptionUnits = BigNumber.from(
-            closestSubscriptionUnitsUpdatedEvent.units
-          );
-
-          const indexDistributionAmount = BigNumber.from(
-            indexUpdatedEvent.newIndexValue // Index is always incrementing bigger.
-          ).sub(BigNumber.from(indexUpdatedEvent.oldIndexValue));
-
-          const subscriptionDistributionAmount =
-            indexDistributionAmount.mul(subscriptionUnits);
-
           return (
             <BalanceWithToken
-              wei={subscriptionDistributionAmount}
+              wei={params.row.totalAmountReceivedUntilUpdatedAt}
               network={network}
-              tokenAddress={index.token}
+              tokenAddress={params.row.token}
             />
           );
         },
@@ -619,6 +587,13 @@ export const DistributionsGrid: FC<{
         headerName: "Pool Percentage",
         sortable: true,
         flex: 0.5,
+        renderCell: (params) => {
+          const percentage = calculatePoolPercentage(
+            new Decimal(params.row.totalUnits),
+            new Decimal(params.row.units)
+          );
+          return <>{percentage.toDP(2).toString() + " %"}</>;
+        },
       },
     ],
     [network, index, subscriptionUnitsUpdatedEvents]
@@ -626,7 +601,7 @@ export const DistributionsGrid: FC<{
 
   return (
     <AppDataGrid
-      rows={indexUpdatedEvents}
+      rows={rows}
       columns={columns}
       queryResult={indexUpdatedEventsQuery}
       setOrdering={(x) => setIndexUpdatedEventOrdering(x as any)}
