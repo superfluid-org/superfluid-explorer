@@ -23,7 +23,7 @@ const TimeAgo: FC<{
       <React.Fragment>
         <span>{date.toLocaleString()}</span>
         <br/>
-        <span>unix: {Math.floor(date.getTime() / 1000)}</span>
+        <span>Timestamp: {Math.floor(date.getTime() / 1000)}</span>
       </React.Fragment>} {...tooltipProps}>
       <Typography component="span" {...typographyProps}>
         {timeAgo(date.getTime())}
