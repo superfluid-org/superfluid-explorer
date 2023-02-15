@@ -25,6 +25,7 @@ import { useContext, useEffect, useState } from "react";
 import AccountIndexes from "../../../components/AccountIndexes";
 import AccountStreams from "../../../components/AccountStreams";
 import AccountTokenBalance from "../../../components/AccountTokenBalance";
+import AccountTokenFlowRate from "../../../components/AccountTokenFlowRate";
 import AccountMap from "../../../components/AccountMap";
 import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
@@ -274,20 +275,36 @@ const AccountPage: NextPage = () => {
               <Grid item sm={4} key={tokenSnapshot.id}>
                 <ListItem>
                   <ListItemText>
-                    <AccountTokenBalance
-                      network={network}
-                      accountAddress={address}
-                      tokenAddress={tokenSnapshot.token}
-                      placeholder={{
-                        balance: tokenSnapshot.balanceUntilUpdatedAt,
-                        balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
-                        flowRate: tokenSnapshot.totalNetFlowRate,
-                      }}
-                      TokenChipProps={{
-                        network,
-                        tokenAddress: tokenSnapshot.token,
-                      }}
-                    />
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <AccountTokenBalance
+                        network={network}
+                        accountAddress={address}
+                        tokenAddress={tokenSnapshot.token}
+                        placeholder={{
+                          balance: tokenSnapshot.balanceUntilUpdatedAt,
+                          balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
+                          flowRate: tokenSnapshot.totalNetFlowRate,
+                        }}
+                        TokenChipProps={{
+                          network,
+                          tokenAddress: tokenSnapshot.token,
+                        }}
+                      />
+                      <Box sx={{ margin: 1 }}>(
+                        <AccountTokenFlowRate
+                          network={network}
+                          accountAddress={address}
+                          tokenAddress={tokenSnapshot.token}
+                          placeholder={{
+                            balance: tokenSnapshot.balanceUntilUpdatedAt,
+                            balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
+                            flowRate: tokenSnapshot.totalNetFlowRate,
+                          }}
+                          TokenChipProps={null}
+                          />
+                         )
+                        </Box>
+                    </Box>
                   </ListItemText>
                 </ListItem>
               </Grid>
