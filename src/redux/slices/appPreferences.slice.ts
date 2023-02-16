@@ -18,12 +18,12 @@ export const streamGranularityInSeconds = {
   month: 86400 * 30,
 };
 
-type etherDecimalPlaces = 18 | 9 | 5;
+type etherDecimalPlaces = 18 | 9 | 5 | 0;
 
 const initialState: IAppPreferences = {
   themePreference: "system",
   streamGranularity: "day",
-  etherDecimalPlaces: 18,
+  etherDecimalPlaces: 0,
   displayedTestNets: networks
     .filter((n) => n.isTestnet)
     .reduce(
