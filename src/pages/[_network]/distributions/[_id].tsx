@@ -48,7 +48,7 @@ import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceive
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 
-import { getDistributionDetails } from "./getDistributionsDetailsQuery";
+import getDistributionDetails from "./getDistributionsDetailsQuery";
 
 const DistributionsPage: NextPage = () => {
   const network = useNetworkContext();
