@@ -1,6 +1,6 @@
 // A distribution id is the following: (publisherAddress-tokenAddress-distributionNumber)
 
-export const getDistributionDetails = () => `{
+const getDistributionDetails = () => `{
   index(id: "0xbb5c64b929b1e60c085dcdf88dfe41c6b9dcf65b-0x263026e7e53dbfdce5ae55ade22493f828922965-3") {
     indexId
     indexValue
@@ -17,3 +17,5 @@ export const getDistributionDetails = () => `{
     createdAtTimestamp
   }
 }`;
+
+export default getDistributionDetails;
