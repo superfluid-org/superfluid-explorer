@@ -1,25 +1,27 @@
-// A distribution id is the following: (publisherAddress-tokenAddress-distributionNumber)
-
 export const getDistributionDetails = (distributionId: string) => `{
-  index(id: "${distributionId}") {
-    indexId
-    indexValue
-    totalAmountDistributedUntilUpdatedAt
-    totalSubscriptionsWithUnits
-    totalUnits
-    subscriptions(where: {units_not: "0"}) {
-      units
-      totalAmountReceivedUntilUpdatedAt
-      subscriber {
+  indexUpdatedEvent(id: "${distributionId}") {
+    index {
+      indexId
+      indexValue
+      totalAmountDistributedUntilUpdatedAt
+      totalSubscriptionsWithUnits
+      totalUnits
+      subscriptions(where: {units_not: "0"}) {
+        units
+        totalAmountReceivedUntilUpdatedAt
+        subscriber {
+          id
+        }
+      }
+      token {
         id
       }
     }
-    createdAtTimestamp
-    token {
-      id
-    }
-    publisher {
-      id
-    }
+    timestamp
+    publisher
+    totalUnitsApproved
+    totalUnitsPending
+    newIndexValue
+    oldIndexValue
   }
 }`;

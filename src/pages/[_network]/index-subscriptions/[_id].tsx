@@ -36,8 +36,6 @@ import { AppDataGrid } from "../../../components/AppDataGrid";
 import AppLink from "../../../components/AppLink";
 import BalanceWithToken from "../../../components/BalanceWithToken";
 import CopyLink from "../../../components/CopyLink";
-import DetailsButton from "../../../components/DetailsButton";
-import { DistributionDetailsDialog } from "../../../components/DistributionDetails";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
@@ -624,20 +622,6 @@ export const IndexSubscriptionDistributions: FC<{
             />
           );
         },
-      },
-      {
-        field: "details",
-        headerName: "Details",
-        flex: 0.5,
-        sortable: false,
-        renderCell: (cellParams) => (
-          <DistributionDetailsDialog
-            network={network}
-            distributionId={cellParams.id.toString()}
-          >
-            {(onClick) => <DetailsButton onClick={onClick} />}
-          </DistributionDetailsDialog>
-        ),
       },
     ],
     [network, index, subscriptionUnitsUpdatedEvents]

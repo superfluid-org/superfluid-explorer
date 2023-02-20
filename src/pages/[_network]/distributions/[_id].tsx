@@ -40,7 +40,7 @@ import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import SuperTokenAddress from "../../../components/SuperTokenAddress";
 import TimeAgo from "../../../components/TimeAgo";
-import DistributionContext from "../../../contexts/DistributionContext";
+import IdContext from "../../../contexts/IdContext";
 import { useNetworkContext } from "../../../contexts/NetworkContext";
 import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
 import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceived";
@@ -61,48 +61,54 @@ interface Subscription {
   units: string;
   token: string;
   totalUnits: string;
-  totalAmountReceivedUntilUpdatedAt: string;
+  distributionAmount: BigNumber;
+}
+
+interface DistributionIndex {
+  indexId: string;
+  indexValue: string;
+  subscriptions: Subscriber[];
+  token: {
+    id: string;
+  };
+  totalAmountDistributedUntilUpdatedAt: string;
+  totalSubscriptionsWithUnits: number;
+  totalUnits: string;
 }
 
 interface DistributionDetails {
   id: string;
-  indexId: string;
-  publisher: {
-    id: string;
-  };
-  indexValue: string;
-  subscriptions: Subscriber[];
-  createdAtTimestamp: string;
-  totalAmountDistributedUntilUpdatedAt: string;
-  totalSubscriptionsWithUnits: number;
-  totalUnits: string;
-  token: {
-    id: string;
-  };
+  index: DistributionIndex;
+  publisher: string;
+  timestamp: string;
+  totalUnitsApproved: string;
+  totalUnitsPending: string;
+  newIndexValue: string;
+  oldIndexValue: string;
 }
 
 const DistributionsPage: NextPage = () => {
   const network = useNetworkContext();
-  const distribution = useContext(DistributionContext);
+  const distributionId = useContext(IdContext);
 
   return (
-    <DistributionsPageContent distribution={distribution} network={network} />
+    <DistributionsPageContent
+      distributionId={distributionId}
+      network={network}
+    />
   );
 };
 
 export default DistributionsPage;
 
 export const DistributionsPageContent: FC<{
-  distribution: IndexUpdatedEvent | undefined;
+  distributionId: string;
   network: Network;
-}> = ({ distribution, network }) => {
+}> = ({ distributionId, network }) => {
   const indexSubscriptionQuery = sfSubgraph.useIndexSubscriptionQuery({
     chainId: network.chainId,
     id: "",
   });
-  const [distributionId, setDistributionId] = useState<string>(
-    `${distribution?.publisher}-${distribution?.token}-${distribution?.indexId}`
-  );
   const [distributionDetails, setDistributionDetails] =
     useState<DistributionDetails>();
 
@@ -115,7 +121,7 @@ export const DistributionsPageContent: FC<{
     "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-matic";
 
   useEffect(() => {
-    if (!distribution) return;
+    if (!distributionId) return;
     const fetchData = async () => {
       await fetch(baseUrl, {
         method: "POST",
@@ -128,7 +134,8 @@ export const DistributionsPageContent: FC<{
       })
         .then((res) => res.json())
         .then((res) => {
-          const distribution = res.data.index;
+          console.log({ res });
+          const distribution = res.data.indexUpdatedEvent;
           if (distribution) {
             handleSetDistributionDetails(distribution);
           }
@@ -184,6 +191,18 @@ export const DistributionsPageContent: FC<{
     BigNumberish | undefined
   >();
 
+  const calculateDistributionAmount = (
+    event: DistributionDetails
+  ): BigNumber => {
+    const totalUnits = BigNumber.from(event.totalUnitsApproved).add(
+      BigNumber.from(event.totalUnitsPending)
+    );
+    const indexValueDifference = BigNumber.from(event.newIndexValue).sub(
+      BigNumber.from(event.oldIndexValue)
+    );
+    return indexValueDifference.mul(totalUnits);
+  };
+
   useEffect(() => {
     if (index && indexSubscription) {
       setPoolPercentage(
@@ -205,7 +224,7 @@ export const DistributionsPageContent: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indexSubscription && index]);
 
-  if (!distributionDetails && !distribution) {
+  if (!distributionDetails && !distributionId) {
     return <Error statusCode={404} />;
   }
 
@@ -243,30 +262,34 @@ export const DistributionsPageContent: FC<{
           network={network}
           query={gql`
             query ($id: ID!) {
-              index(id: $id) {
-                indexId
-                indexValue
-                totalAmountDistributedUntilUpdatedAt
-                totalSubscriptionsWithUnits
-                totalUnits
-                subscriptions(where: { units_not: "0" }) {
-                  units
-                  totalAmountReceivedUntilUpdatedAt
-                  subscriber {
+              indexUpdatedEvent(id: $id) {
+                index {
+                  indexId
+                  indexValue
+                  totalAmountDistributedUntilUpdatedAt
+                  totalSubscriptionsWithUnits
+                  totalUnits
+                  subscriptions(where: { units_not: "0" }) {
+                    units
+                    totalAmountReceivedUntilUpdatedAt
+                    subscriber {
+                      id
+                    }
+                  }
+                  token {
                     id
                   }
                 }
-                createdAtTimestamp
-                token {
-                  id
-                }
-                publisher {
-                  id
-                }
+                timestamp
+                publisher
+                totalUnitsApproved
+                totalUnitsPending
+                newIndexValue
+                oldIndexValue
               }
             }
           `}
-          variables={`{ "id": "${distributionId.toLowerCase()}" }`}
+          variables={`{ "id": "${distributionId}" }`}
         />
       </Stack>
 
@@ -282,7 +305,7 @@ export const DistributionsPageContent: FC<{
                       <AppLink
                         href={`/${network.slugName}/distributions/${distributionId}`}
                       >{`${distributionId.substring(0, 6)}... (${
-                        distributionDetails?.indexId
+                        distributionDetails?.index.indexId
                       })`}</AppLink>
                     ) : (
                       <Skeleton sx={{ width: "50px" }} />
@@ -297,7 +320,7 @@ export const DistributionsPageContent: FC<{
                     distributionDetails ? (
                       <SuperTokenAddress
                         network={network}
-                        address={distributionDetails?.token?.id ?? ""}
+                        address={distributionDetails?.index.token.id ?? ""}
                       />
                     ) : (
                       <SkeletonAddress />
@@ -333,7 +356,7 @@ export const DistributionsPageContent: FC<{
                     distributionDetails ? (
                       <AccountAddress
                         network={network}
-                        address={distributionDetails.publisher.id ?? ""}
+                        address={distributionDetails.publisher ?? ""}
                       />
                     ) : (
                       <SkeletonAddress />
@@ -347,9 +370,9 @@ export const DistributionsPageContent: FC<{
                     <ListItemText
                       secondary="Distributed At"
                       primary={
-                        distribution ? (
+                        distributionDetails ? (
                           <TimeAgo
-                            subgraphTime={Number(distribution.timestamp)}
+                            subgraphTime={Number(distributionDetails.timestamp)}
                           />
                         ) : (
                           <Skeleton sx={{ width: "80px" }} />
@@ -379,7 +402,7 @@ export const DistributionsPageContent: FC<{
                   }
                   primary={
                     distributionDetails ? (
-                      distributionDetails.totalUnits
+                      distributionDetails.index.totalUnits
                     ) : (
                       <Skeleton sx={{ width: "75px" }} />
                     )
@@ -393,11 +416,9 @@ export const DistributionsPageContent: FC<{
                     distributionDetails ? (
                       <>
                         <BalanceWithToken
-                          wei={
-                            distributionDetails?.totalAmountDistributedUntilUpdatedAt
-                          }
+                          wei={calculateDistributionAmount(distributionDetails)}
                           network={network}
-                          tokenAddress={distributionDetails?.token?.id}
+                          tokenAddress={distributionDetails.index.token.id}
                         />
                       </>
                     ) : (
@@ -539,17 +560,28 @@ export const DistributionsGrid: FC<{
       : skipToken
   );
 
+  const calculateDistributionAmount = (
+    event: DistributionDetails
+  ): BigNumber => {
+    const totalUnits = BigNumber.from(event.totalUnitsApproved).add(
+      BigNumber.from(event.totalUnitsPending)
+    );
+    const indexValueDifference = BigNumber.from(event.newIndexValue).sub(
+      BigNumber.from(event.oldIndexValue)
+    );
+    return indexValueDifference.mul(totalUnits);
+  };
+
   const indexUpdatedEvents: IndexUpdatedEvent[] | undefined =
     indexUpdatedEventsQuery.data?.data ?? [];
 
   const rows: Subscription[] = distributionDetails
-    ? distributionDetails.subscriptions.map((subscription) => ({
+    ? distributionDetails.index.subscriptions.map((subscription) => ({
         id: subscription.subscriber.id,
         units: subscription.units,
-        totalAmountReceivedUntilUpdatedAt:
-          subscription.totalAmountReceivedUntilUpdatedAt,
-        token: distributionDetails.token.id,
-        totalUnits: distributionDetails.totalUnits,
+        distributionAmount: calculateDistributionAmount(distributionDetails),
+        token: distributionDetails.index.token.id,
+        totalUnits: distributionDetails.index.totalUnits,
       }))
     : [];
 
@@ -575,7 +607,7 @@ export const DistributionsGrid: FC<{
         renderCell: (params) => {
           return (
             <BalanceWithToken
-              wei={params.row.totalAmountReceivedUntilUpdatedAt}
+              wei={params.row.distributionAmount}
               network={network}
               tokenAddress={params.row.token}
             />
