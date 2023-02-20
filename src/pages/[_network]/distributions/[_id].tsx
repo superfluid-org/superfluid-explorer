@@ -121,7 +121,6 @@ export const DistributionsPageContent: FC<{
     "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-matic";
 
   useEffect(() => {
-    console.log({ distributionId });
     if (!distributionId) return;
     const fetchData = async () => {
       await fetch(baseUrl, {
@@ -135,7 +134,6 @@ export const DistributionsPageContent: FC<{
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log({ res });
           const distribution = res.data.indexUpdatedEvent;
           if (distribution) {
             handleSetDistributionDetails(distribution);
