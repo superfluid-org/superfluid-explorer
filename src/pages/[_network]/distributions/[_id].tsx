@@ -134,15 +134,11 @@ export const DistributionsPageContent: FC<{
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log({ res });
           const distribution = res.data.indexUpdatedEvent;
           if (distribution) {
             handleSetDistributionDetails(distribution);
           }
         });
-      /* const distribution: DistributionDetails = response.data;
-        setDistributionDetails(distribution);
-        console.log({ distributionDetails }); */
     };
     fetchData();
   }, [distributionId]);
