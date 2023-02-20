@@ -1,9 +1,10 @@
-import { FC } from "react";
+import { Box, Stack, Typography } from "@mui/material";
+import { FC, PropsWithChildren } from "react";
 import { Network } from "../redux/networks";
 import { rpcApi } from "../redux/store";
-import { FlowingBalanceProps } from "./FlowingBalance";
-import FlowingBalanceWithToken from "./FlowingBalanceWithToken";
-import { TokenChipProps } from "./TokenChip";
+import FlowingBalance, { FlowingBalanceProps } from "./FlowingBalance";
+import FlowRate from "./FlowRate";
+import TokenChip, { TokenChipProps } from "./TokenChip";
 
 export const AccountTokenBalance: FC<{
   network: Network;
@@ -13,16 +14,17 @@ export const AccountTokenBalance: FC<{
    * The temporary balance used (e.g. from Subgraph) before doing the RPC call for the most accurate balance.
    */
   placeholder: FlowingBalanceProps;
-  /**
-   * If TokenChipProps is not provided, token chip will not be shown.
-   */
-  TokenChipProps: TokenChipProps | undefined | null;
+  children: (context: {
+    balance: string;
+    balanceTimestamp: number;
+    flowRate: string;
+  }) => PropsWithChildren["children"];
 }> = ({
+  children,
   network,
   tokenAddress,
   accountAddress,
   placeholder,
-  TokenChipProps,
 }) => {
   const realtimeBalanceQuery = rpcApi.useRealtimeBalanceQuery({
     chainId: network.chainId,
@@ -39,12 +41,13 @@ export const AccountTokenBalance: FC<{
 
   if (balance && balanceTimestamp && flowRate) {
     return (
-      <FlowingBalanceWithToken
-        balance={balance}
-        balanceTimestamp={balanceTimestamp}
-        flowRate={flowRate}
-        TokenChipProps={TokenChipProps}
-      />
+      <>
+        {children({
+          balance,
+          balanceTimestamp,
+          flowRate,
+        })}
+      </>
     );
   } else {
     return null;

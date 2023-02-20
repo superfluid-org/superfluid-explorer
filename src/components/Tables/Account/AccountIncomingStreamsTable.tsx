@@ -344,6 +344,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
         <TableHead>
           <TableRow>
             <TableCell width="220px">Sender</TableCell>
+            <TableCell>Total Streamed</TableCell>
             <TableCell>
               <TableSortLabel
                 sx={{ transition: "all 200ms ease-in-out" }}
@@ -362,7 +363,6 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                 />
               </TableSortLabel>
             </TableCell>
-            <TableCell>Total Streamed</TableCell>
             <TableCell width="140px">
               <TableSortLabel
                 active={order?.orderBy === "updatedAtTimestamp"}
@@ -389,9 +389,6 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                   ellipsis={6}
                 />
               </TableCell>
-              <TableCell data-cy={"incoming-flow-rate"}>
-                <FlowRate flowRate={stream.currentFlowRate} />
-              </TableCell>
               <TableCell data-cy={"incoming-total-streamed"}>
                 <FlowingBalanceWithToken
                   balance={stream.streamedUntilUpdatedAt}
@@ -402,6 +399,9 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                     tokenAddress: stream.token
                   }}
                 />
+              </TableCell>
+              <TableCell data-cy={"incoming-flow-rate"}>
+                <FlowRate flowRate={stream.currentFlowRate} />
               </TableCell>
               <TableCell>
                 <TimeAgo
