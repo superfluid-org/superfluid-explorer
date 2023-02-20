@@ -23,7 +23,7 @@ type etherDecimalPlaces = 18 | 9 | 5 | 0;
 const initialState: IAppPreferences = {
   themePreference: "system",
   streamGranularity: "day",
-  etherDecimalPlaces: 0,
+  etherDecimalPlaces: 18,
   displayedTestNets: networks
     .filter((n) => n.isTestnet)
     .reduce(
