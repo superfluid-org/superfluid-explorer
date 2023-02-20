@@ -121,6 +121,7 @@ export const DistributionsPageContent: FC<{
     "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-matic";
 
   useEffect(() => {
+    console.log({ distributionId });
     if (!distributionId) return;
     const fetchData = async () => {
       await fetch(baseUrl, {
@@ -134,6 +135,7 @@ export const DistributionsPageContent: FC<{
       })
         .then((res) => res.json())
         .then((res) => {
+          console.log({ res });
           const distribution = res.data.indexUpdatedEvent;
           if (distribution) {
             handleSetDistributionDetails(distribution);
@@ -601,9 +603,18 @@ export const DistributionsGrid: FC<{
         sortable: false,
         flex: 1,
         renderCell: (params) => {
+          if (!distributionDetails) return;
+          const subscriptionUnits = BigNumber.from(params.row.units);
+
+          const indexDistributionAmount = BigNumber.from(
+            distributionDetails.newIndexValue // Index is always incrementing bigger.
+          ).sub(BigNumber.from(distributionDetails.oldIndexValue));
+
+          const subscriptionDistributionAmount =
+            indexDistributionAmount.mul(subscriptionUnits);
           return (
             <BalanceWithToken
-              wei={params.row.distributionAmount}
+              wei={subscriptionDistributionAmount}
               network={network}
               tokenAddress={params.row.token}
             />
