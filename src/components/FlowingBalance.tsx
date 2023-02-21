@@ -55,7 +55,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
 
     // This will usually have the last 3 numbers flowing smoothly.
     return lengthToFirstSignificatDecimal + 2;
-  }, [flowRate]);
+  }, [flowRate, currentEtherDecimalPlaces]);
 
   const balanceTimestampMs = useMemo(
     () => ethers.BigNumber.from(balanceTimestamp).mul(1000),
@@ -64,7 +64,6 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
 
   //If balance in settings is 0, then show smart flowing balance
   useEffect(() => {
-    if (currentEtherDecimalPlaces !== 0) return;
     const balanceBigNumber = ethers.BigNumber.from(balance);
 
     let stopAnimation = false;

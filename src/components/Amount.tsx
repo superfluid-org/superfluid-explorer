@@ -23,7 +23,7 @@ interface AmountProps {
 // NOTE: Previously known as "EtherFormatted" & "Ether"
 export default memo<AmountProps>(function Amount({
   wei,
-  decimals = 0,
+  decimals = 18,
   disableRounding,
   roundingIndicator,
   children,
