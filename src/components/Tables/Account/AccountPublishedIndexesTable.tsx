@@ -1,4 +1,3 @@
-import CloseIcon from "@mui/icons-material/Close";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Box,
@@ -19,13 +18,13 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
 import {
   createSkipPaging,
   Index_Filter,
   Index_OrderBy,
-  Ordering,
+  Ordering
 } from "@superfluid-finance/sdk-core";
 import { IndexesQuery } from "@superfluid-finance/sdk-redux";
 import omit from "lodash/fp/omit";
@@ -68,8 +67,7 @@ interface AccountPublishedIndexesTableProps {
   accountAddress: string;
 }
 
-
-//This is where we are getting a query ID
+// This is where we are getting a query ID
 type RequiredIndexesQuery = Required<Omit<IndexesQuery, "block">>;
 
 const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
@@ -304,7 +302,11 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton data-cy={"publications-filter"} ref={filterAnchorRef} onClick={openFilter}>
+          <IconButton
+            data-cy={"publications-filter"}
+            ref={filterAnchorRef}
+            onClick={openFilter}
+          >
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -356,10 +358,16 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 value={distributionStatus}
                 onChange={onDistributionStatusChange}
               >
-                <ToggleButton data-cy={"filter-distributed-yes"} value={DistributionStatus.Distributed}>
+                <ToggleButton
+                  data-cy={"filter-distributed-yes"}
+                  value={DistributionStatus.Distributed}
+                >
                   Yes
                 </ToggleButton>
-                <ToggleButton data-cy={"filter-distributed-no"} value={DistributionStatus.NotDistributed}>
+                <ToggleButton
+                  data-cy={"filter-distributed-no"}
+                  value={DistributionStatus.NotDistributed}
+                >
                   No
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -377,8 +385,18 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
                 value={unitsStatus}
                 onChange={onUnitsStatusChange}
               >
-                <ToggleButton data-cy={"filter-issued-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton data-cy={"filter-issued-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton
+                  data-cy={"filter-issued-yes"}
+                  value={UnitsStatus.Issued}
+                >
+                  Yes
+                </ToggleButton>
+                <ToggleButton
+                  data-cy={"filter-issued-no"}
+                  value={UnitsStatus.NotIssued}
+                >
+                  No
+                </ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -386,7 +404,11 @@ const AccountPublishedIndexesTable: FC<AccountPublishedIndexesTableProps> = ({
               {(filter.indexId ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
+                <Button
+                  data-cy={"reset-filter"}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
                   Reset
                 </Button>
               )}

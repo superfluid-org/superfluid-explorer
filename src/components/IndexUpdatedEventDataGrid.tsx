@@ -5,14 +5,14 @@ import {
   IndexUpdatedEvent_OrderBy,
   Ordering,
   PagedResult,
-  SkipPaging,
+  SkipPaging
 } from "@superfluid-finance/sdk-core";
 import { BigNumber } from "ethers";
 import { FC, useMemo } from "react";
-import DetailsButton from "../components/DetailsButton";
-import { DistributionDetailsDialog } from "../components/DistributionDetails";
 import { useNetworkContext } from "../contexts/NetworkContext";
 import { AppDataGrid } from "./AppDataGrid";
+import DetailsButton from "./DetailsButton";
+import { DistributionDetailsDialog } from "./DistributionDetails";
 import EtherFormatted from "./EtherFormatted";
 import SuperTokenAddress from "./SuperTokenAddress";
 import TimeAgo from "./TimeAgo";
@@ -54,7 +54,6 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
   setOrdering,
 }) => {
   const network = useNetworkContext();
-
   const columns: GridColDef[] = useMemo(
     () => [
       { field: "id", hide: true, sortable: false, flex: 1 },
@@ -93,14 +92,16 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
         headerName: "Details",
         flex: 0.5,
         sortable: false,
-        renderCell: (cellParams) => (
-          <DistributionDetailsDialog
-            network={network}
-            distributionId={cellParams.id.toString()}
-          >
-            {(onClick) => <DetailsButton onClick={onClick} />}
-          </DistributionDetailsDialog>
-        ),
+        renderCell: (params) => {
+          return (
+            <DistributionDetailsDialog
+              network={network}
+              distributionId={params.row.id}
+            >
+              {(onClick) => <DetailsButton onClick={onClick} />}
+            </DistributionDetailsDialog>
+          );
+        },
       },
     ],
     [index, network]

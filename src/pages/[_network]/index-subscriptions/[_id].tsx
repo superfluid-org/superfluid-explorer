@@ -9,7 +9,7 @@ import {
   ListItemText,
   Skeleton,
   Stack,
-  Typography,
+  Typography
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
@@ -22,7 +22,7 @@ import {
   Ordering,
   SkipPaging,
   SubscriptionUnitsUpdatedEvent,
-  SubscriptionUnitsUpdatedEvent_OrderBy,
+  SubscriptionUnitsUpdatedEvent_OrderBy
 } from "@superfluid-finance/sdk-core";
 import Decimal from "decimal.js";
 import { BigNumber, BigNumberish } from "ethers";
