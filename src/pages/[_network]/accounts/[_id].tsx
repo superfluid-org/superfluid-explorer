@@ -25,6 +25,7 @@ import { useContext, useEffect, useState } from "react";
 import AccountIndexes from "../../../components/AccountIndexes";
 import AccountStreams from "../../../components/AccountStreams";
 import AccountTokenBalance from "../../../components/AccountTokenBalance";
+import AccountTokenFlowRate from "../../../components/AccountTokenFlowRate";
 import AccountMap from "../../../components/AccountMap";
 import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
@@ -62,6 +63,9 @@ import {
 import { ensApi } from "../../../redux/slices/ensResolver.slice";
 import { sfSubgraph } from "../../../redux/store";
 import ellipsisAddress from "../../../utils/ellipsisAddress";
+import TokenChip from "../../../components/TokenChip";
+import FlowingBalance from "../../../components/FlowingBalance";
+import FlowRate from "../../../components/FlowRate";
 
 const AccountPage: NextPage = () => {
   const network = useNetworkContext();
@@ -269,7 +273,7 @@ const AccountPage: NextPage = () => {
           <Typography variant="h6" component="h2" sx={{ mx: 2, mt: 2 }}>
             Balances
           </Typography>
-          <Grid container columnSpacing={2} component={List}>
+          <Grid container rowSpacing={0} columnSpacing={1} component={List}>
             {tokensWithBalance.map((tokenSnapshot) => (
               <Grid item sm={4} key={tokenSnapshot.id}>
                 <ListItem>
@@ -283,11 +287,38 @@ const AccountPage: NextPage = () => {
                         balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
                         flowRate: tokenSnapshot.totalNetFlowRate,
                       }}
-                      TokenChipProps={{
-                        network,
-                        tokenAddress: tokenSnapshot.token,
-                      }}
-                    />
+                    >
+                      {({ balance, balanceTimestamp, flowRate }) => (
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gridTemplateColumns: "auto 1fr",
+                            columnGap: 1,
+                            alignItems: "center",
+                          }}
+                        >
+                          <TokenChip
+                            network={network}
+                            tokenAddress={tokenSnapshot.token}
+                          />
+                          <FlowingBalance
+                            balance={balance}
+                            balanceTimestamp={balanceTimestamp}
+                            flowRate={flowRate}
+                          />
+                          {flowRate != "0" && (
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                gridColumn: "2/3",
+                              }}
+                            >
+                              <FlowRate flowRate={flowRate} />
+                            </Typography>
+                          )}
+                        </Box>
+                      )}
+                    </AccountTokenBalance>
                   </ListItemText>
                 </ListItem>
               </Grid>
@@ -379,7 +410,11 @@ const AccountPage: NextPage = () => {
               <AccountIndexes network={network} accountAddress={address} />
             </TabPanel>
             <TabPanel value="map">
-              <AccountMap network={network} accountAddress={address} key={`${network}-${address}`} />
+              <AccountMap
+                network={network}
+                accountAddress={address}
+                key={`${network}-${address}`}
+              />
             </TabPanel>
           </Box>
         </TabContext>
