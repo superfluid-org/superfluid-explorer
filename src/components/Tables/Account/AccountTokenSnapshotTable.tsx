@@ -33,7 +33,9 @@ import useDebounce from "../../../hooks/useDebounce";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import AccountTokenBalance from "../../AccountTokenBalance";
+import AccountTokenFlowRate from "../../AccountTokenFlowRate";
 import AppLink from "../../AppLink";
+import FlowingBalanceWithToken from "../../FlowingBalanceWithToken";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import SuperTokenAddress from "../../SuperTokenAddress";
@@ -55,7 +57,9 @@ interface AccountTokenSnapshotTableProps {
   accountAddress: string;
 }
 
-type RequiredAccountTokenSnapshotsQuery = Required<Omit<AccountTokenSnapshotsQuery, "block">>;
+type RequiredAccountTokenSnapshotsQuery = Required<
+  Omit<AccountTokenSnapshotsQuery, "block">
+>;
 
 const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   network,
@@ -83,9 +87,9 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
     order: defaultOrdering,
   });
 
-  const [queryArg, setQueryArg] = useState<
-  RequiredAccountTokenSnapshotsQuery
-  >(createDefaultArg());
+  const [queryArg, setQueryArg] = useState<RequiredAccountTokenSnapshotsQuery>(
+    createDefaultArg()
+  );
 
   const [queryTrigger, queryResult] =
     sfSubgraph.useLazyAccountTokenSnapshotsQuery();
@@ -351,8 +355,18 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 value={activeStreamsStatus}
                 onChange={onActiveStreamsStatusChange}
               >
-                <ToggleButton data-cy={"filter-active-yes"} value={StreamStatus.Active}>Yes</ToggleButton>
-                <ToggleButton data-cy={"filter-active-no"} value={StreamStatus.Inactive}>No</ToggleButton>
+                <ToggleButton
+                  data-cy={"filter-active-yes"}
+                  value={StreamStatus.Active}
+                >
+                  Yes
+                </ToggleButton>
+                <ToggleButton
+                  data-cy={"filter-active-no"}
+                  value={StreamStatus.Inactive}
+                >
+                  No
+                </ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -368,8 +382,18 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 value={inactiveStreamsStatus}
                 onChange={onInactiveStreamsStatusChange}
               >
-                <ToggleButton data-cy={"filter-closed-yes"} value={StreamStatus.Inactive}>Yes</ToggleButton>
-                <ToggleButton data-cy={"filter-closed-no"} value={StreamStatus.Active}>No</ToggleButton>
+                <ToggleButton
+                  data-cy={"filter-closed-yes"}
+                  value={StreamStatus.Inactive}
+                >
+                  Yes
+                </ToggleButton>
+                <ToggleButton
+                  data-cy={"filter-closed-no"}
+                  value={StreamStatus.Active}
+                >
+                  No
+                </ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -385,8 +409,18 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 value={subsWithUnitsStatus}
                 onChange={onSubsWithUnitsStatusChange}
               >
-                <ToggleButton data-cy={"filter-subscriptions-units-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton data-cy={"filter-subscriptions-units-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton
+                  data-cy={"filter-subscriptions-units-yes"}
+                  value={UnitsStatus.Issued}
+                >
+                  Yes
+                </ToggleButton>
+                <ToggleButton
+                  data-cy={"filter-subscriptions-units-no"}
+                  value={UnitsStatus.NotIssued}
+                >
+                  No
+                </ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -394,7 +428,11 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
               {(activeStreamsStatus !== null ||
                 inactiveStreamsStatus !== null ||
                 subsWithUnitsStatus !== null) && (
-                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
+                <Button
+                  data-cy={"reset-filter"}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
                   Reset
                 </Button>
               )}
@@ -409,7 +447,25 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
         <TableHead>
           <TableRow>
             <TableCell>Token</TableCell>
-            <TableCell>Balance</TableCell>
+            <TableCell>
+              Balance
+              <InfoTooltipBtn
+                title={
+                  <>
+                    The balance this account holds of this supertoken, at the
+                    current time{" "}
+                  </>
+                }
+                iconSx={{ mb: 0, mr: 0.5 }}
+              />
+            </TableCell>
+            <TableCell>
+              Net Flow
+              <InfoTooltipBtn
+                title={<>The change in balance of this supertoken </>}
+                iconSx={{ mb: 0, mr: 0.5 }}
+              />
+            </TableCell>
             <TableCell width="160px">
               <TableSortLabel
                 active={order?.orderBy === "totalNumberOfActiveStreams"}
@@ -485,9 +541,32 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                     balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
                     flowRate: tokenSnapshot.totalNetFlowRate,
                   }}
+                >
+                  {({ balance, balanceTimestamp, flowRate }) => (
+                    <FlowingBalanceWithToken
+                      balance={balance}
+                      balanceTimestamp={balanceTimestamp}
+                      flowRate={flowRate}
+                      TokenChipProps={null}
+                    />
+                  )}
+                </AccountTokenBalance>
+              </TableCell>
+
+              <TableCell>
+                <AccountTokenFlowRate
+                  network={network}
+                  accountAddress={accountAddress}
+                  tokenAddress={tokenSnapshot.token}
+                  placeholder={{
+                    balance: tokenSnapshot.balanceUntilUpdatedAt,
+                    balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
+                    flowRate: tokenSnapshot.totalNetFlowRate,
+                  }}
                   TokenChipProps={null}
                 />
               </TableCell>
+
               <TableCell data-cy={"active-streams"}>
                 {tokenSnapshot.totalNumberOfActiveStreams}
               </TableCell>
@@ -507,7 +586,9 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 sx={{ border: 0, height: "96px" }}
                 align="center"
               >
-                <Typography data-cy={"no-results"} variant="body1">No results</Typography>
+                <Typography data-cy={"no-results"} variant="body1">
+                  No results
+                </Typography>
               </TableCell>
             </TableRow>
           )}
@@ -520,7 +601,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
         {tableRows.length > 0 && (
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={5} align="right">
+              <TableCell colSpan={6} align="right">
                 <InfinitePagination
                   page={skip / take + 1}
                   pageSize={pagination.take}
