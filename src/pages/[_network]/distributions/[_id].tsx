@@ -43,7 +43,7 @@ import { useNetworkContext } from "../../../contexts/NetworkContext";
 import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
-import { getDistributionDetails } from "./getDistributionDetailsQuery";
+import getDistributionDetails from "./getDistributionDetails";
 
 interface Subscriber {
   units: string;
@@ -578,7 +578,7 @@ export const DistributionsGrid: FC<{
         },
       },
     ],
-    [network, index, subscriptionUnitsUpdatedEvents]
+    [network, index, subscriptionUnitsUpdatedEvents, ]
   );
 
   return (

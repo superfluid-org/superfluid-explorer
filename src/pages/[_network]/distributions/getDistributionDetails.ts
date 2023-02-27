@@ -1,4 +1,4 @@
-export const getDistributionDetails = (distributionId: string) => `{
+const getDistributionDetails = (distributionId: string) => `{
   indexUpdatedEvent(id: "${distributionId}") {
     index {
       indexId
@@ -25,3 +25,5 @@ export const getDistributionDetails = (distributionId: string) => `{
     oldIndexValue
   }
 }`;
+
+export default getDistributionDetails;
