@@ -17,15 +17,13 @@ import {
   createSkipPaging,
   Index,
   IndexSubscription,
-  IndexUpdatedEvent,
   IndexUpdatedEvent_OrderBy,
   Ordering,
   SkipPaging,
   SubscriptionUnitsUpdatedEvent,
-  SubscriptionUnitsUpdatedEvent_OrderBy
 } from "@superfluid-finance/sdk-core";
 import Decimal from "decimal.js";
-import { BigNumber, BigNumberish } from "ethers";
+import { BigNumber } from "ethers";
 import { gql } from "graphql-request";
 import { NextPage } from "next";
 import Error from "next/error";
@@ -43,7 +41,6 @@ import TimeAgo from "../../../components/TimeAgo";
 import IdContext from "../../../contexts/IdContext";
 import { useNetworkContext } from "../../../contexts/NetworkContext";
 import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
-import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceived";
 import { Network } from "../../../redux/networks";
 import { sfSubgraph } from "../../../redux/store";
 import { getDistributionDetails } from "./getDistributionDetailsQuery";
@@ -155,38 +152,6 @@ export const DistributionsPageContent: FC<{
       : skipToken
   );
 
-  const index: Index | undefined | null = indexQuery.data;
-
-  const [
-    subscriptionUnitsUpdatedEventPaging,
-    setSubscriptionUnitsUpdatedEventPaging,
-  ] = useState<SkipPaging>(
-    createSkipPaging({
-      take: 10,
-    })
-  );
-  const [
-    subscriptionUnitsUpdatedEventPagingOrdering,
-    setSubscriptionUnitsUpdatedEventOrdering,
-  ] = useState<Ordering<SubscriptionUnitsUpdatedEvent_OrderBy> | undefined>({
-    orderBy: "timestamp",
-    orderDirection: "desc",
-  });
-  const subscriptionUnitsUpdatedEventQuery =
-    sfSubgraph.useSubscriptionUnitsUpdatedEventsQuery({
-      chainId: network.chainId,
-      filter: {
-        subscription: distributionId.toLowerCase(),
-      },
-      pagination: subscriptionUnitsUpdatedEventPaging,
-      order: subscriptionUnitsUpdatedEventPagingOrdering,
-    });
-
-  const [poolPercentage, setPoolPercentage] = useState<Decimal | undefined>();
-  const [totalWeiAmountReceived, setTotalWeiAmountReceived] = useState<
-    BigNumberish | undefined
-  >();
-
   const calculateDistributionAmount = (
     event: DistributionDetails
   ): BigNumber => {
@@ -198,27 +163,6 @@ export const DistributionsPageContent: FC<{
     );
     return indexValueDifference.mul(totalUnits);
   };
-
-  useEffect(() => {
-    if (index && indexSubscription) {
-      setPoolPercentage(
-        calculatePoolPercentage(
-          new Decimal(indexSubscription.indexTotalUnits),
-          new Decimal(indexSubscription.units)
-        )
-      );
-
-      setTotalWeiAmountReceived(
-        calculateWeiAmountReceived(
-          BigNumber.from(index.indexValue),
-          BigNumber.from(indexSubscription.totalAmountReceivedUntilUpdatedAt),
-          BigNumber.from(indexSubscription.indexValueUntilUpdatedAt),
-          BigNumber.from(indexSubscription.units)
-        )
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [indexSubscription && index]);
 
   if (!distributionDetails && !distributionId) {
     return <Error statusCode={404} />;
@@ -456,7 +400,7 @@ export const DistributionsPageContent: FC<{
               <DistributionsGrid
                 network={network}
                 distributionId={distributionId}
-                distributionDetails={distributionDetails!}
+                distributionDetails={distributionDetails}
               />
             )
           }
@@ -572,9 +516,6 @@ export const DistributionsGrid: FC<{
     );
     return indexValueDifference.mul(totalUnits);
   };
-
-  const indexUpdatedEvents: IndexUpdatedEvent[] | undefined =
-    indexUpdatedEventsQuery.data?.data ?? [];
 
   const rows: Subscription[] = distributionDetails
     ? distributionDetails.index.subscriptions.map((subscription) => ({
