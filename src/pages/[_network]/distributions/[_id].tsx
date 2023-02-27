@@ -451,11 +451,15 @@ export const DistributionsPageContent: FC<{
         </Typography>
 
         <Card elevation={2}>
-          <DistributionsGrid
-            network={network}
-            distributionId={distributionId}
-            distributionDetails={distributionDetails!}
-          />
+          {
+            distributionDetails && (
+              <DistributionsGrid
+                network={network}
+                distributionId={distributionId}
+                distributionDetails={distributionDetails!}
+              />
+            )
+          }
         </Card>
       </Box>
     </Container>
@@ -467,6 +471,7 @@ export const DistributionsGrid: FC<{
   network: Network;
   distributionId: string;
 }> = ({ network, distributionId, distributionDetails }) => {
+
   const indexSubscriptionQuery = sfSubgraph.useIndexSubscriptionQuery({
     chainId: network.chainId,
     id: distributionId,
@@ -588,7 +593,6 @@ export const DistributionsGrid: FC<{
         field: "addresses",
         headerName: "Subscriber Addresses",
         sortable: true,
-        id: "",
         flex: 0.5,
         renderCell: (params) => (
           <AccountAddress network={network} address={params.row.id} />
@@ -601,7 +605,7 @@ export const DistributionsGrid: FC<{
         sortable: false,
         flex: 1,
         renderCell: (params) => {
-          if (!distributionDetails) return;
+          if (!distributionDetails) return <>-</>;
           const subscriptionUnits = BigNumber.from(params.row.units);
 
           const indexDistributionAmount = BigNumber.from(
