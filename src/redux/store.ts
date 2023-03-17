@@ -46,7 +46,17 @@ export const sfSubgraph = initializeSubgraphApiSlice(
 const infuraProviders = networks.map((network) => ({
   chainId: network.chainId,
   frameworkGetter: () =>
-    Framework.create({
+  network.chainId == 31337? 
+  (Framework.create({
+    chainId: network.chainId,
+    provider: new providers.MulticallProvider(
+      new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
+    ),
+    customSubgraphQueriesEndpoint: network.subgraphUrl,
+    resolverAddress: "0x67913A0F4F407BdBA24EBf89421A519b525a235f", //hardcode resolver address for local network
+    protocolReleaseVersion: 'test'
+  })) :
+  Framework.create({
       chainId: network.chainId,
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
