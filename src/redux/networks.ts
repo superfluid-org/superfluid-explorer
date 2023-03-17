@@ -14,6 +14,16 @@ export type Network = {
 export const networks: Network[] = [
   // mainnets
   {
+    displayName: "Hardhat",
+    slugName: "localhost",
+    chainId: 31337,
+    isTestnet: true,
+    rpcUrl: "http://127.0.0.1:8545/",
+    subgraphUrl: "http://localhost:8000/subgraphs/name/superfluid-test",
+    getLinkForTransaction: (txHash: string): string => `http://127.0.0.1:8545/`,
+    getLinkForAddress: (address: string): string => `http://127.0.0.1:8545/`,
+  },
+  {
     displayName: "Ethereum",
     slugName: "ethereum",
     chainId: 1,
