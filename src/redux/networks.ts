@@ -14,16 +14,6 @@ export type Network = {
 export const networks: Network[] = [
   // mainnets
   {
-    displayName: "Hardhat",
-    slugName: "localhost",
-    chainId: 31337,
-    isTestnet: true,
-    rpcUrl: "http://127.0.0.1:8545/",
-    subgraphUrl: "http://localhost:8000/subgraphs/name/superfluid-test",
-    getLinkForTransaction: (txHash: string): string => `http://127.0.0.1:8545/`,
-    getLinkForAddress: (address: string): string => `http://127.0.0.1:8545/`,
-  },
-  {
     displayName: "Ethereum",
     slugName: "ethereum",
     chainId: 1,
@@ -167,6 +157,16 @@ export const networks: Network[] = [
       `https://testnet.snowtrace.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
       `https://testnet.snowtrace.io/address/${address}`,
+  },
+  {
+    displayName: "Hardhat",
+    slugName: "localhost",
+    chainId: 31337,
+    isTestnet: true,
+    rpcUrl: "http://127.0.0.1:8545/",
+    subgraphUrl: "http://localhost:8000/subgraphs/name/superfluid-test",
+    getLinkForTransaction: (txHash: string): string => `http://127.0.0.1:8545/`,
+    getLinkForAddress: (address: string): string => `http://127.0.0.1:8545/`,
   },
 ];
 
