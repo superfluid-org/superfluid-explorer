@@ -158,6 +158,32 @@ export const networks: Network[] = [
     getLinkForAddress: (address: string): string =>
       `https://testnet.snowtrace.io/address/${address}`,
   },
+  {
+    displayName: "Optimism Goerli",
+    slugName: "optimism-goerli",
+    chainId: 420,
+    isTestnet: true,
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/optimism-goerli",
+    subgraphUrl:
+      "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-optimism-goerli",
+    getLinkForTransaction: (txHash: string): string =>
+      `https://goerli-optimism.etherscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://goerli-optimism.etherscan.io/address/${address}`,
+  },
+  {
+    displayName: "Arbitrum Goerli",
+    slugName: "arbitrum-goerli",
+    chainId: 421613,
+    isTestnet: true,
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/arbitrum-goerli",
+    subgraphUrl:
+      "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-arbitrum-goerli",
+    getLinkForTransaction: (txHash: string): string =>
+      `https://goerli.arbiscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://goerli.arbiscan.io/address/${address}`,
+  },
 ];
 
 export const networksByName = new Map(
