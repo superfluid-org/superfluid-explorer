@@ -109,6 +109,22 @@ const protocolContracts: NetworkContracts = {
     superfluidLoaderv1: "0xAd6e6849d8eEa62AF9271808afb726610fB451a6",
     TOGA: "0x9bCa3a623e7b2e248510d88B2894F54898d88F91",
   },
+  "arbitrum-goerli":{
+    resolver: "0x21d4E9fbB9DB742E6ef4f29d189a7C18B0b59136",
+    host: "0xE40983C2476032A0915600b9472B3141aA5B5Ba9",
+    CFAv1: "0xff48668fa670A85e55A7a822b352d5ccF3E7b18C",
+    IDAv1: "0x96215257F2FcbB00135578f766c0449d239bd92F",
+    superTokenFactory: "0x9aCc39d15e3f168c111a1D4F80271a9E526c9a9F",
+    superfluidLoaderv1: "0x5Bb5908dcCC9Bb0fC39a78CfDf9e47B4C08E9521",
+  },
+  "optimism-goerli":{
+    resolver: "0x21d4E9fbB9DB742E6ef4f29d189a7C18B0b59136",
+    host: "0xE40983C2476032A0915600b9472B3141aA5B5Ba9",
+    CFAv1: "0xff48668fa670A85e55A7a822b352d5ccF3E7b18C",
+    IDAv1: "0x96215257F2FcbB00135578f766c0449d239bd92F",
+    superTokenFactory: "0x9aCc39d15e3f168c111a1D4F80271a9E526c9a9F",
+    superfluidLoaderv1: "0x5Bb5908dcCC9Bb0fC39a78CfDf9e47B4C08E9521",
+  }
 };
 
 export default protocolContracts;
