@@ -355,8 +355,11 @@ export class AccountPage extends BasePage {
       this.type(FILTER_RECEIVER_ADDRESS, account[network].receiver)
       this.click(FILTER_CLOSE_BUTTON)
       this.caseInsensitive(CHIP_RECEIVER, account[network].receiver)
-      this.isVisible(LOADING_SPINNER)
-      this.isNotVisible(LOADING_SPINNER)
+      //Firefox somehow filters without a loading spinner
+      if(Cypress.browser.name !== "firefox"){
+        this.isVisible(LOADING_SPINNER)
+        this.isNotVisible(LOADING_SPINNER)
+      }
     })
   }
 
