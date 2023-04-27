@@ -1,6 +1,4 @@
 import {BasePage} from "../BasePage";
-import Decimal from "decimal.js";
-import {getDecimalPlacesToRoundTo} from "../../../src/utils/decimalUtils";
 
 const ACCOUNT_TYPE = "[data-cy=account-type] span"
 const ACCOUNT_SYMBOL = "[data-cy=token-symbol]"
