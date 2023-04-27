@@ -31,6 +31,7 @@ import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
 import CopyIconBtn from "../../../components/CopyIconBtn";
 import CopyLink from "../../../components/CopyLink";
+import DepletionDate from "../../../components/DepletionDate";
 import EventList from "../../../components/EventList";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
@@ -314,6 +315,20 @@ const AccountPage: NextPage = () => {
                               }}
                             >
                               <FlowRate flowRate={flowRate} />
+                            </Typography>
+                          )}
+                          {flowRate != "0" && (
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                gridColumn: "2/3",
+                              }}
+                            >
+                              <DepletionDate
+                                balance={balance}
+                                balanceTimestamp={balanceTimestamp}
+                                flowRate={flowRate}
+                              />
                             </Typography>
                           )}
                         </Box>
