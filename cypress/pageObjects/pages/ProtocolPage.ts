@@ -1,5 +1,6 @@
 import protocolContracts from "../../../src/redux/protocolContracts";
 import { BasePage } from "../BasePage";
+import { networks } from "../../../src/redux/networks";
 
 const PROTOCOL_BUTTON = '[data-cy="protocol-button"]';
 const NETWORK_RIGHT_ARROW = "[data-testid=KeyboardArrowRightIcon]";
@@ -15,6 +16,7 @@ const TOGA = "[data-cy=TOGA-address] p";
 const HOST = "[data-cy=host-address] p";
 const IDA_V1 = "[data-cy=IDAv1-address] p";
 const SUPERFLUID_LOADER_V1 = "[data-cy=SuperLoaderV1-address] p";
+const LOADING_SPINNER = "[data-cy=loading-spinner]";
 
 export class ProtocolPage extends BasePage {
   static switchNetwork(network: string) {
@@ -28,11 +30,20 @@ export class ProtocolPage extends BasePage {
 
   static validateGovernanceParameters(network: string) {
     cy.fixture("protocolData").then((protocol) => {
-      this.hasText(DEPOSIT_SIZE, protocol[network].DepositSize);
-      this.hasText(OWED_DEPOSIT_SIZE, protocol[network].OwedDepositSize);
-      this.hasText(PATRICIAN_PERIOD, protocol[network].PatricianPeriod);
-      this.hasText(MINIMUM_EXIT_PERIOD, protocol[network].MinimumExitPeriod);
-      this.hasText(DEFAULT_EXIT_PERIOD, protocol[network].DefaultExitPeriod);
+      let selectedNetwork = networks.find(el => el.slugName === network)
+      if(selectedNetwork?.isTestnet) {
+        this.hasText(DEPOSIT_SIZE, protocol["testnet"].DepositSize);
+        this.hasText(OWED_DEPOSIT_SIZE, protocol["testnet"].OwedDepositSize);
+        this.hasText(PATRICIAN_PERIOD, protocol["testnet"].PatricianPeriod);
+        this.hasText(MINIMUM_EXIT_PERIOD, protocol["testnet"].MinimumExitPeriod);
+        this.hasText(DEFAULT_EXIT_PERIOD, protocol["testnet"].DefaultExitPeriod);
+      } else {
+        this.hasText(DEPOSIT_SIZE, protocol["mainnet"].DepositSize);
+        this.hasText(OWED_DEPOSIT_SIZE, protocol["mainnet"].OwedDepositSize);
+        this.hasText(PATRICIAN_PERIOD, protocol["mainnet"].PatricianPeriod);
+        this.hasText(MINIMUM_EXIT_PERIOD, protocol["mainnet"].MinimumExitPeriod);
+        this.hasText(DEFAULT_EXIT_PERIOD, protocol["mainnet"].DefaultExitPeriod);
+      }
     });
   }
 
@@ -56,5 +67,8 @@ export class ProtocolPage extends BasePage {
 
   static clickProtocolButton() {
     this.click(PROTOCOL_BUTTON);
+    //Make sure page is loaded before doing other actions,
+    //Cypress is too fast and it will switch back to matic if changing tabs before doing so
+    this.hasText(RESOLVER, protocolContracts["matic"].resolver);
   }
 }

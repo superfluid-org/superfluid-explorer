@@ -1,12 +1,12 @@
 {
-  "goerli": {
+  "testnet": {
     "DepositSize": "1 hour flowrate",
     "OwedDepositSize": "1 hour flowrate",
     "PatricianPeriod": "12 minutes",
     "MinimumExitPeriod": "1 week",
     "DefaultExitPeriod": "4 weeks"
   },
-  "matic": {
+  "mainnet": {
     "DepositSize": "4 hour flowrate",
     "OwedDepositSize": "4 hour flowrate",
     "PatricianPeriod": "30 minutes",

@@ -210,7 +210,11 @@ export class TokenPage extends BasePage {
   static validateIndexesByDistributed() {
     cy.get(TOTAL_AMOUNT_DISTRIBUTED).each((
       $el) => {
-      cy.wrap($el.text()).should('not.contain', "DAIx0")
+      cy.wrap($el.text()).should('match', /DAIx(\d+)/)
+        .then((match) => {
+          const value = parseFloat(match.split("DAIx")[1]);
+          expect(value).to.be.greaterThan(0);
+        })
     })
   }
 

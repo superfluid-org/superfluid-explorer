@@ -94,7 +94,7 @@ Feature: Account page test cases
     And User resets subscriptions filter
 
   Scenario: Filtering cases for super tokens tab
-    Given User has opened the "balance account for filtering" page on "goerli"
+    Given User has opened the "second balance account for filtering" page on "goerli"
     And User switches to "super tokens" tab
     And User filters super tokens by active
     Then Super tokens filtered by active are shown correctly

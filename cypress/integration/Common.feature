@@ -1,9 +1,9 @@
 Feature: Test cases for common elements and functionalities
 
-  Scenario Outline: Searching for an address
+  Scenario Outline: Searching for an address on <network>
     Given User has opened the "landing" page
     And User opens search dialog
-    And User searches for static balance account
+    And User searches for transactions account
     And User opens the "<network>" account result
     Then The account page on "<network>" is opened
     #Smoke test to check all networks
@@ -13,9 +13,14 @@ Feature: Test cases for common elements and functionalities
       | xdai             |
       | arbitrum-one     |
       | optimism-mainnet |
+      | avalanche-c      |
       | avalanche-fuji   |
+      | bnb-smart-chain  |
       | goerli           |
       | mumbai           |
+      | celo             |
+      | optimism-goerli  |
+      | arbitrum-goerli  |
 
   Scenario: Searching for a listed token
     Given User has opened the "landing" page

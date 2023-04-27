@@ -1,6 +1,7 @@
 {
   "goerli": {
     "address": "0x618ada3f9f7BC1B2f2765Ba1728BEc5057B3DE40",
+    "secondAddress": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
     "sender": "0xebB28622a31B847fD3539B32b6353b7Bd48426da",
     "receiver": "0x342C5eeD61173E8A675d7A243530CAA8B625AbfF",
     "eventName": "Transfer",

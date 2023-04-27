@@ -1,8 +1,21 @@
 Feature: Protocol page test cases
 
-  Scenario: Data displayed in protocol page
+  Scenario Outline: Data displayed in "<network>" protocol page
     Given User has opened the "landing" page
     And User clicks on the protocol button
-    And General protocol information is showing correct data for "matic"
-    Then User switches network for "goerli"
-    And General protocol information is showing correct data for "goerli"
+    Then User switches network for "<network>"
+    And General protocol information is showing correct data for "<network>"
+    Examples:
+      | network          |
+      | matic            |
+      | xdai             |
+      | arbitrum-one     |
+      | optimism-mainnet |
+      | avalanche-c      |
+      | avalanche-fuji   |
+      | bnb-smart-chain  |
+      | goerli           |
+      | mumbai           |
+      | celo             |
+      | optimism-goerli  |
+      | arbitrum-goerli  |

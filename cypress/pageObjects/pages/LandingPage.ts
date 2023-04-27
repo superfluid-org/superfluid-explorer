@@ -128,6 +128,12 @@ export class LandingPage extends BasePage {
         });
         break;
       }
+      case "second balance account for filtering": {
+        cy.fixture("filteringData").then((fixture) => {
+          cy.visit("/" + network + "/accounts/" + fixture[network].secondAddress);
+        });
+        break;
+      }
       case "regular token": {
         cy.fixture("tokenData").then((fixture) => {
           cy.visit(

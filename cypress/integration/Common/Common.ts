@@ -18,6 +18,10 @@ Given(`User searches for static balance account`, () => {
   CommonElements.searchForStaticBalanceAccount()
 });
 
+Given(`User searches for transactions account`, () => {
+  CommonElements.searchForTransactionAccount()
+});
+
 Given(`User opens the {string} account result`, (network) => {
   CommonElements.openNetworkAddressResult(network)
 });

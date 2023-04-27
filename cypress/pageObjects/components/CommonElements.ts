@@ -33,6 +33,12 @@ export class CommonElements extends BasePage {
     })
   }
 
+  static searchForTransactionAccount() {
+    cy.fixture("commonData").then(fixture => {
+      this.type(MODAL_SEARCH_INPUT, fixture.transactionAccount)
+    })
+  }
+
   static openNetworkAddressResult(network: string) {
     cy.get("[data-cy=" + network + "-account-search-result]").then(el => {
       cy.wrap(el.text()).as("lastOpenedResult")
