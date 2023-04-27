@@ -170,13 +170,13 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
           exclusive
           value={currentEtherDecimalPlaces.toString()}
           color="primary"
-          onChange={(_event, newEtherDecimalPlaces: "18" | "9" | "5") => {
+          onChange={(_event, newEtherDecimalPlaces: "18" | "9" | "5" | "0") => {
             if (!newEtherDecimalPlaces) {
               return;
             }
             dispatch(
               changeEtherDecimalPlaces(
-                Number(newEtherDecimalPlaces) as 18 | 9 | 5
+                Number(newEtherDecimalPlaces) as 18 | 9 | 5 | 0
               )
             );
           }}
@@ -185,6 +185,7 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
           <IconToggleButton value="18">18</IconToggleButton>
           <IconToggleButton value="9">9</IconToggleButton>
           <IconToggleButton value="5">5</IconToggleButton>
+          <IconToggleButton value="0">Smart</IconToggleButton>
         </ToggleButtonGroup>
       </Box>
       <Box sx={{ pl: 2, pr: 2 }}>
