@@ -29,21 +29,18 @@ const DepletionDate: React.FC<DepletionDateProps> = ({ balance, balanceTimestamp
             <Box display="inline">
                 <Tooltip
                     title={
-                    <React.Fragment>
-                        <span>Timestamp: {unixTimestamp}</span>
-                    </React.Fragment>
+                        <React.Fragment>
+                            <span>Timestamp: {unixTimestamp}</span>
+                        </React.Fragment>
                     }
                     {...tooltipProps}
-                placement="right" arrow
-                >
+                    placement="right" arrow>
                     <span>Depleted on: {depletionDateString}</span>
                 </Tooltip>
             </Box>
         </>
       );
-      
   }
-
   return null;
 };
 
