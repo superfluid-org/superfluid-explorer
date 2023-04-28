@@ -25,7 +25,7 @@ import { useContext, useEffect, useState } from "react";
 import AccountIndexes from "../../../components/AccountIndexes";
 import AccountStreams from "../../../components/AccountStreams";
 import AccountTokenBalance from "../../../components/AccountTokenBalance";
-import AccountTokenFlowRate from "../../../components/AccountTokenFlowRate";
+import TimeUntilLiquidation from "../../../components/TimeUntilLiquidation";
 import AccountMap from "../../../components/AccountMap";
 import AccountTokens from "../../../components/AccountTokens";
 import { AddressBookButton } from "../../../components/AddressBook";
@@ -306,6 +306,20 @@ const AccountPage: NextPage = () => {
                             balanceTimestamp={balanceTimestamp}
                             flowRate={flowRate}
                           />
+                          {flowRate != "0" && (
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                gridColumn: "2/3",
+                              }}
+                            >
+                              <TimeUntilLiquidation
+                                balance={balance}
+                                balanceTimestamp={balanceTimestamp}
+                                flowRate={flowRate}
+                              />
+                            </Typography>
+                          )}
                           {flowRate != "0" && (
                             <Typography
                               variant="caption"
