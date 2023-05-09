@@ -35,7 +35,7 @@ const DepletionDate: React.FC<DepletionDateProps> = ({ balance, balanceTimestamp
                     }
                     {...tooltipProps}
                     placement="right" arrow>
-                    <span>Depleted on: {depletionDateString}</span>
+                    <span>Predicted liquidation date: {depletionDateString}</span>
                 </Tooltip>
             </Box>
         </>
