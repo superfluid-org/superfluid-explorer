@@ -7,7 +7,7 @@ import AppLink from "./AppLink";
 export interface TokenChipProps {
   network: Network;
   tokenAddress: string;
-  ChipProps: ChipProps;
+  ChipProps?: ChipProps;
 }
 
 const TokenChip: FC<TokenChipProps> = ({
