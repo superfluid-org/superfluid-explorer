@@ -1,4 +1,4 @@
-import { Chip } from "@mui/material";
+import { Chip, ChipProps } from "@mui/material";
 import { FC } from "react";
 import { Network } from "../redux/networks";
 import { sfSubgraph } from "../redux/store";
@@ -7,9 +7,14 @@ import AppLink from "./AppLink";
 export interface TokenChipProps {
   network: Network;
   tokenAddress: string;
+  ChipProps: ChipProps;
 }
 
-const TokenChip: FC<TokenChipProps> = ({ network, tokenAddress }) => {
+const TokenChip: FC<TokenChipProps> = ({
+  network,
+  tokenAddress,
+  ChipProps = { sx: {} },
+}) => {
   const tokenQuery = sfSubgraph.useTokenQuery({
     chainId: network.chainId,
     id: tokenAddress,
@@ -28,7 +33,8 @@ const TokenChip: FC<TokenChipProps> = ({ network, tokenAddress }) => {
         clickable
         size="small"
         label={tokenQuery.data.symbol}
-        sx={{ cursor: "pointer", lineHeight: "24px" }}
+        sx={{ cursor: "pointer", lineHeight: "24px", ...ChipProps.sx }}
+        {...ChipProps}
       />
     </AppLink>
   );

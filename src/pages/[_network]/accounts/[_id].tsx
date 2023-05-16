@@ -301,35 +301,44 @@ const AccountPage: NextPage = () => {
                           <TokenChip
                             network={network}
                             tokenAddress={tokenSnapshot.token}
+                            ChipProps={{ sx: { width: "100%" } }}
                           />
                           <FlowingBalance
                             balance={balance}
                             balanceTimestamp={balanceTimestamp}
                             flowRate={flowRate}
                           />
+
                           {flowRate != "0" && (
-                            <Typography
-                              variant="caption"
-                              sx={{
-                                gridColumn: "2/3",
-                              }}
-                            >
-                              <FlowRate flowRate={flowRate} />
-                            </Typography>
+                            <>
+                              <Typography
+                                variant="caption"
+                                sx={{ textAlign: "right" }}
+                              >
+                                Flow rate:
+                              </Typography>
+                              <Typography variant="caption">
+                                <FlowRate flowRate={flowRate} />
+                              </Typography>
+                            </>
                           )}
-                          {flowRate != "0" && (
-                            <Typography
-                              variant="caption"
-                              sx={{
-                                gridColumn: "2/3",
-                              }}
-                            >
-                              <DepletionDate
-                                balance={balance}
-                                balanceTimestamp={balanceTimestamp}
-                                flowRate={flowRate}
-                              />
-                            </Typography>
+
+                          {flowRate != "0" && flowRate.charAt(0) === "-" && (
+                            <>
+                              <Typography
+                                variant="caption"
+                                sx={{ textAlign: "right" }}
+                              >
+                                Pred. liquidation:
+                              </Typography>
+                              <Typography variant="caption">
+                                <DepletionDate
+                                  balance={balance}
+                                  balanceTimestamp={balanceTimestamp}
+                                  flowRate={flowRate}
+                                />
+                              </Typography>
+                            </>
                           )}
                         </Box>
                       )}

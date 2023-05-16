@@ -1,5 +1,5 @@
 import {
-    Box, 
+    Box,
     Tooltip,
     TooltipProps,
     Typography
@@ -35,12 +35,13 @@ const DepletionDate: React.FC<DepletionDateProps> = ({ balance, balanceTimestamp
                     }
                     {...tooltipProps}
                     placement="right" arrow>
-                    <span>Predicted liquidation date: {depletionDateString}</span>
+                    <span>{depletionDateString}</span>
                 </Tooltip>
             </Box>
         </>
       );
   }
+
   return null;
 };
 
