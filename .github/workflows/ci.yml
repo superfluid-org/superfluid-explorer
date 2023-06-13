@@ -29,12 +29,9 @@ jobs:
       - name: Cypress tests
         uses: cypress-io/github-action@v2
         with:
-          browser: ${{ matrix.browser }}
-          headless: true
+          command: yarn cypress-cloud run --browser ${{ matrix.browser }} --record --parallel --key ${{ secrets.CYPRESS_CONSOLE_RECORD_KEY }} --ci-build-id ui-${{ github.repository }}-${{ github.run_id }}-${{ github.run_attempt}}
           start: yarn dev
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 180
-          record: true
         env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_CONSOLE_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}

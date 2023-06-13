@@ -19,6 +19,7 @@
 const browserify = require('@cypress/browserify-preprocessor');
 const cucumber = require('cypress-cucumber-preprocessor').default;
 const resolve = require('resolve');
+const { cloudPlugin } = require("cypress-cloud/plugin");
 
 module.exports = (on, config) => {
   const options = {
@@ -27,5 +28,6 @@ module.exports = (on, config) => {
   };
 
   on('file:preprocessor', cucumber(options));
+  return cloudPlugin(on, config);
 };
 
