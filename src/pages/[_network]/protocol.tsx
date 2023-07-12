@@ -90,7 +90,7 @@ const Protocol: NextPage = () => {
     CFAv1,
     IDAv1,
     superTokenFactory,
-    superfluidLoaderv1,
+    superfluidLoader,
     TOGA,
   } = protocolContracts[network.slugName] || {};
 
@@ -254,7 +254,7 @@ const Protocol: NextPage = () => {
                   dataCy={"SuperLoaderV1-address"}
                   title="SuperfluidLoader v1"
                   network={network}
-                  address={superfluidLoaderv1}
+                  address={superfluidLoader}
                 />
                 <AddressListItem
                   dataCy={"TOGA-address"}

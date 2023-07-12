@@ -61,7 +61,7 @@ export class ProtocolPage extends BasePage {
     this.hasText(IDA_V1, protocolContracts[network].IDAv1);
     this.hasText(
       SUPERFLUID_LOADER_V1,
-      protocolContracts[network].superfluidLoaderv1
+      protocolContracts[network].superfluidLoader
     );
   }
 

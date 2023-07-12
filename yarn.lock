@@ -2212,6 +2212,11 @@
     auto-bind "^4.0.0"
     node-fetch "^2.6.7"
 
+"@superfluid-finance/metadata@^1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.7.tgz#7c5481c043f1366248815536cb3dbee6b975753d"
+  integrity sha512-75BueInMk7QVkQtTyIu7I9TufJ2CYlh4S4TIQlquLSk7Zkm5nnNe7kpy0+ngC404Nu/YH7LrDAg2LT0tgRPPag==
+
 "@superfluid-finance/metadata@git+https://github.com/superfluid-finance/metadata.git":
   version "1.1.2"
   resolved "git+https://github.com/superfluid-finance/metadata.git#97f0e579c618fbfde8284fa729a480336e9cf611"

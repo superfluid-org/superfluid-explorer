@@ -1,130 +1,54 @@
+import metadata from "@superfluid-finance/metadata";
+
 interface ContractAddresses {
   resolver: string;
   host: string;
   CFAv1: string;
   IDAv1: string;
   superTokenFactory: string;
-  superfluidLoaderv1: string;
+  superfluidLoader: string;
   TOGA?: string;
+  GDAv1?: string;
+  flowScheduler?: string;
+  vestingScheduler?: string;
+  batchLiquidator?: string;
 }
 
 interface NetworkContracts {
   [any: string]: ContractAddresses;
 }
 
+const networkMetadataToChainId = metadata.networks.reduce((acc, config) => {
+  acc[config.chainId] = {
+    resolver: config.contractsV1.resolver,
+    host: config.contractsV1.host,
+    CFAv1: config.contractsV1.cfaV1,
+    IDAv1: config.contractsV1.idaV1,
+    superTokenFactory: config.contractsV1.superTokenFactory,
+    superfluidLoader: config.contractsV1.superfluidLoader,
+    TOGA: config.contractsV1.toga,
+    GDAv1: config.contractsV1.gdaV1,
+    batchLiquidator: config.contractsV1.batchLiquidator,
+    flowScheduler: config.contractsV1.flowScheduler,
+    vestingScheduler: config.contractsV1.vestingScheduler
+  };
+  return acc;
+}, {} as { [key: string]: ContractAddresses });
+
 const protocolContracts: NetworkContracts = {
-  ethereum: {
-    resolver: "0xeE4cD028f5fdaAdeA99f8fc38e8bA8A57c90Be53",
-    host: "0x4E583d9390082B65Bef884b629DFA426114CED6d",
-    CFAv1: "0x2844c1BBdA121E9E43105630b9C8310e5c72744b",
-    IDAv1: "0xbCF9cfA8Da20B591790dF27DE65C1254Bf91563d",
-    superTokenFactory: "0x0422689cc4087b6B7280e0a7e7F655200ec86Ae1",
-    superfluidLoaderv1: "0x9775EEBdfF8AE845e7Ad3d1D04B85e6c6d284aCB",
-  },
-  matic: {
-    resolver: "0xE0cc76334405EE8b39213E620587d815967af39C",
-    host: "0x3E14dC1b13c488a8d5D310918780c983bD5982E7",
-    CFAv1: "0x6EeE6060f715257b970700bc2656De21dEdF074C",
-    IDAv1: "0xB0aABBA4B2783A72C52956CDEF62d438ecA2d7a1",
-    superTokenFactory: "0x2C90719f25B10Fc5646c82DA3240C76Fa5BcCF34",
-    superfluidLoaderv1: "0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7",
-    TOGA: "0x6AEAeE5Fd4D05A741723D752D30EE4D72690A8f7",
-  },
-  xdai: {
-    resolver: "0xD2009765189164b495c110D61e4D301729079911",
-    host: "0x2dFe937cD98Ab92e59cF3139138f18c823a4efE7",
-    CFAv1: "0xEbdA4ceF883A7B12c4E669Ebc58927FBa8447C7D",
-    IDAv1: "0x7888ac96F987Eb10E291F34851ae0266eF912081",
-    superTokenFactory: "0x23410e2659380784498509698ed70E414D384880",
-    superfluidLoaderv1: "0x21d4E9fbB9DB742E6ef4f29d189a7C18B0b59136",
-    TOGA: "0xb7DE52F4281a7a276E18C40F94cd93159C4A2d22",
-  },
-  "optimism-mainnet": {
-    resolver: "0x743B5f46BC86caF41bE4956d9275721E0531B186",
-    host: "0x567c4B141ED61923967cA25Ef4906C8781069a10",
-    CFAv1: "0x204C6f131bb7F258b2Ea1593f5309911d8E458eD",
-    IDAv1: "0xc4ce5118C3B20950ee288f086cb7FC166d222D4c",
-    superTokenFactory: "0x8276469A443D5C6B7146BED45e2abCaD3B6adad9",
-    superfluidLoaderv1: "0x8E310ce29Ab7Fa2878944A65BB0eaF97B1853d40",
-    TOGA: "0xA3c8502187fD7a7118eAD59dc811281448946C8f",
-  },
-  "arbitrum-one": {
-    resolver: "0x609b9d9d6Ee9C3200745A79B9d3398DBd63d509F",
-    host: "0xCf8Acb4eF033efF16E8080aed4c7D5B9285D2192",
-    CFAv1: "0x731FdBB12944973B500518aea61942381d7e240D",
-    IDAv1: "0x2319C7e07EB063340D2a0E36709B0D65fda75986",
-    superTokenFactory: "0x1C21Ead77fd45C84a4c916Db7A6635D0C6FF09D6",
-    superfluidLoaderv1: "0xB99cA401e10D277345BcFb281AC148a2e16Db466",
-    TOGA: "0xFC63B7C762B10670Eda15cF3ca3970bCDB28C9eF",
-  },
-  goerli: {
-    resolver: "0x3710AB3fDE2B61736B8BB0CE845D6c61F667a78E",
-    host: "0x22ff293e14F1EC3A09B137e9e06084AFd63adDF9",
-    CFAv1: "0xEd6BcbF6907D4feEEe8a8875543249bEa9D308E8",
-    IDAv1: "0xfDdcdac21D64B639546f3Ce2868C7EF06036990c",
-    superTokenFactory: "0x94f26B4c8AD12B18c12f38E878618f7664bdcCE2",
-    superfluidLoaderv1: "0x74d860243Ff08A243d5485899f343117EbDa6eA8",
-    TOGA: "0xa54FC15FC75693447d70a57262F37a70B614721b",
-  },
-  mumbai: {
-    resolver: "0x8C54C83FbDe3C59e59dd6E324531FB93d4F504d3",
-    host: "0xEB796bdb90fFA0f28255275e16936D25d3418603",
-    CFAv1: "0x49e565Ed1bdc17F3d220f72DF0857C26FA83F873",
-    IDAv1: "0x804348D4960a61f2d5F9ce9103027A3E849E09b8",
-    superTokenFactory: "0x200657E2f123761662567A1744f9ACAe50dF47E6",
-    superfluidLoaderv1: "0x0d56ED56b63382B0FC964490feB9AE438B6B4b79",
-  },
-  "avalanche-fuji": {
-    resolver: "0x141920741bC45b962B59c833cd849bA617F7ef38",
-    host: "0xf04F2C525819691ed9ABD3D2B7109E1633795e68",
-    CFAv1: "0xED74d30B8034152b0638CB03cc5c3c906dd1c482",
-    IDAv1: "0x997d745884F54a93E6662b055c5e6c09F688718b",
-    superTokenFactory: "0xA25dbEa94C5824892006b30a629213E7Bf238624",
-    superfluidLoaderv1: "0x777Be25F9fdcA87e8a0E06Ad4be93d65429FCb9f",
-  },
-  "avalanche-c": {
-    resolver: "0x24a3F04F70B7f07B9673EadD3e146391BcfEa5c1",
-    host: "0x60377C7016E4cdB03C87EF474896C11cB560752C",
-    CFAv1: "0x6946c5B38Ffea373b0a2340b4AEf0De8F6782e58",
-    IDAv1: "0x1fA9fFe8Db73F701454B195151Db4Abb18423cf2",
-    superTokenFactory: "0x464AADdBB2B80f3Cb666522EB7381bE610F638b4",
-    superfluidLoaderv1: "0x2601E69a2D16C8Ccc8aEe8cE9F59d24a59986B9E",
-    TOGA: "0x3D9A67D5ec1E72CEcA8157e028855056786b6159",
-  },
-  "bnb-smart-chain": {
-    resolver: "0x69604aA4e9e8BF44A73C680997205Edb03A92E41",
-    host: "0xd1e2cFb6441680002Eb7A44223160aB9B67d7E6E",
-    CFAv1: "0x49c38108870e74Cb9420C0991a85D3edd6363F75",
-    IDAv1: "0x594ed9Cd773584B645aC1F5B11020d3b32cDF07d",
-    superTokenFactory: "0x8bde47397301F0Cd31b9000032fD517a39c946Eb",
-    superfluidLoaderv1: "0x3C26e5bEbc68EaAf4efcd88F8E5A6Aeb77b65579",
-    TOGA: "0xFCD84210f5d51Cd40a30443d44d6A5500d5D10dF",
-  },
-  "celo": {
-    resolver: "0x05eE721BD4D803d6d477Aa7607395452B65373FF",
-    host: "0xA4Ff07cF81C02CFD356184879D953970cA957585",
-    CFAv1: "0x9d369e78e1a682cE0F8d9aD849BeA4FE1c3bD3Ad",
-    IDAv1: "0x26747Fe93fAC8bF28E1e24A558a2bC7E4d9846cA",
-    superTokenFactory: "0x36be86dEe6BC726Ed0Cbd170ccD2F21760BC73D9",
-    superfluidLoaderv1: "0xAd6e6849d8eEa62AF9271808afb726610fB451a6",
-    TOGA: "0x9bCa3a623e7b2e248510d88B2894F54898d88F91",
-  },
-  "arbitrum-goerli":{
-    resolver: "0x21d4E9fbB9DB742E6ef4f29d189a7C18B0b59136",
-    host: "0xE40983C2476032A0915600b9472B3141aA5B5Ba9",
-    CFAv1: "0xff48668fa670A85e55A7a822b352d5ccF3E7b18C",
-    IDAv1: "0x96215257F2FcbB00135578f766c0449d239bd92F",
-    superTokenFactory: "0x9aCc39d15e3f168c111a1D4F80271a9E526c9a9F",
-    superfluidLoaderv1: "0x5Bb5908dcCC9Bb0fC39a78CfDf9e47B4C08E9521",
-  },
-  "optimism-goerli":{
-    resolver: "0x21d4E9fbB9DB742E6ef4f29d189a7C18B0b59136",
-    host: "0xE40983C2476032A0915600b9472B3141aA5B5Ba9",
-    CFAv1: "0xff48668fa670A85e55A7a822b352d5ccF3E7b18C",
-    IDAv1: "0x96215257F2FcbB00135578f766c0449d239bd92F",
-    superTokenFactory: "0x9aCc39d15e3f168c111a1D4F80271a9E526c9a9F",
-    superfluidLoaderv1: "0x5Bb5908dcCC9Bb0fC39a78CfDf9e47B4C08E9521",
-  }
+  ethereum: networkMetadataToChainId[1],
+  matic: networkMetadataToChainId[137],
+  xdai: networkMetadataToChainId[100],
+  "optimism-mainnet": networkMetadataToChainId[10],
+  "arbitrum-one": networkMetadataToChainId[42161],
+  goerli: networkMetadataToChainId[5],
+  mumbai: networkMetadataToChainId[80001],
+  "avalanche-fuji": networkMetadataToChainId[43113],
+  "avalanche-c": networkMetadataToChainId[43114],
+  "bnb-smart-chain": networkMetadataToChainId[56],
+  celo: networkMetadataToChainId[42220],
+  "arbitrum-goerli": networkMetadataToChainId[421613],
+  "optimism-goerli": networkMetadataToChainId[420],
 };
 
 export default protocolContracts;
