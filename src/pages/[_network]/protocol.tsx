@@ -92,6 +92,10 @@ const Protocol: NextPage = () => {
     superTokenFactory,
     superfluidLoader,
     TOGA,
+    batchLiquidator,
+    GDAv1,
+    flowScheduler,
+    vestingScheduler,
   } = protocolContracts[network.slugName] || {};
 
   return (
@@ -245,6 +249,12 @@ const Protocol: NextPage = () => {
                   address={IDAv1}
                 />
                 <AddressListItem
+                  dataCy={"GDAv1-address"}
+                  title="GDAv1"
+                  network={network}
+                  address={GDAv1}
+                />
+                <AddressListItem
                   dataCy={"SuperTokenFactory-address"}
                   title="SuperTokenFactory"
                   network={network}
@@ -261,6 +271,24 @@ const Protocol: NextPage = () => {
                   title="TOGA"
                   network={network}
                   address={TOGA}
+                />
+                <AddressListItem
+                  dataCy={"BatchLiquidator-address"}
+                  title="BatchLiquidator"
+                  network={network}
+                  address={batchLiquidator}
+                />
+                <AddressListItem
+                  dataCy={"VestingScheduler-address"}
+                  title="VestingScheduler"
+                  network={network}
+                  address={vestingScheduler}
+                />
+                <AddressListItem
+                  dataCy={"FlowScheduler-address"}
+                  title="FlowScheduler"
+                  network={network}
+                  address={flowScheduler}
                 />
               </List>
             </Card>
