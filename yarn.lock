@@ -2189,10 +2189,10 @@
   resolved "https://registry.yarnpkg.com/@socialgouv/matomo-next/-/matomo-next-1.6.1.tgz#0080945dc0062fee7fe53e4c058dd40768a3c278"
   integrity sha512-O2lxMKZHVzvXGZNsKOnsSS+hzqxIX35CPRuVkuU8Z+EFORuO2R/iiBBfyY1d+XvexIsJOA2uHnxhJxsdeFIrRw==
 
-"@superfluid-finance/ethereum-contracts@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/ethereum-contracts/-/ethereum-contracts-1.6.0.tgz#8135b3f2bc6af6aa7900daac0f584699ca080acc"
-  integrity sha512-/AgQVWWvPVqhCiu9KHuF73EtCXSQ9OwVMehYCwTDAc2dbIi+1945VaUFtY07vSYlMSSeybuVta9m/I4NijW8Bg==
+"@superfluid-finance/ethereum-contracts@1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/ethereum-contracts/-/ethereum-contracts-1.7.1.tgz#e2f08bed42694e94980199607ed9d3222faeb477"
+  integrity sha512-MPimKMSbvJOUkbMzGA2oNdGZrKpJnja3OGS4NdsRO+OxBya2XOTvoy55nb3H/u63IFagoKt6L7eSoJapKtjDrA==
   dependencies:
     "@decentral.ee/web3-helpers" "0.5.3"
     "@openzeppelin/contracts" "4.8.2"
@@ -2212,7 +2212,7 @@
     auto-bind "^4.0.0"
     node-fetch "^2.6.7"
 
-"@superfluid-finance/metadata@^1.1.8":
+"@superfluid-finance/metadata@1.1.8", "@superfluid-finance/metadata@^1.1.8":
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.8.tgz#6c2d4e718268e3c803506ed585bdf6ca591f47f3"
   integrity sha512-V0ozN02taiBaOOqTWTBwqt4l2WWd+3Ts8KFCAybDua/z8msGygV1Ktq+anR/nScZDuocjlcdrns4noCLGkT8yg==
@@ -2221,14 +2221,14 @@
   version "1.1.2"
   resolved "git+https://github.com/superfluid-finance/metadata.git#97f0e579c618fbfde8284fa729a480336e9cf611"
 
-"@superfluid-finance/sdk-core@^0.6.6":
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.6.6.tgz#58b2254eed9ba34deaeeabd3326b91544df90d26"
-  integrity sha512-ZZWQrDor3upcTwl2Zc75IPx7mgnFeYqIMfpqfkWZcYteJRsVb6wUmM4lFkYmxx1wG8BMFmv2EE6++0F0LZSL+Q==
+"@superfluid-finance/sdk-core@^0.6.7":
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.6.7.tgz#5ab09ef6397bc75dacc54a7f4c23b2ca959ebcba"
+  integrity sha512-pgkccGRLEPRlSqAHI09aNdyL1TZ4W2z37X27q8h/SJNc3Og5VRcDhf2Pfd2abKoNlfnnKTbpYFO0MSduotCoZg==
   dependencies:
     "@nomiclabs/hardhat-ethers" "^2.2.1"
-    "@superfluid-finance/ethereum-contracts" "1.6.0"
-    "@superfluid-finance/metadata" "git+https://github.com/superfluid-finance/metadata.git"
+    "@superfluid-finance/ethereum-contracts" "1.7.1"
+    "@superfluid-finance/metadata" "1.1.8"
     browserify "^17.0.0"
     graphql-request "^4.3.0"
     lodash "^4.17.21"
