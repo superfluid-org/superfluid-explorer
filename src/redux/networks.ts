@@ -184,6 +184,18 @@ export const networks: Network[] = [
     getLinkForAddress: (address: string): string =>
       `https://goerli.arbiscan.io/address/${address}`,
   },
+  {
+    "isTestnet": true,
+    "chainId": 11155111,
+    "slugName": "eth-sepolia",
+    "displayName": "Sepolia",
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/eth-sepolia",
+    subgraphUrl: "https://subgraph.satsuma-prod.com/c5br3jaVlJI6/superfluid/eth-sepolia/api",
+    getLinkForTransaction: (txHash: string): string =>
+      `https://sepolia.etherscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://sepolia.etherscan.io/address/${address}`,
+  }
 ];
 
 export const networksByName = new Map(

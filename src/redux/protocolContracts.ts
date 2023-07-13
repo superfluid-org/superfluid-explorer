@@ -49,6 +49,7 @@ const protocolContracts: NetworkContracts = {
   celo: networkMetadataToChainId[42220],
   "arbitrum-goerli": networkMetadataToChainId[421613],
   "optimism-goerli": networkMetadataToChainId[420],
+  "eth-sepolia": networkMetadataToChainId[11155111],
 };
 
 export default protocolContracts;
