@@ -185,17 +185,41 @@ export const networks: Network[] = [
       `https://goerli.arbiscan.io/address/${address}`,
   },
   {
-    "isTestnet": true,
-    "chainId": 11155111,
-    "slugName": "eth-sepolia",
-    "displayName": "Sepolia",
+    isTestnet: true,
+    chainId: 11155111,
+    slugName: "eth-sepolia",
+    displayName: "Sepolia",
     rpcUrl: "https://rpc-endpoints.superfluid.dev/eth-sepolia",
     subgraphUrl: "https://subgraph.satsuma-prod.com/c5br3jaVlJI6/superfluid/eth-sepolia/api",
     getLinkForTransaction: (txHash: string): string =>
       `https://sepolia.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
       `https://sepolia.etherscan.io/address/${address}`,
-  }
+  },
+  {
+    isTestnet: true,
+    chainId: 1442,
+    slugName: "polgyon-zktest",
+    displayName: "Polygon zkEVM Testnet",
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/zkevm-testnet",
+    subgraphUrl: "https://zkevm-testnet.subgraph.x.superfluid.dev",
+    getLinkForTransaction: (txHash: string): string =>
+      `https://testnet-zkevm.polygonscan.com/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://testnet-zkevm.polygonscan.com/address/${address}`,
+  },
+  {
+    isTestnet: true,
+    chainId: 84531,
+    slugName: "bgoerli",
+    displayName: "Base Goerli",
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/base-goerli",
+    subgraphUrl: "https://base-goerli.subgraph.x.superfluid.dev/",
+    getLinkForTransaction: (txHash: string): string =>
+      `https://goerli.basescan.org/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://goerli.basescan.org/address/${address}`,
+  },
 ];
 
 export const networksByName = new Map(

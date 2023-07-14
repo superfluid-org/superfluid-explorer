@@ -30,7 +30,7 @@ const networkMetadataToChainId = metadata.networks.reduce((acc, config) => {
     GDAv1: config.contractsV1.gdaV1,
     batchLiquidator: config.contractsV1.batchLiquidator,
     flowScheduler: config.contractsV1.flowScheduler,
-    vestingScheduler: config.contractsV1.vestingScheduler
+    vestingScheduler: config.contractsV1.vestingScheduler,
   };
   return acc;
 }, {} as { [key: string]: ContractAddresses });
@@ -50,6 +50,8 @@ const protocolContracts: NetworkContracts = {
   "arbitrum-goerli": networkMetadataToChainId[421613],
   "optimism-goerli": networkMetadataToChainId[420],
   "eth-sepolia": networkMetadataToChainId[11155111],
+  "polgyon-zktest": networkMetadataToChainId[1442],
+  bgoerli: networkMetadataToChainId[84531],
 };
 
 export default protocolContracts;
