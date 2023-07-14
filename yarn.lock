@@ -2234,10 +2234,10 @@
     lodash "^4.17.21"
     tsify "^5.0.4"
 
-"@superfluid-finance/sdk-redux@^0.4.1-dev.e038cad.0":
-  version "0.4.1-dev.fe6f63e.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.4.1-dev.fe6f63e.0.tgz#81a03f847a6b86cc741a6d4bf11fe50c6b80bad3"
-  integrity sha512-1JVKKemtN2VsoCGc2+bY/xN++FXKNmBdylaofb3g2ovUZ5kCKjk1v6BAZXCxi6IMGf+hodyCVgfTJmBsHwrmMg==
+"@superfluid-finance/sdk-redux@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.5.1.tgz#799ccab1f8ae20651b14a199686c7bdad01ff77f"
+  integrity sha512-aAfv2EAsySgeR1eQuWlvc9FThKerKxO7VmcmD5CieGeglLfO3FzI7k5rX2F67chOkJsRi+UAOxVsaP57V38AGQ==
   dependencies:
     graphql-request "^5.0.0"
     lodash "^4.17.21"
