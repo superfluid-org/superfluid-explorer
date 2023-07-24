@@ -50,7 +50,7 @@ const protocolContracts: NetworkContracts = {
   "arbitrum-goerli": networkMetadataToChainId[421613],
   "optimism-goerli": networkMetadataToChainId[420],
   "eth-sepolia": networkMetadataToChainId[11155111],
-  "polgyon-zktest": networkMetadataToChainId[1442],
+  "pzkevmtest": networkMetadataToChainId[1442],
   bgoerli: networkMetadataToChainId[84531],
 };
 

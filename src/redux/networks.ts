@@ -199,10 +199,10 @@ export const networks: Network[] = [
   {
     isTestnet: true,
     chainId: 1442,
-    slugName: "polgyon-zktest",
+    slugName: "pzkevmtest",
     displayName: "Polygon zkEVM Testnet",
-    rpcUrl: "https://rpc-endpoints.superfluid.dev/zkevm-testnet",
-    subgraphUrl: "https://zkevm-testnet.subgraph.x.superfluid.dev",
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/polygon-zkevm-testnet",
+    subgraphUrl: "https://polygon-zkevm-testnet.subgraph.x.superfluid.dev",
     getLinkForTransaction: (txHash: string): string =>
       `https://testnet-zkevm.polygonscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
