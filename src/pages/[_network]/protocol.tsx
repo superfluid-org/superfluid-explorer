@@ -96,7 +96,7 @@ const Protocol: NextPage = () => {
     GDAv1,
     flowScheduler,
     vestingScheduler,
-  } = protocolContracts[network.chainId] || {};
+  } = protocolContracts[network.slugName] || {};
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>

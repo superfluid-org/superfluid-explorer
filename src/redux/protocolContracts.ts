@@ -1,4 +1,6 @@
 import metadata from "@superfluid-finance/metadata";
+import { networksByChainId } from "./networks";
+import { findNetworkOrThrow } from "../utils/findNetwork";
 
 interface ContractAddresses {
   resolver: string;
@@ -35,23 +37,33 @@ const networkMetadataToChainId = metadata.networks.reduce((acc, config) => {
   return acc;
 }, {} as { [key: string]: ContractAddresses });
 
+const getNetwork = (chainId: number) => {
+  const network = networksByChainId.get(chainId);
+  if (!network) {
+    throw new Error(`No network found for chainId ${chainId}`);
+  }
+  return network;
+};
+
+findNetworkOrThrow;
+
 const protocolContracts: NetworkContracts = {
-  [1]: networkMetadataToChainId[1],
-  [137]: networkMetadataToChainId[137],
-  [100]: networkMetadataToChainId[100],
-  [10]: networkMetadataToChainId[10],
-  [42161]: networkMetadataToChainId[42161],
-  [5]: networkMetadataToChainId[5],
-  [80001]: networkMetadataToChainId[80001],
-  [43113]: networkMetadataToChainId[43113],
-  [43114]: networkMetadataToChainId[43114],
-  [56]: networkMetadataToChainId[56],
-  [42220]: networkMetadataToChainId[42220],
-  [421613]: networkMetadataToChainId[421613],
-  [420]: networkMetadataToChainId[420],
-  [11155111]: networkMetadataToChainId[11155111],
-  [1442]: networkMetadataToChainId[1442],
-  [84531]: networkMetadataToChainId[84531],
+  [getNetwork(1).slugName]: networkMetadataToChainId[1],
+  [getNetwork(137).slugName]: networkMetadataToChainId[137],
+  [getNetwork(100).slugName]: networkMetadataToChainId[100],
+  [getNetwork(10).slugName]: networkMetadataToChainId[10],
+  [getNetwork(42161).slugName]: networkMetadataToChainId[42161],
+  [getNetwork(5).slugName]: networkMetadataToChainId[5],
+  [getNetwork(80001).slugName]: networkMetadataToChainId[80001],
+  [getNetwork(43113).slugName]: networkMetadataToChainId[43113],
+  [getNetwork(43114).slugName]: networkMetadataToChainId[43114],
+  [getNetwork(56).slugName]: networkMetadataToChainId[56],
+  [getNetwork(42220).slugName]: networkMetadataToChainId[42220],
+  [getNetwork(421613).slugName]: networkMetadataToChainId[421613],
+  [getNetwork(420).slugName]: networkMetadataToChainId[420],
+  [getNetwork(11155111).slugName]: networkMetadataToChainId[11155111],
+  [getNetwork(1442).slugName]: networkMetadataToChainId[1442],
+  [getNetwork(84531).slugName]: networkMetadataToChainId[84531],
 };
 
 export default protocolContracts;

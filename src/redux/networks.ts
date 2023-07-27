@@ -200,7 +200,7 @@ export const networks: Network[] = [
   {
     isTestnet: true,
     chainId: 1442,
-    slugName: "pzkevmtest",
+    slugName: "polygon-zkevm-testnet",
     displayName: "Polygon zkEVM Testnet",
     rpcUrl: "https://rpc-endpoints.superfluid.dev/polygon-zkevm-testnet",
     subgraphUrl: "https://polygon-zkevm-testnet.subgraph.x.superfluid.dev",
@@ -212,7 +212,7 @@ export const networks: Network[] = [
   {
     isTestnet: true,
     chainId: 84531,
-    slugName: "bgoerli",
+    slugName: "base-goerli",
     displayName: "Base Goerli",
     rpcUrl: "https://rpc-endpoints.superfluid.dev/base-goerli",
     subgraphUrl: "https://base-goerli.subgraph.x.superfluid.dev/",
