@@ -16,12 +16,13 @@ import AppLink from "./AppLink";
 import SearchBar from "./SearchBar";
 import SearchDialog from "./SearchDialog";
 import SettingsDrawer from "./SettingsDrawer";
+import { polygon } from "../redux/networks";
 
 export const SfAppBar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const router = useRouter();
-  const { _network = "polygon-mainnet" } = router.query;
+  const { _network = polygon.slugName } = router.query;
 
   return (
     <>

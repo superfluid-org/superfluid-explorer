@@ -8,10 +8,10 @@ import * as React from "react";
 import AppLink from "../components/AppLink";
 import { NetworkStreams } from "../components/NetworkStreams";
 import NetworkTabs from "../components/NetworkTabs";
-import { networks } from "../redux/networks";
+import { networks, polygon } from "../redux/networks";
 
 const Home: NextPage = () => {
-  const [activeTab, setActiveTab] = React.useState("polygon-mainnet");
+  const [activeTab, setActiveTab] = React.useState(polygon.slugName);
 
   return (
     <>

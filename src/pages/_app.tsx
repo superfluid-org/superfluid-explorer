@@ -15,13 +15,14 @@ import { FeatureFlagProvider } from "../contexts/FeatureFlagContext";
 import IdContext from "../contexts/IdContext";
 import { NetworkContext } from "../contexts/NetworkContext";
 import { useMatomo } from "../hooks/useMatomo";
-import { tryGetNetwork, tryGetString } from "../redux/networks";
+import { networks, tryGetString } from "../redux/networks";
 import { wrapper } from "../redux/store";
 import "../styles/app.css";
 import "../styles/graphiql.min.css";
 import useSfTheme from "../styles/useSfTheme";
 import createEmotionCache from "../utils/createEmotionCache";
 import { isDynamicRoute } from "../utils/isDynamicRoute";
+import { tryFindNetwork } from "../utils/findNetwork";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -109,7 +110,7 @@ const Layout: FC<PropsWithChildren<unknown>> = ({ children }) => {
   // For dynamic routes, pre-load the network and the entity ID. Makes the specific page implementations less boilerplate-y.
   if (isDynamicRoute(router)) {
     if (router.isReady) {
-      const network = tryGetNetwork(_network);
+      const network = tryFindNetwork(networks, _network);
       const id = tryGetString(_id);
 
       if (network && id) {

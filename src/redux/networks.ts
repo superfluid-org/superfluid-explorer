@@ -2,7 +2,7 @@ import sortBy from "lodash/fp/sortBy";
 
 export type Network = {
   displayName: string;
-  slugName: string;
+  slugName: string; // The displayed slug by default. To find network by slug, use `tryFindNetwork` which looks from more sources.
   chainId: number;
   rpcUrl: string;
   subgraphUrl: string;
@@ -190,7 +190,8 @@ export const networks: Network[] = [
     slugName: "eth-sepolia",
     displayName: "Sepolia",
     rpcUrl: "https://rpc-endpoints.superfluid.dev/eth-sepolia",
-    subgraphUrl: "https://subgraph.satsuma-prod.com/c5br3jaVlJI6/superfluid/eth-sepolia/api",
+    subgraphUrl:
+      "https://subgraph.satsuma-prod.com/c5br3jaVlJI6/superfluid/eth-sepolia/api",
     getLinkForTransaction: (txHash: string): string =>
       `https://sepolia.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
@@ -228,24 +229,12 @@ export const networksByName = new Map(
 
 export const networksByChainId = new Map(networks.map((x) => [x.chainId, x]));
 
+export const polygon = networksByChainId.get(137)!;
+
 export const networksByTestAndName = sortBy(
   [(x) => x.isTestnet, (x) => x.slugName],
   networks
 );
-
-export const tryGetNetwork = (x: unknown): Network | undefined => {
-  let network: Network | undefined = undefined;
-
-  if (typeof x === "string") {
-    network = networksByName.get(x.toLowerCase());
-  }
-
-  if (typeof x === "number") {
-    network = networksByChainId.get(x);
-  }
-
-  return network;
-};
 
 export const tryGetString = (x: unknown): string | undefined => {
   if (typeof x === "string") {
