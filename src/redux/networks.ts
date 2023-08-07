@@ -117,7 +117,18 @@ export const networks: Network[] = [
     getLinkForAddress: (address: string): string =>
       `https://celoscan.io/address/${address}`,
   },
-
+  {
+    isTestnet: false,
+    chainId: 8453,
+    slugName: "base-mainnet",
+    displayName: "Base Mainnet",
+    rpcUrl: "https://rpc-endpoints.superfluid.dev/base-mainnet",
+    subgraphUrl: "https://base-mainnet.subgraph.x.superfluid.dev/",
+    getLinkForTransaction: (txHash: string): string =>
+      `https://basescan.org/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://basescan.org/address/${address}`,
+  },
   // testnets
   {
     displayName: "Goerli",
