@@ -14,6 +14,7 @@ interface ContractAddresses {
   flowScheduler?: string;
   vestingScheduler?: string;
   batchLiquidator?: string;
+  existentialNFTCloneFactory?: string;
 }
 
 interface NetworkContracts {
@@ -33,6 +34,7 @@ const networkMetadataToChainId = metadata.networks.reduce((acc, config) => {
     batchLiquidator: config.contractsV1.batchLiquidator,
     flowScheduler: config.contractsV1.flowScheduler,
     vestingScheduler: config.contractsV1.vestingScheduler,
+    existentialNFTCloneFactory: config.contractsV1.existentialNFTCloneFactory,
   };
   return acc;
 }, {} as { [key: string]: ContractAddresses });
