@@ -33,7 +33,6 @@ import { networks } from "./networks";
 import { addressBookSlice } from "./slices/addressBook.slice";
 import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { ensApi } from "./slices/ensResolver.slice";
-import { flagsSlice } from "./slices/flags.slice";
 
 export const rpcApi = initializeRpcApiSlice(
   createApiWithReactHooks
@@ -65,10 +64,6 @@ export const makeStore = wrapMakeStore(() => {
     addressBookSlice.reducer
   );
 
-  const flagsPersistedReducer = persistReducer(
-    { key: "flags", version: 1, storage: storageLocal },
-    flagsSlice.reducer
-  );
 
   const store = configureStore({
     reducer: {
@@ -77,7 +72,6 @@ export const makeStore = wrapMakeStore(() => {
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
       [ensApi.reducerPath]: ensApi.reducer,
-      [flagsSlice.name]: flagsPersistedReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

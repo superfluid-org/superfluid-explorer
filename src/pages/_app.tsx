@@ -11,7 +11,6 @@ import { hotjar } from "react-hotjar";
 import Footer from "../components/Footer";
 import SfAppBar from "../components/SfAppBar";
 import { AvailableNetworksProvider } from "../contexts/AvailableNetworksContext";
-import { FeatureFlagProvider } from "../contexts/FeatureFlagContext";
 import IdContext from "../contexts/IdContext";
 import { NetworkContext } from "../contexts/NetworkContext";
 import { useMatomo } from "../hooks/useMatomo";
@@ -72,7 +71,6 @@ function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <FeatureFlagProvider>
           <AvailableNetworksProvider>
             <Box
               sx={{
@@ -94,7 +92,6 @@ function MyApp(props: MyAppProps) {
               </Box>
             </Box>
           </AvailableNetworksProvider>
-        </FeatureFlagProvider>
       </ThemeProvider>
     </CacheProvider>
   );
