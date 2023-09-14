@@ -41,6 +41,7 @@ import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { useAppSelector } from "../../../redux/hooks";
 import { streamGranularityInSeconds } from "../../../redux/slices/appPreferences.slice";
 import { sfSubgraph } from "../../../redux/store";
+import SuperTokenPools from "../../../components/SuperTokenPools";
 
 const SuperTokenPage: NextPage = () => {
   const network = useNetworkContext();
@@ -497,6 +498,7 @@ const SuperTokenPage: NextPage = () => {
             >
               <Tab data-cy={"streams-tab"} label="Streams" value="streams" />
               <Tab data-cy={"indexes-tab"} label="Indexes" value="indexes" />
+              <Tab data-cy={"pools-tab"} label="Pools" value="pools" />
               <Tab data-cy={"events-tab"} label="Events" value="events" />
             </TabList>
           </Box>
@@ -509,6 +511,9 @@ const SuperTokenPage: NextPage = () => {
             </TabPanel>
             <TabPanel value="indexes">
               <SuperTokenIndexes network={network} tokenAddress={address} />
+            </TabPanel>
+            <TabPanel value="pools">
+              <SuperTokenPools network={network} tokenAddress={address} />
             </TabPanel>
           </Box>
         </TabContext>

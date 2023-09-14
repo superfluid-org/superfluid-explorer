@@ -67,6 +67,7 @@ import ellipsisAddress from "../../../utils/ellipsisAddress";
 import TokenChip from "../../../components/TokenChip";
 import FlowingBalance from "../../../components/FlowingBalance";
 import FlowRate from "../../../components/FlowRate";
+import AccountPools from "../../../components/AccountPools";
 
 const AccountPage: NextPage = () => {
   const network = useNetworkContext();
@@ -411,6 +412,31 @@ const AccountPage: NextPage = () => {
                 }}
               />
               <Tab
+                data-cy={"indexes-tab"}
+                label="Pools"
+                value="pools"
+                onMouseEnter={() => {
+                  if (network) {
+                    prefetchIndexesQuery({
+                      chainId: network.chainId,
+                      filter: {
+                        publisher: address,
+                      },
+                      order: publishedIndexOrderingDefault,
+                      pagination: publishedIndexPagingDefault,
+                    });
+                    prefetchIndexSubscriptionsQuery({
+                      chainId: network.chainId,
+                      filter: {
+                        subscriber: address,
+                      },
+                      order: indexSubscriptionOrderingDefault,
+                      pagination: indexSubscriptionPagingDefault,
+                    });
+                  }
+                }}
+              />
+              <Tab
                 data-cy={"super-tokens-tab"}
                 label="Super Tokens"
                 value="tokens"
@@ -432,6 +458,9 @@ const AccountPage: NextPage = () => {
             </TabPanel>
             <TabPanel value="indexes">
               <AccountIndexes network={network} accountAddress={address} />
+            </TabPanel>
+            <TabPanel value="pools">
+              <AccountPools network={network} accountAddress={address} />
             </TabPanel>
             <TabPanel value="map">
               <AccountMap

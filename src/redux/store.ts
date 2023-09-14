@@ -4,6 +4,7 @@ import { Framework } from "@superfluid-finance/sdk-core";
 import {
   allSubgraphEndpoints,
   createApiWithReactHooks,
+  getConfig,
   initializeRpcApiSlice,
   initializeSubgraphApiSlice,
   setFrameworkForSdkRedux,
@@ -34,6 +35,10 @@ import { addressBookSlice } from "./slices/addressBook.slice";
 import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { ensApi } from "./slices/ensResolver.slice";
 import { flagsSlice } from "./slices/flags.slice";
+import { allSubgraphEndpoints as allGdaSubgraphEndpoints } from "../gda-subgraph/endpoints/allSubgraphEndpoints";
+import { ModuleName } from "@reduxjs/toolkit/dist/query/apiTypes";
+import { CreateApi } from "@reduxjs/toolkit/dist/query";
+import { createSubgraphGdaApiSlice } from "../gda-subgraph/subgraphGdaApiSlice";
 
 export const rpcApi = initializeRpcApiSlice(
   createApiWithReactHooks
@@ -42,6 +47,10 @@ export const rpcApi = initializeRpcApiSlice(
 export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
 ).injectEndpoints(allSubgraphEndpoints);
+
+export const sfGdaSubgraph = createSubgraphGdaApiSlice(
+  createApiWithReactHooks
+).injectEndpoints(allGdaSubgraphEndpoints);
 
 const infuraProviders = networks.map((network) => ({
   chainId: network.chainId,
@@ -78,6 +87,7 @@ export const makeStore = wrapMakeStore(() => {
       [addressBookSlice.name]: addressBookReducer,
       [ensApi.reducerPath]: ensApi.reducer,
       [flagsSlice.name]: flagsPersistedReducer,
+      [sfGdaSubgraph.reducerPath]: sfGdaSubgraph.reducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -102,7 +112,8 @@ export const makeStore = wrapMakeStore(() => {
         )
         .concat(rpcApi.middleware)
         .concat(sfSubgraph.middleware)
-        .concat(ensApi.middleware),
+        .concat(ensApi.middleware)
+        .concat(sfGdaSubgraph.middleware),
   });
 
   if (!isServer()) {
