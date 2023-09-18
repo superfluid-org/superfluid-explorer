@@ -6,7 +6,6 @@ import {
   useMemo,
 } from "react";
 import { Network, networks } from "../redux/networks";
-import { useFeatureFlags } from "./FeatureFlagContext";
 
 interface AvailableNetworksContextValue {
   availableNetworks: Network[];
@@ -19,15 +18,12 @@ const AvailableNetworksContext = createContext<AvailableNetworksContextValue>(
 export const AvailableNetworksProvider: FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const { isMainnetEnabled } = useFeatureFlags();
 
   const contextValue = useMemo<AvailableNetworksContextValue>(
     () => ({
-      availableNetworks: networks.filter(
-        (network) => !(network.chainId === 1 && !isMainnetEnabled)
-      ),
+      availableNetworks: networks,
     }),
-    [isMainnetEnabled]
+    []
   );
 
   return (

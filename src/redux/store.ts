@@ -34,7 +34,6 @@ import { networks } from "./networks";
 import { addressBookSlice } from "./slices/addressBook.slice";
 import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { ensApi } from "./slices/ensResolver.slice";
-import { flagsSlice } from "./slices/flags.slice";
 import { allSubgraphEndpoints as allGdaSubgraphEndpoints } from "../gda-subgraph/endpoints/allSubgraphEndpoints";
 import { ModuleName } from "@reduxjs/toolkit/dist/query/apiTypes";
 import { CreateApi } from "@reduxjs/toolkit/dist/query";
@@ -74,10 +73,6 @@ export const makeStore = wrapMakeStore(() => {
     addressBookSlice.reducer
   );
 
-  const flagsPersistedReducer = persistReducer(
-    { key: "flags", version: 1, storage: storageLocal },
-    flagsSlice.reducer
-  );
 
   const store = configureStore({
     reducer: {
@@ -86,7 +81,6 @@ export const makeStore = wrapMakeStore(() => {
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
       [ensApi.reducerPath]: ensApi.reducer,
-      [flagsSlice.name]: flagsPersistedReducer,
       [sfGdaSubgraph.reducerPath]: sfGdaSubgraph.reducer
     },
     middleware: (getDefaultMiddleware) =>
