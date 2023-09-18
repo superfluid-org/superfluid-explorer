@@ -13,6 +13,7 @@ export const PoolPublicationDetailsDialog: FC<{
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  console.log("PoolPublicationDetailsDialog",{props})
   return (
     <>
       {children(handleClickOpen)}

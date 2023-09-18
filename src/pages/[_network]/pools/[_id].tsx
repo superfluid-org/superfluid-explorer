@@ -32,7 +32,7 @@ import TimeAgo from "../../../components/TimeAgo";
 import IdContext from "../../../contexts/IdContext";
 import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { Network } from "../../../redux/networks";
-import { sfGdaSubgraph, sfSubgraph } from "../../../redux/store";
+import { sfGdaSubgraph } from "../../../redux/store";
 import { Pool } from "../../../gda-subgraph/entities/pool/pool";
 import PoolMemberDataGrid from "../../../components/PoolMemberDataGrid";
 import { InstantDistributionUpdatedEvent_OrderBy, PoolMember_OrderBy } from "../../../gda-subgraph/.graphclient";
@@ -73,7 +73,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   const instantDistributionUpdatedEventQuery = sfGdaSubgraph.useInstantDistributionUpdatedEventsQuery({
     chainId: network.chainId,
     filter: {
-      pool: id.toLowerCase(),
+      pool: id,
     },
     pagination: InstantDistributionUpdatedEventPaging,
     order: instantDistributionUpdatedEventPagingOrdering,
@@ -90,7 +90,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   const poolMemberEventQuery = sfGdaSubgraph.usePoolMembersQuery({
     chainId: network.chainId,
     filter: {
-      pool: id.toLowerCase(),
+      pool: id,
     },
     pagination: poolMemberPaging,
     order: poolMemberPagingOrdering,
@@ -144,7 +144,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
               }
             }
           `}
-          variables={`{ "id": "${id.toLowerCase()}" }`}
+          variables={`{ "id": "${id}" }`}
         />
       </Stack>
 

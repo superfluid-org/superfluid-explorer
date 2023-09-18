@@ -33,7 +33,7 @@ import useDebounce from "../../../hooks/useDebounce";
 import calculatePoolPercentage from "../../../logic/calculatePoolPercentage";
 import calculateWeiAmountReceived from "../../../logic/calculateWeiAmountReceived";
 import { Network } from "../../../redux/networks";
-import { sfGdaSubgraph, sfSubgraph } from "../../../redux/store";
+import { sfGdaSubgraph } from "../../../redux/store";
 import AccountAddress from "../../AccountAddress";
 import AppLink from "../../AppLink";
 import BalanceWithToken from "../../BalanceWithToken";
@@ -270,6 +270,8 @@ const AccountPoolSubscriptionsTable: FC<
     closeFilter();
   };
 
+
+  console.log(queryResult.data)
   const tableRows = queryResult.data?.data || [];
   const hasNextPage = !!queryResult.data?.nextPaging;
 

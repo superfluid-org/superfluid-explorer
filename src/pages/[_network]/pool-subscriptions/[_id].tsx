@@ -75,7 +75,7 @@ export const PoolMemberPageContent: FC<{
 
   const poolMember: PoolMember | undefined | null = poolMemberQuery.data;
 
-  const indexQuery = sfGdaSubgraph.usePoolQuery(
+  const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
           chainId: network.chainId,
@@ -84,8 +84,7 @@ export const PoolMemberPageContent: FC<{
       : skipToken
   );
 
-  const pool: Pool | undefined | null = indexQuery.data;
-
+  const pool: Pool | undefined | null = poolQuery.data;
   const [
     subscribersUnitsUpdatedEventPaging,
     setMembershipUnitsUpdatedEventPaging,
@@ -105,7 +104,7 @@ export const PoolMemberPageContent: FC<{
     sfGdaSubgraph.usePoolMemberUnitsUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        poolMember: poolMemberId.toLowerCase(),
+        poolMember: poolMemberId,
       },
       pagination: subscribersUnitsUpdatedEventPaging,
       order: subscribersUnitsUpdatedEventPagingOrdering,
@@ -138,13 +137,14 @@ export const PoolMemberPageContent: FC<{
   }, [poolMember && pool]);
 
   if (
-    !indexQuery.isUninitialized &&
-    !indexQuery.isLoading &&
-    !indexQuery.data
+    !poolQuery.isUninitialized &&
+    !poolQuery.isLoading &&
+    !poolQuery.data
   ) {
     return <Error statusCode={404} />;
   }
 
+  console.log(poolMember)
   return (
     <Container
       data-cy={"pool-member-container"}
@@ -156,7 +156,7 @@ export const PoolMemberPageContent: FC<{
           <Typography color="text.secondary">
             {network && network.displayName}
           </Typography>
-          <Typography color="text.secondary">Pool Subscribers</Typography>
+          <Typography color="text.secondary">Pool Members</Typography>
           <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
             {poolMemberId.substring(0, 6) + "..."}
           </Typography>
@@ -173,7 +173,7 @@ export const PoolMemberPageContent: FC<{
         sx={{ mt: 1 }}
       >
         <Typography variant="h4" component="h1">
-          Pool Subscribers
+          Pool Members
         </Typography>
         <SubgraphQueryLink
           network={network}
@@ -189,7 +189,7 @@ export const PoolMemberPageContent: FC<{
               }
             }
           `}
-          variables={`{ "id": "${poolMemberId.toLowerCase()}" }`}
+          variables={`{ "id": "${poolMemberId}" }`}
         />
       </Stack>
 
@@ -262,9 +262,9 @@ export const PoolMemberPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem data-cy={"subscription-subscriber"} divider>
+              <ListItem data-cy={"subscription-member"} divider>
                 <ListItemText
-                  secondary="Subscriber"
+                  secondary="Member"
                   primary={
                     poolMember ? (
                       <AccountAddress
@@ -458,6 +458,7 @@ export const PoolMemberDistributions: FC<{
     chainId: network.chainId,
     id: poolMemberId,
   });
+
   const poolMember: PoolMember | undefined | null = poolMemberQuery.data;
 
   const poolQuery = sfGdaSubgraph.usePoolQuery(
