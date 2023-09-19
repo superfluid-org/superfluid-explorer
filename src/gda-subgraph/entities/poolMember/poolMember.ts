@@ -69,7 +69,6 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
       block: query.block,
   } as unknown as PoolMembersQueryVariables);
 
-  console.log(response);
   return this.mapFromSubgraphResponse(response)[0] ?? null;
   }
 

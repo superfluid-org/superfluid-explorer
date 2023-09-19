@@ -271,7 +271,6 @@ const AccountPoolSubscriptionsTable: FC<
   };
 
 
-  console.log(queryResult.data)
   const tableRows = queryResult.data?.data || [];
   const hasNextPage = !!queryResult.data?.nextPaging;
 

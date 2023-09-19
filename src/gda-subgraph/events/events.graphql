@@ -74,6 +74,7 @@ fragment instantDistributionUpdatedEvent on InstantDistributionUpdatedEvent {
   requestedAmount
   token
 }
+
 fragment flowDistributionUpdatedEvent on FlowDistributionUpdatedEvent {
   ...eventFields
   id

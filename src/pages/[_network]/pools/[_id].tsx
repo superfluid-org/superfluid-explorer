@@ -35,8 +35,13 @@ import { Network } from "../../../redux/networks";
 import { sfGdaSubgraph } from "../../../redux/store";
 import { Pool } from "../../../gda-subgraph/entities/pool/pool";
 import PoolMemberDataGrid from "../../../components/PoolMemberDataGrid";
-import { InstantDistributionUpdatedEvent_OrderBy, PoolMember_OrderBy } from "../../../gda-subgraph/.graphclient";
+import {
+  FlowDistributionUpdatedEvent_OrderBy,
+  InstantDistributionUpdatedEvent_OrderBy,
+  PoolMember_OrderBy,
+} from "../../../gda-subgraph/.graphclient";
 import InstantDistributionUpdatedEventDataGrid from "../../../components/InstantDistributionUpdatedEventDataGrid";
+import FlowDistributionUpdatedEventDataGrid from "../../../components/FlowDistributionUpdatedEventDataGrid";
 
 const PoolPage: NextPage = () => {
   const network = useNetworkContext();
@@ -58,35 +63,68 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
 
   const pool: Pool | null | undefined = poolQuery.data;
 
-  const [InstantDistributionUpdatedEventPaging, setInstantDistributionUpdatedEventPaging] =
-    useState<SkipPaging>(
-      createSkipPaging({
-        take: 10,
-      })
-    );
-  const [instantDistributionUpdatedEventPagingOrdering, setInstantDistributionUpdatedEventOrdering] =
-    useState<Ordering<InstantDistributionUpdatedEvent_OrderBy> | undefined>({
-      orderBy: "timestamp",
-      orderDirection: "desc",
-    });
+  const [
+    instantDistributionUpdatedEventPaging,
+    setInstantDistributionUpdatedEventPaging,
+  ] = useState<SkipPaging>(
+    createSkipPaging({
+      take: 10,
+    })
+  );
 
-  const instantDistributionUpdatedEventQuery = sfGdaSubgraph.useInstantDistributionUpdatedEventsQuery({
-    chainId: network.chainId,
-    filter: {
-      pool: id,
-    },
-    pagination: InstantDistributionUpdatedEventPaging,
-    order: instantDistributionUpdatedEventPagingOrdering,
+  const [
+    instantDistributionUpdatedEventOrdering,
+    setInstantDistributionUpdatedEventOrdering,
+  ] = useState<Ordering<InstantDistributionUpdatedEvent_OrderBy> | undefined>({
+    orderBy: "timestamp",
+    orderDirection: "desc",
   });
 
-  const [poolMemberPaging, setPoolMemberPaging] =
-    useState<SkipPaging>(
-      createSkipPaging({
-        take: 10,
-      })
-    );
-  const [poolMemberPagingOrdering, setPoolMemberOrdering] =
-    useState<Ordering<PoolMember_OrderBy> | undefined>();
+  const [
+    flowDistributionUpdatedEventOrdering,
+    setFlowDistributionUpdatedEventOrdering,
+  ] = useState<Ordering<FlowDistributionUpdatedEvent_OrderBy> | undefined>({
+    orderBy: "timestamp",
+    orderDirection: "desc",
+  });
+
+  const [
+    flowDistributionUpdatedEventPaging,
+    setFlowDistributionUpdatedEventPaging,
+  ] = useState<SkipPaging>(
+    createSkipPaging({
+      take: 10,
+    })
+  );
+
+  const instantDistributionUpdatedEventQuery =
+    sfGdaSubgraph.useInstantDistributionUpdatedEventsQuery({
+      chainId: network.chainId,
+      filter: {
+        pool: id,
+      },
+      pagination: instantDistributionUpdatedEventPaging,
+      order: instantDistributionUpdatedEventOrdering,
+    });
+
+  const flowDistributionUpdatedEventQuery =
+    sfGdaSubgraph.useFlowDistributionUpdatedEventsQuery({
+      chainId: network.chainId,
+      filter: {
+        pool: id,
+      },
+      pagination: flowDistributionUpdatedEventPaging,
+      order: flowDistributionUpdatedEventOrdering,
+    });
+
+  const [poolMemberPaging, setPoolMemberPaging] = useState<SkipPaging>(
+    createSkipPaging({
+      take: 10,
+    })
+  );
+  const [poolMemberPagingOrdering, setPoolMemberOrdering] = useState<
+    Ordering<PoolMember_OrderBy> | undefined
+  >();
   const poolMemberEventQuery = sfGdaSubgraph.usePoolMembersQuery({
     chainId: network.chainId,
     filter: {
@@ -96,11 +134,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
     order: poolMemberPagingOrdering,
   });
 
-  if (
-    !poolQuery.isUninitialized &&
-    !poolQuery.isLoading &&
-    !poolQuery.data
-  ) {
+  if (!poolQuery.isUninitialized && !poolQuery.isLoading && !poolQuery.data) {
     return <Error statusCode={404} />;
   }
 
@@ -176,9 +210,9 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                         dataCy={"admin-tooltip"}
                         title={
                           <>
-                            The creator of an pool using the GDA - admins
-                            may update the pool of members and distribute
-                            funds to members.{" "}
+                            The creator of an pool using the GDA - admins may
+                            update the pool of members and distribute funds to
+                            members.{" "}
                             <AppLink
                               href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
                               target="_blank"
@@ -226,9 +260,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                       />
                     </>
                   }
-                  primary={
-                    pool ? pool.id : <Skeleton sx={{ width: "20px" }} />
-                  }
+                  primary={pool ? pool.id : <Skeleton sx={{ width: "20px" }} />}
                 />
               </ListItem>
               <Grid container>
@@ -279,55 +311,57 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                     </>
                   }
                   primary={
-                    pool ? (
-                      pool.totalUnits
-                    ) : (
-                      <Skeleton sx={{ width: "75px" }} />
-                    )
+                    pool ? pool.totalUnits : <Skeleton sx={{ width: "75px" }} />
                   }
                 />
               </ListItem>
-              <ListItem data-cy={"total-connected-units"} divider>
-                <ListItemText
-                  secondary={
-                    <>
-                      Total Connected Units
-                      <InfoTooltipBtn
-                        dataCy={"total-connected-units-tooltip"}
-                        title="Units that have claimed all past distributions and will automatically claim all future distributions."
-                      />
-                    </>
-                  }
-                  primary={
-                    pool ? (
-                      pool.totalConnectedUnits
-                    ) : (
-                      <Skeleton sx={{ width: "75px" }} />
-                    )
-                  }
-                />
-              </ListItem>
-              <ListItem data-cy={"total-disconnected-units"} divider>
-                <ListItemText
-                  secondary={
-                    <>
-                      Total Disconnected Units
-                      <InfoTooltipBtn
-                        dataCy={"total-disconnected-units-tooltip"}
-                        title="Units that have not claimed their distribution yet."
-                      />
-                    </>
-                  }
-                  primary={
-                    pool ? (
-                      pool.totalDisconnectedUnits
-                    ) : (
-                      <Skeleton sx={{ width: "75px" }} />
-                    )
-                  }
-                />
-              </ListItem>
-              <ListItem data-cy={"total-amount-distributed"}>
+              <Grid container>
+                <Grid item xs={6}>
+                  <ListItem divider>
+                    <ListItemText
+                      secondary={
+                        <>
+                          Total Connected Units
+                          <InfoTooltipBtn
+                            dataCy={"total-connected-units-tooltip"}
+                            title="Units that have claimed all past distributions and will automatically claim all future distributions."
+                          />
+                        </>
+                      }
+                      primary={
+                        pool ? (
+                          pool.totalConnectedUnits
+                        ) : (
+                          <Skeleton sx={{ width: "75px" }} />
+                        )
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+                <Grid item xs={6}>
+                  <ListItem divider>
+                    <ListItemText
+                      secondary={
+                        <>
+                          Total Disconnected Units
+                          <InfoTooltipBtn
+                            dataCy={"total-disconnected-units-tooltip"}
+                            title="Units that have not claimed their distribution yet."
+                          />
+                        </>
+                      }
+                      primary={
+                        pool ? (
+                          pool.totalDisconnectedUnits
+                        ) : (
+                          <Skeleton sx={{ width: "75px" }} />
+                        )
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+              </Grid>
+              <ListItem divider data-cy={"total-amount-distributed"}>
                 <ListItemText
                   secondary="Total Amount Distributed"
                   primary={
@@ -343,12 +377,89 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                   }
                 />
               </ListItem>
+
+              <Grid container>
+                <Grid item xs={6}>
+                  <ListItem>
+                    <ListItemText
+                      data-cy={"total-flow-distributed"}
+                      secondary="Total Flow Distributed"
+                      primary={
+                        pool ? (
+                          <BalanceWithToken
+                            wei={
+                              pool.totalAmountFlowedDistributedUntilUpdatedAt
+                            }
+                            network={network}
+                            tokenAddress={pool.token}
+                          />
+                        ) : (
+                          <Skeleton sx={{ width: "75px" }} />
+                        )
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+                <Grid item xs={6}>
+                  <ListItem>
+                    <ListItemText
+                      data-cy={"total-instantly-distributed"}
+                      secondary="Total Instant Distributed"
+                      primary={
+                        pool ? (
+                          <BalanceWithToken
+                            wei={
+                              pool.totalAmountInstantlyDistributedUntilUpdatedAt
+                            }
+                            network={network}
+                            tokenAddress={pool.token}
+                          />
+                        ) : (
+                          <Skeleton sx={{ width: "75px" }} />
+                        )
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+              </Grid>
             </List>
           </Card>
         </Grid>
       </Grid>
 
-    
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Flow Distributions
+          <InfoTooltipBtn
+            dataCy={"flows-tooltip"}
+            size={22}
+            title={
+              <>
+                An event in which super tokens are flow to the entire
+                pool of members for a given pool using the Superfluid GDA.{" "}
+                <AppLink
+                  data-cy={"flows-tooltip-link"}
+                  href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon#gda-examples-by-illustration"
+                  target="_blank"
+                >
+                  Read more
+                </AppLink>
+              </>
+            }
+          />
+        </Typography>
+
+        <Card elevation={2}>
+          <FlowDistributionUpdatedEventDataGrid
+            pool={pool}
+            queryResult={flowDistributionUpdatedEventQuery}
+            setPaging={setFlowDistributionUpdatedEventPaging}
+            ordering={flowDistributionUpdatedEventOrdering}
+            setOrdering={setFlowDistributionUpdatedEventOrdering}
+          />
+        </Card>
+      </Box>
+
       <Box sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Instant Distributions
@@ -358,7 +469,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
             title={
               <>
                 An event in which super tokens are distributed to the entire
-                pool of subscribers for a given pool using the Superfluid GDA.{" "}
+                pool of members for a given pool using the Superfluid GDA.{" "}
                 <AppLink
                   data-cy={"distributions-tooltip-link"}
                   href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon#gda-examples-by-illustration"
@@ -376,13 +487,12 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
             pool={pool}
             queryResult={instantDistributionUpdatedEventQuery}
             setPaging={setInstantDistributionUpdatedEventPaging}
-            ordering={instantDistributionUpdatedEventPagingOrdering}
+            ordering={instantDistributionUpdatedEventOrdering}
             setOrdering={setInstantDistributionUpdatedEventOrdering}
           />
         </Card>
       </Box>
 
-    
       <Box sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Members
