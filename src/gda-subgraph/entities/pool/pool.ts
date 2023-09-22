@@ -26,10 +26,9 @@ export interface Pool {
   createdAtBlockNumber: BlockNumber;
   updatedAtTimestamp: Timestamp;
   updatedAtBlockNumber: BlockNumber;
-  totalAmountInstantlyDistributedUntilUpdatedAt: Timestamp;
-  totalAmountFlowedDistributedUntilUpdatedAt: Timestamp;
-  totalAmountDistributedUntilUpdatedAt: Timestamp;
-
+  totalAmountInstantlyDistributedUntilUpdatedAt: BigNumber;
+  totalAmountFlowedDistributedUntilUpdatedAt: BigNumber;
+  totalAmountDistributedUntilUpdatedAt: BigNumber;
   totalUnits: BigNumber;
   totalConnectedUnits: BigNumber;
   totalDisconnectedUnits: BigNumber;
@@ -66,15 +65,15 @@ export const mapSubgraphGDAPool = (x: SubgraphPool): Pool => {
     createdAtBlockNumber: Number(x.createdAtBlockNumber),
     updatedAtTimestamp: Number(x.updatedAtTimestamp),
     updatedAtBlockNumber: Number(x.updatedAtBlockNumber),
-    totalAmountInstantlyDistributedUntilUpdatedAt: Number(
+    totalAmountInstantlyDistributedUntilUpdatedAt:
       x.totalAmountInstantlyDistributedUntilUpdatedAt
-    ),
-    totalAmountFlowedDistributedUntilUpdatedAt: Number(
+    ,
+    totalAmountFlowedDistributedUntilUpdatedAt: 
       x.totalAmountFlowedDistributedUntilUpdatedAt
-    ),
-    totalAmountDistributedUntilUpdatedAt: Number(
+    ,
+    totalAmountDistributedUntilUpdatedAt:
       x.totalAmountDistributedUntilUpdatedAt
-    ),
+    ,
     poolCreatedEvent: x.poolCreatedEvent.id,
     admin: x.admin.id,
     token: x.token.id,
@@ -112,15 +111,15 @@ export class PoolQueryHandler extends SubgraphQueryHandler<
       createdAtBlockNumber: Number(pool_.createdAtBlockNumber),
       updatedAtTimestamp: Number(pool_.updatedAtTimestamp),
       updatedAtBlockNumber: Number(pool_.updatedAtBlockNumber),
-      totalAmountInstantlyDistributedUntilUpdatedAt: Number(
+      totalAmountInstantlyDistributedUntilUpdatedAt:
         pool_.totalAmountInstantlyDistributedUntilUpdatedAt
-      ),
-      totalAmountFlowedDistributedUntilUpdatedAt: Number(
+      ,
+      totalAmountFlowedDistributedUntilUpdatedAt: 
         pool_.totalAmountFlowedDistributedUntilUpdatedAt
-      ),
-      totalAmountDistributedUntilUpdatedAt: Number(
+      ,
+      totalAmountDistributedUntilUpdatedAt: 
         pool_.totalAmountDistributedUntilUpdatedAt
-      ),
+      ,
       poolCreatedEvent: pool_.poolCreatedEvent.id,
       admin: pool_.admin.id,
       token: pool_.token.id,

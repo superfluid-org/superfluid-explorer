@@ -428,7 +428,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               </TableCell>
               <TableCell data-cy={"total-distributed"}>
                 <BalanceWithToken
-                  wei={pool.totalAmountDistributedUntilUpdatedAt}
+                  wei={pool.totalAmountDistributedUntilUpdatedAt.toString()}
                   network={network}
                   tokenAddress={pool.token}
                 />
