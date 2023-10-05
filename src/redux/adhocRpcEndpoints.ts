@@ -29,5 +29,24 @@ export const adhocRpcEndpoints = {
         },
       ],
     }),
+    protocolVersion: builder.query<string, { chainId: number }>({
+      queryFn: async ({ chainId }) => {
+        const framework = await getFramework(chainId);
+
+        const protocolVersion = await framework.contracts.resolver
+          .connect(framework.settings.provider)
+          .get("versionString.v1");
+
+        return {
+          data: protocolVersion,
+        };
+      },
+      providesTags: (_result, _error, arg) => [
+        {
+          type: "GENERAL",
+          id: arg.chainId, // TODO(KK): Could be made more specific.
+        },
+      ],
+    }),
   }),
 };
