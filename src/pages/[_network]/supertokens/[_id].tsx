@@ -31,16 +31,16 @@ import EventList from "../../../components/EventList";
 import FlowingBalance from "../../../components/FlowingBalance";
 import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
 import NetworkDisplay from "../../../components/NetworkDisplay";
-import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
-import SkeletonTokenName from "../../../components/skeletons/SkeletonTokenName";
 import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
 import SuperTokenIndexes from "../../../components/SuperTokenIndexes";
 import SuperTokenStreams from "../../../components/SuperTokenStreams";
+import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
+import SkeletonTokenName from "../../../components/skeletons/SkeletonTokenName";
 import IdContext from "../../../contexts/IdContext";
 import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { useAppSelector } from "../../../redux/hooks";
 import { streamGranularityInSeconds } from "../../../redux/slices/appPreferences.slice";
-import { sfSubgraph } from "../../../redux/store";
+import { rpcApi, sfSubgraph } from "../../../redux/store";
 
 const SuperTokenPage: NextPage = () => {
   const network = useNetworkContext();
@@ -52,6 +52,11 @@ const SuperTokenPage: NextPage = () => {
   });
 
   const superToken: Token | null | undefined = tokenQuery.data;
+
+  const minimumDepositQuery = rpcApi.useMinimumDepositQuery({
+    chainId: network.chainId,
+    tokenAddress: address,
+  });
 
   const tokenStatisticsQuery = sfSubgraph.useTokenStatisticQuery({
     chainId: network.chainId,
@@ -477,6 +482,19 @@ const SuperTokenPage: NextPage = () => {
               primary={
                 tokenStatistics ? (
                   <EtherFormatted wei={tokenStatistics.totalSupply} />
+                ) : (
+                  <Skeleton sx={{ width: "200px" }} />
+                )
+              }
+            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              secondary="Minimum deposit"
+              primary={
+                minimumDepositQuery.data ? (
+                  <EtherFormatted wei={minimumDepositQuery.data} />
                 ) : (
                   <Skeleton sx={{ width: "200px" }} />
                 )

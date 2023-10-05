@@ -33,10 +33,11 @@ import { networks } from "./networks";
 import { addressBookSlice } from "./slices/addressBook.slice";
 import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { ensApi } from "./slices/ensResolver.slice";
+import { adhocRpcEndpoints } from "./adhocRpcEndpoints";
 
-export const rpcApi = initializeRpcApiSlice(
-  createApiWithReactHooks
-).injectEndpoints(balanceRpcApiEndpoints);
+export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks)
+  .injectEndpoints(balanceRpcApiEndpoints)
+  .injectEndpoints(adhocRpcEndpoints);
 
 export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
@@ -63,7 +64,6 @@ export const makeStore = wrapMakeStore(() => {
     { key: "address-book", version: 1, storage: storageLocal },
     addressBookSlice.reducer
   );
-
 
   const store = configureStore({
     reducer: {
