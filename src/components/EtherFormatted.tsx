@@ -10,8 +10,14 @@ const EtherFormatted: FC<{ wei: BigNumberish }> = ({ wei }) => {
 
   const ether = ethers.utils.formatEther(wei);
   const isRounded = ether.split(".")[1].length > etherDecimalPlaces;
+  let stringAmount = new Decimal(ether).toDP(etherDecimalPlaces).toFixed();
 
-  return <>{isRounded && "~"}{new Decimal(ether).toDP(etherDecimalPlaces).toFixed()}</>;
+  if(stringAmount.includes('.')) {
+    const seperateStringByDecimal = stringAmount.split(".");
+    const formattedAmount = seperateStringByDecimal[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    stringAmount = formattedAmount + "." + seperateStringByDecimal[1];
+  }
+  return <>{isRounded && "~"}{stringAmount}</>;
 };
 
 export default EtherFormatted;
