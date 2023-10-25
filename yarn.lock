@@ -2224,10 +2224,10 @@
   resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.10.tgz#980991d60066f21646d29eb01a9080c7fae1493d"
   integrity sha512-IbcpfB/pOwjl/Vam0d1WXNJaeA0bUW/CkQEZlEhUpL+DQh01d6TnxneEjw3VsT9alqamtycKoi6+2uPHAzyvFA==
 
-"@superfluid-finance/metadata@^1.1.13":
-  version "1.1.13"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.13.tgz#0068dc5f990998451f65c985862a8418c5c042db"
-  integrity sha512-AZ7kNAYyOVNZkaNvcn01iqA9GwT5vN6q3KA5GlP6eRfhnicxIVmbdK2316tUCvAQKRJ3NGOEjARfhUViEMmtOg==
+"@superfluid-finance/metadata@^1.1.18":
+  version "1.1.18"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.18.tgz#baab1c02581c3c77f2d51a685e423f6aee8468a0"
+  integrity sha512-9AyKSLjOmdhfg90TjEi+dv4FkMW1tEibMqlE1xLgHabuhHYARivBHgvZAX9psERQuld/8iYnSCMscSE+Vhn3KA==
 
 "@superfluid-finance/metadata@git+https://github.com/superfluid-finance/metadata.git":
   version "1.1.7"
