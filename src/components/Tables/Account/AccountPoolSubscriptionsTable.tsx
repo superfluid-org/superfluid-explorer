@@ -402,8 +402,8 @@ const AccountPoolSubscriptionsTable: FC<
                 value={distributionStatus}
                 onChange={onDistributionStatusChange}
               >
-                <ToggleButton data-cy={"filter-received-distributions-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton data-cy={"filter-received-distributions-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton data-cy={"filter-members-received-distributions-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
+                <ToggleButton data-cy={"filter-members-received-distributions-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -444,12 +444,14 @@ const AccountPoolSubscriptionsTable: FC<
             <TableCell>
               Admin
               <InfoTooltipBtn
+                dataCy="gda-admin-tooltip"
                 title={
                   <>
                     The creator of an pool using the GDA - admins may
                     update the pool of members and flow/distribute funds to
                     members.{" "}
                     <AppLink
+                      data-cy="gda-admin-tooltip-link"
                       href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
                       target="_blank"
                     >
@@ -470,6 +472,7 @@ const AccountPoolSubscriptionsTable: FC<
               >
                 Connected
                 <InfoTooltipBtn
+                  dataCy="gda-connected-tooltip"
                   title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
                   iconSx={{ mb: 0, mr: 0.5 }}
                 />
@@ -505,7 +508,7 @@ const AccountPoolSubscriptionsTable: FC<
         <TableBody>
           {tableRows.map((member) => (
             <TableRow key={member.id} hover>
-              <TableCell>
+              <TableCell data-cy={"admin-address"}>
                 <AccountAddress
                   network={network}
                   address={member.admin}

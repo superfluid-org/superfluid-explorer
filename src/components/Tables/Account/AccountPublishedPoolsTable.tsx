@@ -303,7 +303,7 @@ const AccountPublishedPoolsTable: FC<AccountPublishedPoolsTableProps> = ({
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton data-cy={"publications-filter"} ref={filterAnchorRef} onClick={openFilter}>
+          <IconButton data-cy={"pools-filter"} ref={filterAnchorRef} onClick={openFilter}>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -427,6 +427,7 @@ const AccountPublishedPoolsTable: FC<AccountPublishedPoolsTableProps> = ({
               >
                 Total Units
                 <InfoTooltipBtn
+                  dataCy="gda-pool-table-total-units-tooltip"
                   title="The sum of total pending and approved units issued to members."
                   iconSx={{ mb: 0, mr: 0.5 }}
                 />

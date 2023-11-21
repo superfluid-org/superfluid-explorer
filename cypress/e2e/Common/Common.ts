@@ -95,3 +95,7 @@ Given(/^User toggles the test network "([^"]*)" in settings$/, (slugName) => {
   CommonElements.toggleTestnetBySlug(slugName)
   CommonElements.closeSettingsMenu()
 });
+
+Then(`Tooltip is visible when user hovers the {string} tooltip icon`, (tooltip) => {
+  AccountPage.hoverTooltipAndValidateLink(tooltip)
+});

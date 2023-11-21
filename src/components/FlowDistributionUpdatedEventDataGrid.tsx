@@ -15,6 +15,7 @@ import { Pool } from "../gda-subgraph/entities/pool/pool";
 import { FlowDistributionUpdatedEvent } from "../gda-subgraph/events";
 import { FlowDistributionUpdatedEvent_OrderBy } from "../gda-subgraph/.graphclient";
 import AccountAddress from "./AccountAddress";
+import BalanceWithToken from "./BalanceWithToken";
 
 interface Props {
   pool: Pool | null | undefined;

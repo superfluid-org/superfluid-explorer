@@ -71,6 +71,30 @@ export class LandingPage extends BasePage {
         });
         break;
       }
+      case "GDA admin account": {
+        cy.fixture("accountData").then((fixture) => {
+          cy.visit("/" + network + "/accounts/" + fixture[network].gdaAdminAccount.address);
+        });
+        break;
+      }
+      case "GDA member account": {
+        cy.fixture("accountData").then((fixture) => {
+          cy.visit("/" + network + "/accounts/" + fixture[network].gdaMemberAccount.address);
+        });
+        break;
+      }
+      case "pool member": {
+        cy.fixture("gdaData").then((fixture) => {
+          cy.visit("/" + network + "/pool-subscriptions/" + fixture[network].poolMembers[0].id);
+        });
+        break;
+      }
+      case "GDA pool": {
+        cy.fixture("gdaData").then((fixture) => {
+          cy.visit("/" + network + "/pools/" + fixture[network].poolWithData.id);
+        });
+        break;
+      }
       case "ongoing streams account": {
         cy.fixture("commonData").then((fixture) => {
           cy.visit(

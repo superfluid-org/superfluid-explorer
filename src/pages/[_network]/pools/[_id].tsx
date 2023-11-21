@@ -1,6 +1,7 @@
 import {
   Box,
   Breadcrumbs,
+  Button,
   Card,
   Container,
   Grid,
@@ -9,8 +10,10 @@ import {
   ListItemText,
   Skeleton,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import {
   createSkipPaging,
   Ordering,
@@ -164,22 +167,35 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         <Typography variant="h4" component="h1">
           Pool
         </Typography>
-        <SubgraphQueryLink
-          network={network}
-          query={gql`
-            query ($id: ID!) {
-              pool(id: $id) {
-                totalAmountFlowedDistributedUntilUpdatedAt
-                totalAmountInstantlyDistributedUntilUpdatedAt
-                totalAmountDistributedUntilUpdatedAt
-                totalUnits
-                totalConnectedUnits
-                totalDisconnectedUnits
+        <Stack direction="row" justifyContent="flex-end" flex={1} gap={1}>
+          <SubgraphQueryLink
+            network={network}
+            query={gql`
+              query ($id: ID!) {
+                pool(id: $id) {
+                  totalAmountFlowedDistributedUntilUpdatedAt
+                  totalAmountInstantlyDistributedUntilUpdatedAt
+                  totalAmountDistributedUntilUpdatedAt
+                  totalUnits
+                  totalConnectedUnits
+                  totalDisconnectedUnits
+                }
               }
-            }
-          `}
-          variables={`{ "id": "${id}" }`}
-        />
+            `}
+            variables={`{ "id": "${id}" }`}
+          />
+          <Tooltip title="View on blockchain Explorer">
+            <Button
+              size="small"
+              variant="outlined"
+              href={network.getLinkForAddress(poolQuery.data?.id!)}
+              target="_blank"
+              startIcon={<OpenInNewIcon />}
+            >
+              Blockchain
+            </Button>
+          </Tooltip>
+        </Stack>
       </Stack>
 
       <Grid container spacing={3} sx={{ pt: 3 }}>
@@ -205,7 +221,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 <ListItemText
                   secondary={
                     <>
-                      Admim
+                      Admin
                       <InfoTooltipBtn
                         dataCy={"admin-tooltip"}
                         title={
@@ -214,6 +230,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                             update the pool of members and distribute funds to
                             members.{" "}
                             <AppLink
+                              data-cy="admin-tooltip-link"
                               href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
                               target="_blank"
                             >
@@ -250,6 +267,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                             General distribution agreement - this address is
                             created when a admin creates an pool.{" "}
                             <AppLink
+                              data-cy="pool-id-tooltip-link"
                               href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
                               target="_blank"
                             >
@@ -267,6 +285,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 <Grid item xs={6}>
                   <ListItem>
                     <ListItemText
+                      data-cy="last-updated-at"
                       secondary="Last Updated At"
                       primary={
                         pool ? (
@@ -281,6 +300,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 <Grid item xs={6}>
                   <ListItem>
                     <ListItemText
+                      data-cy="created-at"
                       secondary="Created At"
                       primary={
                         pool ? (
@@ -319,6 +339,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 <Grid item xs={6}>
                   <ListItem divider>
                     <ListItemText
+                      data-cy="total-connected-units"
                       secondary={
                         <>
                           Total Connected Units
@@ -341,6 +362,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 <Grid item xs={6}>
                   <ListItem divider>
                     <ListItemText
+                      data-cy="total-disconnected-units"
                       secondary={
                         <>
                           Total Disconnected Units
@@ -427,7 +449,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         </Grid>
       </Grid>
 
-      <Box sx={{ mt: 3 }}>
+      <Box data-cy={"flow-distributions-grid"} sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Flow Distributions
           <InfoTooltipBtn
@@ -435,8 +457,8 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
             size={22}
             title={
               <>
-                An event in which super tokens are flow to the entire
-                pool of members for a given pool using the Superfluid GDA.{" "}
+                An event in which super tokens are flow to the entire pool of
+                members for a given pool using the Superfluid GDA.{" "}
                 <AppLink
                   data-cy={"flows-tooltip-link"}
                   href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon#gda-examples-by-illustration"
@@ -460,7 +482,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         </Card>
       </Box>
 
-      <Box sx={{ mt: 3 }}>
+      <Box data-cy={"instant-distributions-grid"} sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Instant Distributions
           <InfoTooltipBtn
@@ -493,11 +515,11 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         </Card>
       </Box>
 
-      <Box sx={{ mt: 3 }}>
+      <Box data-cy="members-grid" sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Members
           <InfoTooltipBtn
-            dataCy={"members-tooltip"}
+            dataCy={"pool-members-tooltip"}
             size={22}
             title={
               <>
@@ -505,8 +527,8 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 will receive distributed funds based on the portion of units
                 they own in and pool.{" "}
                 <AppLink
-                  data-cy={"members-tooltip-link"}
-                  href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
+                  data-cy={"pool-members-tooltip-link"}
+                  href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
                   target="_blank"
                 >
                   Read more

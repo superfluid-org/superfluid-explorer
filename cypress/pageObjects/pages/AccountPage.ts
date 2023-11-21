@@ -1,4 +1,6 @@
 import {BasePage} from "../BasePage";
+import Decimal from "decimal.js"
+import calculatePoolPercentage from "../../../src/logic/calculatePoolPercentage"
 
 const ACCOUNT_TYPE = "[data-cy=account-type] span"
 const ACCOUNT_SYMBOL = "[data-cy=token-symbol]"
@@ -80,9 +82,35 @@ const CHIP_DISTRIBUTED = "[data-cy=chip-distributed]"
 const CHIP_UNITS = "[data-cy=chip-units]"
 const CHIP_ACTIVE = "[data-cy=chip-active]"
 const CHIP_INACTIVE = "[data-cy=chip-inactive]"
-
-
+const POOL_IDS = "[data-cy=publications-pool-id]"
+const POOLS_TOTAL_DISTRIBUTED = "[data-cy=publications-total-distributed]"
+const POOL_TOKENS = `${POOLS_TOTAL_DISTRIBUTED} div span`
+const POOLS_UNITS = "[data-cy=publications-units]"
+const POOLS_DETAILS_BUTTONS = "[data-cy=publications-details-buttons]"
+const NO_POOLS_RESULTS = "[data-cy=publications-no-results]"
+const NO_MEMBERS_RESULTS = "[data-cy=members-no-results]"
+const POOLS_FILTER_BUTTON = "[data-cy=pools-filter]"
+const POOL_FILTER_ID_INPUT = "[data-cy=id-input]"
+const POOL_FILTER_HAS_DISTRIBUTED_YES_BUTTON = "[data-cy=filter-distributed-yes]"
+const POOL_FILTER_HAS_DISTRIBUTED_NO_BUTTON = "[data-cy=filter-distributed-no]"
+const POOL_FILTER_HAS_ISSUED_UNITS_YES_BUTTON = "[data-cy=filter-issued-yes]"
+const POOL_FILTER_HAS_ISSUED_UNITS_NO_BUTTON = "[data-cy=filter-issued-no]"
+const MEMBER_TABLE_ADMINS = "[data-cy=admin-address]"
+const MEMBER_TABLE_CONNECTED = "[data-cy=connected-status]"
+const MEMBER_TABLE_TOTAL_CLAIMED = "[data-cy=amount-received]"
+const MEMBER_TABLE_POOL_UNITS = "[data-cy=member-units]"
+const MEMBERS_FILTER_BUTTON = "[data-cy=members-filter]"
+const MEMBER_FILTER_IS_CONNECTED_YES_BUTTON = "[data-cy=filter-members-approved-yes]"
+const MEMBER_FILTER_IS_CONNECTED_NO_BUTTON = "[data-cy=filter-members-approved-no]"
+const MEMBER_FILTER_HAS_RECEIVED_DISTRIBUTIONS_YES_BUTTON = "[data-cy=filter-received-distributions-yes]"
+const MEMBER_FILTER_HAS_RECEIVED_DISTRIBUTIONS_NO_BUTTON = "[data-cy=filter-received-distributions-no]"
+const MEMBER_FILTER_HAS_UNITS_YES_BUTTON = "[data-cy=filter-members-units-yes]"
+const MEMBER_FILTER_HAS_UNITS_NO_BUTTON = "[data-cy=filter-members-units-no]"
 export class AccountPage extends BasePage {
+  static waitForTablesToLoad() {
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
 
   static clickAddressBookButton() {
     this.click(BORDER_ADD_TO_ADDRESS_BOOK_BUTTON)
@@ -265,10 +293,16 @@ export class AccountPage extends BasePage {
   static hoverTooltipAndValidateLink(tooltip: string) {
     cy.fixture("toolTipStringsAndLinks").then(fixture => {
       cy.get("[data-cy=" + tooltip + "-tooltip]").trigger("mouseover").then(el => {
-        cy.wrap(el).should("have.attr", "aria-labelledby").then(attr => {
-          this.hasText(`[id="${attr}"]`, fixture[tooltip + "-tooltip"])
-          this.hasAttributeWithValue("[data-cy=" + tooltip + "-tooltip-link]", "href", fixture[tooltip + "-tooltip-link"])
+        let attributeToCheck = fixture[tooltip + "-tooltip-link"] ? "aria-labelledby" : "aria-label"
+        cy.wrap(el).should("have.attr", attributeToCheck).then(attr => {
+          if(attributeToCheck === "aria-labelledby") {
+            this.hasText(`[id="${attr}"]`, fixture[tooltip + "-tooltip"])
+            this.hasAttributeWithValue("[data-cy=" + tooltip + "-tooltip-link]", "href", fixture[tooltip + "-tooltip-link"])
+          } else {
+            this.hasText(`[role=tooltip] div`, fixture[tooltip + "-tooltip"])
+          }
         })
+        cy.get("[data-cy=" + tooltip + "-tooltip]").trigger("mouseout")
       })
     })
   }
@@ -796,6 +830,123 @@ export class AccountPage extends BasePage {
   static validateSenderAddressesAfterFiltering() {
     cy.get("@senderAddresses").each((address, i) => {
       cy.get(SENDER_ADDRESS).eq(i).should("contain", address)
+    })
+  }
+
+  static validateOnlyConnectedPoolsAreVisible() {
+          cy.get(MEMBER_TABLE_CONNECTED).each(el => {
+            cy.wrap(el).should("have.text","Yes")
+          });
+  }
+
+  static validateOnlyPoolsWithReceivedDistributionsAreVisible() {
+    cy.get("body").then($body => {
+      if ($body.find(MEMBER_TABLE_CONNECTED).length > 0) {   
+          cy.get(MEMBER_TABLE_CONNECTED).each(el => {
+            cy.wrap(el).should("have.text","Yes")
+          });
+      } else {
+         cy.get(NO_MEMBERS_RESULTS)
+      }
+  });  
+}
+  static validateMembersTableFilterNotVisible() {
+    this.doesNotExist(MEMBER_FILTER_HAS_RECEIVED_DISTRIBUTIONS_NO_BUTTON)
+    this.doesNotExist(MEMBER_FILTER_HAS_RECEIVED_DISTRIBUTIONS_YES_BUTTON)
+    this.doesNotExist(MEMBER_FILTER_HAS_UNITS_NO_BUTTON)
+    this.doesNotExist(MEMBER_FILTER_HAS_UNITS_YES_BUTTON)
+    this.doesNotExist(MEMBER_FILTER_IS_CONNECTED_NO_BUTTON)
+    this.doesNotExist(MEMBER_FILTER_IS_CONNECTED_YES_BUTTON)
+  }
+
+  static validateOnlyPoolsWithMemberUnitsAreVisible() {
+    cy.get("body").then($body => {
+      if ($body.find(MEMBER_TABLE_POOL_UNITS).length > 0) {   
+          cy.get(MEMBER_TABLE_POOL_UNITS).each(el => {
+            cy.wrap(parseFloat(el.text().split(" ")[0])).should("be.greaterThan",0)
+          });
+      } else {
+         cy.get(NO_MEMBERS_RESULTS)
+      }
+  });    
+}
+
+  static validatePoolTableFilterNotVisible() {
+    this.doesNotExist(POOL_FILTER_HAS_DISTRIBUTED_NO_BUTTON)
+    this.doesNotExist(POOL_FILTER_HAS_DISTRIBUTED_YES_BUTTON)
+    this.doesNotExist(POOL_FILTER_HAS_ISSUED_UNITS_NO_BUTTON)
+    this.doesNotExist(POOL_FILTER_HAS_ISSUED_UNITS_YES_BUTTON)
+    this.doesNotExist(POOL_FILTER_ID_INPUT)
+  }
+
+  static validateOnlyPoolsWithIssuedUnitsAreVisible() {
+    cy.get("body").then($body => {
+      if ($body.find(MEMBER_TABLE_CONNECTED).length > 0) {   
+          cy.get(MEMBER_TABLE_CONNECTED).each(el => {
+            cy.wrap(parseFloat(el.text().split(" ")[0])).should("be.greaterThan",0)
+          });
+      } else {
+         cy.get(NO_MEMBERS_RESULTS)
+      }
+  });    
+  }
+  static validateOnlyPoolsWithDistributionAreVisible() {
+          cy.get(POOLS_TOTAL_DISTRIBUTED).each(el => {
+            let number = parseFloat(el.text().replace(/[^\d\.]/g, ''));
+            cy.wrap(number).should("be.greaterThan",0)
+          });
+       }
+  static filterGDAPoolsTableBy(filter: string, value: string, field: string) {
+    let selectorPrefixForFilterButtons = filter === "pools" ? "filter" : "filter-members"
+    let filterButtonToClick = filter === "pools" ? POOLS_FILTER_BUTTON : MEMBERS_FILTER_BUTTON
+    this.click(filterButtonToClick)
+    this.click(`[data-cy=${selectorPrefixForFilterButtons}-${field}-${value}]`)
+    this.isVisible(LOADING_SPINNER)
+    this.isNotVisible(LOADING_SPINNER)
+  }
+
+static validateOnlyPoolsWithAddressAreVisible(address: string) {
+    cy.get(POOL_IDS).each(id => {
+        cy.wrap(id).should("contain.text",address)
+    })
+}
+static filterPoolsTableByAddress(address: string) {
+    this.click(POOLS_FILTER_BUTTON)
+    this.type(POOL_FILTER_ID_INPUT,address)
+}
+
+static validateNoResultsForMembersTable() {
+    this.isVisible(NO_MEMBERS_RESULTS)
+}
+static validateNoResultsForPoolsTable() {
+    this.isVisible(NO_POOLS_RESULTS)
+}
+
+static validateAdminAccountPoolsTableEntries(network: string) {
+    cy.fixture("accountData").then(data => {
+      data[network].gdaAdminAccount.pools.forEach((pool:any,index:number) => {
+        cy.get(POOL_IDS).eq(index).should("contain.text", pool.id)
+        cy.get(POOL_TOKENS).eq(index).should("contain.text", pool.token.symbol)
+        cy.get(POOLS_TOTAL_DISTRIBUTED).eq(index).should("contain.text", pool.totalAmountDistributedUntilUpdatedAt / 1e18)
+        cy.get(POOLS_UNITS).eq(index).should("contain.text", pool.totalUnits)
+      })
+    })
+  }
+
+  static validateMemberAccountMembersTableEntries(network: string) {
+    cy.fixture("accountData").then(data => {
+      data[network].gdaMemberAccount.pools.forEach((member:any,index:number) => {
+        cy.get(MEMBER_TABLE_ADMINS).eq(index).should("have.text", this.getShortenedAddress(member.pool.admin.id))
+        let expectedConnectionText = member.isConnected ? "Yes" : "No"
+        cy.get(MEMBER_TABLE_CONNECTED).eq(index).should("have.text", expectedConnectionText)
+        cy.get(MEMBER_TABLE_TOTAL_CLAIMED).eq(index).should("have.text", `${member.pool.token.symbol}${member.totalAmountClaimed / 1e18}`)
+        cy.get(MEMBER_TABLE_POOL_UNITS).eq(index).should("contain.text", `(${calculatePoolPercentage(
+            new Decimal(member.pool.totalUnits),
+            new Decimal(member.units)
+          )
+            .toDP(2)
+            .toString()}%)`)
+      })
     })
   }
 }

@@ -18,6 +18,7 @@ const STREAM_GRANULARITY_GROUP = "[data-cy=stream-granularity-button-group]"
 const SETTINGS_BUTTON = "[data-testid=SettingsOutlinedIcon]"
 const FILTER_BUTTON = "[data-testid=FilterListIcon]"
 const FILTER_RESET_BUTTON = "[data-cy=reset-filter]"
+const FILTER_CLOSE_BUTTON = "[data-cy=close-filter]"
 const SETTINGS_TESTNET_SWITCHES = "[data-cy*=testnet-switch"
 
 export class CommonElements extends BasePage {
@@ -137,5 +138,13 @@ export class CommonElements extends BasePage {
 
   static toggleTestnetBySlug(slugName:string) {
     this.click(SETTINGS_TESTNET_SWITCHES + "-" + slugName)
+  }
+
+  static clickFilterResetButton() {
+    this.click(FILTER_RESET_BUTTON)
+  }
+
+  static clickFilterCloseButton() {
+    this.click(FILTER_CLOSE_BUTTON)
   }
 }

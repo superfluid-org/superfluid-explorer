@@ -54,15 +54,15 @@ const PoolMemberDataGrid: FC<Props> = ({
       },
       {
         field: "approved",
-        headerName: "Approved",
+        headerName: "Connected",
         flex: 0.5,
-        renderCell: (params: GridRenderCellParams<boolean>) => (
-          <>{params.value ? "Yes" : "No"}</>
-        ),
+        renderCell: (params: GridRenderCellParams<boolean>) => {
+          return <>{params.row.isConnected ? "Yes" : "No"}</>;
+        },
         renderHeader: ({ colDef }) => (
           <>
             <GridColumnHeaderTitle
-              label="Approved"
+              label="Connected"
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn

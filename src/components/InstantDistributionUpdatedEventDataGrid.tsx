@@ -14,6 +14,8 @@ import TimeAgo from "./TimeAgo";
 import { Pool } from "../gda-subgraph/entities/pool/pool";
 import { InstantDistributionUpdatedEvent_OrderBy } from "../gda-subgraph/.graphclient";
 import { InstantDistributionUpdatedEvent } from "../gda-subgraph/events";
+import BalanceWithToken from "./BalanceWithToken";
+import { Skeleton } from "@mui/material";
 
 interface Props {
   pool: Pool | null | undefined;
@@ -42,6 +44,7 @@ const calculateDistributionAmount = (event: InstantDistributionUpdatedEvent): Bi
   // const indexValueDifference = BigNumber.from(event.newIndexValue).sub(
   //   BigNumber.from(event.oldIndexValue)
   // );
+  //BUG HERE
   return BigNumber.from(event.actualAmount).mul(totalUnits);
 };
 
@@ -72,18 +75,17 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
         flex: 1.5,
         renderCell: (params) => {
           return (
-            <>
-              <EtherFormatted wei={params.value} />
-              &nbsp;
-              {pool && (
-                <SuperTokenAddress
+            pool ? (
+              <>
+                <BalanceWithToken
+                  wei={params.row.distributionAmount}
                   network={network}
-                  address={pool.token}
-                  format={(token) => token.symbol}
-                  formatLoading={() => ""}
+                  tokenAddress={pool.token}
                 />
-              )}
-            </>
+              </>
+            ) : (
+              <Skeleton sx={{ width: "100px" }} />
+            )
           );
         },
       },

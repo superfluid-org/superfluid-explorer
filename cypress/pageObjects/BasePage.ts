@@ -19,7 +19,7 @@ export class BasePage {
     cy.get(selector).filter(":visible").type(text, {delay: 0});
   }
 
-  static hasText(selector: string, text?: string) {
+  static hasText(selector: string, text?: string | number) {
     cy.get(selector).filter(":visible").should("have.text", text);
   }
 
@@ -55,7 +55,7 @@ export class BasePage {
     cy.get(selector).should("contain.value", value);
   }
 
-  static containsText(selector: string, text: string) {
+  static containsText(selector: string, text: string | number) {
     cy.get(selector).should("contain.text", text);
   }
 
@@ -106,4 +106,5 @@ export class BasePage {
   static caseInsensitive(selector: string, text: string) {
     cy.get(selector).contains(text, {matchCase: false})
   }
+  
 }

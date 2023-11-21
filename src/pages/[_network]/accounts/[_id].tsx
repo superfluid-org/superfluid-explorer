@@ -412,7 +412,7 @@ const AccountPage: NextPage = () => {
                 }}
               />
               <Tab
-                data-cy={"indexes-tab"}
+                data-cy={"pools-tab"}
                 label="Pools"
                 value="pools"
                 onMouseEnter={() => {

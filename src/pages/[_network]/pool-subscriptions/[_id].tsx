@@ -176,7 +176,7 @@ export const PoolMemberPageContent: FC<{
         sx={{ mt: 1 }}
       >
         <Typography variant="h4" component="h1">
-          Pool Members
+          Pool Member
         </Typography>
         <SubgraphQueryLink
           network={network}
@@ -240,9 +240,9 @@ export const PoolMemberPageContent: FC<{
                           <>
                             The creator of an pool using the GDA - admins may
                             update the pool of members and distribute funds to
-                            subscribers.{" "}
+                            members.{" "}
                             <AppLink
-                              data-cy={"publisher-tooltip-link"}
+                              data-cy={"admin-tooltip-link"}
                               href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
                               target="_blank"
                             >
@@ -315,7 +315,7 @@ export const PoolMemberPageContent: FC<{
                       <>
                         {poolMember.units} / {pool.totalUnits} (
                         {poolPercentage &&
-                          poolPercentage.toDP(2).toString() + " %"}
+                          poolPercentage.toDP(2).toString() + "%"}
                         )
                       </>
                     ) : (
@@ -370,6 +370,7 @@ export const PoolMemberPageContent: FC<{
                 <Grid item xs={6}>
                   <ListItem>
                     <ListItemText
+                      data-cy="last-updated-at"
                       secondary="Last Updated At"
                       primary={
                         poolMember ? (
@@ -386,6 +387,7 @@ export const PoolMemberPageContent: FC<{
                 <Grid item xs={6}>
                   <ListItem>
                     <ListItemText
+                      data-cy="created-at"
                       secondary="Created At"
                       primary={
                         poolMember ? (
@@ -416,7 +418,7 @@ export const PoolMemberPageContent: FC<{
                 An event in which super tokens are stream to the entire
                 pool of members for a given pool using the Superfluid GDA.{" "}
                 <AppLink
-                  data-cy={"distributions-tooltip-link"}
+                  data-cy={"flow-distributions-tooltip-link"}
                   href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
                   target="_blank"
                 >
@@ -436,7 +438,7 @@ export const PoolMemberPageContent: FC<{
         </Card>
       </Box>
 
-      <Box data-cy={"distributions-grid"} sx={{ mt: 3 }}>
+      <Box data-cy={"instant-distributions-grid"} sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Instant Distributions
           <InfoTooltipBtn
@@ -447,7 +449,7 @@ export const PoolMemberPageContent: FC<{
                 pool of members for a given pool using the Superfluid GDA.{" "}
                 <AppLink
                   data-cy={"distributions-tooltip-link"}
-                  href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+                  href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon#gda-examples-by-illustration"
                   target="_blank"
                 >
                   Read more

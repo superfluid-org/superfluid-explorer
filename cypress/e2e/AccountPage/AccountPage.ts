@@ -1,4 +1,4 @@
-import {Given, Then} from "cypress-cucumber-preprocessor/steps";
+import {Given, Then,When} from "cypress-cucumber-preprocessor/steps";
 import {LandingPage} from "../../pageObjects/pages/LandingPage";
 import {AccountPage} from "../../pageObjects/pages/AccountPage";
 import {CommonElements} from "../../pageObjects/components/CommonElements";
@@ -51,9 +51,6 @@ Then(`Flow rates on {string} are shown in {string}`, (network, granularity) => {
 });
 Given(`The {string} help alert is shown`, (alert) => {
   AccountPage.validateHelpAlertAndLink(alert)
-});
-Given(`Tooltip is visible when user hovers the {string} tooltip icon`, (tooltip) => {
-  AccountPage.hoverTooltipAndValidateLink(tooltip)
 });
 
 Then(`User filters incoming streams by senders address for {string}`, (network) => {
@@ -249,4 +246,53 @@ Then(`User resets events filter`, () => {
 });
 Then("Table contains the same streams as before filtering", () => {
   AccountPage.validateSenderAddressesAfterFiltering()
+});
+Then(`User clicks on the reset button on the filter`, () => {
+  CommonElements.clickFilterResetButton()
+});
+Then(`User clicks on the close button on the filter`, () => {
+  CommonElements.clickFilterCloseButton()
+});
+Given(`User can see the pools they are admin to in the table`, () => {
+  AccountPage.validateAdminAccountPoolsTableEntries("goerli")
+});
+Given(`Pools and Members tables show no results`, () => {
+  AccountPage.validateNoResultsForPoolsTable()
+  AccountPage.validateNoResultsForMembersTable()
+});
+Given(`User filters the pools table by {string} address`, (address) => {
+  AccountPage.filterPoolsTableByAddress(address)
+});
+Given(`Only the pools with address {string} are shown in the table`, (address) => {
+  AccountPage.validateOnlyPoolsWithAddressAreVisible(address)
+});
+Then(`Only pools that have distributed tokens are shown in the table`, () => {
+  AccountPage.validateOnlyPoolsWithDistributionAreVisible()
+});
+Then(`Only pools that have issued units are shown in the table`, () => {
+  AccountPage.validateOnlyPoolsWithIssuedUnitsAreVisible()
+});
+Then(`The pool table filter is not visible`, () => {
+  AccountPage.validatePoolTableFilterNotVisible()
+});
+Then(`User can see the pools they are a member of in the table`, () => {
+  AccountPage.validateMemberAccountMembersTableEntries("goerli")
+});
+Then(`User sees only the pools they are connected to`, () => {
+  AccountPage.validateOnlyConnectedPoolsAreVisible()
+});
+Then(`User sees only the pools they have received distributions from`, () => {
+  AccountPage.validateOnlyPoolsWithReceivedDistributionsAreVisible()
+});
+Then(`The member table filter is not visible`, () => {
+  AccountPage.validateMembersTableFilterNotVisible()
+});
+When(`User sets the {string} filter to {string} for {string}`, (filter: string,value:string,field:string) => {
+  AccountPage.filterGDAPoolsTableBy(filter,value,field)
+});
+When(`User waits for the tables to load`, () => {
+  AccountPage.waitForTablesToLoad()
+});
+Then(`User sees only the pools they have units in`, () => {
+  AccountPage.validateOnlyPoolsWithMemberUnitsAreVisible()
 });
