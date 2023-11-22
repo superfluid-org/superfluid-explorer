@@ -10,6 +10,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Skeleton,
   Stack,
   Tooltip,
   Typography,
@@ -23,6 +24,8 @@ import NetworkTabs from "../../components/NetworkTabs";
 import { useNetworkContext } from "../../contexts/NetworkContext";
 import { Network, networks } from "../../redux/networks";
 import protocolContracts from "../../redux/protocolContracts";
+import { rpcApi } from "../../redux/store";
+import { pseudoAddressToVersionString } from "../../utils/versionUtils";
 
 interface AddressListItemProps {
   title: string;
@@ -75,6 +78,10 @@ const AddressListItem: FC<AddressListItemProps> = ({
 const Protocol: NextPage = () => {
   const network = useNetworkContext();
   const router = useRouter();
+
+  const protocolVersionResponse = rpcApi.useProtocolVersionQuery({
+    chainId: network.chainId,
+  });
 
   const onTabChange = (newValue: string) =>
     router.replace({
@@ -298,6 +305,37 @@ const Protocol: NextPage = () => {
                   address={existentialNFTCloneFactory}
                 />
               </List>
+            </Card>
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                px: 2,
+                mt: 4,
+                mb: 2,
+              }}
+            >
+              Versions
+            </Typography>
+            <Card>
+              <CardContent>
+                <ListItemText
+                  data-cy={"protocol-contracts"}
+                  primary="Protocol Contracts"
+                  secondary={
+                    <>
+                      {protocolVersionResponse.data ? (
+                        pseudoAddressToVersionString(
+                          protocolVersionResponse.data
+                        )
+                      ) : (
+                        <Skeleton sx={{ width: "200px" }} />
+                      )}
+                      <InfoTooltipBtn title="The version format is {major}.{minor}.{patch}-{gitRevision}." />
+                    </>
+                  }
+                />
+              </CardContent>
             </Card>
           </TabPanel>
         ))}

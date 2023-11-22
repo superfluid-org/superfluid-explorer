@@ -38,10 +38,11 @@ import { allSubgraphEndpoints as allGdaSubgraphEndpoints } from "../gda-subgraph
 import { ModuleName } from "@reduxjs/toolkit/dist/query/apiTypes";
 import { CreateApi } from "@reduxjs/toolkit/dist/query";
 import { createSubgraphGdaApiSlice } from "../gda-subgraph/subgraphGdaApiSlice";
+import { adhocRpcEndpoints } from "./adhocRpcEndpoints";
 
-export const rpcApi = initializeRpcApiSlice(
-  createApiWithReactHooks
-).injectEndpoints(balanceRpcApiEndpoints);
+export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks)
+  .injectEndpoints(balanceRpcApiEndpoints)
+  .injectEndpoints(adhocRpcEndpoints);
 
 export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
@@ -72,7 +73,6 @@ export const makeStore = wrapMakeStore(() => {
     { key: "address-book", version: 1, storage: storageLocal },
     addressBookSlice.reducer
   );
-
 
   const store = configureStore({
     reducer: {
