@@ -26,6 +26,10 @@ jobs:
         with:
           node-version: 16.x
 
+      - name: Install dependencies with currents Cypress binary
+        run: CYPRESS_DOWNLOAD_MIRROR=https://cy-cdn.currents.dev yarn install
+          
+
       - name: Cypress tests
         uses: cypress-io/github-action@v2
         with:
