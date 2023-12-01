@@ -2947,6 +2947,411 @@ export type AppRegisteredEvent_orderBy =
   | 'order'
   | 'app';
 
+export type ApprovalEvent = Event & {
+  id: Scalars['ID'];
+  transactionHash: Scalars['Bytes'];
+  gasPrice: Scalars['BigInt'];
+  gasUsed: Scalars['BigInt'];
+  timestamp: Scalars['BigInt'];
+  name: Scalars['String'];
+  /**
+   * Empty addresses array.
+   *
+   */
+  addresses: Array<Scalars['Bytes']>;
+  blockNumber: Scalars['BigInt'];
+  logIndex: Scalars['BigInt'];
+  order: Scalars['BigInt'];
+  owner: Account;
+  /**
+   * The address that will be granted allowance to transfer the NFT.
+   *
+   */
+  to: Account;
+  /**
+   * The id of the NFT that will be granted allowance to transfer.
+   * The id is: uint256(keccak256(abi.encode(block.chainid, superToken, sender, receiver)))
+   *
+   */
+  tokenId: Scalars['BigInt'];
+};
+
+export type ApprovalEvent_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  gasPrice?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_not?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_gt?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_lt?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_gte?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_lte?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  gasPrice_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  gasUsed?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_not?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_gt?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_lt?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_gte?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_lte?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  gasUsed_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  name?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']>;
+  name_gt?: InputMaybe<Scalars['String']>;
+  name_lt?: InputMaybe<Scalars['String']>;
+  name_gte?: InputMaybe<Scalars['String']>;
+  name_lte?: InputMaybe<Scalars['String']>;
+  name_in?: InputMaybe<Array<Scalars['String']>>;
+  name_not_in?: InputMaybe<Array<Scalars['String']>>;
+  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']>;
+  name_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  addresses?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  logIndex?: InputMaybe<Scalars['BigInt']>;
+  logIndex_not?: InputMaybe<Scalars['BigInt']>;
+  logIndex_gt?: InputMaybe<Scalars['BigInt']>;
+  logIndex_lt?: InputMaybe<Scalars['BigInt']>;
+  logIndex_gte?: InputMaybe<Scalars['BigInt']>;
+  logIndex_lte?: InputMaybe<Scalars['BigInt']>;
+  logIndex_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  logIndex_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  order?: InputMaybe<Scalars['BigInt']>;
+  order_not?: InputMaybe<Scalars['BigInt']>;
+  order_gt?: InputMaybe<Scalars['BigInt']>;
+  order_lt?: InputMaybe<Scalars['BigInt']>;
+  order_gte?: InputMaybe<Scalars['BigInt']>;
+  order_lte?: InputMaybe<Scalars['BigInt']>;
+  order_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  order_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  owner?: InputMaybe<Scalars['String']>;
+  owner_not?: InputMaybe<Scalars['String']>;
+  owner_gt?: InputMaybe<Scalars['String']>;
+  owner_lt?: InputMaybe<Scalars['String']>;
+  owner_gte?: InputMaybe<Scalars['String']>;
+  owner_lte?: InputMaybe<Scalars['String']>;
+  owner_in?: InputMaybe<Array<Scalars['String']>>;
+  owner_not_in?: InputMaybe<Array<Scalars['String']>>;
+  owner_contains?: InputMaybe<Scalars['String']>;
+  owner_contains_nocase?: InputMaybe<Scalars['String']>;
+  owner_not_contains?: InputMaybe<Scalars['String']>;
+  owner_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  owner_starts_with?: InputMaybe<Scalars['String']>;
+  owner_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  owner_not_starts_with?: InputMaybe<Scalars['String']>;
+  owner_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  owner_ends_with?: InputMaybe<Scalars['String']>;
+  owner_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  owner_not_ends_with?: InputMaybe<Scalars['String']>;
+  owner_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  owner_?: InputMaybe<Account_filter>;
+  to?: InputMaybe<Scalars['String']>;
+  to_not?: InputMaybe<Scalars['String']>;
+  to_gt?: InputMaybe<Scalars['String']>;
+  to_lt?: InputMaybe<Scalars['String']>;
+  to_gte?: InputMaybe<Scalars['String']>;
+  to_lte?: InputMaybe<Scalars['String']>;
+  to_in?: InputMaybe<Array<Scalars['String']>>;
+  to_not_in?: InputMaybe<Array<Scalars['String']>>;
+  to_contains?: InputMaybe<Scalars['String']>;
+  to_contains_nocase?: InputMaybe<Scalars['String']>;
+  to_not_contains?: InputMaybe<Scalars['String']>;
+  to_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  to_starts_with?: InputMaybe<Scalars['String']>;
+  to_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  to_not_starts_with?: InputMaybe<Scalars['String']>;
+  to_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  to_ends_with?: InputMaybe<Scalars['String']>;
+  to_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  to_not_ends_with?: InputMaybe<Scalars['String']>;
+  to_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  to_?: InputMaybe<Account_filter>;
+  tokenId?: InputMaybe<Scalars['BigInt']>;
+  tokenId_not?: InputMaybe<Scalars['BigInt']>;
+  tokenId_gt?: InputMaybe<Scalars['BigInt']>;
+  tokenId_lt?: InputMaybe<Scalars['BigInt']>;
+  tokenId_gte?: InputMaybe<Scalars['BigInt']>;
+  tokenId_lte?: InputMaybe<Scalars['BigInt']>;
+  tokenId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  tokenId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ApprovalEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ApprovalEvent_filter>>>;
+};
+
+export type ApprovalEvent_orderBy =
+  | 'id'
+  | 'transactionHash'
+  | 'gasPrice'
+  | 'gasUsed'
+  | 'timestamp'
+  | 'name'
+  | 'addresses'
+  | 'blockNumber'
+  | 'logIndex'
+  | 'order'
+  | 'owner'
+  | 'owner__id'
+  | 'owner__createdAtTimestamp'
+  | 'owner__createdAtBlockNumber'
+  | 'owner__updatedAtTimestamp'
+  | 'owner__updatedAtBlockNumber'
+  | 'owner__isSuperApp'
+  | 'to'
+  | 'to__id'
+  | 'to__createdAtTimestamp'
+  | 'to__createdAtBlockNumber'
+  | 'to__updatedAtTimestamp'
+  | 'to__updatedAtBlockNumber'
+  | 'to__isSuperApp'
+  | 'tokenId';
+
+export type ApprovalForAllEvent = Event & {
+  id: Scalars['ID'];
+  transactionHash: Scalars['Bytes'];
+  gasPrice: Scalars['BigInt'];
+  gasUsed: Scalars['BigInt'];
+  timestamp: Scalars['BigInt'];
+  name: Scalars['String'];
+  /**
+   * Empty addresses array.
+   *
+   */
+  addresses: Array<Scalars['Bytes']>;
+  blockNumber: Scalars['BigInt'];
+  logIndex: Scalars['BigInt'];
+  order: Scalars['BigInt'];
+  owner: Account;
+  /**
+   * The address that will be granted operator permissions for the all of the owner's tokens.
+   *
+   */
+  operator: Account;
+  /**
+   * Whether the operator is enabled or disabled for `owner`.
+   *
+   */
+  approved: Scalars['Boolean'];
+};
+
+export type ApprovalForAllEvent_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  gasPrice?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_not?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_gt?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_lt?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_gte?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_lte?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  gasPrice_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  gasUsed?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_not?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_gt?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_lt?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_gte?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_lte?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  gasUsed_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  name?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']>;
+  name_gt?: InputMaybe<Scalars['String']>;
+  name_lt?: InputMaybe<Scalars['String']>;
+  name_gte?: InputMaybe<Scalars['String']>;
+  name_lte?: InputMaybe<Scalars['String']>;
+  name_in?: InputMaybe<Array<Scalars['String']>>;
+  name_not_in?: InputMaybe<Array<Scalars['String']>>;
+  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']>;
+  name_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  addresses?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  logIndex?: InputMaybe<Scalars['BigInt']>;
+  logIndex_not?: InputMaybe<Scalars['BigInt']>;
+  logIndex_gt?: InputMaybe<Scalars['BigInt']>;
+  logIndex_lt?: InputMaybe<Scalars['BigInt']>;
+  logIndex_gte?: InputMaybe<Scalars['BigInt']>;
+  logIndex_lte?: InputMaybe<Scalars['BigInt']>;
+  logIndex_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  logIndex_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  order?: InputMaybe<Scalars['BigInt']>;
+  order_not?: InputMaybe<Scalars['BigInt']>;
+  order_gt?: InputMaybe<Scalars['BigInt']>;
+  order_lt?: InputMaybe<Scalars['BigInt']>;
+  order_gte?: InputMaybe<Scalars['BigInt']>;
+  order_lte?: InputMaybe<Scalars['BigInt']>;
+  order_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  order_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  owner?: InputMaybe<Scalars['String']>;
+  owner_not?: InputMaybe<Scalars['String']>;
+  owner_gt?: InputMaybe<Scalars['String']>;
+  owner_lt?: InputMaybe<Scalars['String']>;
+  owner_gte?: InputMaybe<Scalars['String']>;
+  owner_lte?: InputMaybe<Scalars['String']>;
+  owner_in?: InputMaybe<Array<Scalars['String']>>;
+  owner_not_in?: InputMaybe<Array<Scalars['String']>>;
+  owner_contains?: InputMaybe<Scalars['String']>;
+  owner_contains_nocase?: InputMaybe<Scalars['String']>;
+  owner_not_contains?: InputMaybe<Scalars['String']>;
+  owner_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  owner_starts_with?: InputMaybe<Scalars['String']>;
+  owner_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  owner_not_starts_with?: InputMaybe<Scalars['String']>;
+  owner_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  owner_ends_with?: InputMaybe<Scalars['String']>;
+  owner_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  owner_not_ends_with?: InputMaybe<Scalars['String']>;
+  owner_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  owner_?: InputMaybe<Account_filter>;
+  operator?: InputMaybe<Scalars['String']>;
+  operator_not?: InputMaybe<Scalars['String']>;
+  operator_gt?: InputMaybe<Scalars['String']>;
+  operator_lt?: InputMaybe<Scalars['String']>;
+  operator_gte?: InputMaybe<Scalars['String']>;
+  operator_lte?: InputMaybe<Scalars['String']>;
+  operator_in?: InputMaybe<Array<Scalars['String']>>;
+  operator_not_in?: InputMaybe<Array<Scalars['String']>>;
+  operator_contains?: InputMaybe<Scalars['String']>;
+  operator_contains_nocase?: InputMaybe<Scalars['String']>;
+  operator_not_contains?: InputMaybe<Scalars['String']>;
+  operator_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  operator_starts_with?: InputMaybe<Scalars['String']>;
+  operator_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  operator_not_starts_with?: InputMaybe<Scalars['String']>;
+  operator_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  operator_ends_with?: InputMaybe<Scalars['String']>;
+  operator_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  operator_not_ends_with?: InputMaybe<Scalars['String']>;
+  operator_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  operator_?: InputMaybe<Account_filter>;
+  approved?: InputMaybe<Scalars['Boolean']>;
+  approved_not?: InputMaybe<Scalars['Boolean']>;
+  approved_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  approved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ApprovalForAllEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ApprovalForAllEvent_filter>>>;
+};
+
+export type ApprovalForAllEvent_orderBy =
+  | 'id'
+  | 'transactionHash'
+  | 'gasPrice'
+  | 'gasUsed'
+  | 'timestamp'
+  | 'name'
+  | 'addresses'
+  | 'blockNumber'
+  | 'logIndex'
+  | 'order'
+  | 'owner'
+  | 'owner__id'
+  | 'owner__createdAtTimestamp'
+  | 'owner__createdAtBlockNumber'
+  | 'owner__updatedAtTimestamp'
+  | 'owner__updatedAtBlockNumber'
+  | 'owner__isSuperApp'
+  | 'operator'
+  | 'operator__id'
+  | 'operator__createdAtTimestamp'
+  | 'operator__createdAtBlockNumber'
+  | 'operator__updatedAtTimestamp'
+  | 'operator__updatedAtBlockNumber'
+  | 'operator__isSuperApp'
+  | 'approved';
+
 export type BlockChangedFilter = {
   number_gte: Scalars['Int'];
 };
@@ -4674,6 +5079,7 @@ export type FlowDistributionUpdatedEvent = Event & {
   newTotalDistributionFlowRate: Scalars['BigInt'];
   adjustmentFlowRecipient: Scalars['Bytes'];
   adjustmentFlowRate: Scalars['BigInt'];
+  userData: Scalars['Bytes'];
   pool: Pool;
   poolDistributor: PoolDistributor;
 };
@@ -4833,6 +5239,16 @@ export type FlowDistributionUpdatedEvent_filter = {
   adjustmentFlowRate_lte?: InputMaybe<Scalars['BigInt']>;
   adjustmentFlowRate_in?: InputMaybe<Array<Scalars['BigInt']>>;
   adjustmentFlowRate_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  userData?: InputMaybe<Scalars['Bytes']>;
+  userData_not?: InputMaybe<Scalars['Bytes']>;
+  userData_gt?: InputMaybe<Scalars['Bytes']>;
+  userData_lt?: InputMaybe<Scalars['Bytes']>;
+  userData_gte?: InputMaybe<Scalars['Bytes']>;
+  userData_lte?: InputMaybe<Scalars['Bytes']>;
+  userData_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  userData_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  userData_contains?: InputMaybe<Scalars['Bytes']>;
+  userData_not_contains?: InputMaybe<Scalars['Bytes']>;
   pool?: InputMaybe<Scalars['String']>;
   pool_not?: InputMaybe<Scalars['String']>;
   pool_gt?: InputMaybe<Scalars['String']>;
@@ -4899,6 +5315,7 @@ export type FlowDistributionUpdatedEvent_orderBy =
   | 'newTotalDistributionFlowRate'
   | 'adjustmentFlowRecipient'
   | 'adjustmentFlowRate'
+  | 'userData'
   | 'pool'
   | 'pool__id'
   | 'pool__createdAtTimestamp'
@@ -8044,6 +8461,7 @@ export type InstantDistributionUpdatedEvent = Event & {
   operator: Scalars['Bytes'];
   requestedAmount: Scalars['BigInt'];
   actualAmount: Scalars['BigInt'];
+  userData: Scalars['Bytes'];
   pool: Pool;
   poolDistributor: PoolDistributor;
 };
@@ -8177,6 +8595,16 @@ export type InstantDistributionUpdatedEvent_filter = {
   actualAmount_lte?: InputMaybe<Scalars['BigInt']>;
   actualAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   actualAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  userData?: InputMaybe<Scalars['Bytes']>;
+  userData_not?: InputMaybe<Scalars['Bytes']>;
+  userData_gt?: InputMaybe<Scalars['Bytes']>;
+  userData_lt?: InputMaybe<Scalars['Bytes']>;
+  userData_gte?: InputMaybe<Scalars['Bytes']>;
+  userData_lte?: InputMaybe<Scalars['Bytes']>;
+  userData_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  userData_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  userData_contains?: InputMaybe<Scalars['Bytes']>;
+  userData_not_contains?: InputMaybe<Scalars['Bytes']>;
   pool?: InputMaybe<Scalars['String']>;
   pool_not?: InputMaybe<Scalars['String']>;
   pool_gt?: InputMaybe<Scalars['String']>;
@@ -8240,6 +8668,7 @@ export type InstantDistributionUpdatedEvent_orderBy =
   | 'operator'
   | 'requestedAmount'
   | 'actualAmount'
+  | 'userData'
   | 'pool'
   | 'pool__id'
   | 'pool__createdAtTimestamp'
@@ -8439,6 +8868,7 @@ export type MemberUnitsUpdatedEvent = Event & {
   logIndex: Scalars['BigInt'];
   order: Scalars['BigInt'];
   token: Scalars['Bytes'];
+  oldUnits: Scalars['BigInt'];
   units: Scalars['BigInt'];
   pool: Pool;
   poolMember: PoolMember;
@@ -8547,6 +8977,14 @@ export type MemberUnitsUpdatedEvent_filter = {
   token_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   token_contains?: InputMaybe<Scalars['Bytes']>;
   token_not_contains?: InputMaybe<Scalars['Bytes']>;
+  oldUnits?: InputMaybe<Scalars['BigInt']>;
+  oldUnits_not?: InputMaybe<Scalars['BigInt']>;
+  oldUnits_gt?: InputMaybe<Scalars['BigInt']>;
+  oldUnits_lt?: InputMaybe<Scalars['BigInt']>;
+  oldUnits_gte?: InputMaybe<Scalars['BigInt']>;
+  oldUnits_lte?: InputMaybe<Scalars['BigInt']>;
+  oldUnits_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  oldUnits_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   units?: InputMaybe<Scalars['BigInt']>;
   units_not?: InputMaybe<Scalars['BigInt']>;
   units_gt?: InputMaybe<Scalars['BigInt']>;
@@ -8615,6 +9053,7 @@ export type MemberUnitsUpdatedEvent_orderBy =
   | 'logIndex'
   | 'order'
   | 'token'
+  | 'oldUnits'
   | 'units'
   | 'pool'
   | 'pool__id'
@@ -8643,6 +9082,149 @@ export type MemberUnitsUpdatedEvent_orderBy =
   | 'poolMember__units'
   | 'poolMember__isConnected'
   | 'poolMember__totalAmountClaimed';
+
+export type MetadataUpdateEvent = Event & {
+  id: Scalars['ID'];
+  transactionHash: Scalars['Bytes'];
+  gasPrice: Scalars['BigInt'];
+  gasUsed: Scalars['BigInt'];
+  timestamp: Scalars['BigInt'];
+  name: Scalars['String'];
+  /**
+   * Empty addresses array.
+   *
+   */
+  addresses: Array<Scalars['Bytes']>;
+  blockNumber: Scalars['BigInt'];
+  logIndex: Scalars['BigInt'];
+  order: Scalars['BigInt'];
+  /**
+   * The id of the NFT that will be granted allowance to transfer.
+   * The id is: uint256(keccak256(abi.encode(block.chainid, superToken, sender, receiver)))
+   *
+   */
+  tokenId: Scalars['BigInt'];
+};
+
+export type MetadataUpdateEvent_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  gasPrice?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_not?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_gt?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_lt?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_gte?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_lte?: InputMaybe<Scalars['BigInt']>;
+  gasPrice_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  gasPrice_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  gasUsed?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_not?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_gt?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_lt?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_gte?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_lte?: InputMaybe<Scalars['BigInt']>;
+  gasUsed_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  gasUsed_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  name?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']>;
+  name_gt?: InputMaybe<Scalars['String']>;
+  name_lt?: InputMaybe<Scalars['String']>;
+  name_gte?: InputMaybe<Scalars['String']>;
+  name_lte?: InputMaybe<Scalars['String']>;
+  name_in?: InputMaybe<Array<Scalars['String']>>;
+  name_not_in?: InputMaybe<Array<Scalars['String']>>;
+  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']>;
+  name_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  addresses?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  logIndex?: InputMaybe<Scalars['BigInt']>;
+  logIndex_not?: InputMaybe<Scalars['BigInt']>;
+  logIndex_gt?: InputMaybe<Scalars['BigInt']>;
+  logIndex_lt?: InputMaybe<Scalars['BigInt']>;
+  logIndex_gte?: InputMaybe<Scalars['BigInt']>;
+  logIndex_lte?: InputMaybe<Scalars['BigInt']>;
+  logIndex_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  logIndex_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  order?: InputMaybe<Scalars['BigInt']>;
+  order_not?: InputMaybe<Scalars['BigInt']>;
+  order_gt?: InputMaybe<Scalars['BigInt']>;
+  order_lt?: InputMaybe<Scalars['BigInt']>;
+  order_gte?: InputMaybe<Scalars['BigInt']>;
+  order_lte?: InputMaybe<Scalars['BigInt']>;
+  order_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  order_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  tokenId?: InputMaybe<Scalars['BigInt']>;
+  tokenId_not?: InputMaybe<Scalars['BigInt']>;
+  tokenId_gt?: InputMaybe<Scalars['BigInt']>;
+  tokenId_lt?: InputMaybe<Scalars['BigInt']>;
+  tokenId_gte?: InputMaybe<Scalars['BigInt']>;
+  tokenId_lte?: InputMaybe<Scalars['BigInt']>;
+  tokenId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  tokenId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<MetadataUpdateEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<MetadataUpdateEvent_filter>>>;
+};
+
+export type MetadataUpdateEvent_orderBy =
+  | 'id'
+  | 'transactionHash'
+  | 'gasPrice'
+  | 'gasUsed'
+  | 'timestamp'
+  | 'name'
+  | 'addresses'
+  | 'blockNumber'
+  | 'logIndex'
+  | 'order'
+  | 'tokenId';
 
 export type MintedEvent = Event & {
   id: Scalars['ID'];
@@ -9277,7 +9859,7 @@ export type Pool = {
   bufferAdjustedEvents: Array<BufferAdjustedEvent>;
   instantDistributionUpdatedEvents: Array<InstantDistributionUpdatedEvent>;
   flowDistributionUpdatedEvents: Array<FlowDistributionUpdatedEvent>;
-  poolMemberUnitsUpdatedEvents: Array<MemberUnitsUpdatedEvent>;
+  memberUnitsUpdatedEvents: Array<MemberUnitsUpdatedEvent>;
   distributionClaimedEvents: Array<DistributionClaimedEvent>;
 };
 
@@ -9336,7 +9918,7 @@ export type PoolflowDistributionUpdatedEventsArgs = {
 };
 
 
-export type PoolpoolMemberUnitsUpdatedEventsArgs = {
+export type PoolmemberUnitsUpdatedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<MemberUnitsUpdatedEvent_orderBy>;
@@ -9373,6 +9955,7 @@ export type PoolConnectionUpdatedEvent = Event & {
   order: Scalars['BigInt'];
   token: Scalars['Bytes'];
   connected: Scalars['Boolean'];
+  userData: Scalars['Bytes'];
   pool: Pool;
   poolMember: PoolMember;
 };
@@ -9484,6 +10067,16 @@ export type PoolConnectionUpdatedEvent_filter = {
   connected_not?: InputMaybe<Scalars['Boolean']>;
   connected_in?: InputMaybe<Array<Scalars['Boolean']>>;
   connected_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  userData?: InputMaybe<Scalars['Bytes']>;
+  userData_not?: InputMaybe<Scalars['Bytes']>;
+  userData_gt?: InputMaybe<Scalars['Bytes']>;
+  userData_lt?: InputMaybe<Scalars['Bytes']>;
+  userData_gte?: InputMaybe<Scalars['Bytes']>;
+  userData_lte?: InputMaybe<Scalars['Bytes']>;
+  userData_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  userData_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  userData_contains?: InputMaybe<Scalars['Bytes']>;
+  userData_not_contains?: InputMaybe<Scalars['Bytes']>;
   pool?: InputMaybe<Scalars['String']>;
   pool_not?: InputMaybe<Scalars['String']>;
   pool_gt?: InputMaybe<Scalars['String']>;
@@ -9545,6 +10138,7 @@ export type PoolConnectionUpdatedEvent_orderBy =
   | 'order'
   | 'token'
   | 'connected'
+  | 'userData'
   | 'pool'
   | 'pool__id'
   | 'pool__createdAtTimestamp'
@@ -10018,7 +10612,7 @@ export type PoolMember = {
   account: Account;
   pool: Pool;
   poolConnectionUpdatedEvents: Array<PoolConnectionUpdatedEvent>;
-  poolMemberUnitsUpdatedEvents: Array<MemberUnitsUpdatedEvent>;
+  memberUnitsUpdatedEvents: Array<MemberUnitsUpdatedEvent>;
   distributionClaimedEvents: Array<DistributionClaimedEvent>;
 };
 
@@ -10032,7 +10626,7 @@ export type PoolMemberpoolConnectionUpdatedEventsArgs = {
 };
 
 
-export type PoolMemberpoolMemberUnitsUpdatedEventsArgs = {
+export type PoolMembermemberUnitsUpdatedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<MemberUnitsUpdatedEvent_orderBy>;
@@ -10153,7 +10747,7 @@ export type PoolMember_filter = {
   pool_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   pool_?: InputMaybe<Pool_filter>;
   poolConnectionUpdatedEvents_?: InputMaybe<PoolConnectionUpdatedEvent_filter>;
-  poolMemberUnitsUpdatedEvents_?: InputMaybe<MemberUnitsUpdatedEvent_filter>;
+  memberUnitsUpdatedEvents_?: InputMaybe<MemberUnitsUpdatedEvent_filter>;
   distributionClaimedEvents_?: InputMaybe<DistributionClaimedEvent_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
@@ -10196,7 +10790,7 @@ export type PoolMember_orderBy =
   | 'pool__flowRate'
   | 'pool__totalBuffer'
   | 'poolConnectionUpdatedEvents'
-  | 'poolMemberUnitsUpdatedEvents'
+  | 'memberUnitsUpdatedEvents'
   | 'distributionClaimedEvents';
 
 export type Pool_filter = {
@@ -10385,7 +10979,7 @@ export type Pool_filter = {
   bufferAdjustedEvents_?: InputMaybe<BufferAdjustedEvent_filter>;
   instantDistributionUpdatedEvents_?: InputMaybe<InstantDistributionUpdatedEvent_filter>;
   flowDistributionUpdatedEvents_?: InputMaybe<FlowDistributionUpdatedEvent_filter>;
-  poolMemberUnitsUpdatedEvents_?: InputMaybe<MemberUnitsUpdatedEvent_filter>;
+  memberUnitsUpdatedEvents_?: InputMaybe<MemberUnitsUpdatedEvent_filter>;
   distributionClaimedEvents_?: InputMaybe<DistributionClaimedEvent_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
@@ -10448,7 +11042,7 @@ export type Pool_orderBy =
   | 'bufferAdjustedEvents'
   | 'instantDistributionUpdatedEvents'
   | 'flowDistributionUpdatedEvents'
-  | 'poolMemberUnitsUpdatedEvents'
+  | 'memberUnitsUpdatedEvents'
   | 'distributionClaimedEvents';
 
 export type Query = {
@@ -10540,6 +11134,12 @@ export type Query = {
   tokenDowngradedEvents: Array<TokenDowngradedEvent>;
   tokenUpgradedEvent?: Maybe<TokenUpgradedEvent>;
   tokenUpgradedEvents: Array<TokenUpgradedEvent>;
+  approvalEvent?: Maybe<ApprovalEvent>;
+  approvalEvents: Array<ApprovalEvent>;
+  approvalForAllEvent?: Maybe<ApprovalForAllEvent>;
+  approvalForAllEvents: Array<ApprovalForAllEvent>;
+  metadataUpdateEvent?: Maybe<MetadataUpdateEvent>;
+  metadataUpdateEvents: Array<MetadataUpdateEvent>;
   customSuperTokenCreatedEvent?: Maybe<CustomSuperTokenCreatedEvent>;
   customSuperTokenCreatedEvents: Array<CustomSuperTokenCreatedEvent>;
   superTokenCreatedEvent?: Maybe<SuperTokenCreatedEvent>;
@@ -11382,6 +11982,60 @@ export type QuerytokenUpgradedEventsArgs = {
   orderBy?: InputMaybe<TokenUpgradedEvent_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<TokenUpgradedEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryapprovalEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryapprovalEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ApprovalEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ApprovalEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryapprovalForAllEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryapprovalForAllEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ApprovalForAllEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ApprovalForAllEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerymetadataUpdateEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerymetadataUpdateEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<MetadataUpdateEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<MetadataUpdateEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -13863,6 +14517,12 @@ export type Subscription = {
   tokenDowngradedEvents: Array<TokenDowngradedEvent>;
   tokenUpgradedEvent?: Maybe<TokenUpgradedEvent>;
   tokenUpgradedEvents: Array<TokenUpgradedEvent>;
+  approvalEvent?: Maybe<ApprovalEvent>;
+  approvalEvents: Array<ApprovalEvent>;
+  approvalForAllEvent?: Maybe<ApprovalForAllEvent>;
+  approvalForAllEvents: Array<ApprovalForAllEvent>;
+  metadataUpdateEvent?: Maybe<MetadataUpdateEvent>;
+  metadataUpdateEvents: Array<MetadataUpdateEvent>;
   customSuperTokenCreatedEvent?: Maybe<CustomSuperTokenCreatedEvent>;
   customSuperTokenCreatedEvents: Array<CustomSuperTokenCreatedEvent>;
   superTokenCreatedEvent?: Maybe<SuperTokenCreatedEvent>;
@@ -14705,6 +15365,60 @@ export type SubscriptiontokenUpgradedEventsArgs = {
   orderBy?: InputMaybe<TokenUpgradedEvent_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<TokenUpgradedEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionapprovalEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionapprovalEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ApprovalEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ApprovalEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionapprovalForAllEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionapprovalForAllEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ApprovalForAllEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ApprovalForAllEvent_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionmetadataUpdateEventArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionmetadataUpdateEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<MetadataUpdateEvent_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<MetadataUpdateEvent_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -18711,7 +19425,7 @@ export type TransferEvent = Event & {
   name: Scalars['String'];
   /**
    * Contains the addresses that were impacted by this event:
-   * addresses[0] = `token` (superToken)
+   * addresses[0] = `token` (superToken if `isNFTTransfer` is false, otherwise the ConstantOutflowNFT or ConstantInflowNFT)
    * addresses[1] = `from`
    * addresses[2] = `to`
    *
@@ -18722,7 +19436,16 @@ export type TransferEvent = Event & {
   order: Scalars['BigInt'];
   from: Account;
   to: Account;
+  isNFTTransfer: Scalars['Boolean'];
+  /**
+   * If `isNFTTransfer` is true, value is the `tokenId` of the NFT transferred.
+   *
+   */
   value: Scalars['BigInt'];
+  /**
+   * If `isNFTTransfer` is true, value is the NFT address, else it is the SuperToken address.
+   *
+   */
   token: Scalars['Bytes'];
 };
 
@@ -18861,6 +19584,10 @@ export type TransferEvent_filter = {
   to_not_ends_with?: InputMaybe<Scalars['String']>;
   to_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   to_?: InputMaybe<Account_filter>;
+  isNFTTransfer?: InputMaybe<Scalars['Boolean']>;
+  isNFTTransfer_not?: InputMaybe<Scalars['Boolean']>;
+  isNFTTransfer_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isNFTTransfer_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   value?: InputMaybe<Scalars['BigInt']>;
   value_not?: InputMaybe<Scalars['BigInt']>;
   value_gt?: InputMaybe<Scalars['BigInt']>;
@@ -18910,6 +19637,7 @@ export type TransferEvent_orderBy =
   | 'to__updatedAtTimestamp'
   | 'to__updatedAtBlockNumber'
   | 'to__isSuperApp'
+  | 'isNFTTransfer'
   | 'value'
   | 'token';
 
@@ -19314,6 +20042,18 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   tokenUpgradedEvents: InContextSdkMethod<Query['tokenUpgradedEvents'], QuerytokenUpgradedEventsArgs, MeshContext>,
   /** null **/
+  approvalEvent: InContextSdkMethod<Query['approvalEvent'], QueryapprovalEventArgs, MeshContext>,
+  /** null **/
+  approvalEvents: InContextSdkMethod<Query['approvalEvents'], QueryapprovalEventsArgs, MeshContext>,
+  /** null **/
+  approvalForAllEvent: InContextSdkMethod<Query['approvalForAllEvent'], QueryapprovalForAllEventArgs, MeshContext>,
+  /** null **/
+  approvalForAllEvents: InContextSdkMethod<Query['approvalForAllEvents'], QueryapprovalForAllEventsArgs, MeshContext>,
+  /** null **/
+  metadataUpdateEvent: InContextSdkMethod<Query['metadataUpdateEvent'], QuerymetadataUpdateEventArgs, MeshContext>,
+  /** null **/
+  metadataUpdateEvents: InContextSdkMethod<Query['metadataUpdateEvents'], QuerymetadataUpdateEventsArgs, MeshContext>,
+  /** null **/
   customSuperTokenCreatedEvent: InContextSdkMethod<Query['customSuperTokenCreatedEvent'], QuerycustomSuperTokenCreatedEventArgs, MeshContext>,
   /** null **/
   customSuperTokenCreatedEvents: InContextSdkMethod<Query['customSuperTokenCreatedEvents'], QuerycustomSuperTokenCreatedEventsArgs, MeshContext>,
@@ -19598,6 +20338,18 @@ export type _SubgraphErrorPolicy_ =
   tokenUpgradedEvent: InContextSdkMethod<Subscription['tokenUpgradedEvent'], SubscriptiontokenUpgradedEventArgs, MeshContext>,
   /** null **/
   tokenUpgradedEvents: InContextSdkMethod<Subscription['tokenUpgradedEvents'], SubscriptiontokenUpgradedEventsArgs, MeshContext>,
+  /** null **/
+  approvalEvent: InContextSdkMethod<Subscription['approvalEvent'], SubscriptionapprovalEventArgs, MeshContext>,
+  /** null **/
+  approvalEvents: InContextSdkMethod<Subscription['approvalEvents'], SubscriptionapprovalEventsArgs, MeshContext>,
+  /** null **/
+  approvalForAllEvent: InContextSdkMethod<Subscription['approvalForAllEvent'], SubscriptionapprovalForAllEventArgs, MeshContext>,
+  /** null **/
+  approvalForAllEvents: InContextSdkMethod<Subscription['approvalForAllEvents'], SubscriptionapprovalForAllEventsArgs, MeshContext>,
+  /** null **/
+  metadataUpdateEvent: InContextSdkMethod<Subscription['metadataUpdateEvent'], SubscriptionmetadataUpdateEventArgs, MeshContext>,
+  /** null **/
+  metadataUpdateEvents: InContextSdkMethod<Subscription['metadataUpdateEvents'], SubscriptionmetadataUpdateEventsArgs, MeshContext>,
   /** null **/
   customSuperTokenCreatedEvent: InContextSdkMethod<Subscription['customSuperTokenCreatedEvent'], SubscriptioncustomSuperTokenCreatedEventArgs, MeshContext>,
   /** null **/

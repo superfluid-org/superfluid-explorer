@@ -1,10 +1,10 @@
 {
-  "name": "Subgraph GraphQL Schema",
-  "schemaPath": "schema.graphql",
+  "name": "Protocol Subgraph with GDA",
+  "schemaPath": "./src/gda-subgraph/.graphclient/schema.graphql",
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {
-        "url": "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-goerli",
+        "url": "https://eth-goerli.subgraph.x.superfluid.dev",
         "headers": {
           "user-agent": "JS GraphQL"
         },

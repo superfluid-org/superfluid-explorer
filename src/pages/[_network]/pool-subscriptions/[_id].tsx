@@ -682,9 +682,6 @@ export const PoolMemberDistributions: FC<{
   );
 };
 
-
-
-
 export const PoolMemberFlowDistributions: FC<{
   network: Network;
   poolMemberId: string;

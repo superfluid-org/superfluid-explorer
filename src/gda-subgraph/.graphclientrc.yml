@@ -2,10 +2,10 @@ sources:
   - name: gda
     handler:
       graphql:
-        endpoint: '{context.url:https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-feature-goerli}'
+        endpoint: "{context.url:https://eth-goerli.subgraph.x.superfluid.dev}"
         retry: 5
 documents:
-  - './**/*.graphql'
+  - "./**/*.graphql"
 codegen:
   namingConvention: change-case-all#pascalCase
   scalars:
