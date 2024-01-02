@@ -81,43 +81,42 @@ export const PoolMemberPageContent: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool,
-        }
+        chainId: network.chainId,
+        id: poolMember.pool,
+      }
       : skipToken
   );
 
   const pool: Pool | undefined | null = poolQuery.data;
   const [
-    subscribersUnitsUpdatedEventPaging,
-    setMembershipUnitsUpdatedEventPaging,
+    poolMemberUnitsUpdatedEventPaging,
+    setPoolMemberUnitsUpdatedEventPaging,
   ] = useState<SkipPaging>(
     createSkipPaging({
       take: 10,
     })
   );
   const [
-    subscribersUnitsUpdatedEventPagingOrdering,
-    setMembershipUnitsUpdatedEventOrdering,
+    poolMemberUnitsUpdatedEventPagingOrdering,
+    setPoolMemberUnitsUpdatedEventOrdering,
   ] = useState<Ordering<MemberUnitsUpdatedEvent_OrderBy> | undefined>({
     orderBy: "timestamp",
     orderDirection: "desc",
   });
-  const subscribersUnitsUpdatedEventQuery =
+  const poolMemberUnitsUpdatedEventQuery =
     sfGdaSubgraph.usePoolMemberUnitsUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
         poolMember: poolMemberId,
       },
-      pagination: subscribersUnitsUpdatedEventPaging,
-      order: subscribersUnitsUpdatedEventPagingOrdering,
+      pagination: poolMemberUnitsUpdatedEventPaging,
+      order: poolMemberUnitsUpdatedEventPagingOrdering,
     });
 
   const [poolPercentage, setPoolPercentage] = useState<Decimal | undefined>();
   const [totalWeiAmountClaimed, setTotalWeiAmountClaimed] = useState<
     BigNumberish | undefined
   >();
-
 
   useEffect(() => {
     if (pool && poolMember) {
@@ -138,7 +137,7 @@ export const PoolMemberPageContent: FC<{
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poolMember && pool]);
+  }, [poolMember, pool]);
 
   if (
     !poolQuery.isUninitialized &&
@@ -165,7 +164,7 @@ export const PoolMemberPageContent: FC<{
           </Typography>
         </Breadcrumbs>
         <CopyLink
-          localPath={`/${network.slugName}/pool-subscriptions/${poolMemberId}`}
+          localPath={`/${network.slugName}/pool-members/${poolMemberId}`}
         />
       </Stack>
 
@@ -233,7 +232,7 @@ export const PoolMemberPageContent: FC<{
                 <ListItemText
                   secondary={
                     <>
-                      Admin
+                      Pool Admin
                       <InfoTooltipBtn
                         dataCy={"admin-tooltip"}
                         title={
@@ -438,7 +437,7 @@ export const PoolMemberPageContent: FC<{
         </Card>
       </Box>
 
-      <Box data-cy={"instant-distributions-grid"} sx={{ mt: 3 }}>
+      {/* <Box data-cy={"instant-distributions-grid"} sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Instant Distributions
           <InfoTooltipBtn
@@ -466,7 +465,7 @@ export const PoolMemberPageContent: FC<{
             poolMemberId={poolMemberId}
           />
         </Card>
-      </Box>
+      </Box> */}
 
       <Box data-cy={"units-updated-grid"} sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
@@ -474,10 +473,10 @@ export const PoolMemberPageContent: FC<{
         </Typography>
         <Card elevation={2}>
           <PoolMemberUnitsUpdatedEventDataGrid
-            queryResult={subscribersUnitsUpdatedEventQuery}
-            setPaging={setMembershipUnitsUpdatedEventPaging}
-            ordering={subscribersUnitsUpdatedEventPagingOrdering}
-            setOrdering={setMembershipUnitsUpdatedEventOrdering}
+            queryResult={poolMemberUnitsUpdatedEventQuery}
+            setPaging={setPoolMemberUnitsUpdatedEventPaging}
+            ordering={poolMemberUnitsUpdatedEventPagingOrdering}
+            setOrdering={setPoolMemberUnitsUpdatedEventOrdering}
           />
         </Card>
       </Box>
@@ -499,9 +498,9 @@ export const PoolMemberDistributions: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool,
-        }
+        chainId: network.chainId,
+        id: poolMember.pool,
+      }
       : skipToken
   );
 
@@ -560,25 +559,25 @@ export const PoolMemberDistributions: FC<{
   const subscribersUnitsUpdatedEvents:
     | PoolMemberUnitsUpdatedEvent[]
     | undefined = useMemo(
-    () => memberUnitsUpdatedEventsQuery.data?.items ?? [],
-    [memberUnitsUpdatedEventsQuery.data]
-  );
+      () => memberUnitsUpdatedEventsQuery.data?.items ?? [],
+      [memberUnitsUpdatedEventsQuery.data]
+    );
 
   const instantDistributionUpdatedEventsQuery =
     sfGdaSubgraph.useInstantDistributionUpdatedEventsQuery(
       pool && subscribersStartTime
         ? {
-            chainId: network.chainId,
-            filter: {
-              pool: pool.id,
-              timestamp_gte: subscribersStartTime.toString(),
-              ...(subscribersEndTime
-                ? { timestamp_lte: subscribersEndTime.toString() }
-                : {}),
-            },
-            order: instantDistributionUpdatedEventOrdering,
-            pagination: instantDistributionUpdatedEventPaging,
-          }
+          chainId: network.chainId,
+          filter: {
+            pool: pool.id,
+            timestamp_gte: subscribersStartTime.toString(),
+            ...(subscribersEndTime
+              ? { timestamp_lte: subscribersEndTime.toString() }
+              : {}),
+          },
+          order: instantDistributionUpdatedEventOrdering,
+          pagination: instantDistributionUpdatedEventPaging,
+        }
         : skipToken
     );
 
@@ -655,7 +654,7 @@ export const PoolMemberDistributions: FC<{
           // ).sub(BigNumber.from(instantDistributionUpdatedEvent.oldIndexValue));
 
           const subscribersDistributionAmount =
-          BigNumber.from(instantDistributionUpdatedEvent.actualAmount).mul(subscribersUnits);
+            BigNumber.from(instantDistributionUpdatedEvent.actualAmount).mul(subscribersUnits);
 
           return (
             <BalanceWithToken
@@ -696,9 +695,9 @@ export const PoolMemberFlowDistributions: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool,
-        }
+        chainId: network.chainId,
+        id: poolMember.pool,
+      }
       : skipToken
   );
 
@@ -757,25 +756,25 @@ export const PoolMemberFlowDistributions: FC<{
   const subscribersUnitsUpdatedEvents:
     | PoolMemberUnitsUpdatedEvent[]
     | undefined = useMemo(
-    () => memberUnitsUpdatedEventsQuery.data?.items ?? [],
-    [memberUnitsUpdatedEventsQuery.data]
-  );
+      () => memberUnitsUpdatedEventsQuery.data?.items ?? [],
+      [memberUnitsUpdatedEventsQuery.data]
+    );
 
   const flowDistributionUpdatedEventsQuery =
     sfGdaSubgraph.useFlowDistributionUpdatedEventsQuery(
       pool && subscribersStartTime
         ? {
-            chainId: network.chainId,
-            filter: {
-              pool: pool.id,
-              timestamp_gte: subscribersStartTime.toString(),
-              ...(subscribersEndTime
-                ? { timestamp_lte: subscribersEndTime.toString() }
-                : {}),
-            },
-            order: flowDistributionUpdatedEventOrdering,
-            pagination: flowDistributionUpdatedEventPaging,
-          }
+          chainId: network.chainId,
+          filter: {
+            pool: pool.id,
+            timestamp_gte: subscribersStartTime.toString(),
+            ...(subscribersEndTime
+              ? { timestamp_lte: subscribersEndTime.toString() }
+              : {}),
+          },
+          order: flowDistributionUpdatedEventOrdering,
+          pagination: flowDistributionUpdatedEventPaging,
+        }
         : skipToken
     );
 

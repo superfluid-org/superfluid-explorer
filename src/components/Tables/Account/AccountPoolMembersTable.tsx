@@ -441,7 +441,7 @@ const AccountPoolMembersTable: FC<
         <TableHead>
           <TableRow>
             <TableCell>
-              Admin
+              Pool Admin
               <InfoTooltipBtn
                 dataCy="gda-admin-tooltip"
                 title={

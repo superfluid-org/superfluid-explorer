@@ -85,7 +85,7 @@ export class LandingPage extends BasePage {
       }
       case "pool member": {
         cy.fixture("gdaData").then((fixture) => {
-          cy.visit("/" + network + "/pool-subscriptions/" + fixture[network].poolMembers[0].id);
+          cy.visit("/" + network + "/pool-members/" + fixture[network].poolMembers[0].id);
         });
         break;
       }

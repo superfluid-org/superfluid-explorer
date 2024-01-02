@@ -228,7 +228,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
             <Chip
               label={
                 <>
-                  Index ID: <b data-cy={"chip-id"} >{filter.id}</b>
+                  Pool ID: <b data-cy={"chip-id"} >{filter.id}</b>
                 </>
               }
               size="small"
@@ -240,7 +240,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
             <Chip
               label={
                 <>
-                  Admin: <b data-cy={"chip-admin"}>{filter.admin_contains}</b>
+                  Pool Admin: <b data-cy={"chip-admin"}>{filter.admin_contains}</b>
                 </>
               }
               size="small"
@@ -365,7 +365,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
           <TableRow>
             <TableCell width="160px">Pool Address</TableCell>
             <TableCell>
-              Admin
+              Pool Admin
               <InfoTooltipBtn
                 title={
                   <>

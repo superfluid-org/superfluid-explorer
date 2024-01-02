@@ -221,7 +221,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 <ListItemText
                   secondary={
                     <>
-                      Admin
+                      Pool Admin
                       <InfoTooltipBtn
                         dataCy={"admin-tooltip"}
                         title={
@@ -517,7 +517,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
 
       <Box data-cy="members-grid" sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-          Member
+          Pool Member
           <InfoTooltipBtn
             dataCy={"pool-members-tooltip"}
             size={22}
