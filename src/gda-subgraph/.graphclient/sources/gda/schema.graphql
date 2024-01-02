@@ -4925,6 +4925,7 @@ type FlowDistributionUpdatedEvent implements Event {
   newTotalDistributionFlowRate: BigInt!
   adjustmentFlowRecipient: Bytes!
   adjustmentFlowRate: BigInt!
+  totalUnits: BigInt!
   userData: Bytes!
   pool: Pool!
   poolDistributor: PoolDistributor!
@@ -5085,6 +5086,14 @@ input FlowDistributionUpdatedEvent_filter {
   adjustmentFlowRate_lte: BigInt
   adjustmentFlowRate_in: [BigInt!]
   adjustmentFlowRate_not_in: [BigInt!]
+  totalUnits: BigInt
+  totalUnits_not: BigInt
+  totalUnits_gt: BigInt
+  totalUnits_lt: BigInt
+  totalUnits_gte: BigInt
+  totalUnits_lte: BigInt
+  totalUnits_in: [BigInt!]
+  totalUnits_not_in: [BigInt!]
   userData: Bytes
   userData_not: Bytes
   userData_gt: Bytes
@@ -5161,6 +5170,7 @@ enum FlowDistributionUpdatedEvent_orderBy {
   newTotalDistributionFlowRate
   adjustmentFlowRecipient
   adjustmentFlowRate
+  totalUnits
   userData
   pool
   pool__id
@@ -8177,6 +8187,7 @@ type InstantDistributionUpdatedEvent implements Event {
   operator: Bytes!
   requestedAmount: BigInt!
   actualAmount: BigInt!
+  totalUnits: BigInt!
   userData: Bytes!
   pool: Pool!
   poolDistributor: PoolDistributor!
@@ -8311,6 +8322,14 @@ input InstantDistributionUpdatedEvent_filter {
   actualAmount_lte: BigInt
   actualAmount_in: [BigInt!]
   actualAmount_not_in: [BigInt!]
+  totalUnits: BigInt
+  totalUnits_not: BigInt
+  totalUnits_gt: BigInt
+  totalUnits_lt: BigInt
+  totalUnits_gte: BigInt
+  totalUnits_lte: BigInt
+  totalUnits_in: [BigInt!]
+  totalUnits_not_in: [BigInt!]
   userData: Bytes
   userData_not: Bytes
   userData_gt: Bytes
@@ -8384,6 +8403,7 @@ enum InstantDistributionUpdatedEvent_orderBy {
   operator
   requestedAmount
   actualAmount
+  totalUnits
   userData
   pool
   pool__id
@@ -8594,6 +8614,7 @@ type MemberUnitsUpdatedEvent implements Event {
   token: Bytes!
   oldUnits: BigInt!
   units: BigInt!
+  totalUnits: BigInt!
   pool: Pool!
   poolMember: PoolMember!
 }
@@ -8717,6 +8738,14 @@ input MemberUnitsUpdatedEvent_filter {
   units_lte: BigInt
   units_in: [BigInt!]
   units_not_in: [BigInt!]
+  totalUnits: BigInt
+  totalUnits_not: BigInt
+  totalUnits_gt: BigInt
+  totalUnits_lt: BigInt
+  totalUnits_gte: BigInt
+  totalUnits_lte: BigInt
+  totalUnits_in: [BigInt!]
+  totalUnits_not_in: [BigInt!]
   pool: String
   pool_not: String
   pool_gt: String
@@ -8779,6 +8808,7 @@ enum MemberUnitsUpdatedEvent_orderBy {
   token
   oldUnits
   units
+  totalUnits
   pool
   pool__id
   pool__createdAtTimestamp

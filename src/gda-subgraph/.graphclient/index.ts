@@ -5101,6 +5101,7 @@ export type FlowDistributionUpdatedEvent = Event & {
   newTotalDistributionFlowRate: Scalars['BigInt'];
   adjustmentFlowRecipient: Scalars['Bytes'];
   adjustmentFlowRate: Scalars['BigInt'];
+  totalUnits: Scalars['BigInt'];
   userData: Scalars['Bytes'];
   pool: Pool;
   poolDistributor: PoolDistributor;
@@ -5261,6 +5262,14 @@ export type FlowDistributionUpdatedEvent_Filter = {
   adjustmentFlowRate_lte?: InputMaybe<Scalars['BigInt']>;
   adjustmentFlowRate_in?: InputMaybe<Array<Scalars['BigInt']>>;
   adjustmentFlowRate_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_not?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   userData?: InputMaybe<Scalars['Bytes']>;
   userData_not?: InputMaybe<Scalars['Bytes']>;
   userData_gt?: InputMaybe<Scalars['Bytes']>;
@@ -5337,6 +5346,7 @@ export type FlowDistributionUpdatedEvent_OrderBy =
   | 'newTotalDistributionFlowRate'
   | 'adjustmentFlowRecipient'
   | 'adjustmentFlowRate'
+  | 'totalUnits'
   | 'userData'
   | 'pool'
   | 'pool__id'
@@ -8483,6 +8493,7 @@ export type InstantDistributionUpdatedEvent = Event & {
   operator: Scalars['Bytes'];
   requestedAmount: Scalars['BigInt'];
   actualAmount: Scalars['BigInt'];
+  totalUnits: Scalars['BigInt'];
   userData: Scalars['Bytes'];
   pool: Pool;
   poolDistributor: PoolDistributor;
@@ -8617,6 +8628,14 @@ export type InstantDistributionUpdatedEvent_Filter = {
   actualAmount_lte?: InputMaybe<Scalars['BigInt']>;
   actualAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   actualAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_not?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   userData?: InputMaybe<Scalars['Bytes']>;
   userData_not?: InputMaybe<Scalars['Bytes']>;
   userData_gt?: InputMaybe<Scalars['Bytes']>;
@@ -8690,6 +8709,7 @@ export type InstantDistributionUpdatedEvent_OrderBy =
   | 'operator'
   | 'requestedAmount'
   | 'actualAmount'
+  | 'totalUnits'
   | 'userData'
   | 'pool'
   | 'pool__id'
@@ -8892,6 +8912,7 @@ export type MemberUnitsUpdatedEvent = Event & {
   token: Scalars['Bytes'];
   oldUnits: Scalars['BigInt'];
   units: Scalars['BigInt'];
+  totalUnits: Scalars['BigInt'];
   pool: Pool;
   poolMember: PoolMember;
 };
@@ -9015,6 +9036,14 @@ export type MemberUnitsUpdatedEvent_Filter = {
   units_lte?: InputMaybe<Scalars['BigInt']>;
   units_in?: InputMaybe<Array<Scalars['BigInt']>>;
   units_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_not?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   pool?: InputMaybe<Scalars['String']>;
   pool_not?: InputMaybe<Scalars['String']>;
   pool_gt?: InputMaybe<Scalars['String']>;
@@ -9077,6 +9106,7 @@ export type MemberUnitsUpdatedEvent_OrderBy =
   | 'token'
   | 'oldUnits'
   | 'units'
+  | 'totalUnits'
   | 'pool'
   | 'pool__id'
   | 'pool__createdAtTimestamp'
@@ -20846,6 +20876,7 @@ export type FlowDistributionUpdatedEventResolvers<ContextType = MeshContext, Par
   newTotalDistributionFlowRate?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   adjustmentFlowRecipient?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   adjustmentFlowRate?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalUnits?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   userData?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   pool?: Resolver<ResolversTypes['Pool'], ParentType, ContextType>;
   poolDistributor?: Resolver<ResolversTypes['PoolDistributor'], ParentType, ContextType>;
@@ -21115,6 +21146,7 @@ export type InstantDistributionUpdatedEventResolvers<ContextType = MeshContext, 
   operator?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   requestedAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   actualAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalUnits?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   userData?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   pool?: Resolver<ResolversTypes['Pool'], ParentType, ContextType>;
   poolDistributor?: Resolver<ResolversTypes['PoolDistributor'], ParentType, ContextType>;
@@ -21155,6 +21187,7 @@ export type MemberUnitsUpdatedEventResolvers<ContextType = MeshContext, ParentTy
   token?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   oldUnits?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   units?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalUnits?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   pool?: Resolver<ResolversTypes['Pool'], ParentType, ContextType>;
   poolMember?: Resolver<ResolversTypes['PoolMember'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -22301,7 +22334,7 @@ const gdaTransforms = [];
 const additionalTypeDefs = [] as any[];
 const gdaHandler = new GraphqlHandler({
               name: "gda",
-              config: {"endpoint":"{context.url:https://eth-goerli.subgraph.x.superfluid.dev}","retry":5},
+              config: {"endpoint":"{context.url:https://polygon-mumbai.subgraph.x.superfluid.dev}","retry":5},
               baseDir,
               cache,
               pubsub,

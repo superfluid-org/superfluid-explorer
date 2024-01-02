@@ -5079,6 +5079,7 @@ export type FlowDistributionUpdatedEvent = Event & {
   newTotalDistributionFlowRate: Scalars['BigInt'];
   adjustmentFlowRecipient: Scalars['Bytes'];
   adjustmentFlowRate: Scalars['BigInt'];
+  totalUnits: Scalars['BigInt'];
   userData: Scalars['Bytes'];
   pool: Pool;
   poolDistributor: PoolDistributor;
@@ -5239,6 +5240,14 @@ export type FlowDistributionUpdatedEvent_filter = {
   adjustmentFlowRate_lte?: InputMaybe<Scalars['BigInt']>;
   adjustmentFlowRate_in?: InputMaybe<Array<Scalars['BigInt']>>;
   adjustmentFlowRate_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_not?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   userData?: InputMaybe<Scalars['Bytes']>;
   userData_not?: InputMaybe<Scalars['Bytes']>;
   userData_gt?: InputMaybe<Scalars['Bytes']>;
@@ -5315,6 +5324,7 @@ export type FlowDistributionUpdatedEvent_orderBy =
   | 'newTotalDistributionFlowRate'
   | 'adjustmentFlowRecipient'
   | 'adjustmentFlowRate'
+  | 'totalUnits'
   | 'userData'
   | 'pool'
   | 'pool__id'
@@ -8461,6 +8471,7 @@ export type InstantDistributionUpdatedEvent = Event & {
   operator: Scalars['Bytes'];
   requestedAmount: Scalars['BigInt'];
   actualAmount: Scalars['BigInt'];
+  totalUnits: Scalars['BigInt'];
   userData: Scalars['Bytes'];
   pool: Pool;
   poolDistributor: PoolDistributor;
@@ -8595,6 +8606,14 @@ export type InstantDistributionUpdatedEvent_filter = {
   actualAmount_lte?: InputMaybe<Scalars['BigInt']>;
   actualAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   actualAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_not?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   userData?: InputMaybe<Scalars['Bytes']>;
   userData_not?: InputMaybe<Scalars['Bytes']>;
   userData_gt?: InputMaybe<Scalars['Bytes']>;
@@ -8668,6 +8687,7 @@ export type InstantDistributionUpdatedEvent_orderBy =
   | 'operator'
   | 'requestedAmount'
   | 'actualAmount'
+  | 'totalUnits'
   | 'userData'
   | 'pool'
   | 'pool__id'
@@ -8870,6 +8890,7 @@ export type MemberUnitsUpdatedEvent = Event & {
   token: Scalars['Bytes'];
   oldUnits: Scalars['BigInt'];
   units: Scalars['BigInt'];
+  totalUnits: Scalars['BigInt'];
   pool: Pool;
   poolMember: PoolMember;
 };
@@ -8993,6 +9014,14 @@ export type MemberUnitsUpdatedEvent_filter = {
   units_lte?: InputMaybe<Scalars['BigInt']>;
   units_in?: InputMaybe<Array<Scalars['BigInt']>>;
   units_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_not?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lt?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_gte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_lte?: InputMaybe<Scalars['BigInt']>;
+  totalUnits_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalUnits_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   pool?: InputMaybe<Scalars['String']>;
   pool_not?: InputMaybe<Scalars['String']>;
   pool_gt?: InputMaybe<Scalars['String']>;
@@ -9055,6 +9084,7 @@ export type MemberUnitsUpdatedEvent_orderBy =
   | 'token'
   | 'oldUnits'
   | 'units'
+  | 'totalUnits'
   | 'pool'
   | 'pool__id'
   | 'pool__createdAtTimestamp'
