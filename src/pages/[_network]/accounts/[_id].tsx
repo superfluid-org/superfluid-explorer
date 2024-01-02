@@ -53,7 +53,7 @@ import {
 import {
   publishedIndexOrderingDefault,
   publishedIndexPagingDefault,
-} from "../../../components/Tables/Account/AccountPublishedIndexesTable";
+} from "../../../components/Tables/Account/AccountIndexPublicationsTable";
 import IdContext from "../../../contexts/IdContext";
 import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { useAppSelector } from "../../../redux/hooks";

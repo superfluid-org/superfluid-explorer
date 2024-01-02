@@ -3,7 +3,7 @@ import { Network } from "../redux/networks";
 import AppLink from "./AppLink";
 import HelpAlert from "./HelpAlert";
 import AccountIndexSubscriptionsTable from "./Tables/Account/AccountIndexSubscriptionsTable";
-import AccountPublishedIndexesTable from "./Tables/Account/AccountPublishedIndexesTable";
+import AccountIndexPublicationsTable from "./Tables/Account/AccountIndexPublicationsTable";
 
 const AccountIndexes: FC<{
   network: Network;
@@ -24,7 +24,7 @@ const AccountIndexes: FC<{
         </AppLink>
       </HelpAlert>
 
-      <AccountPublishedIndexesTable
+      <AccountIndexPublicationsTable
         network={network}
         accountAddress={accountAddress}
       />

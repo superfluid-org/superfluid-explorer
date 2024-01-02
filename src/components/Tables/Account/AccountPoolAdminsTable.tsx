@@ -54,24 +54,23 @@ export enum UnitsStatus {
   NotIssued,
 }
 
-export const publishedPoolOrderingDefault: Ordering<Pool_OrderBy> = {
+export const poolAdminsOrderingDefault: Ordering<Pool_OrderBy> = {
   orderBy: "createdAtTimestamp",
   orderDirection: "desc",
 };
 
-export const publishedPoolPagingDefault = createSkipPaging({
+export const poolAdminsPagingDefault = createSkipPaging({
   take: 10,
 });
 
-interface AccountPublishedPoolsTableProps {
+interface AccountPoolAdminsTableProps {
   network: Network;
   accountAddress: string;
 }
 
-
 type RequiredPoolsQuery = Required<Omit<PoolsQuery, "block">>;
 
-const AccountPoolAdminsTable: FC<AccountPublishedPoolsTableProps> = ({
+const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
   network,
   accountAddress,
 }) => {
@@ -89,8 +88,8 @@ const AccountPoolAdminsTable: FC<AccountPublishedPoolsTableProps> = ({
   const createDefaultArg = (): RequiredPoolsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: publishedPoolPagingDefault,
-    order: publishedPoolOrderingDefault,
+    pagination: poolAdminsPagingDefault,
+    order: poolAdminsOrderingDefault,
   });
 
   const [queryArg, setQueryArg] = useState<RequiredPoolsQuery>(
@@ -142,7 +141,7 @@ const AccountPoolAdminsTable: FC<AccountPublishedPoolsTableProps> = ({
         orderDirection: "asc",
       });
     } else {
-      onOrderingChanged(publishedPoolOrderingDefault);
+      onOrderingChanged(poolAdminsOrderingDefault);
     }
   };
 
@@ -251,8 +250,8 @@ const AccountPoolAdminsTable: FC<AccountPublishedPoolsTableProps> = ({
   const { filter, order, pagination } = queryArg;
 
   const {
-    skip = publishedPoolPagingDefault.skip,
-    take = publishedPoolPagingDefault.take,
+    skip = poolAdminsPagingDefault.skip,
+    take = poolAdminsPagingDefault.take,
   } = queryResult.data?.paging || {};
 
   return (

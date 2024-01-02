@@ -45,7 +45,7 @@ import { IndexSubscriptionDetailsDialog } from "../../IndexSubscriptionDetails";
 import InfinitePagination from "../../InfinitePagination";
 import InfoTooltipBtn from "../../InfoTooltipBtn";
 import TableLoader from "../../TableLoader";
-import { UnitsStatus } from "./AccountPublishedIndexesTable";
+import { UnitsStatus } from "./AccountIndexPublicationsTable";
 
 enum SubscriptionStatus {
   Approved,
@@ -158,8 +158,8 @@ const AccountIndexSubscriptionsTable: FC<
 
   const clearFilterField =
     (...fields: Array<keyof IndexSubscription_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter));
+      () =>
+        onFilterChange(omit(fields, queryArg.filter));
 
   const getSubscriptionStatusFilter = (
     status: SubscriptionStatus | null
@@ -425,10 +425,10 @@ const AccountIndexSubscriptionsTable: FC<
               {(subscriptionStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
-                  Reset
-                </Button>
-              )}
+                  <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>

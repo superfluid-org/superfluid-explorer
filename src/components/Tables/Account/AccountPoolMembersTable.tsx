@@ -47,7 +47,6 @@ import { PoolMembersQuery } from "../../../gda-subgraph/endpoints/entityArgs";
 import { PoolMemberDetailsDialog } from "../../PoolMemberDetails";
 import { UnitsStatus } from "./AccountPoolAdminsTable";
 
-
 enum MemberStatus {
   IsConnected,
   IsNotConnected,
@@ -58,10 +57,10 @@ enum DistributionStatus {
   HasNotClaimed,
 }
 
-export const PoolMemberOrderingDefault: Ordering<PoolMember_OrderBy> =
+export const PoolMembersOrderingDefault: Ordering<PoolMember_OrderBy> =
   { orderBy: "createdAtTimestamp", orderDirection: "desc" };
 
-export const PoolMemberPagingDefault = createSkipPaging({ take: 10 });
+export const PoolMembersPagingDefault = createSkipPaging({ take: 10 });
 
 interface AccountPoolMembersTableProps {
   network: Network;
@@ -90,8 +89,8 @@ const AccountPoolMembersTable: FC<
   const createDefaultArg = (): RequiredPoolMembersQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: PoolMemberPagingDefault,
-    order: PoolMemberOrderingDefault,
+    pagination: PoolMembersPagingDefault,
+    order: PoolMembersOrderingDefault,
   });
 
   const [queryArg, setQueryArg] = useState<RequiredPoolMembersQuery>(
@@ -145,7 +144,7 @@ const AccountPoolMembersTable: FC<
         orderDirection: "asc",
       });
     } else {
-      onOrderingChanged(PoolMemberOrderingDefault);
+      onOrderingChanged(PoolMembersOrderingDefault);
     }
   };
 
@@ -277,8 +276,8 @@ const AccountPoolMembersTable: FC<
   const { order, pagination } = queryArg;
 
   const {
-    skip = PoolMemberPagingDefault.skip,
-    take = PoolMemberPagingDefault.take,
+    skip = PoolMembersPagingDefault.skip,
+    take = PoolMembersPagingDefault.take,
   } = queryResult.data?.paging || {};
 
   return (
