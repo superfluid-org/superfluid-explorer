@@ -45,7 +45,7 @@ import { PoolMember_OrderBy, PoolMember_Filter } from "../../../gda-subgraph/.gr
 
 import { PoolMembersQuery } from "../../../gda-subgraph/endpoints/entityArgs";
 import { PoolMemberDetailsDialog } from "../../PoolMemberDetails";
-import { UnitsStatus } from "./AccountPublishedPoolsTable";
+import { UnitsStatus } from "./AccountPoolAdminsTable";
 
 
 enum MemberStatus {
@@ -70,7 +70,7 @@ interface AccountPoolMembersTableProps {
 
 type RequiredPoolMembersQuery = Required<Omit<PoolMembersQuery, "block">>;
 
-const AccountPoolSubscriptionsTable: FC<
+const AccountPoolMembersTable: FC<
   AccountPoolMembersTableProps
 > = ({ network, accountAddress }) => {
   const filterAnchorRef = useRef(null);
@@ -159,8 +159,8 @@ const AccountPoolSubscriptionsTable: FC<
 
   const clearFilterField =
     (...fields: Array<keyof PoolMember_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter));
+      () =>
+        onFilterChange(omit(fields, queryArg.filter));
 
   const getMemberStatusFilter = (
     status: MemberStatus | null
@@ -285,7 +285,7 @@ const AccountPoolSubscriptionsTable: FC<
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
         <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
-          Members
+          Pool Members
           <InfoTooltipBtn
             dataCy={"members-tooltip"}
             size={22}
@@ -427,10 +427,10 @@ const AccountPoolSubscriptionsTable: FC<
               {(memberStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
-                  Reset
-                </Button>
-              )}
+                  <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -602,4 +602,4 @@ const AccountPoolSubscriptionsTable: FC<
   );
 };
 
-export default AccountPoolSubscriptionsTable;
+export default AccountPoolMembersTable;

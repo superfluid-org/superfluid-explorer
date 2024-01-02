@@ -71,7 +71,7 @@ interface AccountPublishedPoolsTableProps {
 
 type RequiredPoolsQuery = Required<Omit<PoolsQuery, "block">>;
 
-const AccountPublishedPoolsTable: FC<AccountPublishedPoolsTableProps> = ({
+const AccountPoolAdminsTable: FC<AccountPublishedPoolsTableProps> = ({
   network,
   accountAddress,
 }) => {
@@ -227,8 +227,8 @@ const AccountPublishedPoolsTable: FC<AccountPublishedPoolsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter));
+      () =>
+        onFilterChange(omit(fields, queryArg.filter));
 
   const openFilter = () => setShowFilterMenu(true);
   const closeFilter = () => setShowFilterMenu(false);
@@ -259,7 +259,7 @@ const AccountPublishedPoolsTable: FC<AccountPublishedPoolsTableProps> = ({
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
         <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
-          Pools
+          Pool Admins
         </Typography>
 
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mx: 2 }}>
@@ -385,10 +385,10 @@ const AccountPublishedPoolsTable: FC<AccountPublishedPoolsTableProps> = ({
               {(filter.id ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
-                  Reset
-                </Button>
-              )}
+                  <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -524,4 +524,4 @@ const AccountPublishedPoolsTable: FC<AccountPublishedPoolsTableProps> = ({
   );
 };
 
-export default AccountPublishedPoolsTable;
+export default AccountPoolAdminsTable;

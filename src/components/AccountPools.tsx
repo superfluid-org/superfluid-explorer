@@ -2,8 +2,8 @@ import { FC, ReactElement } from "react";
 import { Network } from "../redux/networks";
 import AppLink from "./AppLink";
 import HelpAlert from "./HelpAlert";
-import AccountPublishedPoolsTable from "./Tables/Account/AccountPublishedPoolsTable";
-import AccountPoolSubscriptionsTable from "./Tables/Account/AccountPoolSubscriptionsTable";
+import AccountPoolAdminsTable from "./Tables/Account/AccountPoolAdminsTable";
+import AccountPoolMembersTable from "./Tables/Account/AccountPoolMembersTable";
 
 const AccountPools: FC<{
   network: Network;
@@ -12,7 +12,7 @@ const AccountPools: FC<{
   return (
     <>
       <HelpAlert data-cy="pools-info-message">
-      The GDA introduces a new primitive which enables one-to-many Superfluid streaming distributions, becoming the most scalable way to distribute recurring funds to a limitless set of recipients in web3. (GDA).{" "}
+        The GDA introduces a new primitive which enables one-to-many Superfluid streaming distributions, becoming the most scalable way to distribute recurring funds to a limitless set of recipients in web3. (GDA).{" "}
         <AppLink
           data-cy="gda-read-more-link"
           href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
@@ -22,12 +22,12 @@ const AccountPools: FC<{
         </AppLink>
       </HelpAlert>
 
-      <AccountPublishedPoolsTable
+      <AccountPoolAdminsTable
         network={network}
         accountAddress={accountAddress}
       />
 
-      <AccountPoolSubscriptionsTable
+      <AccountPoolMembersTable
         network={network}
         accountAddress={accountAddress}
       />

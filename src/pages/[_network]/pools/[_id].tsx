@@ -482,7 +482,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         </Card>
       </Box>
 
-      <Box data-cy={"instant-distributions-grid"} sx={{ mt: 3 }}>
+      {/* <Box data-cy={"instant-distributions-grid"} sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Instant Distributions
           <InfoTooltipBtn
@@ -513,11 +513,11 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
             setOrdering={setInstantDistributionUpdatedEventOrdering}
           />
         </Card>
-      </Box>
+      </Box> */}
 
       <Box data-cy="members-grid" sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-          Members
+          Member
           <InfoTooltipBtn
             dataCy={"pool-members-tooltip"}
             size={22}
