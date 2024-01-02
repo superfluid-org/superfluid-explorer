@@ -95,6 +95,7 @@ const Protocol: NextPage = () => {
     resolver,
     host,
     CFAv1,
+    CFAv1Forwarder,
     IDAv1,
     superTokenFactory,
     superfluidLoader,
@@ -249,6 +250,12 @@ const Protocol: NextPage = () => {
                   title="CFAv1"
                   network={network}
                   address={CFAv1}
+                />
+                <AddressListItem
+                  dataCy={"CFAv1Forwarder-address"}
+                  title="CFAv1Forwarder"
+                  network={network}
+                  address={CFAv1Forwarder}
                 />
                 <AddressListItem
                   dataCy={"IDAv1-address"}

@@ -6,6 +6,7 @@ interface ContractAddresses {
   resolver: string;
   host: string;
   CFAv1: string;
+  CFAv1Forwarder?: string;
   IDAv1: string;
   superTokenFactory: string;
   superfluidLoader: string;
@@ -26,6 +27,7 @@ const networkMetadataToChainId = metadata.networks.reduce((acc, config) => {
     resolver: config.contractsV1.resolver,
     host: config.contractsV1.host,
     CFAv1: config.contractsV1.cfaV1,
+    CFAv1Forwarder: config.contractsV1.cfaV1Forwarder,
     IDAv1: config.contractsV1.idaV1,
     superTokenFactory: config.contractsV1.superTokenFactory,
     superfluidLoader: config.contractsV1.superfluidLoader,
