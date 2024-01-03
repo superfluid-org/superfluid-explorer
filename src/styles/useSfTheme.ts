@@ -4,7 +4,7 @@ import {useAppSelector} from "../redux/hooks";
 import {createSfTheme} from "./theme";
 import {useEffect, useState} from "react";
 import { isClient } from "../utils/isServer";
-import {getRenderedThemeMode} from "../pages/_app";
+import {getRenderedThemeMode} from "../pages/_app.page";
 
 const useSfTheme = (): Theme => {
   const isSystemDarkTheme = useSystemTheme();

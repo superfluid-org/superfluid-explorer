@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useState } from "react";
-import { IndexPageContent } from "../pages/[_network]/indexes/[_id]";
+import { IndexPageContent } from "../pages/[_network]/indexes/[_id].page";
 import { Network } from "../redux/networks";
 import DetailsDialog from "./DetailsDialog";
 

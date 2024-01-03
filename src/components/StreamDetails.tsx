@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useState } from "react";
-import { StreamPageContent } from "../pages/[_network]/streams/[_id]";
+import { StreamPageContent } from "../pages/[_network]/streams/[_id].page";
 import { Network } from "../redux/networks";
 import DetailsDialog from "./DetailsDialog";
 

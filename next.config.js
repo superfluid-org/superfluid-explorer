@@ -16,6 +16,7 @@ const moduleExports = {
     // your project has ESLint errors.
     ignoreDuringBuilds: false,
   },
+  pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
 };
 
 const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN;

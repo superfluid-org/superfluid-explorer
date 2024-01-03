@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, useState } from "react";
 import { Network } from "../redux/networks";
 import DetailsDialog from "./DetailsDialog";
-import { PoolPageContent } from "../pages/[_network]/pools/[_id]";
+import { PoolPageContent } from "../pages/[_network]/pools/[_id].page";
 
 export const PoolPublicationDetailsDialog: FC<{
   network: Network;
