@@ -42,6 +42,7 @@ export const AppDataGrid: FC<Props> = ({
     pagination: true,
     rows: rows,
     columns: columns,
+    disableSelectionOnClick: true,
     paginationMode: "server",
     components: {
       Pagination: () =>
@@ -52,7 +53,6 @@ export const AppDataGrid: FC<Props> = ({
         }),
     },
     loading: queryResult.isFetching,
-    disableSelectionOnClick: true,
     sortingMode: "server",
     sortModel: ordering
       ? [
@@ -74,8 +74,9 @@ export const AppDataGrid: FC<Props> = ({
   };
 
   const finalDataGridProps = _.merge(defaultDataGridProps, dataGridProps);
-
-  return <DataGrid {...finalDataGridProps} />;
+  //Prevents bug that appears when a table is rendered with Dialogue through parant table:
+  //Docs: https://github.com/mui/mui-x/issues/7943
+  return <DataGrid {...finalDataGridProps} onCellClick={(row, e) => e.stopPropagation()}/>;
 };
 
 interface PaginationProps {
