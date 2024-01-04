@@ -23,28 +23,28 @@ import { gql } from "graphql-request";
 import { NextPage } from "next";
 import Error from "next/error";
 import { FC, useContext, useState } from "react";
-import AccountAddress from "../../../components/AccountAddress";
-import AppLink from "../../../components/AppLink";
-import BalanceWithToken from "../../../components/BalanceWithToken";
-import CopyLink from "../../../components/CopyLink";
-import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
-import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
-import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
-import SuperTokenAddress from "../../../components/SuperTokenAddress";
-import TimeAgo from "../../../components/TimeAgo";
+import AccountAddress from "../../../components/Address/AccountAddress";
+import AppLink from "../../../components/AppLink/AppLink";
+import BalanceWithToken from "../../../components/Amount/BalanceWithToken";
+import CopyLink from "../../../components/Copy/CopyLink";
+import InfoTooltipBtn from "../../../components/Info/InfoTooltipBtn";
+import SkeletonAddress from "../../../components/Skeleton/SkeletonAddress";
+import SubgraphQueryLink from "../../subgraph/SubgraphQueryLink";
+import SuperTokenAddress from "../../../components/Address/SuperTokenAddress";
+import TimeAgo from "../../../components/TimeAgo/TimeAgo";
 import IdContext from "../../../contexts/IdContext";
 import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { Network } from "../../../redux/networks";
 import { sfGdaSubgraph } from "../../../redux/store";
-import { Pool } from "../../../gda-subgraph/entities/pool/pool";
-import PoolMemberDataGrid from "../../../components/PoolMemberDataGrid";
+import { Pool } from "../../../subgraphs/gda/entities/pool/pool";
+import PoolMemberDataGrid from "../pool-members/PoolMemberDataGrid";
 import {
   FlowDistributionUpdatedEvent_OrderBy,
   InstantDistributionUpdatedEvent_OrderBy,
   PoolMember_OrderBy,
-} from "../../../gda-subgraph/.graphclient";
-import InstantDistributionUpdatedEventDataGrid from "../../../components/InstantDistributionUpdatedEventDataGrid";
-import FlowDistributionUpdatedEventDataGrid from "../../../components/FlowDistributionUpdatedEventDataGrid";
+} from "../../../subgraphs/gda/.graphclient";
+import InstantDistributionUpdatedEventDataGrid from "./InstantDistributionUpdatedEventDataGrid";
+import FlowDistributionUpdatedEventDataGrid from "./FlowDistributionUpdatedEventDataGrid";
 
 const PoolPage: NextPage = () => {
   const network = useNetworkContext();

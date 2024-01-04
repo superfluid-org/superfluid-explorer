@@ -8,8 +8,8 @@ import Head from "next/head";
 import Router, { useRouter } from "next/router";
 import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import { hotjar } from "react-hotjar";
-import Footer from "../components/Footer";
-import SfAppBar from "../components/SfAppBar";
+import Footer from "../components/Layout/Footer";
+import SfAppBar from "../components/Layout/SfAppBar";
 import { AvailableNetworksProvider } from "../contexts/AvailableNetworksContext";
 import IdContext from "../contexts/IdContext";
 import { NetworkContext } from "../contexts/NetworkContext";
@@ -71,27 +71,27 @@ function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-          <AvailableNetworksProvider>
+        <AvailableNetworksProvider>
+          <Box
+            sx={{
+              display: "flex",
+              flexFlow: "column",
+              maxHeight: "100vh",
+            }}
+          >
+            <SfAppBar />
             <Box
-              sx={{
-                display: "flex",
-                flexFlow: "column",
-                maxHeight: "100vh",
-              }}
+              ref={scrollableContentRef}
+              component="main"
+              sx={{ height: "100vh", overflow: "auto" }}
             >
-              <SfAppBar />
-              <Box
-                ref={scrollableContentRef}
-                component="main"
-                sx={{ height: "100vh", overflow: "auto" }}
-              >
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-                <Footer />
-              </Box>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+              <Footer />
             </Box>
-          </AvailableNetworksProvider>
+          </Box>
+        </AvailableNetworksProvider>
       </ThemeProvider>
     </CacheProvider>
   );

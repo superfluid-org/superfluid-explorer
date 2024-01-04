@@ -2,12 +2,12 @@ import { TabContext, TabPanel } from "@mui/lab";
 import { Box, Card, CardContent, Container, NoSsr } from "@mui/material";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import NetworkTabs from "../../components/NetworkTabs";
-import SuperTokensTable from "../../components/Tables/SuperTokensTable";
+import NetworkTabs from "../../components/NetworkTabs/NetworkTabs";
+import SuperTokensTable from "../../components/Table/SuperTokensTable";
 import { useNetworkContext } from "../../contexts/NetworkContext";
 import { networks } from "../../redux/networks";
 
-const SuperTokens: NextPage = ({}) => {
+const SuperTokens: NextPage = ({ }) => {
   const network = useNetworkContext();
 
   const router = useRouter();
@@ -26,6 +26,7 @@ const SuperTokens: NextPage = ({}) => {
           <NetworkTabs
             activeTab={network.slugName}
             setActiveTab={onTabChange}
+            prefetch={false}
           />
         </Card>
 

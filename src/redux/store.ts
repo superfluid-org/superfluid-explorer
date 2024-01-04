@@ -34,10 +34,10 @@ import { networks } from "./networks";
 import { addressBookSlice } from "./slices/addressBook.slice";
 import { themePreferenceSlice } from "./slices/appPreferences.slice";
 import { ensApi } from "./slices/ensResolver.slice";
-import { allSubgraphEndpoints as allGdaSubgraphEndpoints } from "../gda-subgraph/endpoints/allSubgraphEndpoints";
+import { allSubgraphEndpoints as allGdaSubgraphEndpoints } from "../subgraphs/gda/endpoints/allSubgraphEndpoints";
 import { ModuleName } from "@reduxjs/toolkit/dist/query/apiTypes";
 import { CreateApi } from "@reduxjs/toolkit/dist/query";
-import { createSubgraphGdaApiSlice } from "../gda-subgraph/subgraphGdaApiSlice";
+import { createSubgraphGdaApiSlice } from "../subgraphs/gda/subgraphGdaApiSlice";
 import { adhocRpcEndpoints } from "./adhocRpcEndpoints";
 
 export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks)
@@ -81,7 +81,7 @@ export const makeStore = wrapMakeStore(() => {
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
       [ensApi.reducerPath]: ensApi.reducer,
-      [sfGdaSubgraph.reducerPath]: sfGdaSubgraph.reducer
+      [sfGdaSubgraph.reducerPath]: sfGdaSubgraph.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

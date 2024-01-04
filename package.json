@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "generate": "npm-run-all -s generate:*",
-    "generate:gda-subgraph": "graphclient build --dir ./src/gda-subgraph"
+    "generate:gda-subgraph": "graphclient build --dir ./src/subgraphs/gda"
   },
   "resolutions": {
     "ethers": "5.7.1"

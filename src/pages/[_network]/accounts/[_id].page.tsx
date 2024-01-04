@@ -22,38 +22,38 @@ import { NextPage } from "next";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import AccountIndexes from "../../../components/AccountIndexes";
-import AccountStreams from "../../../components/AccountStreams";
-import AccountTokenBalance from "../../../components/AccountTokenBalance";
-import AccountTokenFlowRate from "../../../components/AccountTokenFlowRate";
-import AccountMap from "../../../components/AccountMap";
-import AccountTokens from "../../../components/AccountTokens";
-import { AddressBookButton } from "../../../components/AddressBook";
-import CopyIconBtn from "../../../components/CopyIconBtn";
-import CopyLink from "../../../components/CopyLink";
-import DepletionDate from "../../../components/DepletionDate";
-import EventList from "../../../components/EventList";
-import InfoTooltipBtn from "../../../components/InfoTooltipBtn";
+import AccountIndexes from "./AccountIndexes";
+import AccountStreams from "./AccountStreams";
+import AccountTokenBalance from "./AccountTokenBalance";
+import AccountTokenFlowRate from "./AccountTokenFlowRate";
+import AccountMap from "./AccountMap";
+import AccountTokens from "./AccountTokens";
+import { AddressBookButton } from "../../../components/AddressBook/AddressBook";
+import CopyIconBtn from "../../../components/Copy/CopyIconBtn";
+import CopyLink from "../../../components/Copy/CopyLink";
+import DepletionDate from "../../../components/Date/DepletionDate";
+import EventTableWithInfo from "../../../components/Table/EventTableWithInfo";
+import InfoTooltipBtn from "../../../components/Info/InfoTooltipBtn";
 import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
-import SkeletonAddress from "../../../components/skeletons/SkeletonAddress";
-import SkeletonNetwork from "../../../components/skeletons/SkeletonNetwork";
-import SubgraphQueryLink from "../../../components/SubgraphQueryLink";
+import SkeletonAddress from "../../../components/Skeleton/SkeletonAddress";
+import SkeletonNetwork from "../../../components/Skeleton/SkeletonNetwork";
+import SubgraphQueryLink from "../../subgraph/SubgraphQueryLink";
 import {
   incomingStreamOrderingDefault,
   incomingStreamPagingDefault,
-} from "../../../components/Tables/Account/AccountIncomingStreamsTable";
+} from "../../../components/Table/Account/AccountIncomingStreamsTable";
 import {
   indexSubscriptionOrderingDefault,
   indexSubscriptionPagingDefault,
-} from "../../../components/Tables/Account/AccountIndexSubscriptionsTable";
+} from "../../../components/Table/Account/AccountIndexSubscriptionsTable";
 import {
   outgoingStreamOrderingDefault,
   outgoingStreamPagingDefault,
-} from "../../../components/Tables/Account/AccountOutgoingStreamsTable";
+} from "../../../components/Table/Account/AccountOutgoingStreamsTable";
 import {
   publishedIndexOrderingDefault,
   publishedIndexPagingDefault,
-} from "../../../components/Tables/Account/AccountIndexPublicationsTable";
+} from "../../../components/Table/Account/AccountIndexPublicationsTable";
 import IdContext from "../../../contexts/IdContext";
 import { useNetworkContext } from "../../../contexts/NetworkContext";
 import { useAppSelector } from "../../../redux/hooks";
@@ -64,10 +64,10 @@ import {
 import { ensApi } from "../../../redux/slices/ensResolver.slice";
 import { sfSubgraph } from "../../../redux/store";
 import ellipsisAddress from "../../../utils/ellipsisAddress";
-import TokenChip from "../../../components/TokenChip";
-import FlowingBalance from "../../../components/FlowingBalance";
-import FlowRate from "../../../components/FlowRate";
-import AccountPools from "../../../components/AccountPools";
+import TokenChip from "../../../components/TokenChip/TokenChip";
+import FlowingBalance from "../../../components/Amount/FlowingBalance";
+import FlowRate from "../../../components/Amount/FlowRate";
+import AccountPools from "./AccountPools";
 
 const AccountPage: NextPage = () => {
   const network = useNetworkContext();
@@ -448,7 +448,7 @@ const AccountPage: NextPage = () => {
 
           <Box>
             <TabPanel value="events">
-              <EventList network={network} address={address} />
+              <EventTableWithInfo network={network} address={address} />
             </TabPanel>
             <TabPanel value="tokens">
               <AccountTokens network={network} accountAddress={address} />

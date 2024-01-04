@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { BasePage } from "../BasePage";
 import { timeAgo } from "../../../src/utils/dateTime";
-import calculatePoolPercentage from "../../../src/logic/calculatePoolPercentage";
+import calculatePoolPercentage from "../../../src/calculatePoolPercentage";
 import Decimal from "decimal.js";
 
 const POOL_TOKEN = "[data-cy=token-address]";
@@ -117,20 +117,27 @@ export class PoolPage extends BasePage {
         cy.get(MEMBERS_TABLE_TOTAL_AMOUNT_CLAIMED)
           .eq(index)
           .should("have.text", (entry.totalAmountClaimed / 1e18).toFixed(6));
-          this.replaceSpacesAndAssertText(MEMBERS_TABLE_MEMBER_UNITS,`${entry.units} (${calculatePoolPercentage(
+        this.replaceSpacesAndAssertText(
+          MEMBERS_TABLE_MEMBER_UNITS,
+          `${entry.units} (${calculatePoolPercentage(
             new Decimal(entry.pool.totalUnits),
             new Decimal(entry.units)
           )
             .toDP(2)
-            .toString()}%)`,index)
+            .toString()}%)`,
+          index
+        );
         cy.get(MEMBERS_TABLE_MEMBER_UNITS)
           .eq(index)
-          .should("have.text", `${entry.units} (${calculatePoolPercentage(
-            new Decimal(entry.pool.totalUnits),
-            new Decimal(entry.units)
-          )
-            .toDP(2)
-            .toString()}%)`);
+          .should(
+            "have.text",
+            `${entry.units} (${calculatePoolPercentage(
+              new Decimal(entry.pool.totalUnits),
+              new Decimal(entry.units)
+            )
+              .toDP(2)
+              .toString()}%)`
+          );
       });
     });
   }

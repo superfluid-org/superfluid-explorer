@@ -5,9 +5,9 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import * as React from "react";
-import AppLink from "../components/AppLink";
-import { NetworkStreams } from "../components/NetworkStreams";
-import NetworkTabs from "../components/NetworkTabs";
+import AppLink from "../components/AppLink/AppLink";
+import { NetworkStreams } from "./NetworkStreams";
+import NetworkTabs from "../components/NetworkTabs/NetworkTabs";
 import { networks, polygon } from "../redux/networks";
 
 const Home: NextPage = () => {
@@ -66,7 +66,7 @@ const Home: NextPage = () => {
           <Divider />
           <TabContext value={activeTab}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <NetworkTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+              <NetworkTabs activeTab={activeTab} setActiveTab={setActiveTab} prefetch />
             </Box>
             {networks.map((network) => (
               <TabPanel
