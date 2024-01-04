@@ -9,6 +9,7 @@ export type Network = {
   getLinkForTransaction(txHash: string): string
   getLinkForAddress(adderss: string): string
   isTestnet: boolean
+  supportsGDA: boolean
 }
 
 export const networks: Network[] = [
@@ -18,6 +19,7 @@ export const networks: Network[] = [
     slugName: 'ethereum',
     chainId: 1,
     isTestnet: false,
+    supportsGDA: false,
     rpcUrl: 'https://rpc-endpoints.superfluid.dev/eth-mainnet',
     subgraphUrl:
       'https://subgraph.satsuma-prod.com/c5br3jaVlJI6/superfluid/eth-mainnet/api',
@@ -31,6 +33,7 @@ export const networks: Network[] = [
     slugName: 'xdai',
     chainId: 100,
     isTestnet: false,
+    supportsGDA: false,
     rpcUrl: 'https://rpc-endpoints.superfluid.dev/xdai-mainnet',
     subgraphUrl:
       'https://subgraph.satsuma-prod.com/c5br3jaVlJI6/superfluid/xdai/api',
@@ -44,6 +47,7 @@ export const networks: Network[] = [
     slugName: 'matic',
     chainId: 137,
     isTestnet: false,
+    supportsGDA: false,
     rpcUrl: `https://rpc-endpoints.superfluid.dev/polygon-mainnet`,
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-matic',
@@ -57,6 +61,7 @@ export const networks: Network[] = [
     slugName: 'optimism-mainnet',
     chainId: 10,
     isTestnet: false,
+    supportsGDA: false,
     rpcUrl: `https://rpc-endpoints.superfluid.dev/optimism-mainnet`,
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-optimism-mainnet',
@@ -70,6 +75,7 @@ export const networks: Network[] = [
     slugName: 'arbitrum-one',
     chainId: 42161,
     isTestnet: false,
+    supportsGDA: false,
     rpcUrl: 'https://rpc-endpoints.superfluid.dev/arbitrum-one',
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-arbitrum-one',
@@ -83,6 +89,7 @@ export const networks: Network[] = [
     slugName: 'avalanche-c',
     chainId: 43114,
     isTestnet: false,
+    supportsGDA: false,
     rpcUrl: 'https://rpc-endpoints.superfluid.dev/avalanche-c',
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-avalanche-c',
@@ -96,6 +103,7 @@ export const networks: Network[] = [
     slugName: 'bnb-smart-chain',
     chainId: 56,
     isTestnet: false,
+    supportsGDA: false,
     rpcUrl: `https://bsc-dataseed1.binance.org`,
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-bsc-mainnet',
@@ -109,6 +117,7 @@ export const networks: Network[] = [
     slugName: 'celo',
     chainId: 42220,
     isTestnet: false,
+    supportsGDA: false,
     rpcUrl: 'https://rpc-endpoints.superfluid.dev/celo-mainnet',
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-celo-mainnet',
@@ -119,6 +128,7 @@ export const networks: Network[] = [
   },
   {
     isTestnet: false,
+    supportsGDA: false,
     chainId: 8453,
     slugName: 'base-mainnet',
     displayName: 'Base Mainnet',
@@ -135,6 +145,7 @@ export const networks: Network[] = [
     slugName: 'goerli',
     chainId: 5,
     isTestnet: true,
+    supportsGDA: true,
     rpcUrl: `https://rpc-endpoints.superfluid.dev/eth-goerli`,
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-goerli',
@@ -148,6 +159,7 @@ export const networks: Network[] = [
     slugName: 'mumbai',
     chainId: 80001,
     isTestnet: true,
+    supportsGDA: true,
     rpcUrl: `https://rpc-endpoints.superfluid.dev/polygon-mumbai`,
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-mumbai',
@@ -161,6 +173,7 @@ export const networks: Network[] = [
     slugName: 'avalanche-fuji',
     chainId: 43113,
     isTestnet: true,
+    supportsGDA: true,
     rpcUrl: 'https://rpc-endpoints.superfluid.dev/avalanche-fuji',
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-avalanche-fuji',
@@ -174,6 +187,7 @@ export const networks: Network[] = [
     slugName: 'optimism-goerli',
     chainId: 420,
     isTestnet: true,
+    supportsGDA: true,
     rpcUrl: 'https://rpc-endpoints.superfluid.dev/optimism-goerli',
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-optimism-goerli',
@@ -187,6 +201,7 @@ export const networks: Network[] = [
     slugName: 'arbitrum-goerli',
     chainId: 421613,
     isTestnet: true,
+    supportsGDA: true,
     rpcUrl: 'https://rpc-endpoints.superfluid.dev/arbitrum-goerli',
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-arbitrum-goerli',
@@ -197,6 +212,7 @@ export const networks: Network[] = [
   },
   {
     isTestnet: true,
+    supportsGDA: true,
     chainId: 11155111,
     slugName: 'eth-sepolia',
     displayName: 'Sepolia',
@@ -210,6 +226,7 @@ export const networks: Network[] = [
   },
   {
     isTestnet: true,
+    supportsGDA: true,
     chainId: 1442,
     slugName: 'polygon-zkevm-testnet',
     displayName: 'Polygon zkEVM Testnet',
@@ -222,6 +239,7 @@ export const networks: Network[] = [
   },
   {
     isTestnet: true,
+    supportsGDA: true,
     chainId: 84531,
     slugName: 'base-goerli',
     displayName: 'Base Goerli',
