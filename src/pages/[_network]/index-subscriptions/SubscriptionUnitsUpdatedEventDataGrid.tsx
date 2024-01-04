@@ -1,25 +1,26 @@
-import { FC, useMemo } from "react";
-import { AppDataGrid } from "../../../components/DataGrid/AppDataGrid";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef } from '@mui/x-data-grid'
 import {
   Ordering,
   PagedResult,
   SkipPaging,
   SubscriptionUnitsUpdatedEvent,
   SubscriptionUnitsUpdatedEvent_OrderBy,
-} from "@superfluid-finance/sdk-core";
-import TimeAgo from "../../../components/TimeAgo/TimeAgo";
+} from '@superfluid-finance/sdk-core'
+import { FC, useMemo } from 'react'
+
+import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
+import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 
 interface Props {
   queryResult: {
-    isFetching: boolean;
-    data?: PagedResult<SubscriptionUnitsUpdatedEvent>;
-  };
-  setPaging: (paging: SkipPaging) => void;
-  ordering: Ordering<SubscriptionUnitsUpdatedEvent_OrderBy> | undefined;
+    isFetching: boolean
+    data?: PagedResult<SubscriptionUnitsUpdatedEvent>
+  }
+  setPaging: (paging: SkipPaging) => void
+  ordering: Ordering<SubscriptionUnitsUpdatedEvent_OrderBy> | undefined
   setOrdering: (
     ordering?: Ordering<SubscriptionUnitsUpdatedEvent_OrderBy>
-  ) => void;
+  ) => void
 }
 
 const SubscriptionUnitsUpdatedEventDataGrid: FC<Props> = ({
@@ -30,22 +31,22 @@ const SubscriptionUnitsUpdatedEventDataGrid: FC<Props> = ({
 }) => {
   const columns: GridColDef[] = useMemo(
     () => [
-      { field: "id", hide: true, sortable: false, flex: 1 },
+      { field: 'id', hide: true, sortable: false, flex: 1 },
       {
-        field: "timestamp",
-        headerName: "Update Date",
+        field: 'timestamp',
+        headerName: 'Update Date',
         sortable: true,
         flex: 1,
         renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
       },
-      { field: "units", headerName: "Units", sortable: true, flex: 1 },
+      { field: 'units', headerName: 'Units', sortable: true, flex: 1 },
     ],
     []
-  );
+  )
 
   const rows: SubscriptionUnitsUpdatedEvent[] = queryResult.data
     ? queryResult.data.data
-    : [];
+    : []
 
   return (
     <AppDataGrid
@@ -56,7 +57,7 @@ const SubscriptionUnitsUpdatedEventDataGrid: FC<Props> = ({
       ordering={ordering}
       setOrdering={(x) => setOrdering(x as any)}
     />
-  );
-};
+  )
+}
 
-export default SubscriptionUnitsUpdatedEventDataGrid;
+export default SubscriptionUnitsUpdatedEventDataGrid

@@ -7,22 +7,22 @@ import {
   SxProps,
   Theme,
   Typography,
-} from "@mui/material";
-import times from "lodash/times";
-import { FC } from "react";
+} from '@mui/material'
+import times from 'lodash/times'
+import { FC } from 'react'
 
-const DEFAULT_SIBLING_COUNT = 1;
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_SIBLING_COUNT = 1
+const DEFAULT_PAGE_SIZE = 10
 
 interface InfinitePaginationProps {
-  page: number;
-  hasNext: boolean;
-  isLoading?: boolean;
-  pageSize?: number;
-  siblingCount?: number;
-  sx?: SxProps<Theme>;
-  onPageChange: (newPage: number) => void;
-  onPageSizeChange?: (newPageSize: number) => void;
+  page: number
+  hasNext: boolean
+  isLoading?: boolean
+  pageSize?: number
+  siblingCount?: number
+  sx?: SxProps<Theme>
+  onPageChange: (newPage: number) => void
+  onPageSizeChange?: (newPageSize: number) => void
 }
 
 const InfinitePagination: FC<InfinitePaginationProps> = ({
@@ -35,13 +35,13 @@ const InfinitePagination: FC<InfinitePaginationProps> = ({
   onPageChange,
   onPageSizeChange,
 }) => {
-  const trailingSiblings = Math.min(siblingCount, page - 1);
-  const lastHiddenPage = page - trailingSiblings;
+  const trailingSiblings = Math.min(siblingCount, page - 1)
+  const lastHiddenPage = page - trailingSiblings
 
-  const onPageClick = (newPage: number) => () => onPageChange(newPage);
+  const onPageClick = (newPage: number) => () => onPageChange(newPage)
 
   const handlePageSizeChange = (e: SelectChangeEvent<number>) =>
-    onPageSizeChange && onPageSizeChange(Number(e.target.value));
+    onPageSizeChange && onPageSizeChange(Number(e.target.value))
 
   return (
     <Stack direction="row" alignItems="center" sx={sx} spacing={2}>
@@ -55,8 +55,8 @@ const InfinitePagination: FC<InfinitePaginationProps> = ({
             value={pageSize}
             onChange={handlePageSizeChange}
             sx={{
-              ".MuiSelect-select": {
-                padding: "4px 32px 4px 4px",
+              '.MuiSelect-select': {
+                padding: '4px 32px 4px 4px',
               },
             }}
           >
@@ -113,7 +113,7 @@ const InfinitePagination: FC<InfinitePaginationProps> = ({
         />
       </Stack>
     </Stack>
-  );
-};
+  )
+}
 
-export default InfinitePagination;
+export default InfinitePagination

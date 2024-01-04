@@ -1,4 +1,4 @@
-import FilterListIcon from "@mui/icons-material/FilterList";
+import FilterListIcon from '@mui/icons-material/FilterList'
 import {
   Box,
   Button,
@@ -18,34 +18,33 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@mui/material";
-import {
-  createSkipPaging,
-  Ordering,
-} from "@superfluid-finance/sdk-core";
-import Decimal from "decimal.js";
-import { BigNumber } from "ethers";
-import omit from "lodash/fp/omit";
-import set from "lodash/fp/set";
-import isEqual from "lodash/isEqual";
-import { FC, FormEvent, useEffect, useRef, useState } from "react";
-import useDebounce from "../../../hooks/useDebounce";
-import calculatePoolPercentage from "../../../calculatePoolPercentage";
-import calculateWeiAmountReceived from "../../../calculateWeiAmountReceived";
-import { Network } from "../../../redux/networks";
-import { sfGdaSubgraph } from "../../../redux/store";
-import AccountAddress from "../../Address/AccountAddress";
-import AppLink from "../../AppLink/AppLink";
-import BalanceWithToken from "../../Amount/BalanceWithToken";
-import DetailsButton from "../../Details/DetailsButton";
-import InfinitePagination from "../InfinitePagination";
-import InfoTooltipBtn from "../../Info/InfoTooltipBtn";
-import TableLoader from "../TableLoader";
-import { PoolMember_OrderBy, PoolMember_Filter } from "../../../subgraphs/gda/.graphclient";
+} from '@mui/material'
+import { createSkipPaging, Ordering } from '@superfluid-finance/sdk-core'
+import Decimal from 'decimal.js'
+import { BigNumber } from 'ethers'
+import omit from 'lodash/fp/omit'
+import set from 'lodash/fp/set'
+import isEqual from 'lodash/isEqual'
+import { FC, FormEvent, useEffect, useRef, useState } from 'react'
 
-import { PoolMembersQuery } from "../../../subgraphs/gda/endpoints/entityArgs";
-import { PoolMemberDetailsDialog } from "../../../pages/[_network]/pool-members/PoolMemberDetails";
-import { UnitsStatus } from "./AccountPoolAdminsTable";
+import calculatePoolPercentage from '../../../calculatePoolPercentage'
+import useDebounce from '../../../hooks/useDebounce'
+import { PoolMemberDetailsDialog } from '../../../pages/[_network]/pool-members/PoolMemberDetails'
+import { Network } from '../../../redux/networks'
+import { sfGdaSubgraph } from '../../../redux/store'
+import {
+  PoolMember_Filter,
+  PoolMember_OrderBy,
+} from '../../../subgraphs/gda/.graphclient'
+import { PoolMembersQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
+import AccountAddress from '../../Address/AccountAddress'
+import BalanceWithToken from '../../Amount/BalanceWithToken'
+import AppLink from '../../AppLink/AppLink'
+import DetailsButton from '../../Details/DetailsButton'
+import InfoTooltipBtn from '../../Info/InfoTooltipBtn'
+import InfinitePagination from '../InfinitePagination'
+import TableLoader from '../TableLoader'
+import { UnitsStatus } from './AccountPoolAdminsTable'
 
 enum MemberStatus {
   IsConnected,
@@ -57,244 +56,237 @@ enum DistributionStatus {
   HasNotClaimed,
 }
 
-export const PoolMembersOrderingDefault: Ordering<PoolMember_OrderBy> =
-  { orderBy: "createdAtTimestamp", orderDirection: "desc" };
-
-export const PoolMembersPagingDefault = createSkipPaging({ take: 10 });
-
-interface AccountPoolMembersTableProps {
-  network: Network;
-  accountAddress: string;
+export const PoolMembersOrderingDefault: Ordering<PoolMember_OrderBy> = {
+  orderBy: 'createdAtTimestamp',
+  orderDirection: 'desc',
 }
 
-type RequiredPoolMembersQuery = Required<Omit<PoolMembersQuery, "block">>;
+export const PoolMembersPagingDefault = createSkipPaging({ take: 10 })
 
-const AccountPoolMembersTable: FC<
-  AccountPoolMembersTableProps
-> = ({ network, accountAddress }) => {
-  const filterAnchorRef = useRef(null);
-  const [showFilterMenu, setShowFilterMenu] = useState(false);
+interface AccountPoolMembersTableProps {
+  network: Network
+  accountAddress: string
+}
 
-  const [memberStatus, setMemberStatus] =
-    useState<MemberStatus | null>(null);
+type RequiredPoolMembersQuery = Required<Omit<PoolMembersQuery, 'block'>>
+
+const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
+  network,
+  accountAddress,
+}) => {
+  const filterAnchorRef = useRef(null)
+  const [showFilterMenu, setShowFilterMenu] = useState(false)
+
+  const [memberStatus, setMemberStatus] = useState<MemberStatus | null>(null)
 
   const [distributionStatus, setDistributionStatus] =
-    useState<DistributionStatus | null>(null);
-  const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null);
+    useState<DistributionStatus | null>(null)
+  const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null)
 
   const defaultFilter = {
     account: accountAddress,
-  };
+  }
 
   const createDefaultArg = (): RequiredPoolMembersQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: PoolMembersPagingDefault,
     order: PoolMembersOrderingDefault,
-  });
+  })
 
-  const [queryArg, setQueryArg] = useState<RequiredPoolMembersQuery>(
-    createDefaultArg()
-  );
+  const [queryArg, setQueryArg] =
+    useState<RequiredPoolMembersQuery>(createDefaultArg())
 
-  const [queryTrigger, queryResult] =
-    sfGdaSubgraph.useLazyPoolMembersQuery();
+  const [queryTrigger, queryResult] = sfGdaSubgraph.useLazyPoolMembersQuery()
 
-  const queryTriggerDebounced = useDebounce(queryTrigger, 250);
+  const queryTriggerDebounced = useDebounce(queryTrigger, 250)
 
   const onQueryArgChanged = (newArgs: RequiredPoolMembersQuery) => {
-    setQueryArg(newArgs);
+    setQueryArg(newArgs)
 
     if (
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      queryTriggerDebounced(newArgs, true);
+      queryTriggerDebounced(newArgs, true)
     } else {
-      queryTrigger(newArgs, true);
+      queryTrigger(newArgs, true)
     }
-  };
+  }
 
   useEffect(() => {
-    onQueryArgChanged(createDefaultArg());
+    onQueryArgChanged(createDefaultArg())
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, accountAddress]);
+  }, [network, accountAddress])
 
   const setPage = (newPage: number) =>
     onQueryArgChanged(
-      set("pagination.skip", (newPage - 1) * queryArg.pagination.take, queryArg)
-    );
+      set('pagination.skip', (newPage - 1) * queryArg.pagination.take, queryArg)
+    )
 
   const setPageSize = (newPageSize: number) =>
-    onQueryArgChanged(set("pagination.take", newPageSize, queryArg));
+    onQueryArgChanged(set('pagination.take', newPageSize, queryArg))
 
-  const onOrderingChanged = (
-    newOrdering: Ordering<PoolMember_OrderBy>
-  ) => onQueryArgChanged({ ...queryArg, order: newOrdering });
+  const onOrderingChanged = (newOrdering: Ordering<PoolMember_OrderBy>) =>
+    onQueryArgChanged({ ...queryArg, order: newOrdering })
 
   const onSortClicked = (field: PoolMember_OrderBy) => () => {
     if (queryArg.order?.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "desc",
-      });
-    } else if (queryArg.order.orderDirection === "desc") {
+        orderDirection: 'desc',
+      })
+    } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "asc",
-      });
+        orderDirection: 'asc',
+      })
     } else {
-      onOrderingChanged(PoolMembersOrderingDefault);
+      onOrderingChanged(PoolMembersOrderingDefault)
     }
-  };
+  }
 
   const onFilterChange = (newFilter: PoolMember_Filter) => {
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
       filter: newFilter,
-    });
-  };
+    })
+  }
 
   const clearFilterField =
     (...fields: Array<keyof PoolMember_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter));
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const getMemberStatusFilter = (
     status: MemberStatus | null
   ): PoolMember_Filter => {
     switch (status) {
       case MemberStatus.IsConnected:
-        return { isConnected: true };
+        return { isConnected: true }
       case MemberStatus.IsNotConnected:
-        return { isConnected: false };
+        return { isConnected: false }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   const changeMemberStatus = (newStatus: MemberStatus | null) => {
-    const { isConnected, ...newFilter } = queryArg.filter;
+    const { isConnected, ...newFilter } = queryArg.filter
 
-    setMemberStatus(newStatus);
+    setMemberStatus(newStatus)
     onFilterChange({
       ...newFilter,
       ...getMemberStatusFilter(newStatus),
-    });
-  };
+    })
+  }
 
-  const onMemberStatusChange = (
-    _event: unknown,
-    newStatus: MemberStatus
-  ) => changeMemberStatus(newStatus);
+  const onMemberStatusChange = (_event: unknown, newStatus: MemberStatus) =>
+    changeMemberStatus(newStatus)
 
-  const clearMemberStatusFilter = () => changeMemberStatus(null);
+  const clearMemberStatusFilter = () => changeMemberStatus(null)
 
   const getDistributionFilter = (
     status: DistributionStatus | null
   ): PoolMember_Filter => {
     switch (status) {
       case DistributionStatus.HasClaimed:
-        return { totalAmountClaimed_gt: "0" };
+        return { totalAmountClaimed_gt: '0' }
       case DistributionStatus.HasNotClaimed:
-        return { totalAmountClaimed: "0" };
+        return { totalAmountClaimed: '0' }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   const changeDistributionStatus = (newStatus: DistributionStatus | null) => {
-    const {
-      totalAmountClaimed,
-      totalAmountClaimed_gt,
-      ...newFilter
-    } = queryArg.filter;
+    const { totalAmountClaimed, totalAmountClaimed_gt, ...newFilter } =
+      queryArg.filter
 
-    setDistributionStatus(newStatus);
+    setDistributionStatus(newStatus)
     onFilterChange({
       ...newFilter,
       ...getDistributionFilter(newStatus),
-    });
-  };
+    })
+  }
 
   const onDistributionStatusChange = (
     _event: unknown,
     newStatus: DistributionStatus
-  ) => changeDistributionStatus(newStatus);
+  ) => changeDistributionStatus(newStatus)
 
-  const clearDistributionStatusFilter = () => changeDistributionStatus(null);
+  const clearDistributionStatusFilter = () => changeDistributionStatus(null)
 
   const getUnitsStatusFilter = (
     status: UnitsStatus | null
   ): PoolMember_Filter => {
     switch (status) {
       case UnitsStatus.Issued:
-        return { units_gt: "0" };
+        return { units_gt: '0' }
       case UnitsStatus.NotIssued:
-        return { units: "0" };
+        return { units: '0' }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   const changeUnitsStatus = (newStatus: UnitsStatus | null) => {
-    const { units_gt, units, ...newFilter } = queryArg.filter;
+    const { units_gt, units, ...newFilter } = queryArg.filter
 
-    setUnitsStatus(newStatus);
+    setUnitsStatus(newStatus)
     onFilterChange({
       ...newFilter,
       ...getUnitsStatusFilter(newStatus),
-    });
-  };
+    })
+  }
 
   const onUnitsStatusChange = (_event: unknown, newStatus: UnitsStatus) =>
-    changeUnitsStatus(newStatus);
+    changeUnitsStatus(newStatus)
 
-  const clearUnitsStatusFilter = () => changeUnitsStatus(null);
+  const clearUnitsStatusFilter = () => changeUnitsStatus(null)
 
-  const openFilter = () => setShowFilterMenu(true);
-  const closeFilter = () => setShowFilterMenu(false);
+  const openFilter = () => setShowFilterMenu(true)
+  const closeFilter = () => setShowFilterMenu(false)
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    closeFilter();
-  };
+    e.preventDefault()
+    closeFilter()
+  }
 
   const resetFilter = () => {
-    setUnitsStatus(null);
-    setDistributionStatus(null);
-    setMemberStatus(null);
-    onFilterChange(defaultFilter);
-    closeFilter();
-  };
+    setUnitsStatus(null)
+    setDistributionStatus(null)
+    setMemberStatus(null)
+    onFilterChange(defaultFilter)
+    closeFilter()
+  }
 
+  const tableRows = queryResult.data?.data || []
+  const hasNextPage = !!queryResult.data?.nextPaging
 
-  const tableRows = queryResult.data?.data || [];
-  const hasNextPage = !!queryResult.data?.nextPaging;
-
-  const { order, pagination } = queryArg;
+  const { order, pagination } = queryArg
 
   const {
     skip = PoolMembersPagingDefault.skip,
     take = PoolMembersPagingDefault.take,
-  } = queryResult.data?.paging || {};
+  } = queryResult.data?.paging || {}
 
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
-        <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
+        <Typography sx={{ flex: '1 1 100%' }} variant="h6" component="h2">
           Pool Members
           <InfoTooltipBtn
-            dataCy={"members-tooltip"}
+            dataCy={'members-tooltip'}
             size={22}
             title={
               <>
                 Accounts that have received flows/units within the Pool. Members
                 will receive distributed funds based on the portion of units
-                they own in and pool.{" "}
+                they own in and pool.{' '}
                 <AppLink
-                  data-cy={"members-tooltip-link"}
+                  data-cy={'members-tooltip-link'}
                   href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
                   target="_blank"
                 >
@@ -309,10 +301,10 @@ const AccountPoolMembersTable: FC<
           {memberStatus !== null && (
             <Chip
               label={
-                <b data-cy={"chip-status"}>
+                <b data-cy={'chip-status'}>
                   {memberStatus === MemberStatus.IsConnected
-                    ? "Approved"
-                    : "Not approved"}
+                    ? 'Approved'
+                    : 'Not approved'}
                 </b>
               }
               size="small"
@@ -323,10 +315,10 @@ const AccountPoolMembersTable: FC<
           {distributionStatus !== null && (
             <Chip
               label={
-                <b data-cy={"chip-distributed"}>
+                <b data-cy={'chip-distributed'}>
                   {distributionStatus === DistributionStatus.HasClaimed
-                    ? "Has received distribution"
-                    : "No distributions received"}
+                    ? 'Has received distribution'
+                    : 'No distributions received'}
                 </b>
               }
               size="small"
@@ -337,10 +329,10 @@ const AccountPoolMembersTable: FC<
           {unitsStatus !== null && (
             <Chip
               label={
-                <b data-cy={"chip-units"}>
+                <b data-cy={'chip-units'}>
                   {unitsStatus === UnitsStatus.Issued
-                    ? "Has units"
-                    : "No units"}
+                    ? 'Has units'
+                    : 'No units'}
                 </b>
               }
               size="small"
@@ -350,7 +342,11 @@ const AccountPoolMembersTable: FC<
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton data-cy={"members-filter"} ref={filterAnchorRef} onClick={openFilter}>
+          <IconButton
+            data-cy={'members-filter'}
+            ref={filterAnchorRef}
+            onClick={openFilter}
+          >
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -358,11 +354,11 @@ const AccountPoolMembersTable: FC<
           open={showFilterMenu}
           anchorEl={filterAnchorRef.current}
           onClose={closeFilter}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <Stack
-            sx={{ p: 3, pb: 2, minWidth: "300px" }}
+            sx={{ p: 3, pb: 2, minWidth: '300px' }}
             component="form"
             onSubmit={onFormSubmit}
             noValidate
@@ -380,10 +376,16 @@ const AccountPoolMembersTable: FC<
                 value={memberStatus}
                 onChange={onMemberStatusChange}
               >
-                <ToggleButton data-cy={"filter-members-approved-yes"} value={MemberStatus.IsConnected}>
+                <ToggleButton
+                  data-cy={'filter-members-approved-yes'}
+                  value={MemberStatus.IsConnected}
+                >
                   Yes
                 </ToggleButton>
-                <ToggleButton data-cy={"filter-members-approved-no"} value={MemberStatus.IsNotConnected}>
+                <ToggleButton
+                  data-cy={'filter-members-approved-no'}
+                  value={MemberStatus.IsNotConnected}
+                >
                   No
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -401,8 +403,18 @@ const AccountPoolMembersTable: FC<
                 value={distributionStatus}
                 onChange={onDistributionStatusChange}
               >
-                <ToggleButton data-cy={"filter-members-received-distributions-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton data-cy={"filter-members-received-distributions-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton
+                  data-cy={'filter-members-received-distributions-yes'}
+                  value={UnitsStatus.Issued}
+                >
+                  Yes
+                </ToggleButton>
+                <ToggleButton
+                  data-cy={'filter-members-received-distributions-no'}
+                  value={UnitsStatus.NotIssued}
+                >
+                  No
+                </ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -418,26 +430,40 @@ const AccountPoolMembersTable: FC<
                 value={unitsStatus}
                 onChange={onUnitsStatusChange}
               >
-                <ToggleButton data-cy={"filter-members-units-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton data-cy={"filter-members-units-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton
+                  data-cy={'filter-members-units-yes'}
+                  value={UnitsStatus.Issued}
+                >
+                  Yes
+                </ToggleButton>
+                <ToggleButton
+                  data-cy={'filter-members-units-no'}
+                  value={UnitsStatus.NotIssued}
+                >
+                  No
+                </ToggleButton>
               </ToggleButtonGroup>
             </Box>
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               {(memberStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                  <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
-                    Reset
-                  </Button>
-                )}
-              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
+              <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
           </Stack>
         </Popover>
       </Toolbar>
-      <Table sx={{ tableLayout: "fixed" }}>
+      <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             <TableCell>
@@ -446,9 +472,8 @@ const AccountPoolMembersTable: FC<
                 dataCy="gda-admin-tooltip"
                 title={
                   <>
-                    The creator of an pool using the GDA - admins may
-                    update the pool of members and flow/distribute funds to
-                    members.{" "}
+                    The creator of an pool using the GDA - admins may update the
+                    pool of members and flow/distribute funds to members.{' '}
                     <AppLink
                       data-cy="gda-admin-tooltip-link"
                       href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
@@ -463,11 +488,13 @@ const AccountPoolMembersTable: FC<
             </TableCell>
             <TableCell width="160px">
               <TableSortLabel
-                active={order.orderBy === "isConnected"}
+                active={order.orderBy === 'isConnected'}
                 direction={
-                  order?.orderBy === "isConnected" ? order?.orderDirection : "desc"
+                  order?.orderBy === 'isConnected'
+                    ? order?.orderDirection
+                    : 'desc'
                 }
-                onClick={onSortClicked("isConnected")}
+                onClick={onSortClicked('isConnected')}
               >
                 Connected
                 <InfoTooltipBtn
@@ -479,24 +506,24 @@ const AccountPoolMembersTable: FC<
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={order?.orderBy === "totalAmountClaimed"}
+                active={order?.orderBy === 'totalAmountClaimed'}
                 direction={
-                  order?.orderBy === "totalAmountClaimed"
+                  order?.orderBy === 'totalAmountClaimed'
                     ? order?.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("totalAmountClaimed")}
+                onClick={onSortClicked('totalAmountClaimed')}
               >
                 Total Amount Claimed
               </TableSortLabel>
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={order?.orderBy === "units"}
+                active={order?.orderBy === 'units'}
                 direction={
-                  order?.orderBy === "units" ? order?.orderDirection : "desc"
+                  order?.orderBy === 'units' ? order?.orderDirection : 'desc'
                 }
-                onClick={onSortClicked("units")}
+                onClick={onSortClicked('units')}
               >
                 Pool Units
               </TableSortLabel>
@@ -507,14 +534,16 @@ const AccountPoolMembersTable: FC<
         <TableBody>
           {tableRows.map((member) => (
             <TableRow key={member.id} hover>
-              <TableCell data-cy={"admin-address"}>
+              <TableCell data-cy={'admin-address'}>
                 <AccountAddress
                   network={network}
                   address={member.admin}
                   ellipsis={6}
                 />
               </TableCell>
-              <TableCell data-cy={"connected-status"}>{member.isConnected ? "Yes" : "No"}</TableCell>
+              <TableCell data-cy={'connected-status'}>
+                {member.isConnected ? 'Yes' : 'No'}
+              </TableCell>
               {/* <TableCell data-cy={"amount-received"} >
                 <BalanceWithToken
                   network={network}
@@ -529,14 +558,14 @@ const AccountPoolMembersTable: FC<
                   // )}
                 />
               </TableCell> */}
-              <TableCell data-cy={"amount-received"} >
+              <TableCell data-cy={'amount-received'}>
                 <BalanceWithToken
                   network={network}
                   tokenAddress={member.token}
                   wei={BigNumber.from(member.totalAmountClaimed)}
                 />
               </TableCell>
-              <TableCell data-cy={"member-units"}>
+              <TableCell data-cy={'member-units'}>
                 {member.units}&nbsp;
                 {`(${calculatePoolPercentage(
                   new Decimal(member.poolTotalUnits),
@@ -561,13 +590,10 @@ const AccountPoolMembersTable: FC<
             <TableRow>
               <TableCell
                 colSpan={5}
-                sx={{ border: 0, height: "96px" }}
+                sx={{ border: 0, height: '96px' }}
                 align="center"
               >
-                <Typography
-                  data-cy={"members-no-results"}
-                  variant="body1"
-                >
+                <Typography data-cy={'members-no-results'} variant="body1">
                   No results
                 </Typography>
               </TableCell>
@@ -590,7 +616,7 @@ const AccountPoolMembersTable: FC<
                   hasNext={hasNextPage}
                   onPageChange={setPage}
                   onPageSizeChange={setPageSize}
-                  sx={{ justifyContent: "flex-end" }}
+                  sx={{ justifyContent: 'flex-end' }}
                 />
               </TableCell>
             </TableRow>
@@ -598,7 +624,7 @@ const AccountPoolMembersTable: FC<
         )}
       </Table>
     </>
-  );
-};
+  )
+}
 
-export default AccountPoolMembersTable;
+export default AccountPoolMembersTable

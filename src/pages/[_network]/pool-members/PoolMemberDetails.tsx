@@ -1,17 +1,18 @@
-import React, { FC, ReactNode, useState } from "react";
-import { Network } from "../../../redux/networks";
-import DetailsDialog from "../../../components/Details/DetailsDialog";
-import { PoolMemberPageContent } from "./[_id].page";
+import React, { FC, ReactNode, useState } from 'react'
+
+import DetailsDialog from '../../../components/Details/DetailsDialog'
+import { Network } from '../../../redux/networks'
+import { PoolMemberPageContent } from './[_id].page'
 
 export const PoolMemberDetailsDialog: FC<{
-  poolMemberId: string;
-  network: Network;
-  children: (onClick: () => void) => ReactNode;
+  poolMemberId: string
+  network: Network
+  children: (onClick: () => void) => ReactNode
 }> = ({ children, ...props }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClickOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
 
   return (
     <>
@@ -20,5 +21,5 @@ export const PoolMemberDetailsDialog: FC<{
         <PoolMemberPageContent {...props} />
       </DetailsDialog>
     </>
-  );
-};
+  )
+}

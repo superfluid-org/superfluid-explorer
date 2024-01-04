@@ -1,4 +1,4 @@
-import SettingsIcon from "@mui/icons-material/SettingsOutlined";
+import SettingsIcon from '@mui/icons-material/SettingsOutlined'
 import {
   AppBar,
   Box,
@@ -8,29 +8,30 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@mui/material";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import AppLink from "../AppLink/AppLink";
-import SearchBar from "../Search/SearchBar";
-import SearchDialog from "../Search/SearchDialog";
-import SettingsDrawer from "./SettingsDrawer";
-import { polygon } from "../../redux/networks";
+} from '@mui/material'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+
+import { polygon } from '../../redux/networks'
+import AppLink from '../AppLink/AppLink'
+import SearchBar from '../Search/SearchBar'
+import SearchDialog from '../Search/SearchDialog'
+import SettingsDrawer from './SettingsDrawer'
 
 export const SfAppBar = () => {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const router = useRouter();
-  const { _network = polygon.slugName } = router.query;
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const router = useRouter()
+  const { _network = polygon.slugName } = router.query
 
   return (
     <>
       <AppBar position="sticky">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <AppLink href="/" sx={{ display: "flex" }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <AppLink href="/" sx={{ display: 'flex' }}>
             <Image
-              data-cy={"superfluid-logo"}
+              data-cy={'superfluid-logo'}
               src="/superfluid-logo.svg"
               width={150}
               height={36}
@@ -43,16 +44,16 @@ export const SfAppBar = () => {
             component={Box}
             maxWidth="md"
             sx={{
-              display: searchOpen ? "none" : "inline",
+              display: searchOpen ? 'none' : 'inline',
             }}
           >
             <SearchBar>
               <Box
                 sx={{
-                  cursor: "pointer",
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
+                  cursor: 'pointer',
+                  width: '100%',
+                  height: '100%',
+                  position: 'absolute',
                   top: 0,
                   left: 0,
                   zIndex: 10,
@@ -74,32 +75,32 @@ export const SfAppBar = () => {
               <AppLink
                 data-cy="token-page-button"
                 href={`/${_network}/supertokens`}
-                sx={{ textDecoration: "none" }}
+                sx={{ textDecoration: 'none' }}
               >
                 <Typography
                   variant="button"
                   sx={{
                     fontWeight: 500,
-                    fontSize: "16px",
-                    color: "white",
-                    textTransform: "none",
+                    fontSize: '16px',
+                    color: 'white',
+                    textTransform: 'none',
                   }}
                 >
                   Tokens
                 </Typography>
               </AppLink>
               <AppLink
-                data-cy={"protocol-button"}
+                data-cy={'protocol-button'}
                 href={`/${_network}/protocol`}
-                sx={{ textDecoration: "none" }}
+                sx={{ textDecoration: 'none' }}
               >
                 <Typography
                   variant="button"
                   sx={{
                     fontWeight: 500,
-                    fontSize: "16px",
-                    color: "white",
-                    textTransform: "none",
+                    fontSize: '16px',
+                    color: 'white',
+                    textTransform: 'none',
                   }}
                 >
                   Protocol
@@ -108,15 +109,15 @@ export const SfAppBar = () => {
               <AppLink
                 id="subgraph-button"
                 href="/subgraph"
-                sx={{ textDecoration: "none" }}
+                sx={{ textDecoration: 'none' }}
               >
                 <Typography
                   variant="button"
                   sx={{
                     fontWeight: 500,
-                    fontSize: "16px",
-                    color: "white",
-                    textTransform: "none",
+                    fontSize: '16px',
+                    color: 'white',
+                    textTransform: 'none',
                   }}
                 >
                   Subgraph
@@ -129,7 +130,7 @@ export const SfAppBar = () => {
                 color="inherit"
                 onClick={() => setSettingsOpen(true)}
                 data-cy="settings-cog"
-                data-cy-state={settingsOpen ? "open" : "closed"}
+                data-cy-state={settingsOpen ? 'open' : 'closed'}
               >
                 <SettingsIcon />
               </IconButton>
@@ -142,7 +143,7 @@ export const SfAppBar = () => {
         open={settingsOpen}
       />
     </>
-  );
-};
+  )
+}
 
-export default SfAppBar;
+export default SfAppBar

@@ -1,28 +1,28 @@
-import { ethers } from "ethers";
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { providers } from "@0xsequence/multicall";
+import { providers } from '@0xsequence/multicall'
+import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
+import { ethers } from 'ethers'
 
 export const ensApi = createApi({
-  reducerPath: "ens",
+  reducerPath: 'ens',
   baseQuery: fakeBaseQuery(),
   endpoints: (builder) => {
     const mainnetProvider = new providers.MulticallProvider(
       new ethers.providers.StaticJsonRpcProvider(
-        "https://rpc-endpoints.superfluid.dev/eth-mainnet",
-        "mainnet"
+        'https://rpc-endpoints.superfluid.dev/eth-mainnet',
+        'mainnet'
       )
-    );
+    )
     return {
       resolveName: builder.query<
         { address: string; name: string } | null,
         string
       >({
         queryFn: async (name) => {
-          if (!name.includes(".")) {
-            return { data: null };
+          if (!name.includes('.')) {
+            return { data: null }
           }
 
-          const address = await mainnetProvider.resolveName(name);
+          const address = await mainnetProvider.resolveName(name)
           return {
             data: address
               ? {
@@ -30,7 +30,7 @@ export const ensApi = createApi({
                   address: address,
                 }
               : null,
-          };
+          }
         },
       }),
       lookupAddress: builder.query<
@@ -38,7 +38,7 @@ export const ensApi = createApi({
         string
       >({
         queryFn: async (address) => {
-          const name = await mainnetProvider.lookupAddress(address);
+          const name = await mainnetProvider.lookupAddress(address)
           return {
             data: name
               ? {
@@ -46,7 +46,7 @@ export const ensApi = createApi({
                   address: ethers.utils.getAddress(address),
                 }
               : null,
-          };
+          }
         },
       }),
       lookupAvatar: builder.query<
@@ -54,7 +54,7 @@ export const ensApi = createApi({
         string
       >({
         queryFn: async (address) => {
-          const avatar = await mainnetProvider.getAvatar(address);
+          const avatar = await mainnetProvider.getAvatar(address)
           return {
             data: avatar
               ? {
@@ -62,9 +62,9 @@ export const ensApi = createApi({
                   avatar: avatar,
                 }
               : null,
-          };
+          }
         },
       }),
-    };
+    }
   },
-});
+})

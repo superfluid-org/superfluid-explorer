@@ -1,16 +1,16 @@
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { IconButton, styled, Tooltip } from "@mui/material";
-import { FC } from "react";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import { IconButton, styled, Tooltip } from '@mui/material'
+import { FC } from 'react'
 
 const StyledButton = styled(IconButton)(({ theme }) => ({
   background:
-    theme.palette.mode === "light"
-      ? "rgba(0, 0, 0, 0.03)"
-      : "rgba(255, 255, 255, 0.05)",
-}));
+    theme.palette.mode === 'light'
+      ? 'rgba(0, 0, 0, 0.03)'
+      : 'rgba(255, 255, 255, 0.05)',
+}))
 
 interface DetailsButtonProps {
-  onClick: () => void;
+  onClick: () => void
 }
 
 const DetailsButton: FC<DetailsButtonProps> = ({ onClick }) => (
@@ -24,6 +24,6 @@ const DetailsButton: FC<DetailsButtonProps> = ({ onClick }) => (
       <ArrowForwardIcon fontSize="small" />
     </StyledButton>
   </Tooltip>
-);
+)
 
-export default DetailsButton;
+export default DetailsButton

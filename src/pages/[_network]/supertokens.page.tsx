@@ -1,23 +1,24 @@
-import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Card, CardContent, Container, NoSsr } from "@mui/material";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import NetworkTabs from "../../components/NetworkTabs/NetworkTabs";
-import SuperTokensTable from "../../components/Table/SuperTokensTable";
-import { useNetworkContext } from "../../contexts/NetworkContext";
-import { networks } from "../../redux/networks";
+import { TabContext, TabPanel } from '@mui/lab'
+import { Box, Card, CardContent, Container, NoSsr } from '@mui/material'
+import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 
-const SuperTokens: NextPage = ({ }) => {
-  const network = useNetworkContext();
+import NetworkTabs from '../../components/NetworkTabs/NetworkTabs'
+import SuperTokensTable from '../../components/Table/SuperTokensTable'
+import { useNetworkContext } from '../../contexts/NetworkContext'
+import { networks } from '../../redux/networks'
 
-  const router = useRouter();
+const SuperTokens: NextPage = ({}) => {
+  const network = useNetworkContext()
+
+  const router = useRouter()
   const onTabChange = (newValue: string) =>
     router.replace({
       query: {
         ...router.query,
         _network: newValue,
       },
-    });
+    })
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
@@ -47,7 +48,7 @@ const SuperTokens: NextPage = ({ }) => {
         ))}
       </TabContext>
     </Container>
-  );
-};
+  )
+}
 
-export default SuperTokens;
+export default SuperTokens

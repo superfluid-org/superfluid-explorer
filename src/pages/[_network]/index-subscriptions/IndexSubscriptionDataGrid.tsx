@@ -1,37 +1,38 @@
-import { FC, useMemo } from "react";
-import { AppDataGrid } from "../../../components/DataGrid/AppDataGrid";
+import { Button } from '@mui/material'
 import {
   GridColDef,
   GridColumnHeaderTitle,
   GridRenderCellParams,
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid'
 import {
   IndexSubscription,
   IndexSubscription_OrderBy,
   Ordering,
   PagedResult,
   SkipPaging,
-} from "@superfluid-finance/sdk-core";
-import { IndexSubscriptionDetailsDialog } from "./IndexSubscriptionDetails";
-import { Network } from "../../../redux/networks";
-import calculateWeiAmountReceived from "../../../calculateWeiAmountReceived";
-import { BigNumber } from "ethers";
-import calculatePoolPercentage from "../../../calculatePoolPercentage";
-import Decimal from "decimal.js";
-import TimeAgo from "../../../components/TimeAgo/TimeAgo";
-import InfoTooltipBtn from "../../../components/Info/InfoTooltipBtn";
-import { Button } from "@mui/material";
-import BalanceWithToken from "../../../components/Amount/BalanceWithToken";
+} from '@superfluid-finance/sdk-core'
+import Decimal from 'decimal.js'
+import { BigNumber } from 'ethers'
+import { FC, useMemo } from 'react'
+
+import calculatePoolPercentage from '../../../calculatePoolPercentage'
+import calculateWeiAmountReceived from '../../../calculateWeiAmountReceived'
+import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
+import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import TimeAgo from '../../../components/TimeAgo/TimeAgo'
+import { Network } from '../../../redux/networks'
+import { IndexSubscriptionDetailsDialog } from './IndexSubscriptionDetails'
 
 interface Props {
-  network: Network;
+  network: Network
   queryResult: {
-    isFetching: boolean;
-    data?: PagedResult<IndexSubscription>;
-  };
-  setPaging: (paging: SkipPaging) => void;
-  ordering: Ordering<IndexSubscription_OrderBy> | undefined;
-  setOrdering: (ordering?: Ordering<IndexSubscription_OrderBy>) => void;
+    isFetching: boolean
+    data?: PagedResult<IndexSubscription>
+  }
+  setPaging: (paging: SkipPaging) => void
+  ordering: Ordering<IndexSubscription_OrderBy> | undefined
+  setOrdering: (ordering?: Ordering<IndexSubscription_OrderBy>) => void
 }
 
 const IndexSubscriptionDataGrid: FC<Props> = ({
@@ -43,22 +44,21 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
 }) => {
   const columns: GridColDef[] = useMemo(
     () => [
-      { field: "id", hide: true },
+      { field: 'id', hide: true },
       {
-        field: "createdAtTimestamp",
-        headerName: "Created At",
+        field: 'createdAtTimestamp',
+        headerName: 'Created At',
         sortable: true,
         flex: 0.5,
-        renderCell: (params: GridRenderCellParams<number>) => params.value ? (
-          <TimeAgo subgraphTime={params.value} />
-        ) : null,
+        renderCell: (params: GridRenderCellParams<number>) =>
+          params.value ? <TimeAgo subgraphTime={params.value} /> : null,
       },
       {
-        field: "approved",
-        headerName: "Approved",
+        field: 'approved',
+        headerName: 'Approved',
         flex: 0.5,
         renderCell: (params: GridRenderCellParams<boolean>) => (
-          <>{params.value ? "Yes" : "No"}</>
+          <>{params.value ? 'Yes' : 'No'}</>
         ),
         renderHeader: ({ colDef }) => (
           <>
@@ -67,7 +67,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
-              dataCy={"approved-tooltip"}
+              dataCy={'approved-tooltip'}
               title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
               iconSx={{ mb: 0, mr: 0.5 }}
             />
@@ -75,8 +75,8 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
         ),
       },
       {
-        field: "totalAmountReceivedUntilUpdatedAt",
-        headerName: "Total Amount Received",
+        field: 'totalAmountReceivedUntilUpdatedAt',
+        headerName: 'Total Amount Received',
         sortable: false,
         flex: 1.5,
         renderCell: (
@@ -95,8 +95,8 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
         ),
       },
       {
-        field: "units",
-        headerName: "Subscription Units",
+        field: 'units',
+        headerName: 'Subscription Units',
         flex: 2,
         renderCell: (
           params: GridRenderCellParams<string, IndexSubscription>
@@ -111,12 +111,12 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
                 .toDP(2)
                 .toString()}%)`}
             </>
-          );
+          )
         },
       },
       {
-        field: "details",
-        headerName: "Details",
+        field: 'details',
+        headerName: 'Details',
         flex: 0.5,
         sortable: false,
         renderCell: (cellParams) => (
@@ -134,11 +134,11 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
       },
     ],
     [network]
-  );
+  )
 
   const rows: IndexSubscription[] = queryResult.data
     ? queryResult.data.data
-    : [];
+    : []
 
   return (
     <AppDataGrid
@@ -149,7 +149,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
       ordering={ordering}
       setOrdering={(x) => setOrdering(x as any)}
     />
-  );
-};
+  )
+}
 
-export default IndexSubscriptionDataGrid;
+export default IndexSubscriptionDataGrid

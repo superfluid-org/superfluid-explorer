@@ -1,18 +1,21 @@
-import { FC, ReactElement } from "react";
-import { Network } from "../../../redux/networks";
-import AppLink from "../../../components/AppLink/AppLink";
-import HelpAlert from "../../../components/Info/HelpAlert";
-import AccountPoolAdminsTable from "../../../components/Table/Account/AccountPoolAdminsTable";
-import AccountPoolMembersTable from "../../../components/Table/Account/AccountPoolMembersTable";
+import { FC, ReactElement } from 'react'
+
+import AppLink from '../../../components/AppLink/AppLink'
+import HelpAlert from '../../../components/Info/HelpAlert'
+import AccountPoolAdminsTable from '../../../components/Table/Account/AccountPoolAdminsTable'
+import AccountPoolMembersTable from '../../../components/Table/Account/AccountPoolMembersTable'
+import { Network } from '../../../redux/networks'
 
 const AccountPools: FC<{
-  network: Network;
-  accountAddress: string;
+  network: Network
+  accountAddress: string
 }> = ({ network, accountAddress }): ReactElement => {
   return (
     <>
       <HelpAlert data-cy="pools-info-message">
-        The GDA introduces a new primitive which enables one-to-many Superfluid streaming distributions, becoming the most scalable way to distribute recurring funds to a limitless set of recipients in web3. (GDA).{" "}
+        The GDA introduces a new primitive which enables one-to-many Superfluid
+        streaming distributions, becoming the most scalable way to distribute
+        recurring funds to a limitless set of recipients in web3. (GDA).{' '}
         <AppLink
           data-cy="gda-read-more-link"
           href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
@@ -32,7 +35,7 @@ const AccountPools: FC<{
         accountAddress={accountAddress}
       />
     </>
-  );
-};
+  )
+}
 
-export default AccountPools;
+export default AccountPools

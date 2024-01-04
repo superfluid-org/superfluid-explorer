@@ -1,37 +1,33 @@
-import { FC, useMemo } from "react";
-import { AppDataGrid } from "../../../components/DataGrid/AppDataGrid";
+import { Button } from '@mui/material'
 import {
   GridColDef,
   GridColumnHeaderTitle,
   GridRenderCellParams,
-} from "@mui/x-data-grid";
-import {
-  Ordering,
-  PagedResult,
-  SkipPaging,
-} from "@superfluid-finance/sdk-core";
-import { PoolMemberDetailsDialog } from "./PoolMemberDetails";
-import { Network } from "../../../redux/networks";
-import calculateWeiAmountReceived from "../../../calculateWeiAmountReceived";
-import { BigNumber } from "ethers";
-import calculatePoolPercentage from "../../../calculatePoolPercentage";
-import Decimal from "decimal.js";
-import TimeAgo from "../../../components/TimeAgo/TimeAgo";
-import InfoTooltipBtn from "../../../components/Info/InfoTooltipBtn";
-import { Button } from "@mui/material";
-import BalanceWithToken from "../../../components/Amount/BalanceWithToken";
-import { PoolMember_OrderBy } from "../../../subgraphs/gda/.graphclient";
-import { PoolMember } from "../../../subgraphs/gda/entities/poolMember/poolMember";
+} from '@mui/x-data-grid'
+import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
+import Decimal from 'decimal.js'
+import { BigNumber } from 'ethers'
+import { FC, useMemo } from 'react'
+
+import calculatePoolPercentage from '../../../calculatePoolPercentage'
+import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
+import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import TimeAgo from '../../../components/TimeAgo/TimeAgo'
+import { Network } from '../../../redux/networks'
+import { PoolMember_OrderBy } from '../../../subgraphs/gda/.graphclient'
+import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
+import { PoolMemberDetailsDialog } from './PoolMemberDetails'
 
 interface Props {
-  network: Network;
+  network: Network
   queryResult: {
-    isFetching: boolean;
-    data?: PagedResult<PoolMember>;
-  };
-  setPaging: (paging: SkipPaging) => void;
-  ordering: Ordering<PoolMember_OrderBy> | undefined;
-  setOrdering: (ordering?: Ordering<PoolMember_OrderBy>) => void;
+    isFetching: boolean
+    data?: PagedResult<PoolMember>
+  }
+  setPaging: (paging: SkipPaging) => void
+  ordering: Ordering<PoolMember_OrderBy> | undefined
+  setOrdering: (ordering?: Ordering<PoolMember_OrderBy>) => void
 }
 
 const PoolMemberDataGrid: FC<Props> = ({
@@ -43,21 +39,21 @@ const PoolMemberDataGrid: FC<Props> = ({
 }) => {
   const columns: GridColDef[] = useMemo(
     () => [
-      { field: "id", hide: true },
+      { field: 'id', hide: true },
       {
-        field: "createdAtTimestamp",
-        headerName: "Created At",
+        field: 'createdAtTimestamp',
+        headerName: 'Created At',
         sortable: true,
         flex: 0.5,
         renderCell: (params: GridRenderCellParams<number>) =>
           params.value ? <TimeAgo subgraphTime={params.value} /> : null,
       },
       {
-        field: "approved",
-        headerName: "Connected",
+        field: 'approved',
+        headerName: 'Connected',
         flex: 0.5,
         renderCell: (params: GridRenderCellParams<boolean>) => {
-          return <>{params.row.isConnected ? "Yes" : "No"}</>;
+          return <>{params.row.isConnected ? 'Yes' : 'No'}</>
         },
         renderHeader: ({ colDef }) => (
           <>
@@ -66,7 +62,7 @@ const PoolMemberDataGrid: FC<Props> = ({
               columnWidth={colDef.computedWidth}
             />
             <InfoTooltipBtn
-              dataCy={"approved-tooltip"}
+              dataCy={'approved-tooltip'}
               title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
               iconSx={{ mb: 0, mr: 0.5 }}
             />
@@ -74,8 +70,8 @@ const PoolMemberDataGrid: FC<Props> = ({
         ),
       },
       {
-        field: "totalAmountClaimed",
-        headerName: "Total Amount Claimed",
+        field: 'totalAmountClaimed',
+        headerName: 'Total Amount Claimed',
         sortable: false,
         flex: 1.5,
         renderCell: (params: GridRenderCellParams<string, PoolMember>) => (
@@ -101,8 +97,8 @@ const PoolMemberDataGrid: FC<Props> = ({
         ),
       },
       {
-        field: "units",
-        headerName: "Member Units",
+        field: 'units',
+        headerName: 'Member Units',
         flex: 2,
         renderCell: (params: GridRenderCellParams<string, PoolMember>) => {
           return (
@@ -115,12 +111,12 @@ const PoolMemberDataGrid: FC<Props> = ({
                 .toDP(2)
                 .toString()}%)`}
             </>
-          );
+          )
         },
       },
       {
-        field: "details",
-        headerName: "Details",
+        field: 'details',
+        headerName: 'Details',
         flex: 0.5,
         sortable: false,
         renderCell: (cellParams) => (
@@ -138,9 +134,9 @@ const PoolMemberDataGrid: FC<Props> = ({
       },
     ],
     [network]
-  );
+  )
 
-  const rows: PoolMember[] = queryResult.data ? queryResult.data.data : [];
+  const rows: PoolMember[] = queryResult.data ? queryResult.data.data : []
 
   return (
     <AppDataGrid
@@ -151,7 +147,7 @@ const PoolMemberDataGrid: FC<Props> = ({
       ordering={ordering}
       setOrdering={(x) => setOrdering(x as any)}
     />
-  );
-};
+  )
+}
 
-export default PoolMemberDataGrid;
+export default PoolMemberDataGrid

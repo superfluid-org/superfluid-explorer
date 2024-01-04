@@ -1,7 +1,8 @@
-import { Stack } from "@mui/material";
-import { FC } from "react";
-import FlowingBalance, { FlowingBalanceProps } from "./FlowingBalance";
-import TokenChip, { TokenChipProps } from "../TokenChip/TokenChip";
+import { Stack } from '@mui/material'
+import { FC } from 'react'
+
+import TokenChip, { TokenChipProps } from '../TokenChip/TokenChip'
+import FlowingBalance, { FlowingBalanceProps } from './FlowingBalance'
 
 /**
  * If TokenChipProps is not provided, token chip will not be shown.
@@ -13,6 +14,6 @@ const FlowingBalanceWithToken: FC<
     {TokenChipProps && <TokenChip {...TokenChipProps} />}
     <FlowingBalance {...flowingBalanceProps} />
   </Stack>
-);
+)
 
-export default FlowingBalanceWithToken;
+export default FlowingBalanceWithToken

@@ -1,4 +1,4 @@
-import FilterListIcon from "@mui/icons-material/FilterList";
+import FilterListIcon from '@mui/icons-material/FilterList'
 import {
   Box,
   Button,
@@ -18,129 +18,129 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography
-} from "@mui/material";
+  Typography,
+} from '@mui/material'
 import {
   createSkipPaging,
   Index_Filter,
   Index_OrderBy,
-  Ordering
-} from "@superfluid-finance/sdk-core";
-import { IndexesQuery } from "@superfluid-finance/sdk-redux";
-import omit from "lodash/fp/omit";
-import set from "lodash/fp/set";
-import isEqual from "lodash/isEqual";
-import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
-import useDebounce from "../../../hooks/useDebounce";
-import { Network } from "../../../redux/networks";
-import { sfSubgraph } from "../../../redux/store";
-import AccountAddress from "../../../components/Address/AccountAddress";
-import AppLink from "../../../components/AppLink/AppLink";
-import BalanceWithToken from "../../../components/Amount/BalanceWithToken";
-import ClearInputAdornment from "../../../components/Table/ClearInputAdornment";
-import DetailsButton from "../../../components/Details/DetailsButton";
-import { IndexPublicationDetailsDialog } from "../indexes/IndexPublicationDetails";
-import InfinitePagination from "../../../components/Table/InfinitePagination";
-import InfoTooltipBtn from "../../../components/Info/InfoTooltipBtn";
-import TableLoader from "../../../components/Table/TableLoader";
-import { DistributionStatus } from "../../../components/Table/Account/AccountIndexPublicationsTable";
+  Ordering,
+} from '@superfluid-finance/sdk-core'
+import { IndexesQuery } from '@superfluid-finance/sdk-redux'
+import omit from 'lodash/fp/omit'
+import set from 'lodash/fp/set'
+import isEqual from 'lodash/isEqual'
+import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
+
+import AccountAddress from '../../../components/Address/AccountAddress'
+import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import AppLink from '../../../components/AppLink/AppLink'
+import DetailsButton from '../../../components/Details/DetailsButton'
+import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import { DistributionStatus } from '../../../components/Table/Account/AccountIndexPublicationsTable'
+import ClearInputAdornment from '../../../components/Table/ClearInputAdornment'
+import InfinitePagination from '../../../components/Table/InfinitePagination'
+import TableLoader from '../../../components/Table/TableLoader'
+import useDebounce from '../../../hooks/useDebounce'
+import { Network } from '../../../redux/networks'
+import { sfSubgraph } from '../../../redux/store'
+import { IndexPublicationDetailsDialog } from '../indexes/IndexPublicationDetails'
 
 const defaultOrdering = {
-  orderBy: "createdAtTimestamp",
-  orderDirection: "desc",
-} as Ordering<Index_OrderBy>;
+  orderBy: 'createdAtTimestamp',
+  orderDirection: 'desc',
+} as Ordering<Index_OrderBy>
 
 export const defaultPaging = createSkipPaging({
   take: 10,
-});
+})
 
 interface SuperTokenIndexesTableProps {
-  network: Network;
-  tokenAddress: string;
+  network: Network
+  tokenAddress: string
 }
 
-type RequiredIndexesQuery = Required<Omit<IndexesQuery, "block">>;
+type RequiredIndexesQuery = Required<Omit<IndexesQuery, 'block'>>
 
 const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
   network,
   tokenAddress,
 }) => {
-  const filterAnchorRef = useRef(null);
-  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const filterAnchorRef = useRef(null)
+  const [showFilterMenu, setShowFilterMenu] = useState(false)
 
   const [distributionStatus, setDistributionStatus] =
-    useState<DistributionStatus | null>(null);
+    useState<DistributionStatus | null>(null)
 
   const defaultFilter = {
     token: tokenAddress,
-  };
+  }
 
   const createDefaultArg = (): RequiredIndexesQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
     order: defaultOrdering,
-  });
+  })
 
-  const [queryArg, setQueryArg] = useState<RequiredIndexesQuery>(
-    createDefaultArg()
-  );
+  const [queryArg, setQueryArg] =
+    useState<RequiredIndexesQuery>(createDefaultArg())
 
-  const [queryTrigger, queryResult] = sfSubgraph.useLazyIndexesQuery();
+  const [queryTrigger, queryResult] = sfSubgraph.useLazyIndexesQuery()
 
-  const queryTriggerDebounced = useDebounce(queryTrigger, 250);
+  const queryTriggerDebounced = useDebounce(queryTrigger, 250)
 
   const onQueryArgChanged = (newArgs: RequiredIndexesQuery) => {
-    setQueryArg(newArgs);
+    setQueryArg(newArgs)
 
     if (
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      queryTriggerDebounced(newArgs, true);
+      queryTriggerDebounced(newArgs, true)
     } else {
-      queryTrigger(newArgs, true);
+      queryTrigger(newArgs, true)
     }
-  };
+  }
 
   useEffect(() => {
-    onQueryArgChanged(createDefaultArg());
+    onQueryArgChanged(createDefaultArg())
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, tokenAddress]);
+  }, [network, tokenAddress])
 
   const setPage = (newPage: number) =>
     onQueryArgChanged(
-      set("pagination.skip", (newPage - 1) * queryArg.pagination.take, queryArg)
-    );
+      set('pagination.skip', (newPage - 1) * queryArg.pagination.take, queryArg)
+    )
 
   const setPageSize = (newPageSize: number) =>
-    onQueryArgChanged(set("pagination.take", newPageSize, queryArg));
+    onQueryArgChanged(set('pagination.take', newPageSize, queryArg))
 
   const onOrderingChanged = (newOrdering: Ordering<Index_OrderBy>) =>
-    onQueryArgChanged({ ...queryArg, order: newOrdering });
+    onQueryArgChanged({ ...queryArg, order: newOrdering })
 
   const onSortClicked = (field: Index_OrderBy) => () => {
     if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "desc",
-      });
-    } else if (queryArg.order.orderDirection === "desc") {
+        orderDirection: 'desc',
+      })
+    } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "asc",
-      });
+        orderDirection: 'asc',
+      })
     } else {
-      onOrderingChanged(defaultOrdering);
+      onOrderingChanged(defaultOrdering)
     }
-  };
+  }
 
   const onFilterChange = (newFilter: Index_Filter) =>
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
       filter: newFilter,
-    });
+    })
 
   const onStringFilterChange =
     (field: string) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -148,77 +148,77 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
         onFilterChange({
           ...queryArg.filter,
           [field]: e.target.value.toLowerCase(),
-        });
+        })
       } else {
-        onFilterChange(omit(field, queryArg.filter));
+        onFilterChange(omit(field, queryArg.filter))
       }
-    };
+    }
 
   const getDistributionStatusFilter = (
     status: DistributionStatus | null
   ): Index_Filter => {
     switch (status) {
       case DistributionStatus.Distributed:
-        return { totalAmountDistributedUntilUpdatedAt_gt: "0" };
+        return { totalAmountDistributedUntilUpdatedAt_gt: '0' }
       case DistributionStatus.NotDistributed:
-        return { totalAmountDistributedUntilUpdatedAt: "0" };
+        return { totalAmountDistributedUntilUpdatedAt: '0' }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   const changeDistributionStatus = (newStatus: DistributionStatus | null) => {
     const {
       totalAmountDistributedUntilUpdatedAt_gt,
       totalAmountDistributedUntilUpdatedAt,
       ...newFilter
-    } = queryArg.filter;
+    } = queryArg.filter
 
-    setDistributionStatus(newStatus);
+    setDistributionStatus(newStatus)
     onFilterChange({
       ...newFilter,
       ...getDistributionStatusFilter(newStatus),
-    });
-  };
+    })
+  }
 
   const onDistributionStatusChange = (
     _event: unknown,
     newValue: DistributionStatus
-  ) => changeDistributionStatus(newValue);
+  ) => changeDistributionStatus(newValue)
 
-  const clearDistributionStatusFilter = () => changeDistributionStatus(null);
+  const clearDistributionStatusFilter = () => changeDistributionStatus(null)
 
   const clearFilterField =
     (...fields: Array<keyof Index_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter));
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
-  const openFilter = () => setShowFilterMenu(true);
-  const closeFilter = () => setShowFilterMenu(false);
+  const openFilter = () => setShowFilterMenu(true)
+  const closeFilter = () => setShowFilterMenu(false)
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    closeFilter();
-  };
+    e.preventDefault()
+    closeFilter()
+  }
 
   const resetFilter = () => {
-    setDistributionStatus(null);
-    onFilterChange(defaultFilter);
-    closeFilter();
-  };
+    setDistributionStatus(null)
+    onFilterChange(defaultFilter)
+    closeFilter()
+  }
 
-  const tableRows = queryResult.data?.data || [];
-  const hasNextPage = !!queryResult.data?.nextPaging;
+  const tableRows = queryResult.data?.data || []
+  const hasNextPage = !!queryResult.data?.nextPaging
 
-  const { filter, order, pagination } = queryArg;
+  const { filter, order, pagination } = queryArg
 
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
-    queryResult.data?.paging || {};
+    queryResult.data?.paging || {}
 
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
-        <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
+        <Typography sx={{ flex: '1 1 100%' }} variant="h6" component="h2">
           Indexes
         </Typography>
 
@@ -227,11 +227,11 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
             <Chip
               label={
                 <>
-                  Index ID: <b data-cy={"chip-indexId"} >{filter.indexId}</b>
+                  Index ID: <b data-cy={'chip-indexId'}>{filter.indexId}</b>
                 </>
               }
               size="small"
-              onDelete={clearFilterField("indexId")}
+              onDelete={clearFilterField('indexId')}
             />
           )}
 
@@ -239,21 +239,22 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
             <Chip
               label={
                 <>
-                  Publisher: <b data-cy={"chip-publisher"}>{filter.publisher_contains}</b>
+                  Publisher:{' '}
+                  <b data-cy={'chip-publisher'}>{filter.publisher_contains}</b>
                 </>
               }
               size="small"
-              onDelete={clearFilterField("publisher_contains")}
+              onDelete={clearFilterField('publisher_contains')}
             />
           )}
 
           {distributionStatus !== null && (
             <Chip
-              data-cy={"chip-distributed"}
+              data-cy={'chip-distributed'}
               label={
                 distributionStatus === DistributionStatus.Distributed
-                  ? "Has distributed tokens"
-                  : "Has not distributed tokens"
+                  ? 'Has distributed tokens'
+                  : 'Has not distributed tokens'
               }
               size="small"
               onDelete={clearDistributionStatusFilter}
@@ -270,11 +271,11 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
           open={showFilterMenu}
           anchorEl={filterAnchorRef.current}
           onClose={closeFilter}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <Stack
-            sx={{ p: 3, pb: 2, minWidth: "300px" }}
+            sx={{ p: 3, pb: 2, minWidth: '300px' }}
             component="form"
             onSubmit={onFormSubmit}
             noValidate
@@ -289,13 +290,13 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 size="small"
                 type="number"
                 inputProps={{ min: 0 }}
-                value={filter.indexId || ""}
-                onChange={onStringFilterChange("indexId")}
-                data-cy={"indexId-input"}
+                value={filter.indexId || ''}
+                onChange={onStringFilterChange('indexId')}
+                data-cy={'indexId-input'}
                 endAdornment={
                   filter.indexId && (
                     <ClearInputAdornment
-                      onClick={clearFilterField("indexId")}
+                      onClick={clearFilterField('indexId')}
                     />
                   )
                 }
@@ -310,13 +311,13 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 fullWidth
                 size="small"
                 inputProps={{ min: 0 }}
-                value={filter.publisher_contains || ""}
-                onChange={onStringFilterChange("publisher_contains")}
-                data-cy={"publisher-address-input"}
+                value={filter.publisher_contains || ''}
+                onChange={onStringFilterChange('publisher_contains')}
+                data-cy={'publisher-address-input'}
                 endAdornment={
                   filter.publisher_contains && (
                     <ClearInputAdornment
-                      onClick={clearFilterField("publisher_contains")}
+                      onClick={clearFilterField('publisher_contains')}
                     />
                   )
                 }
@@ -335,10 +336,16 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 value={distributionStatus}
                 onChange={onDistributionStatusChange}
               >
-                <ToggleButton data-cy={"filter-distributed-yes"} value={DistributionStatus.Distributed}>
+                <ToggleButton
+                  data-cy={'filter-distributed-yes'}
+                  value={DistributionStatus.Distributed}
+                >
                   Yes
                 </ToggleButton>
-                <ToggleButton data-cy={"filter-distributed-no"} value={DistributionStatus.NotDistributed}>
+                <ToggleButton
+                  data-cy={'filter-distributed-no'}
+                  value={DistributionStatus.NotDistributed}
+                >
                   No
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -348,18 +355,22 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
               {(filter.indexId ||
                 filter.publisher_contains ||
                 distributionStatus !== null) && (
-                  <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
-                    Reset
-                  </Button>
-                )}
-              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
+              <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
           </Stack>
         </Popover>
       </Toolbar>
-      <Table sx={{ tableLayout: "fixed" }}>
+      <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             <TableCell width="160px">Index ID</TableCell>
@@ -370,7 +381,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                   <>
                     The creator of an index using the IDA - publishers may
                     update the index of subscribers and distribute funds to
-                    subscribers.{" "}
+                    subscribers.{' '}
                     <AppLink
                       href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                       target="_blank"
@@ -385,27 +396,27 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
             <TableCell>
               <TableSortLabel
                 active={
-                  order.orderBy === "totalAmountDistributedUntilUpdatedAt"
+                  order.orderBy === 'totalAmountDistributedUntilUpdatedAt'
                 }
                 direction={
-                  order.orderBy === "totalAmountDistributedUntilUpdatedAt"
+                  order.orderBy === 'totalAmountDistributedUntilUpdatedAt'
                     ? order.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("totalAmountDistributedUntilUpdatedAt")}
+                onClick={onSortClicked('totalAmountDistributedUntilUpdatedAt')}
               >
                 Total Distributed
               </TableSortLabel>
             </TableCell>
             <TableCell width="220px">
               <TableSortLabel
-                active={order.orderBy === "createdAtTimestamp"}
+                active={order.orderBy === 'createdAtTimestamp'}
                 direction={
-                  order.orderBy === "createdAtTimestamp"
+                  order.orderBy === 'createdAtTimestamp'
                     ? order.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("createdAtTimestamp")}
+                onClick={onSortClicked('createdAtTimestamp')}
               >
                 Created
               </TableSortLabel>
@@ -416,16 +427,16 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
         <TableBody>
           {tableRows.map((index) => (
             <TableRow key={index.id} hover>
-              <TableCell data-cy={"index-id"}>{index.indexId}</TableCell>
+              <TableCell data-cy={'index-id'}>{index.indexId}</TableCell>
               <TableCell>
                 <AccountAddress
-                  dataCy={"publisher"}
+                  dataCy={'publisher'}
                   network={network}
                   address={index.publisher}
                   ellipsis={6}
                 />
               </TableCell>
-              <TableCell data-cy={"total-distributed"}>
+              <TableCell data-cy={'total-distributed'}>
                 <BalanceWithToken
                   wei={index.totalAmountDistributedUntilUpdatedAt}
                   network={network}
@@ -451,10 +462,12 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
             <TableRow>
               <TableCell
                 colSpan={5}
-                sx={{ border: 0, height: "96px" }}
+                sx={{ border: 0, height: '96px' }}
                 align="center"
               >
-                <Typography data-cy={"no-results"} variant="body1">No results</Typography>
+                <Typography data-cy={'no-results'} variant="body1">
+                  No results
+                </Typography>
               </TableCell>
             </TableRow>
           )}
@@ -475,7 +488,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                   hasNext={hasNextPage}
                   onPageChange={setPage}
                   onPageSizeChange={setPageSize}
-                  sx={{ justifyContent: "flex-end" }}
+                  sx={{ justifyContent: 'flex-end' }}
                 />
               </TableCell>
             </TableRow>
@@ -483,7 +496,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
         )}
       </Table>
     </>
-  );
-};
+  )
+}
 
-export default SuperTokenIndexesTable;
+export default SuperTokenIndexesTable

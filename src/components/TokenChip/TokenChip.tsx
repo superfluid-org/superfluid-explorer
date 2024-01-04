@@ -1,13 +1,14 @@
-import { Chip, ChipProps } from "@mui/material";
-import { FC } from "react";
-import { Network } from "../../redux/networks";
-import { sfSubgraph } from "../../redux/store";
-import AppLink from "../AppLink/AppLink";
+import { Chip, ChipProps } from '@mui/material'
+import { FC } from 'react'
+
+import { Network } from '../../redux/networks'
+import { sfSubgraph } from '../../redux/store'
+import AppLink from '../AppLink/AppLink'
 
 export interface TokenChipProps {
-  network: Network;
-  tokenAddress: string;
-  ChipProps?: ChipProps;
+  network: Network
+  tokenAddress: string
+  ChipProps?: ChipProps
 }
 
 const TokenChip: FC<TokenChipProps> = ({
@@ -18,26 +19,26 @@ const TokenChip: FC<TokenChipProps> = ({
   const tokenQuery = sfSubgraph.useTokenQuery({
     chainId: network.chainId,
     id: tokenAddress,
-  });
+  })
 
-  if (!tokenQuery.data) return null;
+  if (!tokenQuery.data) return null
 
   return (
     <AppLink
-      data-cy={"token-link"}
+      data-cy={'token-link'}
       className="address"
       href={`/${network.slugName}/supertokens/${tokenAddress}`}
-      sx={{ textDecoration: "none", flexShrink: 0 }}
+      sx={{ textDecoration: 'none', flexShrink: 0 }}
     >
       <Chip
         clickable
         size="small"
         label={tokenQuery.data.symbol}
-        sx={{ cursor: "pointer", lineHeight: "24px", ...ChipProps.sx }}
+        sx={{ cursor: 'pointer', lineHeight: '24px', ...ChipProps.sx }}
         {...ChipProps}
       />
     </AppLink>
-  );
-};
+  )
+}
 
-export default TokenChip;
+export default TokenChip

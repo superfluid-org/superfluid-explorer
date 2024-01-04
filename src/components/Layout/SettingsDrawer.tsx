@@ -1,7 +1,7 @@
-import CloseIcon from "@mui/icons-material/Close";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
+import CloseIcon from '@mui/icons-material/Close'
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
+import LightModeIcon from '@mui/icons-material/LightMode'
+import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
 import {
   Box,
   Divider,
@@ -11,57 +11,58 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
-} from "@mui/material";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Switch from "@mui/material/Switch";
-import isEqual from "lodash/isEqual";
-import sortBy from "lodash/sortBy";
-import { FC } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { networksByChainId } from "../../redux/networks";
+} from '@mui/material'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormGroup from '@mui/material/FormGroup'
+import Switch from '@mui/material/Switch'
+import isEqual from 'lodash/isEqual'
+import sortBy from 'lodash/sortBy'
+import { FC } from 'react'
+
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { networksByChainId } from '../../redux/networks'
 import {
   changeEtherDecimalPlaces,
   changeStreamGranularity,
   changeThemePreference,
   toggleDisplayedTestnets,
-} from "../../redux/slices/appPreferences.slice";
-import InfoTooltipBtn from "../Info/InfoTooltipBtn";
-import NetworkDisplay from "../NetworkDisplay/NetworkDisplay";
+} from '../../redux/slices/appPreferences.slice'
+import InfoTooltipBtn from '../Info/InfoTooltipBtn'
+import NetworkDisplay from '../NetworkDisplay/NetworkDisplay'
 
 const Heading = styled(Typography)(({ theme }) => ({
-  margin: "20px 0 10px",
+  margin: '20px 0 10px',
   color: theme.palette.grey[600],
   fontWeight: 700,
   fontSize: theme.typography.pxToRem(11),
-  textTransform: "uppercase",
-  letterSpacing: ".08rem",
-}));
+  textTransform: 'uppercase',
+  letterSpacing: '.08rem',
+}))
 
 const IconToggleButton = styled(ToggleButton)({
-  display: "flex",
-  justifyContent: "center",
-  width: "100%",
-  "& > *": {
-    marginRight: "8px",
+  display: 'flex',
+  justifyContent: 'center',
+  width: '100%',
+  '& > *': {
+    marginRight: '8px',
   },
-});
+})
 
 // Inspired by solution in MUI documentaiton: https://github.com/mui/material-ui/blob/5b0d0c343c9b195e7328cc20461c9adc1f5ac02d/docs/src/modules/components/AppSettingsDrawer.js
 const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
   open,
   onClose,
 }) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   const currentThemePreference = useAppSelector(
     (state) => state.appPreferences.themePreference
-  );
+  )
   const currentStreamGranularity = useAppSelector(
     (state) => state.appPreferences.streamGranularity
-  );
+  )
   const currentEtherDecimalPlaces = useAppSelector(
     (state) => state.appPreferences.etherDecimalPlaces
-  );
+  )
 
   const currentDisplayedTestNets = useAppSelector(
     (state) =>
@@ -70,15 +71,15 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
         ([chainId]) => networksByChainId.get(Number(chainId))?.displayName
       ),
     isEqual
-  );
+  )
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           p: 2,
         }}
       >
@@ -103,12 +104,12 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
           color="primary"
           onChange={(
             _event,
-            newThemePreference: "light" | "system" | "dark"
+            newThemePreference: 'light' | 'system' | 'dark'
           ) => {
             if (!newThemePreference) {
-              return;
+              return
             }
-            dispatch(changeThemePreference(newThemePreference));
+            dispatch(changeThemePreference(newThemePreference))
           }}
           aria-labelledby="settings-mode"
           fullWidth
@@ -130,29 +131,29 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
         <Heading gutterBottom>
           Stream Granularity
           <InfoTooltipBtn
-            dataCy={"stream-granularity-tooltip"}
+            dataCy={'stream-granularity-tooltip'}
             title="Representation of calculated stream flow in selected time span."
           />
         </Heading>
         <ToggleButtonGroup
-          data-cy={"stream-granularity-button-group"}
+          data-cy={'stream-granularity-button-group'}
           exclusive
           value={currentStreamGranularity}
           color="primary"
           onChange={(
             _event,
             newStreamGranularity:
-              | "second"
-              | "minute"
-              | "hour"
-              | "day"
-              | "week"
-              | "month"
+              | 'second'
+              | 'minute'
+              | 'hour'
+              | 'day'
+              | 'week'
+              | 'month'
           ) => {
             if (!newStreamGranularity) {
-              return;
+              return
             }
-            dispatch(changeStreamGranularity(newStreamGranularity));
+            dispatch(changeStreamGranularity(newStreamGranularity))
           }}
           fullWidth
         >
@@ -166,19 +167,19 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
 
         <Heading gutterBottom>Ether Decimal Places</Heading>
         <ToggleButtonGroup
-          data-cy={"ether-decimal-button-group"}
+          data-cy={'ether-decimal-button-group'}
           exclusive
           value={currentEtherDecimalPlaces.toString()}
           color="primary"
-          onChange={(_event, newEtherDecimalPlaces: "18" | "9" | "5" | "0") => {
+          onChange={(_event, newEtherDecimalPlaces: '18' | '9' | '5' | '0') => {
             if (!newEtherDecimalPlaces) {
-              return;
+              return
             }
             dispatch(
               changeEtherDecimalPlaces(
                 Number(newEtherDecimalPlaces) as 18 | 9 | 5 | 0
               )
-            );
+            )
           }}
           fullWidth
         >
@@ -194,12 +195,12 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
         </Heading>
         <FormGroup>
           {currentDisplayedTestNets.map(([chainId, isDisplayed]) => {
-            const numericChainId = Number(chainId);
-            const network = networksByChainId.get(numericChainId)!;
+            const numericChainId = Number(chainId)
+            const network = networksByChainId.get(numericChainId)!
             return (
               <FormControlLabel
                 data-cy={`testnet-switch-${network.slugName}`}
-                data-cy-state={isDisplayed ? "on" : "off"}
+                data-cy-state={isDisplayed ? 'on' : 'off'}
                 key={chainId}
                 control={<Switch checked={isDisplayed} />}
                 onChange={() =>
@@ -207,12 +208,12 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
                 }
                 label={<NetworkDisplay network={network} />}
               />
-            );
+            )
           })}
         </FormGroup>
       </Box>
     </Drawer>
-  );
-};
+  )
+}
 
-export default SettingsDrawer;
+export default SettingsDrawer

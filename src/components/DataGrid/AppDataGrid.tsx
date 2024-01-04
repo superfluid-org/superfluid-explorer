@@ -1,30 +1,30 @@
+import { Pagination } from '@mui/material'
 import {
   DataGrid,
   DataGridProps,
   GridColumns,
   GridRowsProp,
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid'
 import {
   ILightEntity,
+  Ordering,
   PagedResult,
   SkipPaging,
-  Ordering,
-} from "@superfluid-finance/sdk-core";
-import { Pagination } from "@mui/material";
-import { FC, ReactElement } from "react";
-import _ from "lodash";
+} from '@superfluid-finance/sdk-core'
+import _ from 'lodash'
+import { FC, ReactElement } from 'react'
 
 interface Props {
-  columns: GridColumns;
-  rows: GridRowsProp;
+  columns: GridColumns
+  rows: GridRowsProp
   queryResult: {
-    isFetching: boolean;
-    data?: PagedResult<ILightEntity>;
-  };
-  setPaging: (paging: SkipPaging) => void;
-  ordering?: Ordering<string>;
-  setOrdering: (ordering?: Ordering<string>) => void;
-  dataGridProps?: Partial<DataGridProps>;
+    isFetching: boolean
+    data?: PagedResult<ILightEntity>
+  }
+  setPaging: (paging: SkipPaging) => void
+  ordering?: Ordering<string>
+  setOrdering: (ordering?: Ordering<string>) => void
+  dataGridProps?: Partial<DataGridProps>
 }
 
 export const AppDataGrid: FC<Props> = ({
@@ -42,7 +42,7 @@ export const AppDataGrid: FC<Props> = ({
     pagination: true,
     rows: rows,
     columns: columns,
-    paginationMode: "server",
+    paginationMode: 'server',
     components: {
       Pagination: () =>
         AppDataGridPagination({
@@ -53,7 +53,7 @@ export const AppDataGrid: FC<Props> = ({
     },
     loading: queryResult.isFetching,
     disableSelectionOnClick: true,
-    sortingMode: "server",
+    sortingMode: 'server',
     sortModel: ordering
       ? [
           {
@@ -71,17 +71,17 @@ export const AppDataGrid: FC<Props> = ({
             }
           : undefined
       ),
-  };
+  }
 
-  const finalDataGridProps = _.merge(defaultDataGridProps, dataGridProps);
+  const finalDataGridProps = _.merge(defaultDataGridProps, dataGridProps)
 
-  return <DataGrid {...finalDataGridProps} />;
-};
+  return <DataGrid {...finalDataGridProps} />
+}
 
 interface PaginationProps {
-  paging?: SkipPaging;
-  hasNextPage: boolean;
-  setPaging: (paging: SkipPaging) => void;
+  paging?: SkipPaging
+  hasNextPage: boolean
+  setPaging: (paging: SkipPaging) => void
 }
 
 const AppDataGridPagination: FC<PaginationProps> = ({
@@ -90,11 +90,11 @@ const AppDataGridPagination: FC<PaginationProps> = ({
   setPaging,
 }) => {
   if (!paging) {
-    return <></>;
+    return <></>
   }
 
-  const pageSize = paging.take;
-  const page = paging.skip / pageSize + 1;
+  const pageSize = paging.take
+  const page = paging.skip / pageSize + 1
   return page == 1 && !hasNextPage ? (
     <></>
   ) : (
@@ -109,5 +109,5 @@ const AppDataGridPagination: FC<PaginationProps> = ({
         })
       }
     />
-  );
-};
+  )
+}

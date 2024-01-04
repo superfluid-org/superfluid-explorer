@@ -1,21 +1,21 @@
-import { FC, ReactElement, useEffect, useMemo, useState } from "react";
-import { useAppSelector } from "../../redux/hooks";
-import { Box } from "@mui/material";
-import EtherFormatted from "./EtherFormatted";
-import Decimal from "decimal.js";
-import { BigNumber, BigNumberish, utils, ethers } from "ethers";
-import Amount from "./Amount";
-import _ from "lodash";
+import { Box } from '@mui/material'
+import Decimal from 'decimal.js'
+import { BigNumber, BigNumberish, ethers,utils } from 'ethers'
+import { FC, ReactElement, useEffect, useMemo, useState } from 'react'
 
-const ANIMATION_MINIMUM_STEP_TIME = 75;
+import { useAppSelector } from '../../redux/hooks'
+import Amount from './Amount'
+import EtherFormatted from './EtherFormatted'
+
+const ANIMATION_MINIMUM_STEP_TIME = 75
 
 export interface FlowingBalanceProps {
-  balance: string;
+  balance: string
   /**
    * Timestamp in Subgraph's UTC.
    */
-  balanceTimestamp: number;
-  flowRate: string;
+  balanceTimestamp: number
+  flowRate: string
 }
 
 const FlowingBalance: FC<FlowingBalanceProps> = ({
@@ -23,55 +23,52 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
   balanceTimestamp,
   flowRate,
 }): ReactElement => {
-
   const currentEtherDecimalPlaces = useAppSelector(
     (state) => state.appPreferences.etherDecimalPlaces
-  );
+  )
 
   //If decimal setting is 5 18 show respective decimals
-  const [weiValue, setWeiValue] = useState<BigNumberish>(balance);
+  const [weiValue, setWeiValue] = useState<BigNumberish>(balance)
 
-  useEffect(() => setWeiValue(balance), [balance]);
+  useEffect(() => setWeiValue(balance), [balance])
 
-  const flowRateBigNumber = useMemo(() => BigNumber.from(flowRate), [flowRate]);
+  const flowRateBigNumber = useMemo(() => BigNumber.from(flowRate), [flowRate])
 
   const etherSignificantFlowingDecimal = useMemo<number | undefined>(() => {
     if (flowRateBigNumber.isZero()) {
-      return undefined;
+      return undefined
     }
 
-    const ticksPerSecond = 1000 / ANIMATION_MINIMUM_STEP_TIME;
-    const flowRatePerTick = new Decimal(flowRate)
-      .div(ticksPerSecond)
-      .toFixed(0);
+    const ticksPerSecond = 1000 / ANIMATION_MINIMUM_STEP_TIME
+    const flowRatePerTick = new Decimal(flowRate).div(ticksPerSecond).toFixed(0)
 
-    const afterEtherDecimal = utils.formatEther(flowRatePerTick).split(".")[1];
-    const numberAfterDecimalWithoutLeadingZeroes = Number(afterEtherDecimal);
+    const afterEtherDecimal = utils.formatEther(flowRatePerTick).split('.')[1]
+    const numberAfterDecimalWithoutLeadingZeroes = Number(afterEtherDecimal)
     const lengthToFirstSignificatDecimal = afterEtherDecimal
       .toString()
-      .replace(numberAfterDecimalWithoutLeadingZeroes.toString(), "").length;
+      .replace(numberAfterDecimalWithoutLeadingZeroes.toString(), '').length
 
-    if (lengthToFirstSignificatDecimal === 17) return 18; // Don't go over 18.
+    if (lengthToFirstSignificatDecimal === 17) return 18 // Don't go over 18.
 
     // This will usually have the last 3 numbers flowing smoothly.
-    return lengthToFirstSignificatDecimal + 2;
-  }, [flowRate, currentEtherDecimalPlaces]);
+    return lengthToFirstSignificatDecimal + 2
+  }, [flowRate, currentEtherDecimalPlaces])
 
   const balanceTimestampMs = useMemo(
     () => ethers.BigNumber.from(balanceTimestamp).mul(1000),
     [balanceTimestamp]
-  );
+  )
 
   //If balance in settings is 0, then show smart flowing balance
   useEffect(() => {
-    const balanceBigNumber = ethers.BigNumber.from(balance);
+    const balanceBigNumber = ethers.BigNumber.from(balance)
 
-    let stopAnimation = false;
-    let lastAnimationTimestamp: DOMHighResTimeStamp = 0;
+    let stopAnimation = false
+    let lastAnimationTimestamp: DOMHighResTimeStamp = 0
 
     const animationStep = (currentAnimationTimestamp: DOMHighResTimeStamp) => {
       if (stopAnimation) {
-        return;
+        return
       }
 
       if (
@@ -80,7 +77,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
       ) {
         const currentTimestampBigNumber = ethers.BigNumber.from(
           new Date().valueOf() // Milliseconds elapsed since UTC epoch, disregards timezone.
-        );
+        )
 
         setWeiValue(
           balanceBigNumber.add(
@@ -89,37 +86,37 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
               .mul(flowRateBigNumber)
               .div(1000)
           )
-        );
+        )
 
-        lastAnimationTimestamp = currentAnimationTimestamp;
+        lastAnimationTimestamp = currentAnimationTimestamp
       }
 
-      window.requestAnimationFrame(animationStep);
-    };
+      window.requestAnimationFrame(animationStep)
+    }
 
-    window.requestAnimationFrame(animationStep);
+    window.requestAnimationFrame(animationStep)
 
     return () => {
-      stopAnimation = true;
-    };
+      stopAnimation = true
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [balance, balanceTimestamp, flowRate]);
+  }, [balance, balanceTimestamp, flowRate])
 
   return (
     <Box
-      data-cy={"total-streamed"}
+      data-cy={'total-streamed'}
       component="span"
       sx={{
-        textOverflow: "ellipsis",
+        textOverflow: 'ellipsis',
       }}
     >
-      {currentEtherDecimalPlaces !== 0 ?
+      {currentEtherDecimalPlaces !== 0 ? (
         <EtherFormatted wei={weiValue} />
-        :
+      ) : (
         <Amount wei={weiValue} decimalPlaces={etherSignificantFlowingDecimal} />
-      }
+      )}
     </Box>
-  );
-};
+  )
+}
 
-export default FlowingBalance;
+export default FlowingBalance

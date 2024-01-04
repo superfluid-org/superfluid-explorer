@@ -1,7 +1,7 @@
-import {Skeleton} from "@mui/material";
+import { Skeleton } from '@mui/material'
 
 const SkeletonNetwork = () => {
-  return <Skeleton sx={{width: "50px"}}/>;
+  return <Skeleton sx={{ width: '50px' }} />
 }
 
-export default SkeletonNetwork;
+export default SkeletonNetwork

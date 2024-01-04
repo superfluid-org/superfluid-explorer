@@ -1,28 +1,32 @@
-import { TabList } from "@mui/lab";
-import { NoSsr, Tab } from "@mui/material";
-import isEqual from "lodash/isEqual";
+import { TabList } from '@mui/lab'
+import { NoSsr, Tab } from '@mui/material'
+import isEqual from 'lodash/isEqual'
+
+import { useAvailableNetworks } from '../../contexts/AvailableNetworksContext'
+import { track } from '../../hooks/useMatomo'
 import {
   defaultStreamQueryOrdering,
   defaultStreamQueryPaging,
-} from "../../pages/NetworkStreams";
-import { useAvailableNetworks } from "../../contexts/AvailableNetworksContext";
-import { track } from "../../hooks/useMatomo";
-import { useAppSelector } from "../../redux/hooks";
-import { sfSubgraph } from "../../redux/store";
-import NetworkDisplay from "../NetworkDisplay/NetworkDisplay";
+} from '../../pages/NetworkStreams'
+import { useAppSelector } from '../../redux/hooks'
+import { sfSubgraph } from '../../redux/store'
+import NetworkDisplay from '../NetworkDisplay/NetworkDisplay'
 
 type NetworkTabsProps = {
-  activeTab: string;
-  setActiveTab: (...args: any[]) => void;
-  prefetch: boolean;
-};
+  activeTab: string
+  setActiveTab: (...args: any[]) => void
+  prefetch: boolean
+}
 
-const NetworkTabs: React.FC<NetworkTabsProps> = ({ setActiveTab, prefetch }) => {
-  const { availableNetworks } = useAvailableNetworks();
+const NetworkTabs: React.FC<NetworkTabsProps> = ({
+  setActiveTab,
+  prefetch,
+}) => {
+  const { availableNetworks } = useAvailableNetworks()
 
-  const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams", {
+  const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams', {
     ifOlderThan: 45,
-  });
+  })
 
   const displayedTestnetChainIds = useAppSelector(
     (state) =>
@@ -30,15 +34,15 @@ const NetworkTabs: React.FC<NetworkTabsProps> = ({ setActiveTab, prefetch }) => 
         .filter(([_, isDisplayed]) => isDisplayed)
         .map(([chainId]) => Number(chainId)),
     isEqual
-  );
+  )
 
   return (
     <NoSsr>
       <TabList
         variant="scrollable"
         scrollButtons="auto"
-        data-cy={"landing-page-networks"}
-        onChange={track("network-tab-change", (_event, newValue: string) =>
+        data-cy={'landing-page-networks'}
+        onChange={track('network-tab-change', (_event, newValue: string) =>
           setActiveTab(newValue)
         )}
       >
@@ -62,13 +66,12 @@ const NetworkTabs: React.FC<NetworkTabsProps> = ({ setActiveTab, prefetch }) => 
                     pagination: defaultStreamQueryPaging,
                   })
                 }
-              }
-              }
+              }}
             />
           ))}
       </TabList>
     </NoSsr>
-  );
-};
+  )
+}
 
-export default NetworkTabs;
+export default NetworkTabs

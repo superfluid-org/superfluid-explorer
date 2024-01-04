@@ -1,41 +1,37 @@
-import { GridColDef } from "@mui/x-data-grid";
-import {
-  Ordering,
-  PagedResult,
-  SkipPaging,
-} from "@superfluid-finance/sdk-core";
-import { BigNumber } from "ethers";
-import { FC, useMemo } from "react";
-import { useNetworkContext } from "../../../contexts/NetworkContext";
-import { AppDataGrid } from "../../../components/DataGrid/AppDataGrid";
-import EtherFormatted from "../../../components/Amount/EtherFormatted";
-import SuperTokenAddress from "../../../components/Address/SuperTokenAddress";
-import TimeAgo from "../../../components/TimeAgo/TimeAgo";
-import { Pool } from "../../../subgraphs/gda/entities/pool/pool";
-import { FlowDistributionUpdatedEvent } from "../../../subgraphs/gda/events";
-import { FlowDistributionUpdatedEvent_OrderBy } from "../../../subgraphs/gda/.graphclient";
-import AccountAddress from "../../../components/Address/AccountAddress";
-import BalanceWithToken from "../../../components/Amount/BalanceWithToken";
+import { GridColDef } from '@mui/x-data-grid'
+import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
+import { BigNumber } from 'ethers'
+import { FC, useMemo } from 'react'
+
+import AccountAddress from '../../../components/Address/AccountAddress'
+import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
+import EtherFormatted from '../../../components/Amount/EtherFormatted'
+import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
+import TimeAgo from '../../../components/TimeAgo/TimeAgo'
+import { useNetworkContext } from '../../../contexts/NetworkContext'
+import { FlowDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
+import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
+import { FlowDistributionUpdatedEvent } from '../../../subgraphs/gda/events'
 
 interface Props {
-  pool: Pool | null | undefined;
+  pool: Pool | null | undefined
   queryResult: {
-    isFetching: boolean;
-    data?: PagedResult<FlowDistributionUpdatedEvent>;
-  };
-  setPaging: (paging: SkipPaging) => void;
-  ordering: Ordering<FlowDistributionUpdatedEvent_OrderBy> | undefined;
+    isFetching: boolean
+    data?: PagedResult<FlowDistributionUpdatedEvent>
+  }
+  setPaging: (paging: SkipPaging) => void
+  ordering: Ordering<FlowDistributionUpdatedEvent_OrderBy> | undefined
   setOrdering: (
     ordering?: Ordering<FlowDistributionUpdatedEvent_OrderBy>
-  ) => void;
+  ) => void
 }
 
 interface FlowDistribution {
-  id: string;
-  timestamp: number;
-  adjustmentFlowRate: BigNumber;
-  adjustmentFlowRecipient: string;
-  operator: string;
+  id: string
+  timestamp: number
+  adjustmentFlowRate: BigNumber
+  adjustmentFlowRecipient: string
+  operator: string
 }
 
 const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
@@ -45,47 +41,47 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
   ordering,
   setOrdering,
 }) => {
-  const network = useNetworkContext();
+  const network = useNetworkContext()
 
   const columns: GridColDef[] = useMemo(
     () => [
-      { field: "id", hide: true, sortable: false, flex: 1 },
+      { field: 'id', hide: true, sortable: false, flex: 1 },
       {
-        field: "operator",
-        headerName: "Operator",
+        field: 'operator',
+        headerName: 'Operator',
         sortable: true,
         flex: 0.5,
         renderCell: (params) => (
           <AccountAddress
-            dataCy={"operator-address"}
+            dataCy={'operator-address'}
             network={network}
             address={params.value}
           />
         ),
       },
       {
-        field: "adjustmentFlowRecipient",
-        headerName: "Adjustment Flow Recipient",
+        field: 'adjustmentFlowRecipient',
+        headerName: 'Adjustment Flow Recipient',
         sortable: true,
         flex: 0.5,
         renderCell: (params) => (
           <AccountAddress
-            dataCy={"adjustment-flow-recipient-address"}
+            dataCy={'adjustment-flow-recipient-address'}
             network={network}
             address={params.value}
           />
         ),
       },
       {
-        field: "timestamp",
-        headerName: "Distribution Date",
+        field: 'timestamp',
+        headerName: 'Distribution Date',
         sortable: true,
         flex: 0.5,
         renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
       },
       {
-        field: "adjustmentFlowRate",
-        headerName: "Adjustment Flow Rate",
+        field: 'adjustmentFlowRate',
+        headerName: 'Adjustment Flow Rate',
         hide: false,
         sortable: false,
         flex: 1.5,
@@ -99,28 +95,30 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
                   network={network}
                   address={pool.token}
                   format={(token) => token.symbol}
-                  formatLoading={() => ""}
+                  formatLoading={() => ''}
                 />
               )}
             </>
-          );
+          )
         },
       },
     ],
     [pool, network]
-  );
+  )
 
   const rows: FlowDistribution[] =
     queryResult.data && pool
       ? queryResult.data.data.map((flowDistributionUpdatedEvent) => ({
-        id: flowDistributionUpdatedEvent.id,
-        timestamp: flowDistributionUpdatedEvent.timestamp,
-        adjustmentFlowRate: BigNumber.from(flowDistributionUpdatedEvent.adjustmentFlowRate),
-        adjustmentFlowRecipient:
-          flowDistributionUpdatedEvent.adjustmentFlowRecipient,
-        operator: flowDistributionUpdatedEvent.operator,
-      }))
-      : [];
+          id: flowDistributionUpdatedEvent.id,
+          timestamp: flowDistributionUpdatedEvent.timestamp,
+          adjustmentFlowRate: BigNumber.from(
+            flowDistributionUpdatedEvent.adjustmentFlowRate
+          ),
+          adjustmentFlowRecipient:
+            flowDistributionUpdatedEvent.adjustmentFlowRecipient,
+          operator: flowDistributionUpdatedEvent.operator,
+        }))
+      : []
 
   return (
     <AppDataGrid
@@ -131,7 +129,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
       ordering={ordering}
       setOrdering={(x) => setOrdering(x as any)}
     />
-  );
-};
+  )
+}
 
-export default FlowDistributionUpdatedEventDataGrid;
+export default FlowDistributionUpdatedEventDataGrid

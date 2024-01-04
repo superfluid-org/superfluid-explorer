@@ -1,23 +1,24 @@
-import { TabContext, TabPanel } from "@mui/lab";
-import { Card, Divider, NoSsr, Stack } from "@mui/material";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import type { NextPage } from "next";
-import * as React from "react";
-import AppLink from "../components/AppLink/AppLink";
-import { NetworkStreams } from "./NetworkStreams";
-import NetworkTabs from "../components/NetworkTabs/NetworkTabs";
-import { networks, polygon } from "../redux/networks";
+import { TabContext, TabPanel } from '@mui/lab'
+import { Card, Divider, NoSsr, Stack } from '@mui/material'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import type { NextPage } from 'next'
+import * as React from 'react'
+
+import AppLink from '../components/AppLink/AppLink'
+import NetworkTabs from '../components/NetworkTabs/NetworkTabs'
+import { networks, polygon } from '../redux/networks'
+import { NetworkStreams } from './NetworkStreams'
 
 const Home: NextPage = () => {
-  const [activeTab, setActiveTab] = React.useState(polygon.slugName);
+  const [activeTab, setActiveTab] = React.useState(polygon.slugName)
 
   return (
     <>
       <Box
         sx={{
-          width: "100%",
+          width: '100%',
           pt: 8,
           pb: 6,
         }}
@@ -39,9 +40,9 @@ const Home: NextPage = () => {
             paragraph
           >
             Superfluid Console is an explorer meant for developers and advanced
-            users of the{" "}
+            users of the{' '}
             <AppLink
-              data-cy={"protocol-link"}
+              data-cy={'protocol-link'}
               href="https://docs.superfluid.finance/superfluid/protocol-overview/what-is-superfluid"
               target="_blank"
               rel="noreferrer"
@@ -59,14 +60,18 @@ const Home: NextPage = () => {
         </Container>
       </Box>
       <Container maxWidth="lg">
-        <Card data-cy={"landing-page-card"}>
+        <Card data-cy={'landing-page-card'}>
           <Typography variant="h5" sx={{ my: 2, mx: 3 }}>
             Latest Streams
           </Typography>
           <Divider />
           <TabContext value={activeTab}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <NetworkTabs activeTab={activeTab} setActiveTab={setActiveTab} prefetch />
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <NetworkTabs
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                prefetch
+              />
             </Box>
             {networks.map((network) => (
               <TabPanel
@@ -83,7 +88,7 @@ const Home: NextPage = () => {
         </Card>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

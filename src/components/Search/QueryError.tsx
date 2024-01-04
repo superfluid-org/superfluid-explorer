@@ -1,10 +1,10 @@
-import { FC, ReactElement } from "react";
-import { Alert, Button } from "@mui/material";
-import { SerializedError } from "@reduxjs/toolkit";
+import { Alert, Button } from '@mui/material'
+import { SerializedError } from '@reduxjs/toolkit'
+import { FC, ReactElement } from 'react'
 
 interface Props {
-  error: SerializedError;
-  retry?: () => void;
+  error: SerializedError
+  retry?: () => void
 }
 
 const QueryError: FC<Props> = ({ error, retry }): ReactElement => {
@@ -19,7 +19,7 @@ const QueryError: FC<Props> = ({ error, retry }): ReactElement => {
         </Button>
       )}
     </>
-  );
-};
+  )
+}
 
-export default QueryError;
+export default QueryError

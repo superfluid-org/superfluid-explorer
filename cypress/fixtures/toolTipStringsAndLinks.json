@@ -39,7 +39,7 @@
   "approved-tooltip": "Indicates if account has claimed all past distributions and automatically claims all future distributions.",
   "pool-members-tooltip": "Accounts that have received units within the Pool. Subscribers will receive distributed funds based on the portion of units they own in and pool. Read more",
   "pool-members-tooltip-link": "https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon",
-  "units-tooltip":"Amount of units compared to the total pool. Funds will be distributed depending on the portion of units an account has. Read more",
+  "units-tooltip": "Amount of units compared to the total pool. Funds will be distributed depending on the portion of units an account has. Read more",
   "units-tooltip-link": "https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution",
   "approval-tooltip": "Indicates if account has claimed all past distributions and automatically claims all future distributions."
 }

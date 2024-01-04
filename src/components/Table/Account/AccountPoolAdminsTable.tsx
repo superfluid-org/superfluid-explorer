@@ -1,5 +1,4 @@
-import CloseIcon from "@mui/icons-material/Close";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import FilterListIcon from '@mui/icons-material/FilterList'
 import {
   Box,
   Button,
@@ -20,29 +19,27 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@mui/material";
-import {
-  createSkipPaging,
-  Ordering,
-} from "@superfluid-finance/sdk-core";
-import omit from "lodash/fp/omit";
-import set from "lodash/fp/set";
-import isEqual from "lodash/isEqual";
-import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
-import useDebounce from "../../../hooks/useDebounce";
-import { Network } from "../../../redux/networks";
-import { sfGdaSubgraph } from "../../../redux/store";
-import BalanceWithToken from "../../Amount/BalanceWithToken";
-import ClearInputAdornment from "../ClearInputAdornment";
-import DetailsButton from "../../Details/DetailsButton";
-import InfinitePagination from "../InfinitePagination";
-import InfoTooltipBtn from "../../Info/InfoTooltipBtn";
-import TableLoader from "../TableLoader";
-import TimeAgo from "../../TimeAgo/TimeAgo";
-import { PoolsQuery } from "../../../subgraphs/gda/endpoints/entityArgs";
-import { Pool } from "../../../subgraphs/gda/entities/pool/pool";
-import { PoolPublicationDetailsDialog } from "../../../pages/[_network]/pools/PoolPublicationDetails";
-import { Pool_Filter, Pool_OrderBy } from "../../../subgraphs/gda/.graphclient";
+} from '@mui/material'
+import { createSkipPaging, Ordering } from '@superfluid-finance/sdk-core'
+import omit from 'lodash/fp/omit'
+import set from 'lodash/fp/set'
+import isEqual from 'lodash/isEqual'
+import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
+
+import useDebounce from '../../../hooks/useDebounce'
+import { PoolPublicationDetailsDialog } from '../../../pages/[_network]/pools/PoolPublicationDetails'
+import { Network } from '../../../redux/networks'
+import { sfGdaSubgraph } from '../../../redux/store'
+import { Pool_Filter, Pool_OrderBy } from '../../../subgraphs/gda/.graphclient'
+import { PoolsQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
+import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
+import BalanceWithToken from '../../Amount/BalanceWithToken'
+import DetailsButton from '../../Details/DetailsButton'
+import InfoTooltipBtn from '../../Info/InfoTooltipBtn'
+import TimeAgo from '../../TimeAgo/TimeAgo'
+import ClearInputAdornment from '../ClearInputAdornment'
+import InfinitePagination from '../InfinitePagination'
+import TableLoader from '../TableLoader'
 
 export enum DistributionStatus {
   Distributed,
@@ -55,209 +52,208 @@ export enum UnitsStatus {
 }
 
 export const poolAdminsOrderingDefault: Ordering<Pool_OrderBy> = {
-  orderBy: "createdAtTimestamp",
-  orderDirection: "desc",
-};
+  orderBy: 'createdAtTimestamp',
+  orderDirection: 'desc',
+}
 
 export const poolAdminsPagingDefault = createSkipPaging({
   take: 10,
-});
+})
 
 interface AccountPoolAdminsTableProps {
-  network: Network;
-  accountAddress: string;
+  network: Network
+  accountAddress: string
 }
 
-type RequiredPoolsQuery = Required<Omit<PoolsQuery, "block">>;
+type RequiredPoolsQuery = Required<Omit<PoolsQuery, 'block'>>
 
 const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
   network,
   accountAddress,
 }) => {
-  const filterAnchorRef = useRef(null);
-  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const filterAnchorRef = useRef(null)
+  const [showFilterMenu, setShowFilterMenu] = useState(false)
 
   const [distributionStatus, setDistributionStatus] =
-    useState<DistributionStatus | null>(null);
-  const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null);
+    useState<DistributionStatus | null>(null)
+  const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null)
 
   const defaultFilter = {
     admin: accountAddress,
-  };
+  }
 
   const createDefaultArg = (): RequiredPoolsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: poolAdminsPagingDefault,
     order: poolAdminsOrderingDefault,
-  });
+  })
 
-  const [queryArg, setQueryArg] = useState<RequiredPoolsQuery>(
-    createDefaultArg()
-  );
+  const [queryArg, setQueryArg] =
+    useState<RequiredPoolsQuery>(createDefaultArg())
 
-  const [queryTrigger, queryResult] = sfGdaSubgraph.useLazyPoolsQuery();
+  const [queryTrigger, queryResult] = sfGdaSubgraph.useLazyPoolsQuery()
 
-  const queryTriggerDebounced = useDebounce(queryTrigger, 250);
+  const queryTriggerDebounced = useDebounce(queryTrigger, 250)
 
   const onQueryArgChanged = (newArgs: RequiredPoolsQuery) => {
-    setQueryArg(newArgs);
+    setQueryArg(newArgs)
 
     if (
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      queryTriggerDebounced(newArgs, true);
+      queryTriggerDebounced(newArgs, true)
     } else {
-      queryTrigger(newArgs, true);
+      queryTrigger(newArgs, true)
     }
-  };
+  }
 
   useEffect(() => {
-    onQueryArgChanged(createDefaultArg());
+    onQueryArgChanged(createDefaultArg())
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, accountAddress]);
+  }, [network, accountAddress])
 
   const setPage = (newPage: number) =>
     onQueryArgChanged(
-      set("pagination.skip", (newPage - 1) * queryArg.pagination.take, queryArg)
-    );
+      set('pagination.skip', (newPage - 1) * queryArg.pagination.take, queryArg)
+    )
 
   const setPageSize = (newPageSize: number) =>
-    onQueryArgChanged(set("pagination.take", newPageSize, queryArg));
+    onQueryArgChanged(set('pagination.take', newPageSize, queryArg))
 
   const onOrderingChanged = (newOrdering: Ordering<Pool_OrderBy>) =>
-    onQueryArgChanged({ ...queryArg, order: newOrdering });
+    onQueryArgChanged({ ...queryArg, order: newOrdering })
 
   const onSortClicked = (field: Pool_OrderBy) => () => {
     if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "desc",
-      });
-    } else if (queryArg.order.orderDirection === "desc") {
+        orderDirection: 'desc',
+      })
+    } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "asc",
-      });
+        orderDirection: 'asc',
+      })
     } else {
-      onOrderingChanged(poolAdminsOrderingDefault);
+      onOrderingChanged(poolAdminsOrderingDefault)
     }
-  };
+  }
 
   const onFilterChange = (newFilter: Pool_Filter) => {
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
       filter: newFilter,
-    });
-  };
+    })
+  }
 
   const onPoolIdChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
       onFilterChange({
         ...queryArg.filter,
         id: e.target.value,
-      });
+      })
     } else {
-      onFilterChange(omit("id", queryArg.filter));
+      onFilterChange(omit('id', queryArg.filter))
     }
-  };
+  }
 
   const getDistributionStatusFilter = (
     status: DistributionStatus | null
   ): Pool_Filter => {
     switch (status) {
       case DistributionStatus.Distributed:
-        return { totalAmountDistributedUntilUpdatedAt_gt: "0" };
+        return { totalAmountDistributedUntilUpdatedAt_gt: '0' }
       case DistributionStatus.NotDistributed:
-        return { totalAmountDistributedUntilUpdatedAt: "0" };
+        return { totalAmountDistributedUntilUpdatedAt: '0' }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   const changeDistributionStatus = (newStatus: DistributionStatus | null) => {
     const {
       totalAmountDistributedUntilUpdatedAt_gt,
       totalAmountDistributedUntilUpdatedAt,
       ...newFilter
-    } = queryArg.filter;
+    } = queryArg.filter
 
-    setDistributionStatus(newStatus);
+    setDistributionStatus(newStatus)
     onFilterChange({
       ...newFilter,
       ...getDistributionStatusFilter(newStatus),
-    });
-  };
+    })
+  }
 
   const onDistributionStatusChange = (
     _event: unknown,
     newValue: DistributionStatus
-  ) => changeDistributionStatus(newValue);
+  ) => changeDistributionStatus(newValue)
 
-  const clearDistributionStatusFilter = () => changeDistributionStatus(null);
+  const clearDistributionStatusFilter = () => changeDistributionStatus(null)
 
   const getUnitsStatusFilter = (status: UnitsStatus | null): Pool_Filter => {
     switch (status) {
       case UnitsStatus.Issued:
-        return { totalUnits_gt: "0" };
+        return { totalUnits_gt: '0' }
       case UnitsStatus.NotIssued:
-        return { totalUnits: "0" };
+        return { totalUnits: '0' }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   const changeUnitsStatus = (newStatus: UnitsStatus | null) => {
-    const { totalUnits_gt, totalUnits, ...newFilter } = queryArg.filter;
+    const { totalUnits_gt, totalUnits, ...newFilter } = queryArg.filter
 
-    setUnitsStatus(newStatus);
+    setUnitsStatus(newStatus)
     onFilterChange({
       ...newFilter,
       ...getUnitsStatusFilter(newStatus),
-    });
-  };
+    })
+  }
 
   const onUnitsStatusChange = (_event: unknown, newStatus: UnitsStatus) =>
-    changeUnitsStatus(newStatus);
+    changeUnitsStatus(newStatus)
 
-  const clearUnitsStatusFilter = () => changeUnitsStatus(null);
+  const clearUnitsStatusFilter = () => changeUnitsStatus(null)
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter));
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
-  const openFilter = () => setShowFilterMenu(true);
-  const closeFilter = () => setShowFilterMenu(false);
+  const openFilter = () => setShowFilterMenu(true)
+  const closeFilter = () => setShowFilterMenu(false)
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    closeFilter();
-  };
+    e.preventDefault()
+    closeFilter()
+  }
 
   const resetFilter = () => {
-    setDistributionStatus(null);
-    setUnitsStatus(null);
-    onFilterChange(defaultFilter);
-    closeFilter();
-  };
+    setDistributionStatus(null)
+    setUnitsStatus(null)
+    onFilterChange(defaultFilter)
+    closeFilter()
+  }
 
-  const tableRows = queryResult.data?.data || [];
-  const hasNextPage = !!queryResult.data?.nextPaging;
+  const tableRows = queryResult.data?.data || []
+  const hasNextPage = !!queryResult.data?.nextPaging
 
-  const { filter, order, pagination } = queryArg;
+  const { filter, order, pagination } = queryArg
 
   const {
     skip = poolAdminsPagingDefault.skip,
     take = poolAdminsPagingDefault.take,
-  } = queryResult.data?.paging || {};
+  } = queryResult.data?.paging || {}
 
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
-        <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
+        <Typography sx={{ flex: '1 1 100%' }} variant="h6" component="h2">
           Pool Admins
         </Typography>
 
@@ -266,21 +262,21 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
             <Chip
               label={
                 <>
-                  ID: <b data-cy={"chip-id"}>{filter.id}</b>
+                  ID: <b data-cy={'chip-id'}>{filter.id}</b>
                 </>
               }
               size="small"
-              onDelete={clearFilterField("id")}
+              onDelete={clearFilterField('id')}
             />
           )}
 
           {distributionStatus !== null && (
             <Chip
-              data-cy={"chip-distributed"}
+              data-cy={'chip-distributed'}
               label={
                 distributionStatus === DistributionStatus.Distributed
-                  ? "Has distributed tokens"
-                  : "Has not distributed tokens"
+                  ? 'Has distributed tokens'
+                  : 'Has not distributed tokens'
               }
               size="small"
               onDelete={clearDistributionStatusFilter}
@@ -289,11 +285,11 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
 
           {unitsStatus !== null && (
             <Chip
-              data-cy={"chip-units"}
+              data-cy={'chip-units'}
               label={
                 unitsStatus === UnitsStatus.Issued
-                  ? "Has issued units"
-                  : "Has not issued units"
+                  ? 'Has issued units'
+                  : 'Has not issued units'
               }
               size="small"
               onDelete={clearUnitsStatusFilter}
@@ -302,7 +298,11 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton data-cy={"pools-filter"} ref={filterAnchorRef} onClick={openFilter}>
+          <IconButton
+            data-cy={'pools-filter'}
+            ref={filterAnchorRef}
+            onClick={openFilter}
+          >
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -310,11 +310,11 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
           open={showFilterMenu}
           anchorEl={filterAnchorRef.current}
           onClose={closeFilter}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <Stack
-            sx={{ p: 3, pb: 2, minWidth: "300px" }}
+            sx={{ p: 3, pb: 2, minWidth: '300px' }}
             component="form"
             onSubmit={onFormSubmit}
             noValidate
@@ -329,14 +329,12 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                 size="small"
                 type="number"
                 inputProps={{ min: 0 }}
-                value={filter.id || ""}
+                value={filter.id || ''}
                 onChange={onPoolIdChange}
-                data-cy={"id-input"}
+                data-cy={'id-input'}
                 endAdornment={
                   filter.id && (
-                    <ClearInputAdornment
-                      onClick={clearFilterField("id")}
-                    />
+                    <ClearInputAdornment onClick={clearFilterField('id')} />
                   )
                 }
               />
@@ -354,10 +352,16 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                 value={distributionStatus}
                 onChange={onDistributionStatusChange}
               >
-                <ToggleButton data-cy={"filter-distributed-yes"} value={DistributionStatus.Distributed}>
+                <ToggleButton
+                  data-cy={'filter-distributed-yes'}
+                  value={DistributionStatus.Distributed}
+                >
                   Yes
                 </ToggleButton>
-                <ToggleButton data-cy={"filter-distributed-no"} value={DistributionStatus.NotDistributed}>
+                <ToggleButton
+                  data-cy={'filter-distributed-no'}
+                  value={DistributionStatus.NotDistributed}
+                >
                   No
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -375,8 +379,18 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                 value={unitsStatus}
                 onChange={onUnitsStatusChange}
               >
-                <ToggleButton data-cy={"filter-issued-yes"} value={UnitsStatus.Issued}>Yes</ToggleButton>
-                <ToggleButton data-cy={"filter-issued-no"} value={UnitsStatus.NotIssued}>No</ToggleButton>
+                <ToggleButton
+                  data-cy={'filter-issued-yes'}
+                  value={UnitsStatus.Issued}
+                >
+                  Yes
+                </ToggleButton>
+                <ToggleButton
+                  data-cy={'filter-issued-no'}
+                  value={UnitsStatus.NotIssued}
+                >
+                  No
+                </ToggleButton>
               </ToggleButtonGroup>
             </Box>
 
@@ -384,45 +398,49 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
               {(filter.id ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                  <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
-                    Reset
-                  </Button>
-                )}
-              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
+              <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
           </Stack>
         </Popover>
       </Toolbar>
-      <Table sx={{ tableLayout: "fixed" }}>
+      <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             <TableCell>Pool ID</TableCell>
             <TableCell>
               <TableSortLabel
                 active={
-                  order?.orderBy === "totalAmountDistributedUntilUpdatedAt"
+                  order?.orderBy === 'totalAmountDistributedUntilUpdatedAt'
                 }
                 direction={
-                  order?.orderBy === "totalAmountDistributedUntilUpdatedAt"
+                  order?.orderBy === 'totalAmountDistributedUntilUpdatedAt'
                     ? order?.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("totalAmountDistributedUntilUpdatedAt")}
+                onClick={onSortClicked('totalAmountDistributedUntilUpdatedAt')}
               >
                 Total Distributed
               </TableSortLabel>
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={order?.orderBy === "totalUnits"}
+                active={order?.orderBy === 'totalUnits'}
                 direction={
-                  order?.orderBy === "totalUnits"
+                  order?.orderBy === 'totalUnits'
                     ? order?.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("totalUnits")}
+                onClick={onSortClicked('totalUnits')}
               >
                 Total Units
                 <InfoTooltipBtn
@@ -434,13 +452,13 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
             </TableCell>
             <TableCell width="140px">
               <TableSortLabel
-                active={order?.orderBy === "updatedAtTimestamp"}
+                active={order?.orderBy === 'updatedAtTimestamp'}
                 direction={
-                  order?.orderBy === "updatedAtTimestamp"
+                  order?.orderBy === 'updatedAtTimestamp'
                     ? order?.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("updatedAtTimestamp")}
+                onClick={onSortClicked('updatedAtTimestamp')}
               >
                 Created
               </TableSortLabel>
@@ -451,27 +469,25 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
         <TableBody>
           {tableRows.map((pool: Pool) => (
             <TableRow key={pool.id} hover>
-              <TableCell data-cy={"publications-pool-id"}>
-                {pool.id}
-              </TableCell>
-              <TableCell data-cy={"publications-total-distributed"}>
+              <TableCell data-cy={'publications-pool-id'}>{pool.id}</TableCell>
+              <TableCell data-cy={'publications-total-distributed'}>
                 <BalanceWithToken
                   wei={pool.totalAmountDistributedUntilUpdatedAt}
                   network={network}
                   tokenAddress={pool.token}
                 />
               </TableCell>
-              <TableCell data-cy={"publications-units"}>
+              <TableCell data-cy={'publications-units'}>
                 {pool.totalUnits}
               </TableCell>
               <TableCell>
                 <TimeAgo
                   subgraphTime={pool.createdAtTimestamp}
-                  typographyProps={{ typography: "body2" }}
+                  typographyProps={{ typography: 'body2' }}
                 />
               </TableCell>
 
-              <TableCell data-cy={"publications-details-buttons"} align="right">
+              <TableCell data-cy={'publications-details-buttons'} align="right">
                 <PoolPublicationDetailsDialog
                   network={network}
                   id={pool.id.toString()}
@@ -486,10 +502,10 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
             <TableRow>
               <TableCell
                 colSpan={5}
-                sx={{ border: 0, height: "96px" }}
+                sx={{ border: 0, height: '96px' }}
                 align="center"
               >
-                <Typography data-cy={"publications-no-results"} variant="body1">
+                <Typography data-cy={'publications-no-results'} variant="body1">
                   No results
                 </Typography>
               </TableCell>
@@ -512,7 +528,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                   hasNext={hasNextPage}
                   onPageChange={setPage}
                   onPageSizeChange={setPageSize}
-                  sx={{ justifyContent: "flex-end" }}
+                  sx={{ justifyContent: 'flex-end' }}
                 />
               </TableCell>
             </TableRow>
@@ -520,7 +536,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
         )}
       </Table>
     </>
-  );
-};
+  )
+}
 
-export default AccountPoolAdminsTable;
+export default AccountPoolAdminsTable

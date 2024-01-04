@@ -1,5 +1,5 @@
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import { TabContext, TabList, TabPanel } from '@mui/lab'
 import {
   Breadcrumbs,
   Button,
@@ -14,77 +14,76 @@ import {
   Tab,
   Tooltip,
   Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import { Token } from "@superfluid-finance/sdk-core";
-import { BigNumber, ethers } from "ethers";
-import { gql } from "graphql-request";
-import { NextPage } from "next";
-import Error from "next/error";
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import AppLink from "../../../../components/AppLink/AppLink";
-import CopyClipboard from "../../../../components/Copy/CopyClipboard";
-import CopyLink from "../../../../components/Copy/CopyLink";
-import EtherFormatted from "../../../../components/Amount/EtherFormatted";
-import EventTableWithInfo from "../../../../components/Table/EventTableWithInfo";
-import FlowingBalance from "../../../../components/Amount/FlowingBalance";
-import InfoTooltipBtn from "../../../../components/Info/InfoTooltipBtn";
-import NetworkDisplay from "../../../../components/NetworkDisplay/NetworkDisplay";
-import SubgraphQueryLink from "../../../subgraph/SubgraphQueryLink";
-import SuperTokenIndexes from "../SuperTokenIndexes";
-import SuperTokenStreams from "../SuperTokenStreams";
-import SkeletonAddress from "../../../../components/Skeleton/SkeletonAddress";
-import SkeletonTokenName from "../../../../components/Skeleton/SkeletonTokenName";
-import IdContext from "../../../../contexts/IdContext";
-import { useNetworkContext } from "../../../../contexts/NetworkContext";
-import { useAppSelector } from "../../../../redux/hooks";
-import { streamGranularityInSeconds } from "../../../../redux/slices/appPreferences.slice";
-import { rpcApi, sfSubgraph } from "../../../../redux/store";
-import SuperTokenPools from "../SuperTokenPools";
+} from '@mui/material'
+import { Box } from '@mui/system'
+import { Token } from '@superfluid-finance/sdk-core'
+import { BigNumber, ethers } from 'ethers'
+import { gql } from 'graphql-request'
+import { NextPage } from 'next'
+import Error from 'next/error'
+import { useRouter } from 'next/router'
+import { useContext, useEffect, useState } from 'react'
+
+import EtherFormatted from '../../../../components/Amount/EtherFormatted'
+import FlowingBalance from '../../../../components/Amount/FlowingBalance'
+import AppLink from '../../../../components/AppLink/AppLink'
+import CopyClipboard from '../../../../components/Copy/CopyClipboard'
+import CopyLink from '../../../../components/Copy/CopyLink'
+import InfoTooltipBtn from '../../../../components/Info/InfoTooltipBtn'
+import NetworkDisplay from '../../../../components/NetworkDisplay/NetworkDisplay'
+import SkeletonAddress from '../../../../components/Skeleton/SkeletonAddress'
+import SkeletonTokenName from '../../../../components/Skeleton/SkeletonTokenName'
+import EventTableWithInfo from '../../../../components/Table/EventTableWithInfo'
+import IdContext from '../../../../contexts/IdContext'
+import { useNetworkContext } from '../../../../contexts/NetworkContext'
+import { useAppSelector } from '../../../../redux/hooks'
+import { streamGranularityInSeconds } from '../../../../redux/slices/appPreferences.slice'
+import { rpcApi, sfSubgraph } from '../../../../redux/store'
+import SubgraphQueryLink from '../../../subgraph/SubgraphQueryLink'
+import SuperTokenIndexes from '../SuperTokenIndexes'
+import SuperTokenPools from '../SuperTokenPools'
+import SuperTokenStreams from '../SuperTokenStreams'
 
 const SuperTokenPage: NextPage = () => {
-  const network = useNetworkContext();
-  const address = useContext(IdContext);
+  const network = useNetworkContext()
+  const address = useContext(IdContext)
 
   const tokenQuery = sfSubgraph.useTokenQuery({
     chainId: network.chainId,
     id: address,
-  });
+  })
 
-  const superToken: Token | null | undefined = tokenQuery.data;
+  const superToken: Token | null | undefined = tokenQuery.data
 
   const minimumDepositQuery = rpcApi.useMinimumDepositQuery({
     chainId: network.chainId,
     tokenAddress: address,
-  });
+  })
 
   const tokenStatisticsQuery = sfSubgraph.useTokenStatisticQuery({
     chainId: network.chainId,
     id: address,
-  });
+  })
 
-  const tokenStatistics = tokenStatisticsQuery.data;
+  const tokenStatistics = tokenStatisticsQuery.data
 
   const flowRateBigNumber = tokenStatistics
     ? BigNumber.from(tokenStatistics.totalOutflowRate)
-    : undefined;
+    : undefined
 
   const streamGranularity = useAppSelector(
     (state) => state.appPreferences.streamGranularity
-  );
+  )
 
   const flowRateConverted = flowRateBigNumber
     ? flowRateBigNumber
-      .mul(streamGranularityInSeconds[streamGranularity])
-      .toString()
-    : undefined;
+        .mul(streamGranularityInSeconds[streamGranularity])
+        .toString()
+    : undefined
 
-  const router = useRouter();
-  const { tab } = router.query;
-  const [tabValue, setTabValue] = useState<string>(
-    (tab as string) ?? "streams"
-  );
+  const router = useRouter()
+  const { tab } = router.query
+  const [tabValue, setTabValue] = useState<string>((tab as string) ?? 'streams')
 
   useEffect(() => {
     router.replace({
@@ -93,16 +92,16 @@ const SuperTokenPage: NextPage = () => {
         _id: address,
         tab: tabValue,
       },
-    });
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tabValue]);
+  }, [tabValue])
 
   if (
     !tokenQuery.isUninitialized &&
     !tokenQuery.isLoading &&
     (!tokenQuery.data || !tokenQuery.data.isSuperToken)
   ) {
-    return <Error statusCode={404} />;
+    return <Error statusCode={404} />
   }
 
   return (
@@ -111,7 +110,7 @@ const SuperTokenPage: NextPage = () => {
         <Breadcrumbs aria-label="breadcrumb">
           <Typography color="text.secondary">{network.displayName}</Typography>
           <Typography color="text.secondary">Super Tokens</Typography>
-          <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
+          <Typography color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
             {superToken && superToken.symbol}
           </Typography>
         </Breadcrumbs>
@@ -172,7 +171,7 @@ const SuperTokenPage: NextPage = () => {
               <Stack direction="row">
                 <ListItem divider>
                   <ListItemText
-                    data-cy={"token-symbol"}
+                    data-cy={'token-symbol'}
                     secondary="Symbol"
                     primary={
                       superToken ? (
@@ -185,28 +184,28 @@ const SuperTokenPage: NextPage = () => {
                 </ListItem>
                 <ListItem divider>
                   <ListItemText
-                    data-cy={"token-fancy-network"}
+                    data-cy={'token-fancy-network'}
                     secondary="Network"
                     primary={<NetworkDisplay network={network} />}
                   />
                 </ListItem>
                 <ListItem divider>
                   <ListItemText
-                    data-cy={"token-listed-status"}
+                    data-cy={'token-listed-status'}
                     secondary={
                       <>
                         Listed
                         <InfoTooltipBtn
-                          dataCy={"listed-tooltip"}
+                          dataCy={'listed-tooltip'}
                           title={
                             <>
                               A token is listed & recognized by the Superfluid
                               protocol. Benefits of deploying a listed super
                               token include that it may be instantiated by
                               symbol in our SDK, and listed by symbol in the
-                              Superfluid dashboard{" "}
+                              Superfluid dashboard{' '}
                               <AppLink
-                                data-cy={"listed-tooltip-link"}
+                                data-cy={'listed-tooltip-link'}
                                 href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
                                 target="_blank"
                               >
@@ -220,9 +219,9 @@ const SuperTokenPage: NextPage = () => {
                     primary={
                       superToken ? (
                         superToken.isListed ? (
-                          "Yes"
+                          'Yes'
                         ) : (
-                          "No"
+                          'No'
                         )
                       ) : (
                         <Skeleton sx={{ width: 40 }} />
@@ -234,7 +233,7 @@ const SuperTokenPage: NextPage = () => {
 
               <ListItem divider>
                 <ListItemText
-                  data-cy={"token-address"}
+                  data-cy={'token-address'}
                   secondary="Address"
                   primary={
                     superToken ? (
@@ -253,18 +252,18 @@ const SuperTokenPage: NextPage = () => {
               </ListItem>
               <ListItem>
                 <ListItemText
-                  data-cy={"underlying-token-address"}
+                  data-cy={'underlying-token-address'}
                   secondary={
                     <>
                       Underlying Token Address
                       <InfoTooltipBtn
-                        dataCy={"underlying-token-tooltip"}
+                        dataCy={'underlying-token-tooltip'}
                         title={
                           <>
                             Already existing ERC20 token&apos;s address that has
-                            been upgraded to super token.{" "}
+                            been upgraded to super token.{' '}
                             <AppLink
-                              data-cy={"underlying-token-tooltip-link"}
+                              data-cy={'underlying-token-tooltip-link'}
                               href="https://docs.superfluid.finance/superfluid/protocol-developers/guides/super-tokens"
                               target="_blank"
                             >
@@ -279,8 +278,8 @@ const SuperTokenPage: NextPage = () => {
                   primary={
                     superToken ? (
                       superToken.underlyingAddress ===
-                        "0x0000000000000000000000000000000000000000" ||
-                        superToken.underlyingAddress === "0x" ? (
+                        '0x0000000000000000000000000000000000000000' ||
+                      superToken.underlyingAddress === '0x' ? (
                         <>None</>
                       ) : (
                         <Tooltip title="View on blockchain explorer">
@@ -295,7 +294,10 @@ const SuperTokenPage: NextPage = () => {
                                 superToken.underlyingAddress
                               )}
                               <OpenInNewIcon
-                                sx={{ ml: 0.5, fontSize: "inherit" }}
+                                sx={{
+                                  ml: 0.5,
+                                  fontSize: 'inherit',
+                                }}
                               />
                             </Grid>
                           </AppLink>
@@ -313,7 +315,12 @@ const SuperTokenPage: NextPage = () => {
 
         <Grid item sm={6}>
           <Card elevation={2}>
-            <List sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            <List
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+              }}
+            >
               <ListItem divider>
                 <ListItemText
                   secondary="Total streams"
@@ -322,7 +329,7 @@ const SuperTokenPage: NextPage = () => {
                       tokenStatistics.totalNumberOfActiveStreams +
                       tokenStatistics.totalNumberOfClosedStreams
                     ) : (
-                      <Skeleton sx={{ width: "100px" }} />
+                      <Skeleton sx={{ width: '100px' }} />
                     )
                   }
                 />
@@ -335,7 +342,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalNumberOfIndexes
                     ) : (
-                      <Skeleton sx={{ width: "100px" }} />
+                      <Skeleton sx={{ width: '100px' }} />
                     )
                   }
                 />
@@ -348,7 +355,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalNumberOfActiveStreams
                     ) : (
-                      <Skeleton sx={{ width: "100px" }} />
+                      <Skeleton sx={{ width: '100px' }} />
                     )
                   }
                 />
@@ -361,7 +368,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalNumberOfActiveIndexes
                     ) : (
-                      <Skeleton sx={{ width: "100px" }} />
+                      <Skeleton sx={{ width: '100px' }} />
                     )
                   }
                 />
@@ -374,7 +381,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalNumberOfClosedStreams
                     ) : (
-                      <Skeleton sx={{ width: "100px" }} />
+                      <Skeleton sx={{ width: '100px' }} />
                     )
                   }
                 />
@@ -387,7 +394,7 @@ const SuperTokenPage: NextPage = () => {
                     tokenStatistics ? (
                       tokenStatistics.totalApprovedSubscriptions
                     ) : (
-                      <Skeleton sx={{ width: "100px" }} />
+                      <Skeleton sx={{ width: '100px' }} />
                     )
                   }
                 />
@@ -400,10 +407,10 @@ const SuperTokenPage: NextPage = () => {
       <Card elevation={2} sx={{ mt: 3 }}>
         <List
           sx={{
-            display: "grid",
+            display: 'grid',
             gridTemplateColumns: {
-              sm: "1fr",
-              md: "1fr 1fr",
+              sm: '1fr',
+              md: '1fr 1fr',
             },
           }}
         >
@@ -421,7 +428,7 @@ const SuperTokenPage: NextPage = () => {
                   // <EtherFormatted
                   //   wei={tokenStatistics.totalAmountStreamedUntilUpdatedAt}
                   // />
-                  <Skeleton sx={{ width: "200px" }} />
+                  <Skeleton sx={{ width: '200px' }} />
                 )
               }
             />
@@ -429,7 +436,7 @@ const SuperTokenPage: NextPage = () => {
 
           <ListItem divider>
             <ListItemText
-              data-cy={"total-flow-rate"}
+              data-cy={'total-flow-rate'}
               secondary="Total flow rate"
               primary={
                 flowRateConverted ? (
@@ -438,7 +445,7 @@ const SuperTokenPage: NextPage = () => {
                     {streamGranularity}
                   </>
                 ) : (
-                  <Skeleton sx={{ width: "200px" }} />
+                  <Skeleton sx={{ width: '200px' }} />
                 )
               }
             />
@@ -446,7 +453,7 @@ const SuperTokenPage: NextPage = () => {
 
           <ListItem divider>
             <ListItemText
-              data-cy={"total-transferred"}
+              data-cy={'total-transferred'}
               secondary="Total amount transferred"
               primary={
                 tokenStatistics ? (
@@ -454,7 +461,7 @@ const SuperTokenPage: NextPage = () => {
                     wei={tokenStatistics.totalAmountTransferredUntilUpdatedAt}
                   />
                 ) : (
-                  <Skeleton sx={{ width: "200px" }} />
+                  <Skeleton sx={{ width: '200px' }} />
                 )
               }
             />
@@ -462,7 +469,7 @@ const SuperTokenPage: NextPage = () => {
 
           <ListItem divider>
             <ListItemText
-              data-cy={"token-total-distributed"}
+              data-cy={'token-total-distributed'}
               secondary="Total amount distributed"
               primary={
                 tokenStatistics ? (
@@ -470,7 +477,7 @@ const SuperTokenPage: NextPage = () => {
                     wei={tokenStatistics.totalAmountDistributedUntilUpdatedAt}
                   />
                 ) : (
-                  <Skeleton sx={{ width: "200px" }} />
+                  <Skeleton sx={{ width: '200px' }} />
                 )
               }
             />
@@ -478,13 +485,13 @@ const SuperTokenPage: NextPage = () => {
 
           <ListItem>
             <ListItemText
-              data-cy={"total-supply"}
+              data-cy={'total-supply'}
               secondary="Total supply"
               primary={
                 tokenStatistics ? (
                   <EtherFormatted wei={tokenStatistics.totalSupply} />
                 ) : (
-                  <Skeleton sx={{ width: "200px" }} />
+                  <Skeleton sx={{ width: '200px' }} />
                 )
               }
             />
@@ -497,7 +504,7 @@ const SuperTokenPage: NextPage = () => {
                 minimumDepositQuery.data ? (
                   <EtherFormatted wei={minimumDepositQuery.data} />
                 ) : (
-                  <Skeleton sx={{ width: "200px" }} />
+                  <Skeleton sx={{ width: '200px' }} />
                 )
               }
             />
@@ -507,17 +514,17 @@ const SuperTokenPage: NextPage = () => {
 
       <Card elevation={2} sx={{ mt: 3 }}>
         <TabContext value={tabValue}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList
               variant="scrollable"
               scrollButtons="auto"
               onChange={(_event, newValue: string) => setTabValue(newValue)}
               aria-label="tabs"
             >
-              <Tab data-cy={"streams-tab"} label="Streams" value="streams" />
-              <Tab data-cy={"indexes-tab"} label="Indexes" value="indexes" />
-              <Tab data-cy={"pools-tab"} label="Pools" value="pools" />
-              <Tab data-cy={"events-tab"} label="Events" value="events" />
+              <Tab data-cy={'streams-tab'} label="Streams" value="streams" />
+              <Tab data-cy={'indexes-tab'} label="Indexes" value="indexes" />
+              <Tab data-cy={'pools-tab'} label="Pools" value="pools" />
+              <Tab data-cy={'events-tab'} label="Events" value="events" />
             </TabList>
           </Box>
           <Box>
@@ -537,7 +544,7 @@ const SuperTokenPage: NextPage = () => {
         </TabContext>
       </Card>
     </Container>
-  );
-};
+  )
+}
 
-export default SuperTokenPage;
+export default SuperTokenPage

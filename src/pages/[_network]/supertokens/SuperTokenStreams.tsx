@@ -1,12 +1,13 @@
-import { FC, ReactElement } from "react";
-import { Network } from "../../../redux/networks";
-import AppLink from "../../../components/AppLink/AppLink";
-import HelpAlert from "../../../components/Info/HelpAlert";
-import SuperTokenStreamsTable from "./SuperTokenStreamsTable";
+import { FC, ReactElement } from 'react'
+
+import AppLink from '../../../components/AppLink/AppLink'
+import HelpAlert from '../../../components/Info/HelpAlert'
+import { Network } from '../../../redux/networks'
+import SuperTokenStreamsTable from './SuperTokenStreamsTable'
 
 interface Props {
-  network: Network;
-  tokenAddress: string;
+  network: Network
+  tokenAddress: string
 }
 
 const SuperTokenStreams: FC<Props> = ({
@@ -20,9 +21,9 @@ const SuperTokenStreams: FC<Props> = ({
         Sender accounts can create, update, and delete streams, while receiver
         accounts can delete streams. However, a pair of addresses may only have
         one stream open per token (but this stream may be updated at any time by
-        the sender).{" "}
+        the sender).{' '}
         <AppLink
-          data-cy={"streams-help-alert-link"}
+          data-cy={'streams-help-alert-link'}
           href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/money-streaming-1"
           target="_blank"
         >
@@ -32,7 +33,7 @@ const SuperTokenStreams: FC<Props> = ({
 
       <SuperTokenStreamsTable network={network} tokenAddress={tokenAddress} />
     </>
-  );
-};
+  )
+}
 
-export default SuperTokenStreams;
+export default SuperTokenStreams

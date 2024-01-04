@@ -1,3 +1,4 @@
-import { NextRouter } from "next/router";
+import { NextRouter } from 'next/router'
 
-export const isDynamicRoute = (router: NextRouter) => /\[.+\]/.test(router.route);
+export const isDynamicRoute = (router: NextRouter) =>
+  /\[.+\]/.test(router.route)

@@ -1,17 +1,18 @@
-import React, { FC, ReactNode, useState } from "react";
-import { IndexSubscriptionPageContent } from "./IndexSubscriptionPageContent";
-import { Network } from "../../../redux/networks";
-import DetailsDialog from "../../../components/Details/DetailsDialog";
+import React, { FC, ReactNode, useState } from 'react'
+
+import DetailsDialog from '../../../components/Details/DetailsDialog'
+import { Network } from '../../../redux/networks'
+import { IndexSubscriptionPageContent } from './IndexSubscriptionPageContent'
 
 export const IndexSubscriptionDetailsDialog: FC<{
-  indexSubscriptionId: string;
-  network: Network;
-  children: (onClick: () => void) => ReactNode;
+  indexSubscriptionId: string
+  network: Network
+  children: (onClick: () => void) => ReactNode
 }> = ({ children, ...props }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClickOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
 
   return (
     <>
@@ -20,5 +21,5 @@ export const IndexSubscriptionDetailsDialog: FC<{
         <IndexSubscriptionPageContent {...props} />
       </DetailsDialog>
     </>
-  );
-};
+  )
+}

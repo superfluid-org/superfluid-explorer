@@ -4,7 +4,10 @@
  * @param value The string returned from the environment variable.
  * @param key Name of the environment variable for better error message.
  */
-export function ensureEnvironmentVariable(value: string | undefined, key: string): string {
-    if (!value) throw Error(`Environment variable ${key} has to be defined.`);
-    return value;
+export function ensureEnvironmentVariable(
+  value: string | undefined,
+  key: string
+): string {
+  if (!value) throw Error(`Environment variable ${key} has to be defined.`)
+  return value
 }

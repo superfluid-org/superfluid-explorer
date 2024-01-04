@@ -1,9 +1,9 @@
-export {};
+export {}
 
 declare global {
   interface Window {
     Matomo?: {
-      initialized: boolean;
-    };
+      initialized: boolean
+    }
   }
 }

@@ -1,33 +1,34 @@
-import { FC, useEffect, useState } from "react";
+import SearchIcon from '@mui/icons-material/Search'
 import {
+  Card,
+  CircularProgress,
+  Dialog,
+  DialogContent,
+  Divider,
+  Grid,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
   TextField,
   Typography,
-  DialogContent,
-  Dialog,
-  InputAdornment,
-  ListItem,
-  List,
-  ListItemButton,
-  CircularProgress,
-  Card,
-  Divider,
-  ListItemText,
-  Grid,
-} from "@mui/material";
-import { useRouter } from "next/router";
-import SearchIcon from "@mui/icons-material/Search";
-import AccountAddress from "../Address/AccountAddress";
-import { AccountAddressFormatted } from "../Address/AccountAddressFormatted";
-import { SuperTokenFormatted } from "../Address/SuperTokenAddress";
-import QueryError from "./QueryError";
-import _ from "lodash";
-import NextLink from "next/link";
-import NetworkFormatted from "../NetworkDisplay/NetworkDisplay";
-import { networksByChainId } from "../../redux/networks";
-import { useAppSelector } from "../../redux/hooks";
-import { addressBookSelectors } from "../../redux/slices/addressBook.slice";
-import { searchBarPlaceholderText } from "../Search/SearchBar";
-import { useSearch } from "../../hooks/useSearch";
+} from '@mui/material'
+import _ from 'lodash'
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
+import { FC, useEffect, useState } from 'react'
+
+import { useSearch } from '../../hooks/useSearch'
+import { useAppSelector } from '../../redux/hooks'
+import { networksByChainId } from '../../redux/networks'
+import { addressBookSelectors } from '../../redux/slices/addressBook.slice'
+import AccountAddress from '../Address/AccountAddress'
+import { AccountAddressFormatted } from '../Address/AccountAddressFormatted'
+import { SuperTokenFormatted } from '../Address/SuperTokenAddress'
+import NetworkFormatted from '../NetworkDisplay/NetworkDisplay'
+import { searchBarPlaceholderText } from '../Search/SearchBar'
+import QueryError from './QueryError'
 
 const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
   open,
@@ -35,46 +36,46 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
 }) => {
   const addressBookEntries = useAppSelector((state) =>
     addressBookSelectors.selectAll(state)
-  );
+  )
 
   const handleClose = () => {
-    close();
+    close()
     // Give it a second to clear the inputs so the data wouldn't instantly jump for the user (before dialog disappeared).
     setTimeout(() => {
-      setSearchTermVisible("");
-      _setSearchTermDebounced("");
-    }, 50);
-  };
+      setSearchTermVisible('')
+      _setSearchTermDebounced('')
+    }, 50)
+  }
 
-  const router = useRouter();
-  const [searchTermVisible, setSearchTermVisible] = useState("");
+  const router = useRouter()
+  const [searchTermVisible, setSearchTermVisible] = useState('')
   const [searchTermDebounced, _setSearchTermDebounced] =
-    useState(searchTermVisible);
+    useState(searchTermVisible)
 
   const [setSearchTermDebounced] = useState(() =>
     _.debounce((searchTerm) => {
-      _setSearchTermDebounced(searchTerm);
+      _setSearchTermDebounced(searchTerm)
     }, 250)
-  );
+  )
 
   const setSearchTerm = (searchTerm: string) => {
-    setSearchTermVisible(searchTerm);
-    setSearchTermDebounced(searchTerm.trim());
-  };
+    setSearchTermVisible(searchTerm)
+    setSearchTermDebounced(searchTerm.trim())
+  }
 
-  const networkSearchResults = useSearch(searchTermDebounced);
+  const networkSearchResults = useSearch(searchTermDebounced)
 
   useEffect(() => {
     const handleRouteChange = () => {
-      handleClose();
-    };
-    router.events.on("routeChangeStart", handleRouteChange);
+      handleClose()
+    }
+    router.events.on('routeChangeStart', handleRouteChange)
     // If the component is unmounted, unsubscribe
     // from the event with the `off` method:
     return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, []);
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [])
 
   return (
     <Dialog
@@ -82,7 +83,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
       maxWidth="lg"
       onClose={handleClose}
       open={open}
-      sx={{ verticalAlign: "top" }}
+      sx={{ verticalAlign: 'top' }}
     >
       <DialogContent>
         <TextField
@@ -102,9 +103,9 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
               <InputAdornment position="start">
                 {networkSearchResults.some((x) => x.isFetching) ? (
                   <CircularProgress
-                    data-cy={"search-loading-spinner"}
+                    data-cy={'search-loading-spinner'}
                     size={24}
-                    sx={{ color: "text.secondary" }}
+                    sx={{ color: 'text.secondary' }}
                   />
                 ) : (
                   <SearchIcon />
@@ -129,7 +130,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                 <List disablePadding>
                   {x.accounts.map((account) => (
                     <ListItem
-                      data-cy={x.network.slugName + "-account-search-result"}
+                      data-cy={x.network.slugName + '-account-search-result'}
                       disablePadding
                       sx={{ pt: 0.5, pb: 0.5 }}
                       key={`${x.network.chainId}_${account.id}`}
@@ -141,10 +142,10 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                         <ListItemButton
                           component="a"
                           sx={{
-                            display: "flex",
-                            alignItems: "flex-start",
-                            flexDirection: "column",
-                            justifyContent: "flex-start",
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            flexDirection: 'column',
+                            justifyContent: 'flex-start',
                           }}
                         >
                           {account.ENS ? (
@@ -157,7 +158,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                                   <AccountAddressFormatted
                                     network={x.network}
                                     address={account.id}
-                                    format={"addressPlusName"}
+                                    format={'addressPlusName'}
                                   />
                                 </Typography>
                               </Grid>
@@ -177,7 +178,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                       disablePadding
                       sx={{ mt: 1, mb: 1 }}
                       key={`${x.network.chainId}_${token.id}`}
-                      data-cy={x.network.slugName + "-token-search-result"}
+                      data-cy={x.network.slugName + '-token-search-result'}
                     >
                       <NextLink
                         href={`/${x.network.slugName}/supertokens/${token.id}`}
@@ -217,7 +218,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                 >
                   <ListItemButton>
                     <ListItemText
-                      data-cy={"address-book-entry"}
+                      data-cy={'address-book-entry'}
                       primary={
                         <AccountAddress
                           network={networksByChainId.get(entry.chainId)!}
@@ -233,7 +234,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
         ) : null}
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default SearchDialog;
+export default SearchDialog

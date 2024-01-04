@@ -1,5 +1,10 @@
-import {EndpointBuilder} from '@reduxjs/toolkit/dist/query/endpointDefinitions';
-import { CacheTagType, SubgraphBaseQuery } from '@superfluid-finance/sdk-redux';
-import { GdaSubgraphReducerPath } from './subgraphReducerPath';
+import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { CacheTagType, SubgraphBaseQuery } from '@superfluid-finance/sdk-redux'
 
-export type GdaSubgraphEndpointBuilder = EndpointBuilder<SubgraphBaseQuery, CacheTagType, GdaSubgraphReducerPath>;
+import { GdaSubgraphReducerPath } from './subgraphReducerPath'
+
+export type GdaSubgraphEndpointBuilder = EndpointBuilder<
+  SubgraphBaseQuery,
+  CacheTagType,
+  GdaSubgraphReducerPath
+>

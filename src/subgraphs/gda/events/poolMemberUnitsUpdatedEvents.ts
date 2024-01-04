@@ -1,10 +1,8 @@
-import { PoolMemberUnitsUpdatedEvent } from "../events";
-
 import {
   RelevantAddressesIntermediate,
   SubgraphListQuery,
   SubgraphQueryHandler,
-} from "@superfluid-finance/sdk-core";
+} from '@superfluid-finance/sdk-core'
 
 import {
   MemberUnitsUpdatedEvent,
@@ -15,12 +13,13 @@ import {
   PoolMemberUnitsUpdatedEventsDocument,
   PoolMemberUnitsUpdatedEventsQuery,
   PoolMemberUnitsUpdatedEventsQueryVariables,
-} from "../.graphclient";
+} from '../.graphclient'
+import { PoolMemberUnitsUpdatedEvent } from '../events'
 
 export type PoolMemberUnitsUpdatedEventListQuery = SubgraphListQuery<
   MemberUnitsUpdatedEvent_Filter,
   MemberUnitsUpdatedEvent_OrderBy
->;
+>
 
 export class PoolMemberUnitsUpdatedEventQueryHandler extends SubgraphQueryHandler<
   PoolMemberUnitsUpdatedEvent,
@@ -29,12 +28,12 @@ export class PoolMemberUnitsUpdatedEventQueryHandler extends SubgraphQueryHandle
   PoolMemberUnitsUpdatedEventsQueryVariables
 > {
   getAddressFieldKeysFromFilter = (): {
-    accountKeys: (keyof MemberUnitsUpdatedEvent_Filter)[];
-    tokenKeys: (keyof MemberUnitsUpdatedEvent_Filter)[];
+    accountKeys: (keyof MemberUnitsUpdatedEvent_Filter)[]
+    tokenKeys: (keyof MemberUnitsUpdatedEvent_Filter)[]
   } => ({
-    accountKeys: ["poolMember", "pool"],
-    tokenKeys: ["token"],
-  });
+    accountKeys: ['poolMember', 'pool'],
+    tokenKeys: ['token'],
+  })
 
   getRelevantAddressesFromResultCore(
     result: PoolMemberUnitsUpdatedEvent
@@ -42,7 +41,7 @@ export class PoolMemberUnitsUpdatedEventQueryHandler extends SubgraphQueryHandle
     return {
       accounts: [result.poolMember, result.pool],
       tokens: [result.token],
-    };
+    }
   }
 
   mapFromSubgraphResponse(
@@ -50,29 +49,29 @@ export class PoolMemberUnitsUpdatedEventQueryHandler extends SubgraphQueryHandle
   ): PoolMemberUnitsUpdatedEvent[] {
     return mapGetAllEventsQueryEvent(
       response.memberUnitsUpdatedEvents
-    ) as PoolMemberUnitsUpdatedEvent[];
+    ) as PoolMemberUnitsUpdatedEvent[]
   }
-  requestDocument = PoolMemberUnitsUpdatedEventsDocument;
+  requestDocument = PoolMemberUnitsUpdatedEventsDocument
 }
 function mapGetAllEventsQueryEvent(
   memberUnitsUpdatedEvents: Array<
-    { __typename: "MemberUnitsUpdatedEvent" } & Pick<
+    { __typename: 'MemberUnitsUpdatedEvent' } & Pick<
       MemberUnitsUpdatedEvent,
-      | "id"
-      | "units"
-      | "token"
-      | "timestamp"
-      | "blockNumber"
-      | "transactionHash"
-      | "gasPrice"
-      | "order"
-      | "logIndex"
-    > & { poolMember: Pick<PoolMember, "id">; pool: Pick<Pool, "id"> }
+      | 'id'
+      | 'units'
+      | 'token'
+      | 'timestamp'
+      | 'blockNumber'
+      | 'transactionHash'
+      | 'gasPrice'
+      | 'order'
+      | 'logIndex'
+    > & { poolMember: Pick<PoolMember, 'id'>; pool: Pick<Pool, 'id'> }
   >
 ): PoolMemberUnitsUpdatedEvent[] {
   return memberUnitsUpdatedEvents.map((memberUnitEvent) => {
     return {
-      name: "MemberUnitsUpdated",
+      name: 'MemberUnitsUpdated',
       id: memberUnitEvent.id,
       blockNumber: Number(memberUnitEvent.blockNumber),
       order: Number(memberUnitEvent.order),
@@ -84,6 +83,6 @@ function mapGetAllEventsQueryEvent(
       pool: memberUnitEvent.pool.id,
       poolMember: memberUnitEvent.poolMember.id,
       units: memberUnitEvent.units,
-    } as PoolMemberUnitsUpdatedEvent;
-  });
+    } as PoolMemberUnitsUpdatedEvent
+  })
 }

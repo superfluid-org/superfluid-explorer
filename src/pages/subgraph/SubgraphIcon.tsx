@@ -1,5 +1,5 @@
-import { SvgIcon, SvgIconProps } from "@mui/material";
-import { FC } from "react";
+import { SvgIcon, SvgIconProps } from '@mui/material'
+import { FC } from 'react'
 
 export const SubgraphIcon: FC<SvgIconProps> = (props) => (
   <SvgIcon
@@ -14,6 +14,6 @@ export const SubgraphIcon: FC<SvgIconProps> = (props) => (
       fill="currentColor"
     />
   </SvgIcon>
-);
+)
 
-export default SubgraphIcon;
+export default SubgraphIcon

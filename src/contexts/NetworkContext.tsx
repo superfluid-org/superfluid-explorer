@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
-import { Network } from "../redux/networks";
+import React, { useContext } from 'react'
 
-export const NetworkContext = React.createContext<Network>(null!);
+import { Network } from '../redux/networks'
 
-export const useNetworkContext = () => useContext(NetworkContext);
+export const NetworkContext = React.createContext<Network>(null!)
+
+export const useNetworkContext = () => useContext(NetworkContext)

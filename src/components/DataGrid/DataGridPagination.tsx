@@ -1,4 +1,4 @@
-import { Pagination } from "@mui/material";
+import { Pagination } from '@mui/material'
 
 function DataGridPagination(
   count: number,
@@ -12,7 +12,7 @@ function DataGridPagination(
       page={page}
       onChange={(event, value) => setPage(value)}
     />
-  );
+  )
 }
 
-export default DataGridPagination;
+export default DataGridPagination

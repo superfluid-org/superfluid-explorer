@@ -1,3 +1,4 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import {
   Box,
   Breadcrumbs,
@@ -12,48 +13,47 @@ import {
   Stack,
   Tooltip,
   Typography,
-} from "@mui/material";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+} from '@mui/material'
 import {
   createSkipPaging,
   Ordering,
   SkipPaging,
-} from "@superfluid-finance/sdk-core";
-import { gql } from "graphql-request";
-import { NextPage } from "next";
-import Error from "next/error";
-import { FC, useContext, useState } from "react";
-import AccountAddress from "../../../components/Address/AccountAddress";
-import AppLink from "../../../components/AppLink/AppLink";
-import BalanceWithToken from "../../../components/Amount/BalanceWithToken";
-import CopyLink from "../../../components/Copy/CopyLink";
-import InfoTooltipBtn from "../../../components/Info/InfoTooltipBtn";
-import SkeletonAddress from "../../../components/Skeleton/SkeletonAddress";
-import SubgraphQueryLink from "../../subgraph/SubgraphQueryLink";
-import SuperTokenAddress from "../../../components/Address/SuperTokenAddress";
-import TimeAgo from "../../../components/TimeAgo/TimeAgo";
-import IdContext from "../../../contexts/IdContext";
-import { useNetworkContext } from "../../../contexts/NetworkContext";
-import { Network } from "../../../redux/networks";
-import { sfGdaSubgraph } from "../../../redux/store";
-import { Pool } from "../../../subgraphs/gda/entities/pool/pool";
-import PoolMemberDataGrid from "../pool-members/PoolMemberDataGrid";
+} from '@superfluid-finance/sdk-core'
+import { gql } from 'graphql-request'
+import { NextPage } from 'next'
+import Error from 'next/error'
+import { FC, useContext, useState } from 'react'
+
+import AccountAddress from '../../../components/Address/AccountAddress'
+import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
+import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import AppLink from '../../../components/AppLink/AppLink'
+import CopyLink from '../../../components/Copy/CopyLink'
+import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import SkeletonAddress from '../../../components/Skeleton/SkeletonAddress'
+import TimeAgo from '../../../components/TimeAgo/TimeAgo'
+import IdContext from '../../../contexts/IdContext'
+import { useNetworkContext } from '../../../contexts/NetworkContext'
+import { Network } from '../../../redux/networks'
+import { sfGdaSubgraph } from '../../../redux/store'
 import {
   FlowDistributionUpdatedEvent_OrderBy,
   InstantDistributionUpdatedEvent_OrderBy,
   PoolMember_OrderBy,
-} from "../../../subgraphs/gda/.graphclient";
-import InstantDistributionUpdatedEventDataGrid from "./InstantDistributionUpdatedEventDataGrid";
-import FlowDistributionUpdatedEventDataGrid from "./FlowDistributionUpdatedEventDataGrid";
+} from '../../../subgraphs/gda/.graphclient'
+import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
+import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
+import PoolMemberDataGrid from '../pool-members/PoolMemberDataGrid'
+import FlowDistributionUpdatedEventDataGrid from './FlowDistributionUpdatedEventDataGrid'
 
 const PoolPage: NextPage = () => {
-  const network = useNetworkContext();
-  const id = useContext(IdContext);
+  const network = useNetworkContext()
+  const id = useContext(IdContext)
 
-  return <PoolPageContent id={id} network={network} />;
-};
+  return <PoolPageContent id={id} network={network} />
+}
 
-export default PoolPage;
+export default PoolPage
 
 export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   id: id,
@@ -62,9 +62,9 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   const poolQuery = sfGdaSubgraph.usePoolQuery({
     chainId: network.chainId,
     id: id,
-  });
+  })
 
-  const pool: Pool | null | undefined = poolQuery.data;
+  const pool: Pool | null | undefined = poolQuery.data
 
   const [
     instantDistributionUpdatedEventPaging,
@@ -73,23 +73,23 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
     createSkipPaging({
       take: 10,
     })
-  );
+  )
 
   const [
     instantDistributionUpdatedEventOrdering,
     setInstantDistributionUpdatedEventOrdering,
   ] = useState<Ordering<InstantDistributionUpdatedEvent_OrderBy> | undefined>({
-    orderBy: "timestamp",
-    orderDirection: "desc",
-  });
+    orderBy: 'timestamp',
+    orderDirection: 'desc',
+  })
 
   const [
     flowDistributionUpdatedEventOrdering,
     setFlowDistributionUpdatedEventOrdering,
   ] = useState<Ordering<FlowDistributionUpdatedEvent_OrderBy> | undefined>({
-    orderBy: "timestamp",
-    orderDirection: "desc",
-  });
+    orderBy: 'timestamp',
+    orderDirection: 'desc',
+  })
 
   const [
     flowDistributionUpdatedEventPaging,
@@ -98,7 +98,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
     createSkipPaging({
       take: 10,
     })
-  );
+  )
 
   const instantDistributionUpdatedEventQuery =
     sfGdaSubgraph.useInstantDistributionUpdatedEventsQuery({
@@ -108,7 +108,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
       },
       pagination: instantDistributionUpdatedEventPaging,
       order: instantDistributionUpdatedEventOrdering,
-    });
+    })
 
   const flowDistributionUpdatedEventQuery =
     sfGdaSubgraph.useFlowDistributionUpdatedEventsQuery({
@@ -118,16 +118,16 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
       },
       pagination: flowDistributionUpdatedEventPaging,
       order: flowDistributionUpdatedEventOrdering,
-    });
+    })
 
   const [poolMemberPaging, setPoolMemberPaging] = useState<SkipPaging>(
     createSkipPaging({
       take: 10,
     })
-  );
+  )
   const [poolMemberPagingOrdering, setPoolMemberOrdering] = useState<
     Ordering<PoolMember_OrderBy> | undefined
-  >();
+  >()
   const poolMemberEventQuery = sfGdaSubgraph.usePoolMembersQuery({
     chainId: network.chainId,
     filter: {
@@ -135,15 +135,15 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
     },
     pagination: poolMemberPaging,
     order: poolMemberPagingOrdering,
-  });
+  })
 
   if (!poolQuery.isUninitialized && !poolQuery.isLoading && !poolQuery.data) {
-    return <Error statusCode={404} />;
+    return <Error statusCode={404} />
   }
 
   return (
     <Container
-      data-cy={"pool-page-container"}
+      data-cy={'pool-page-container'}
       component={Box}
       sx={{ my: 2, py: 2 }}
     >
@@ -151,8 +151,8 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         <Breadcrumbs aria-label="breadcrumb">
           <Typography color="text.secondary">{network.displayName}</Typography>
           <Typography color="text.secondary">Pools</Typography>
-          <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
-            {id.substring(0, 6) + "..."}
+          <Typography color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
+            {id.substring(0, 6) + '...'}
           </Typography>
         </Breadcrumbs>
         <CopyLink localPath={`/${network.slugName}/pools/${id}`} />
@@ -201,7 +201,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
       <Grid container spacing={3} sx={{ pt: 3 }}>
         <Grid item md={6} sm={12}>
           <Card elevation={2}>
-            <List data-cy={"pool-general-info"}>
+            <List data-cy={'pool-general-info'}>
               <ListItem divider>
                 <ListItemText
                   secondary="Token"
@@ -223,12 +223,12 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                     <>
                       Pool Admin
                       <InfoTooltipBtn
-                        dataCy={"admin-tooltip"}
+                        dataCy={'admin-tooltip'}
                         title={
                           <>
                             The creator of an pool using the GDA - admins may
                             update the pool of members and distribute funds to
-                            members.{" "}
+                            members.{' '}
                             <AppLink
                               data-cy="admin-tooltip-link"
                               href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
@@ -244,7 +244,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                   primary={
                     pool ? (
                       <AccountAddress
-                        dataCy={"account-address"}
+                        dataCy={'account-address'}
                         network={network}
                         address={pool.admin}
                       />
@@ -254,18 +254,18 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                   }
                 />
               </ListItem>
-              <ListItem data-cy={"pool-id"} divider>
+              <ListItem data-cy={'pool-id'} divider>
                 <ListItemText
                   secondary={
                     <>
                       Pool Address
                       <InfoTooltipBtn
-                        dataCy={"pool-id-tooltip"}
+                        dataCy={'pool-id-tooltip'}
                         title={
                           <>
                             The ID which is associated with each pool in the
                             General distribution agreement - this address is
-                            created when a admin creates an pool.{" "}
+                            created when a admin creates an pool.{' '}
                             <AppLink
                               data-cy="pool-id-tooltip-link"
                               href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
@@ -278,7 +278,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                       />
                     </>
                   }
-                  primary={pool ? pool.id : <Skeleton sx={{ width: "20px" }} />}
+                  primary={pool ? pool.id : <Skeleton sx={{ width: '20px' }} />}
                 />
               </ListItem>
               <Grid container>
@@ -291,7 +291,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                         pool ? (
                           <TimeAgo subgraphTime={pool.updatedAtTimestamp} />
                         ) : (
-                          <Skeleton sx={{ width: "80px" }} />
+                          <Skeleton sx={{ width: '80px' }} />
                         )
                       }
                     />
@@ -306,7 +306,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                         pool ? (
                           <TimeAgo subgraphTime={pool.createdAtTimestamp} />
                         ) : (
-                          <Skeleton sx={{ width: "80px" }} />
+                          <Skeleton sx={{ width: '80px' }} />
                         )
                       }
                     />
@@ -319,19 +319,19 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         <Grid item md={6} sm={12}>
           <Card elevation={2}>
             <List>
-              <ListItem data-cy={"total-units"} divider>
+              <ListItem data-cy={'total-units'} divider>
                 <ListItemText
                   secondary={
                     <>
                       Total Units
                       <InfoTooltipBtn
-                        dataCy={"total-units-tooltip"}
+                        dataCy={'total-units-tooltip'}
                         title="The sum of total pending and approved units issued to subscribers."
                       />
                     </>
                   }
                   primary={
-                    pool ? pool.totalUnits : <Skeleton sx={{ width: "75px" }} />
+                    pool ? pool.totalUnits : <Skeleton sx={{ width: '75px' }} />
                   }
                 />
               </ListItem>
@@ -344,7 +344,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                         <>
                           Total Connected Units
                           <InfoTooltipBtn
-                            dataCy={"total-connected-units-tooltip"}
+                            dataCy={'total-connected-units-tooltip'}
                             title="Units that have claimed all past distributions and will automatically claim all future distributions."
                           />
                         </>
@@ -353,7 +353,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                         pool ? (
                           pool.totalConnectedUnits
                         ) : (
-                          <Skeleton sx={{ width: "75px" }} />
+                          <Skeleton sx={{ width: '75px' }} />
                         )
                       }
                     />
@@ -367,7 +367,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                         <>
                           Total Disconnected Units
                           <InfoTooltipBtn
-                            dataCy={"total-disconnected-units-tooltip"}
+                            dataCy={'total-disconnected-units-tooltip'}
                             title="Units that have not claimed their distribution yet."
                           />
                         </>
@@ -376,14 +376,14 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                         pool ? (
                           pool.totalDisconnectedUnits
                         ) : (
-                          <Skeleton sx={{ width: "75px" }} />
+                          <Skeleton sx={{ width: '75px' }} />
                         )
                       }
                     />
                   </ListItem>
                 </Grid>
               </Grid>
-              <ListItem divider data-cy={"total-amount-distributed"}>
+              <ListItem divider data-cy={'total-amount-distributed'}>
                 <ListItemText
                   secondary="Total Amount Distributed"
                   primary={
@@ -394,7 +394,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                         tokenAddress={pool.token}
                       />
                     ) : (
-                      <Skeleton sx={{ width: "75px" }} />
+                      <Skeleton sx={{ width: '75px' }} />
                     )
                   }
                 />
@@ -404,7 +404,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 <Grid item xs={6}>
                   <ListItem>
                     <ListItemText
-                      data-cy={"total-flow-distributed"}
+                      data-cy={'total-flow-distributed'}
                       secondary="Total Flow Distributed"
                       primary={
                         pool ? (
@@ -416,7 +416,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                             tokenAddress={pool.token}
                           />
                         ) : (
-                          <Skeleton sx={{ width: "75px" }} />
+                          <Skeleton sx={{ width: '75px' }} />
                         )
                       }
                     />
@@ -425,7 +425,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 <Grid item xs={6}>
                   <ListItem>
                     <ListItemText
-                      data-cy={"total-instantly-distributed"}
+                      data-cy={'total-instantly-distributed'}
                       secondary="Total Instant Distributed"
                       primary={
                         pool ? (
@@ -437,7 +437,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                             tokenAddress={pool.token}
                           />
                         ) : (
-                          <Skeleton sx={{ width: "75px" }} />
+                          <Skeleton sx={{ width: '75px' }} />
                         )
                       }
                     />
@@ -449,18 +449,18 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         </Grid>
       </Grid>
 
-      <Box data-cy={"flow-distributions-grid"} sx={{ mt: 3 }}>
+      <Box data-cy={'flow-distributions-grid'} sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Flow Distributions
           <InfoTooltipBtn
-            dataCy={"flows-tooltip"}
+            dataCy={'flows-tooltip'}
             size={22}
             title={
               <>
                 An event in which super tokens are flow to the entire pool of
-                members for a given pool using the Superfluid GDA.{" "}
+                members for a given pool using the Superfluid GDA.{' '}
                 <AppLink
-                  data-cy={"flows-tooltip-link"}
+                  data-cy={'flows-tooltip-link'}
                   href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon#gda-examples-by-illustration"
                   target="_blank"
                 >
@@ -519,15 +519,15 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Pool Member
           <InfoTooltipBtn
-            dataCy={"pool-members-tooltip"}
+            dataCy={'pool-members-tooltip'}
             size={22}
             title={
               <>
                 Accounts that have received units within the Pool. Subscribers
                 will receive distributed funds based on the portion of units
-                they own in and pool.{" "}
+                they own in and pool.{' '}
                 <AppLink
-                  data-cy={"pool-members-tooltip-link"}
+                  data-cy={'pool-members-tooltip-link'}
                   href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
                   target="_blank"
                 >
@@ -548,5 +548,5 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         </Card>
       </Box>
     </Container>
-  );
-};
+  )
+}

@@ -4,30 +4,30 @@
       "address": "0xC19bE11B5f9eAC59758f4dbaAaD465Abb9103A95",
       "pools": [
         {
-        "id": "poolMember-0x66cbb466d797c5d657269f1aaee4c2f83b854ac1-0xc19be11b5f9eac59758f4dbaaad465abb9103a95",
-        "createdAtTimestamp": "1699525464",
-        "createdAtBlockNumber": "10012828",
-        "updatedAtTimestamp": "1699525464",
-        "updatedAtBlockNumber": "10012828",
-        "units": "1000000000000",
-        "pool": {
-          "id": "0x66cbb466d797c5d657269f1aaee4c2f83b854ac1",
-          "totalUnits": "1000000000000",
-          "flowRate": "0",
-          "token": {
-            "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
-            "symbol": "fDAIx"
+          "id": "poolMember-0x66cbb466d797c5d657269f1aaee4c2f83b854ac1-0xc19be11b5f9eac59758f4dbaaad465abb9103a95",
+          "createdAtTimestamp": "1699525464",
+          "createdAtBlockNumber": "10012828",
+          "updatedAtTimestamp": "1699525464",
+          "updatedAtBlockNumber": "10012828",
+          "units": "1000000000000",
+          "pool": {
+            "id": "0x66cbb466d797c5d657269f1aaee4c2f83b854ac1",
+            "totalUnits": "1000000000000",
+            "flowRate": "0",
+            "token": {
+              "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
+              "symbol": "fDAIx"
+            },
+            "admin": {
+              "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
+            }
           },
-          "admin": {
-            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
-          }
-        },
-        "account": {
-          "id": "0xc19be11b5f9eac59758f4dbaaad465abb9103a95"
-        },
-        "isConnected": true,
-        "totalAmountClaimed": "0"
-      }
+          "account": {
+            "id": "0xc19be11b5f9eac59758f4dbaaad465abb9103a95"
+          },
+          "isConnected": true,
+          "totalAmountClaimed": "0"
+        }
       ]
     },
     "gdaAdminAccount": {

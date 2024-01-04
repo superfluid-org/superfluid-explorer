@@ -1,13 +1,12 @@
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import { SxProps, Tooltip, TooltipProps } from "@mui/material";
-import { FC } from "react";
-import AccountAddress from "../Address/AccountAddress";
-import SkeletonAddress from "../Skeleton/SkeletonAddress";
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
+import { SxProps, Tooltip } from '@mui/material'
+import { FC } from 'react'
+
 
 interface InfoTooltipBtnProps {
-  title: NonNullable<React.ReactNode>;
-  size?: number | string;
-  iconSx?: SxProps;
+  title: NonNullable<React.ReactNode>
+  size?: number | string
+  iconSx?: SxProps
   dataCy?: string
 }
 
@@ -23,11 +22,11 @@ const InfoTooltipBtn: FC<InfoTooltipBtnProps> = ({
         fontSize: size || 16,
         ml: 1,
         mb: 0.25,
-        verticalAlign: "middle",
+        verticalAlign: 'middle',
         ...iconSx,
       }}
     />
   </Tooltip>
-);
+)
 
-export default InfoTooltipBtn;
+export default InfoTooltipBtn

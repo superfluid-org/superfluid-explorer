@@ -5,7 +5,6 @@ on:
     types: [opened, reopened, ready_for_review, synchronize]
 
 jobs:
-
   test-suites:
     timeout-minutes: 60
     if: ${{ !github.event.pull_request.draft }}
@@ -16,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [ chrome , firefox ]
+        browser: [chrome, firefox]
 
     steps:
       - uses: actions/checkout@v2

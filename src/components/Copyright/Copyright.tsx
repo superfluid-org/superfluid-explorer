@@ -1,7 +1,7 @@
-import * as React from 'react';
-import Typography from '@mui/material/Typography';
-import MuiLink from '@mui/material/Link';
-import Box from "@mui/material/Box";
+import Box from '@mui/material/Box'
+import MuiLink from '@mui/material/Link'
+import Typography from '@mui/material/Typography'
+import * as React from 'react'
 
 export default function Copyright() {
   return (
@@ -14,10 +14,15 @@ export default function Copyright() {
         alignItems: 'center',
       }}
     >
-      <Typography sx={{
-        position: "absolute",
-        bottom: 0
-      }} variant="body2" color="text.secondary" align="center">
+      <Typography
+        sx={{
+          position: 'absolute',
+          bottom: 0,
+        }}
+        variant="body2"
+        color="text.secondary"
+        align="center"
+      >
         {'Copyright © '}
         <MuiLink color="inherit" href="https://superfluid.finance/">
           Superfluid Finance
@@ -25,5 +30,5 @@ export default function Copyright() {
         {new Date().getFullYear()}.
       </Typography>
     </Box>
-  );
+  )
 }

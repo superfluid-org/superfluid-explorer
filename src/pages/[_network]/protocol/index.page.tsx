@@ -1,4 +1,4 @@
-import { TabContext, TabPanel } from "@mui/lab";
+import { TabContext, TabPanel } from '@mui/lab'
 import {
   Box,
   Card,
@@ -9,25 +9,26 @@ import {
   ListItemText,
   Skeleton,
   Typography,
-} from "@mui/material";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import InfoTooltipBtn from "../../../components/Info/InfoTooltipBtn";
-import NetworkTabs from "../../../components/NetworkTabs/NetworkTabs";
-import { useNetworkContext } from "../../../contexts/NetworkContext";
-import { networks } from "../../../redux/networks";
-import protocolContracts from "../../../redux/protocolContracts";
-import { rpcApi } from "../../../redux/store";
-import { pseudoAddressToVersionString } from "../../../utils/versionUtils";
-import { AddressListItem } from "../AddressListItem";
+} from '@mui/material'
+import { NextPage } from 'next'
+import { useRouter } from 'next/router'
+
+import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import NetworkTabs from '../../../components/NetworkTabs/NetworkTabs'
+import { useNetworkContext } from '../../../contexts/NetworkContext'
+import { networks } from '../../../redux/networks'
+import protocolContracts from '../../../redux/protocolContracts'
+import { rpcApi } from '../../../redux/store'
+import { pseudoAddressToVersionString } from '../../../utils/versionUtils'
+import { AddressListItem } from '../AddressListItem'
 
 const Protocol: NextPage = () => {
-  const network = useNetworkContext();
-  const router = useRouter();
+  const network = useNetworkContext()
+  const router = useRouter()
 
   const protocolVersionResponse = rpcApi.useProtocolVersionQuery({
     chainId: network.chainId,
-  });
+  })
 
   const onTabChange = (newValue: string) =>
     router.replace({
@@ -35,7 +36,7 @@ const Protocol: NextPage = () => {
         ...router.query,
         _network: newValue,
       },
-    });
+    })
 
   const {
     resolver,
@@ -50,7 +51,7 @@ const Protocol: NextPage = () => {
     flowScheduler,
     vestingScheduler,
     existentialNFTCloneFactory,
-  } = protocolContracts[network.slugName] || {};
+  } = protocolContracts[network.slugName] || {}
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
@@ -88,12 +89,12 @@ const Protocol: NextPage = () => {
                 </Typography>
                 <Box
                   sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(3, 1fr)",
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, 1fr)',
                   }}
                 >
                   <ListItemText
-                    data-cy={"deposit"}
+                    data-cy={'deposit'}
                     primary={`${network.isTestnet ? 1 : 4} hour flowrate`}
                     secondary={
                       <>
@@ -103,7 +104,7 @@ const Protocol: NextPage = () => {
                     }
                   />
                   <ListItemText
-                    data-cy={"owed-deposit"}
+                    data-cy={'owed-deposit'}
                     primary={`${network.isTestnet ? 1 : 4} hour flowrate`}
                     secondary={
                       <>
@@ -113,7 +114,7 @@ const Protocol: NextPage = () => {
                     }
                   />
                   <ListItemText
-                    data-cy={"patrician-period"}
+                    data-cy={'patrician-period'}
                     primary={`${network.isTestnet ? 12 : 30} minutes`}
                     secondary={
                       <>
@@ -131,12 +132,12 @@ const Protocol: NextPage = () => {
                 </Typography>
                 <Box
                   sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(3, 1fr)",
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, 1fr)',
                   }}
                 >
                   <ListItemText
-                    data-cy={"toga-min-exit-period"}
+                    data-cy={'toga-min-exit-period'}
                     primary="1 week"
                     secondary={
                       <>
@@ -146,7 +147,7 @@ const Protocol: NextPage = () => {
                     }
                   />
                   <ListItemText
-                    data-cy={"toga-default-exit-period"}
+                    data-cy={'toga-default-exit-period'}
                     primary="4 weeks"
                     secondary={
                       <>
@@ -174,79 +175,79 @@ const Protocol: NextPage = () => {
             <Card>
               <List
                 sx={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
                   pb: 2,
                 }}
               >
                 <AddressListItem
-                  dataCy={"resolver-address"}
+                  dataCy={'resolver-address'}
                   title="Resolver"
                   network={network}
                   address={resolver}
                 />
                 <AddressListItem
-                  dataCy={"host-address"}
+                  dataCy={'host-address'}
                   title="Host"
                   network={network}
                   address={host}
                 />
                 <AddressListItem
-                  dataCy={"CFAv1-address"}
+                  dataCy={'CFAv1-address'}
                   title="CFAv1"
                   network={network}
                   address={CFAv1}
                 />
                 <AddressListItem
-                  dataCy={"IDAv1-address"}
+                  dataCy={'IDAv1-address'}
                   title="IDAv1"
                   network={network}
                   address={IDAv1}
                 />
                 <AddressListItem
-                  dataCy={"GDAv1-address"}
+                  dataCy={'GDAv1-address'}
                   title="GDAv1"
                   network={network}
                   address={GDAv1}
                 />
                 <AddressListItem
-                  dataCy={"SuperTokenFactory-address"}
+                  dataCy={'SuperTokenFactory-address'}
                   title="SuperTokenFactory"
                   network={network}
                   address={superTokenFactory}
                 />
                 <AddressListItem
-                  dataCy={"SuperLoaderV1-address"}
+                  dataCy={'SuperLoaderV1-address'}
                   title="SuperfluidLoader v1"
                   network={network}
                   address={superfluidLoader}
                 />
                 <AddressListItem
-                  dataCy={"TOGA-address"}
+                  dataCy={'TOGA-address'}
                   title="TOGA"
                   network={network}
                   address={TOGA}
                 />
                 <AddressListItem
-                  dataCy={"BatchLiquidator-address"}
+                  dataCy={'BatchLiquidator-address'}
                   title="BatchLiquidator"
                   network={network}
                   address={batchLiquidator}
                 />
                 <AddressListItem
-                  dataCy={"VestingScheduler-address"}
+                  dataCy={'VestingScheduler-address'}
                   title="VestingScheduler"
                   network={network}
                   address={vestingScheduler}
                 />
                 <AddressListItem
-                  dataCy={"FlowScheduler-address"}
+                  dataCy={'FlowScheduler-address'}
                   title="FlowScheduler"
                   network={network}
                   address={flowScheduler}
                 />
                 <AddressListItem
-                  dataCy={"ExistentialNFTCloneFactory-address"}
+                  dataCy={'ExistentialNFTCloneFactory-address'}
                   title="ExistentialNFTCloneFactory"
                   network={network}
                   address={existentialNFTCloneFactory}
@@ -267,7 +268,7 @@ const Protocol: NextPage = () => {
             <Card>
               <CardContent>
                 <ListItemText
-                  data-cy={"protocol-contracts"}
+                  data-cy={'protocol-contracts'}
                   primary="Protocol Contracts"
                   secondary={
                     <>
@@ -276,7 +277,7 @@ const Protocol: NextPage = () => {
                           protocolVersionResponse.data
                         )
                       ) : (
-                        <Skeleton sx={{ width: "200px" }} />
+                        <Skeleton sx={{ width: '200px' }} />
                       )}
                       <InfoTooltipBtn title="The version format is {major}.{minor}.{patch}-{gitRevision}." />
                     </>
@@ -288,7 +289,7 @@ const Protocol: NextPage = () => {
         ))}
       </TabContext>
     </Container>
-  );
-};
+  )
+}
 
-export default Protocol;
+export default Protocol

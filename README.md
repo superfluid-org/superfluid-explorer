@@ -23,6 +23,7 @@ user accounts instantaneously as a result.
 Superfluid Console is an explorer meant for developers and advanced users of the Superfluid Protocol.
 
 ## How to use
+
 To install packages and start development server, run:
 
 ```sh
@@ -32,12 +33,12 @@ yarn run dev
 
 ## Technologies
 
-* TypeScript
-* React
-* Next.js
-* MUI (formerly Material-UI)
-* Redux
-* SDK-redux by Superfluid Finance
+- TypeScript
+- React
+- Next.js
+- MUI (formerly Material-UI)
+- Redux
+- SDK-redux by Superfluid Finance
 
 ## Deployment
 

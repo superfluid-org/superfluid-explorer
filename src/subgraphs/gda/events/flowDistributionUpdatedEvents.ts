@@ -1,26 +1,25 @@
-import { FlowDistributionUpdatedEvent as PoolFlowDistributionUpdatedEvent } from "../events";
-
 import {
   RelevantAddressesIntermediate,
   SubgraphListQuery,
   SubgraphQueryHandler,
-} from "@superfluid-finance/sdk-core";
+} from '@superfluid-finance/sdk-core'
 
 import {
- FlowDistributionUpdatedEvent,
+  FlowDistributionUpdatedEvent,
   FlowDistributionUpdatedEvent_Filter,
   FlowDistributionUpdatedEvent_OrderBy,
-  Pool,
   FlowDistributionUpdatedEventsDocument,
   FlowDistributionUpdatedEventsQuery,
   FlowDistributionUpdatedEventsQueryVariables,
+  Pool,
   PoolDistributor,
-} from "../.graphclient";
+} from '../.graphclient'
+import { FlowDistributionUpdatedEvent as PoolFlowDistributionUpdatedEvent } from '../events'
 
 export type FlowDistributionUpdatedEventListQuery = SubgraphListQuery<
   FlowDistributionUpdatedEvent_Filter,
   FlowDistributionUpdatedEvent_OrderBy
->;
+>
 
 export class FlowDistributionUpdatedEventQueryHandler extends SubgraphQueryHandler<
   PoolFlowDistributionUpdatedEvent,
@@ -29,12 +28,12 @@ export class FlowDistributionUpdatedEventQueryHandler extends SubgraphQueryHandl
   FlowDistributionUpdatedEventsQueryVariables
 > {
   getAddressFieldKeysFromFilter = (): {
-    accountKeys: (keyof FlowDistributionUpdatedEvent_Filter)[];
-    tokenKeys: (keyof FlowDistributionUpdatedEvent_Filter)[];
+    accountKeys: (keyof FlowDistributionUpdatedEvent_Filter)[]
+    tokenKeys: (keyof FlowDistributionUpdatedEvent_Filter)[]
   } => ({
-    accountKeys: ["operator", "pool"],
-    tokenKeys: ["token"],
-  });
+    accountKeys: ['operator', 'pool'],
+    tokenKeys: ['token'],
+  })
 
   getRelevantAddressesFromResultCore(
     result: PoolFlowDistributionUpdatedEvent
@@ -42,7 +41,7 @@ export class FlowDistributionUpdatedEventQueryHandler extends SubgraphQueryHandl
     return {
       accounts: [result.operator, result.pool],
       tokens: [result.token],
-    };
+    }
   }
 
   mapFromSubgraphResponse(
@@ -50,34 +49,37 @@ export class FlowDistributionUpdatedEventQueryHandler extends SubgraphQueryHandl
   ): PoolFlowDistributionUpdatedEvent[] {
     return mapGetAllEventsQueryEvent(
       response.flowDistributionUpdatedEvents
-    ) as PoolFlowDistributionUpdatedEvent[];
+    ) as PoolFlowDistributionUpdatedEvent[]
   }
-  requestDocument = FlowDistributionUpdatedEventsDocument;
+  requestDocument = FlowDistributionUpdatedEventsDocument
 }
 function mapGetAllEventsQueryEvent(
   flowDistributionUpdatedEvents: Array<
-    { __typename: "FlowDistributionUpdatedEvent" } & Pick<
+    { __typename: 'FlowDistributionUpdatedEvent' } & Pick<
       FlowDistributionUpdatedEvent,
-      | "id"
-      | "adjustmentFlowRate"
-      | "adjustmentFlowRecipient"
-      | "newDistributorToPoolFlowRate"
-      | "oldFlowRate"
-      | "newTotalDistributionFlowRate"
-      | "operator"
-      | "token"
-      | "blockNumber"
-      | "transactionHash"
-      | "gasPrice"
-      | "order"
-      | "timestamp"
-      | "logIndex"
-    > & { pool: Pick<Pool, "id">; poolDistributor: Pick<PoolDistributor, "id"> }
+      | 'id'
+      | 'adjustmentFlowRate'
+      | 'adjustmentFlowRecipient'
+      | 'newDistributorToPoolFlowRate'
+      | 'oldFlowRate'
+      | 'newTotalDistributionFlowRate'
+      | 'operator'
+      | 'token'
+      | 'blockNumber'
+      | 'transactionHash'
+      | 'gasPrice'
+      | 'order'
+      | 'timestamp'
+      | 'logIndex'
+    > & {
+        pool: Pick<Pool, 'id'>
+        poolDistributor: Pick<PoolDistributor, 'id'>
+      }
   >
 ): PoolFlowDistributionUpdatedEvent[] {
   return flowDistributionUpdatedEvents.map((e) => {
     return {
-      name: "FlowDistributionUpdated",
+      name: 'FlowDistributionUpdated',
       id: e.id,
       blockNumber: Number(e.blockNumber),
       transactionHash: e.transactionHash,
@@ -93,7 +95,7 @@ function mapGetAllEventsQueryEvent(
       adjustmentFlowRecipient: e.adjustmentFlowRecipient,
       poolDistributor: e.poolDistributor.id,
       token: e.token,
-      newTotalDistributionFlowRate: e.newTotalDistributionFlowRate
-    } as PoolFlowDistributionUpdatedEvent;
-  });
+      newTotalDistributionFlowRate: e.newTotalDistributionFlowRate,
+    } as PoolFlowDistributionUpdatedEvent
+  })
 }

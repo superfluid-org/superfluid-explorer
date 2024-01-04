@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from 'ethers'
 
 const calculateWeiAmountReceived = (
   publisherIndexValue: BigNumber,
@@ -8,13 +8,13 @@ const calculateWeiAmountReceived = (
 ) => {
   const publisherSubscriberDifference = publisherIndexValue
     .sub(subscriberIndexValueUntilUpdatedAt)
-    .mul(subscriberUnits);
+    .mul(subscriberUnits)
 
   const totalAmountReceived = subscriberTotalAmountReceivedUntilUpdatedAt.add(
     publisherSubscriberDifference
-  );
+  )
 
-  return totalAmountReceived;
-};
+  return totalAmountReceived
+}
 
-export default calculateWeiAmountReceived;
+export default calculateWeiAmountReceived

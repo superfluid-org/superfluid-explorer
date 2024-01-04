@@ -4,7 +4,6 @@ query getPool($id: ID!) {
   }
 }
 
-
 query pools(
   $first: Int = 10
   $orderBy: Pool_orderBy = id
@@ -25,33 +24,32 @@ query pools(
   }
 }
 
-
 fragment PoolPart on Pool {
+  id
+  createdAtTimestamp
+  createdAtBlockNumber
+  updatedAtTimestamp
+  updatedAtBlockNumber
+  flowRate
+  totalMembers
+  totalUnits
+  totalAmountDistributedUntilUpdatedAt
+  adjustmentFlowRate
+  totalAmountFlowedDistributedUntilUpdatedAt
+  totalAmountInstantlyDistributedUntilUpdatedAt
+  totalBuffer
+  totalConnectedMembers
+  totalConnectedUnits
+  totalDisconnectedMembers
+  totalDisconnectedUnits
+  admin {
     id
-    createdAtTimestamp
-    createdAtBlockNumber
-    updatedAtTimestamp
-    updatedAtBlockNumber
-    flowRate
-    totalMembers
-    totalUnits
-    totalAmountDistributedUntilUpdatedAt
-    adjustmentFlowRate
-    totalAmountFlowedDistributedUntilUpdatedAt
-    totalAmountInstantlyDistributedUntilUpdatedAt
-    totalBuffer
-    totalConnectedMembers
-    totalConnectedUnits
-    totalDisconnectedMembers
-    totalDisconnectedUnits
-    admin {
-      id
-    }
-    token {
-      id
-      symbol
-    }
-    poolCreatedEvent{
-      id
-    }
+  }
+  token {
+    id
+    symbol
+  }
+  poolCreatedEvent {
+    id
+  }
 }

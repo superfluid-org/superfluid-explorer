@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useEffect } from "react";
+import CloseIcon from '@mui/icons-material/Close'
 import {
   AppBar,
   Dialog,
@@ -7,34 +7,34 @@ import {
   Toolbar,
   useMediaQuery,
   useTheme,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import { useRouter } from "next/router";
+} from '@mui/material'
+import { useRouter } from 'next/router'
+import { FC, PropsWithChildren, useEffect } from 'react'
 
 const DetailsDialog: FC<
   PropsWithChildren<{
-    open: boolean;
-    handleClose: () => void;
+    open: boolean
+    handleClose: () => void
   }>
 > = ({ open, handleClose, children }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
     const handleRouteChange = () => {
-      handleClose();
-    };
+      handleClose()
+    }
 
-    router.events.on("routeChangeStart", handleRouteChange);
+    router.events.on('routeChangeStart', handleRouteChange)
 
     // If the component is unmounted, unsubscribe
     // from the event with the `off` method:
     return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, []);
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [])
 
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
     <Dialog
@@ -45,7 +45,7 @@ const DetailsDialog: FC<
       // TransitionComponent={Transition}
       PaperProps={{
         sx: {
-          bgcolor: "background.default",
+          bgcolor: 'background.default',
         },
       }}
       fullScreen={fullScreen}
@@ -53,7 +53,7 @@ const DetailsDialog: FC<
       maxWidth="lg"
       fullWidth={true}
     >
-      <AppBar sx={{ position: "relative" }}>
+      <AppBar sx={{ position: 'relative' }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -67,7 +67,7 @@ const DetailsDialog: FC<
       </AppBar>
       <DialogContent>{children}</DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default DetailsDialog;
+export default DetailsDialog

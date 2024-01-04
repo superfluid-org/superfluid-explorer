@@ -7,31 +7,31 @@ import {
   SubgraphGetQueryHandler,
   SubgraphListQuery,
   SubgraphListQueryHandler,
-} from "@superfluid-finance/sdk-core";
-
+} from '@superfluid-finance/sdk-core'
 import {
   createGeneralTags,
   getSubgraphClient,
   provideSpecificCacheTagsFromRelevantAddresses,
-} from "@superfluid-finance/sdk-redux";
-import { CacheTime } from "../cacheTime";
-import { GdaSubgraphEndpointBuilder } from "../gdaSubgraphEndpointBuilder";
+} from '@superfluid-finance/sdk-redux'
+
+import { CacheTime } from '../cacheTime'
 import {
   FlowDistributionUpdatedEvent,
   InstantDistributionUpdatedEvent,
   PoolMemberUnitsUpdatedEvent,
-} from "../events";
-import { PoolMemberUnitsUpdatedEventQueryHandler } from "../events/poolMemberUnitsUpdatedEvents";
+} from '../events'
+import { FlowDistributionUpdatedEventQueryHandler } from '../events/flowDistributionUpdatedEvents'
+import { InstantDistributionUpdatedEventQueryHandler } from '../events/instantDistributionUpdatedEvents'
+import { PoolMemberUnitsUpdatedEventQueryHandler } from '../events/poolMemberUnitsUpdatedEvents'
+import { GdaSubgraphEndpointBuilder } from '../gdaSubgraphEndpointBuilder'
 import {
   FlowDistributionUpdatedEventQuery,
-  InstantDistributionUpdatedEventQuery,
-  PoolMemberUnitsUpdatedEventQuery,
   FlowDistributionUpdatedEventsQuery,
+  InstantDistributionUpdatedEventQuery,
+  InstantDistributionUpdatedEventsQuery,
+  PoolMemberUnitsUpdatedEventQuery,
   PoolMemberUnitsUpdatedEventsQuery,
-  InstantDistributionUpdatedEventsQuery
-} from "./entityArgs";
-import { FlowDistributionUpdatedEventQueryHandler } from "../events/flowDistributionUpdatedEvents";
-import { InstantDistributionUpdatedEventQueryHandler } from "../events/instantDistributionUpdatedEvents";
+} from './entityArgs'
 
 export const createEventQueryEndpoints = (
   builder: GdaSubgraphEndpointBuilder
@@ -46,14 +46,14 @@ export const createEventQueryEndpoints = (
         poolMemberUnitsUpdatedEvent: get<PoolMemberUnitsUpdatedEvent, PoolMemberUnitsUpdatedEventQuery>(builder, new PoolMemberUnitsUpdatedEventQueryHandler()),
         poolMemberUnitsUpdatedEvents: list<PoolMemberUnitsUpdatedEvent, PoolMemberUnitsUpdatedEventsQuery>(builder, new PoolMemberUnitsUpdatedEventQueryHandler()),
     };
-};
+}
 
 /**
  * Creates "get" endpoint.
  */
 function get<
   TReturn extends ILightEntity,
-  TQuery extends { chainId: number } & SubgraphGetQuery
+  TQuery extends { chainId: number } & SubgraphGetQuery,
 >(
   builder: GdaSubgraphEndpointBuilder,
   queryHandler: SubgraphGetQueryHandler<TReturn> &
@@ -61,13 +61,13 @@ function get<
 ) {
   return builder.query<TReturn | null, TQuery>({
     queryFn: async (arg) => {
-      const subgraphClient = await getSubgraphClient(arg.chainId);
+      const subgraphClient = await getSubgraphClient(arg.chainId)
       return {
         data: await queryHandler.get(subgraphClient, arg),
-      };
+      }
     },
     keepUnusedDataFor: CacheTime.Forever, // Events don't change (unless re-org but that's handled by invalidating whole cache anyway).
-  });
+  })
 }
 
 /**
@@ -76,8 +76,8 @@ function get<
 function list<
   TReturn extends ILightEntity,
   TQuery extends { chainId: number } & SubgraphListQuery<TFilter, TOrderBy>,
-  TFilter extends { [key: string]: unknown } = NonNullable<TQuery["filter"]>,
-  TOrderBy extends string = NonNullable<TQuery["order"]>["orderBy"]
+  TFilter extends { [key: string]: unknown } = NonNullable<TQuery['filter']>,
+  TOrderBy extends string = NonNullable<TQuery['order']>['orderBy'],
 >(
   builder: GdaSubgraphEndpointBuilder,
   queryHandler: SubgraphListQueryHandler<TReturn, TQuery, TFilter> &
@@ -85,10 +85,10 @@ function list<
 ) {
   return builder.query<PagedResult<TReturn>, TQuery>({
     queryFn: async (arg) => {
-      const subgraphClient = await getSubgraphClient(arg.chainId);
+      const subgraphClient = await getSubgraphClient(arg.chainId)
       return {
         data: await queryHandler.list(subgraphClient, arg),
-      };
+      }
     },
     providesTags: (_result, _error, arg) => [
       ...createGeneralTags({ chainId: arg.chainId }),
@@ -97,5 +97,5 @@ function list<
         queryHandler.getRelevantAddressesFromFilter(arg.filter)
       ),
     ],
-  });
+  })
 }

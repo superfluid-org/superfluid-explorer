@@ -1,45 +1,42 @@
+import 'graphiql/graphiql.min.css'
+
+import CloseIcon from '@mui/icons-material/Close'
+import { Box, IconButton, Snackbar, SnackbarCloseReason } from '@mui/material'
+import GraphiQL, { FetcherParams } from 'graphiql'
+// @ts-ignore
+import GraphiQLExplorer from 'graphiql-explorer'
+import type { GraphQLSchema } from 'graphql'
+import { buildClientSchema, getIntrospectionQuery, parse,print } from 'graphql'
+import { request } from 'graphql-request'
+import _ from 'lodash'
+import { useRouter } from 'next/router'
 import React, {
   FC,
   PropsWithChildren,
   SyntheticEvent,
   useEffect,
   useState,
-} from "react";
-import GraphiQL, { FetcherParams } from "graphiql";
-import {
-  buildClientSchema,
-  getIntrospectionQuery,
-  print,
-  parse,
-} from "graphql";
-import { request } from "graphql-request";
-import type { GraphQLSchema } from "graphql";
-import useSfTheme from "../../styles/useSfTheme";
-import "graphiql/graphiql.min.css";
-// @ts-ignore
-import GraphiQLExplorer from "graphiql-explorer";
-import { Box, IconButton, Snackbar, SnackbarCloseReason } from "@mui/material";
-import FullPageLoader from "../../components/Layout/FullPageLoader";
-import _ from "lodash";
-import { networks, networksByName } from "../../redux/networks";
-import { useRouter } from "next/router";
-import CloseIcon from "@mui/icons-material/Close";
-import { useAvailableNetworks } from "../../contexts/AvailableNetworksContext";
+} from 'react'
+
+import FullPageLoader from '../../components/Layout/FullPageLoader'
+import { useAvailableNetworks } from '../../contexts/AvailableNetworksContext'
+import { networksByName } from '../../redux/networks'
+import useSfTheme from '../../styles/useSfTheme'
 
 const DocumentationLinks = [
   {
-    name: "Subgraph",
-    link: "https://docs.superfluid.finance/superfluid/docs/subgraph",
+    name: 'Subgraph',
+    link: 'https://docs.superfluid.finance/superfluid/docs/subgraph',
   },
   {
-    name: "Protocol",
-    link: "https://docs.superfluid.finance/superfluid",
+    name: 'Protocol',
+    link: 'https://docs.superfluid.finance/superfluid',
   },
-];
+]
 
 const ExampleQueries = [
   {
-    name: "Supertokens",
+    name: 'Supertokens',
     query: `query getSuperfluidTokens {
   tokens(where: {isListed: true, isSuperToken: true}, first: 25) {
     superTokenAddress: id
@@ -51,7 +48,7 @@ const ExampleQueries = [
 `,
   },
   {
-    name: "Accounts",
+    name: 'Accounts',
     query: `query getAccounts {
   accounts(first: 25) {
     id
@@ -65,7 +62,7 @@ const ExampleQueries = [
 `,
   },
   {
-    name: "Flow events paginated",
+    name: 'Flow events paginated',
     query: `query getFlowEvents($timePaginator: BigInt! = "0") {
   flowUpdatedEvents(first: 25, orderBy: timestamp, where: {timestamp_gt: $timePaginator}) {
     id
@@ -82,7 +79,7 @@ const ExampleQueries = [
 }
 `,
   },
-];
+]
 
 const DEFAULT_QUERY = `# Hi! Welcome to Superfluid's GraphiQL instance for querying Superfluid's Subgraphs (powered by The Graph).
 
@@ -93,133 +90,133 @@ const DEFAULT_QUERY = `# Hi! Welcome to Superfluid's GraphiQL instance for query
 query MyQuery {
   __typename # Placeholder value
 }
-`;
+`
 
 const DEFAULT_VARIABLES = `{
   "your_variable_name": "your_variable_value"
-}`;
+}`
 
-const ADDRESS_REGEX = /^(.*?)((0x)?[0-9a-fA-F]{40})(.*?)$/gm;
+const ADDRESS_REGEX = /^(.*?)((0x)?[0-9a-fA-F]{40})(.*?)$/gm
 
 const getGraphQLIntrospectionClientSchemaMemoized = _.memoize(
   (_subgraphUrl: string) =>
     request(_subgraphUrl, getIntrospectionQuery()).then((introspectionResult) =>
       buildClientSchema(introspectionResult)
     )
-);
+)
 
 const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
-  const { availableNetworks } = useAvailableNetworks();
-  const router = useRouter();
-  const { _network, _query, _variables } = router.query;
+  const { availableNetworks } = useAvailableNetworks()
+  const router = useRouter()
+  const { _network, _query, _variables } = router.query
 
   useEffect(() => {
     if (router.isReady) {
       if (_network) {
-        setNetworkName(_network as string);
+        setNetworkName(_network as string)
       }
 
       if (_query) {
-        setQuery(print(parse(atob(_query as string)))); // Prettify the crushed query.
+        setQuery(print(parse(atob(_query as string)))) // Prettify the crushed query.
       }
 
       if (_variables) {
-        setVariables(atob(_variables as string));
+        setVariables(atob(_variables as string))
       }
     }
-  }, [router, _network, _query, _variables]);
+  }, [router, _network, _query, _variables])
 
-  const [networkName, setNetworkName] = useState("matic");
-  const theme = useSfTheme();
-  const isDarkTheme = theme.palette.mode === "dark";
+  const [networkName, setNetworkName] = useState('matic')
+  const theme = useSfTheme()
+  const isDarkTheme = theme.palette.mode === 'dark'
 
-  const network = networksByName.get(networkName)!;
-  const subgraphUrl = network.subgraphUrl;
+  const network = networksByName.get(networkName)!
+  const subgraphUrl = network.subgraphUrl
 
-  const [schema, setSchema] = useState<GraphQLSchema | null>(null);
-  const [isExplorerOpen, setIsExplorerOpen] = useState(true);
-  const [isInitializing, setIsInitializing] = useState(true);
-  const [isNetworkLoading, setIsNetworkLoading] = useState(false);
-  const [fetchedFromUrl, setFetchedFromUrl] = useState<string | null>(null);
-  const [query, setQuery] = useState(DEFAULT_QUERY);
+  const [schema, setSchema] = useState<GraphQLSchema | null>(null)
+  const [isExplorerOpen, setIsExplorerOpen] = useState(true)
+  const [isInitializing, setIsInitializing] = useState(true)
+  const [isNetworkLoading, setIsNetworkLoading] = useState(false)
+  const [fetchedFromUrl, setFetchedFromUrl] = useState<string | null>(null)
+  const [query, setQuery] = useState(DEFAULT_QUERY)
   const [variables, setVariables] = useState<string | undefined>(
     DEFAULT_VARIABLES
-  );
-  const [showAddressToast, setShowAddressToast] = useState(false);
+  )
+  const [showAddressToast, setShowAddressToast] = useState(false)
 
-  const graphiql = React.createRef<GraphiQL>();
+  const graphiql = React.createRef<GraphiQL>()
 
   useEffect(() => {
     if (!schema) {
-      setIsInitializing(true);
+      setIsInitializing(true)
     } else {
-      setIsInitializing(false);
+      setIsInitializing(false)
     }
-    setIsNetworkLoading(true);
+    setIsNetworkLoading(true)
     getGraphQLIntrospectionClientSchemaMemoized(subgraphUrl).then(
       (clientSchema: GraphQLSchema) => {
-        setSchema(clientSchema);
-        setIsInitializing(false);
-        setIsNetworkLoading(false);
+        setSchema(clientSchema)
+        setIsInitializing(false)
+        setIsNetworkLoading(false)
       }
-    );
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [networkName]);
+  }, [networkName])
 
   const handlePrettifyQuery = () => {
     if (graphiql) {
-      graphiql?.current?.handlePrettifyQuery();
+      graphiql?.current?.handlePrettifyQuery()
     }
-  };
+  }
 
-  const updateQuery = (query: string | undefined) => setQuery(query ?? "");
+  const updateQuery = (query: string | undefined) => setQuery(query ?? '')
 
   const graphiQLFetcher = async (graphQLParams: FetcherParams) => {
-    const parsedParams = parseGraphQLParams(graphQLParams);
+    const parsedParams = parseGraphQLParams(graphQLParams)
 
     const data = await fetch(subgraphUrl, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(parsedParams),
-      credentials: "same-origin",
-    });
-    setFetchedFromUrl(subgraphUrl);
-    return data.json().catch(() => data.text());
-  };
+      credentials: 'same-origin',
+    })
+    setFetchedFromUrl(subgraphUrl)
+    return data.json().catch(() => data.text())
+  }
 
   const parseGraphQLParams = (graphQLParams: FetcherParams): FetcherParams => {
-    const { query } = graphQLParams;
+    const { query } = graphQLParams
 
-    const parsedQuery = lowercaseAddresses(query);
-    const parsedVariables = lowercaseAddresses(variables || "");
+    const parsedQuery = lowercaseAddresses(query)
+    const parsedVariables = lowercaseAddresses(variables || '')
 
-    if (parsedQuery !== query) setQuery(parsedQuery);
-    if (parsedVariables !== variables) setVariables(parsedVariables);
+    if (parsedQuery !== query) setQuery(parsedQuery)
+    if (parsedVariables !== variables) setVariables(parsedVariables)
 
     if (parsedQuery !== query || parsedVariables !== variables) {
-      setShowAddressToast(true);
+      setShowAddressToast(true)
     }
 
     return {
       ...graphQLParams,
       query: parsedQuery,
       variables: JSON.parse(parsedVariables),
-    };
-  };
+    }
+  }
 
   const lowercaseAddresses = (str: string) =>
-    str.replace(ADDRESS_REGEX, (v, _p1, p2) => v.replace(p2, p2.toLowerCase()));
+    str.replace(ADDRESS_REGEX, (v, _p1, p2) => v.replace(p2, p2.toLowerCase()))
 
   const handleCloseToast = (
     _e: SyntheticEvent | Event,
     reason?: SnackbarCloseReason
   ) => {
-    if (reason === "clickaway") return;
-    setShowAddressToast(false);
-  };
+    if (reason === 'clickaway') return
+    setShowAddressToast(false)
+  }
 
   return (
     <>
@@ -228,7 +225,7 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
         autoHideDuration={8000}
         onClose={handleCloseToast}
         message="Addresses in your query and variables automatically converted to lower case"
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         action={
           <IconButton
             size="small"
@@ -247,7 +244,10 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
         <Box
           component="div"
           className="graphiql-container"
-          sx={{ height: "100%", filter: `invert(${isDarkTheme ? 0.925 : 0})` }}
+          sx={{
+            height: '100%',
+            filter: `invert(${isDarkTheme ? 0.925 : 0})`,
+          }}
         >
           <GraphiQLExplorer
             schema={schema}
@@ -281,7 +281,7 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
                 />
                 {/** @ts-ignore React 18 children prop issue (9th of May 2022) */}
                 <GraphiQL.Menu
-                  label={isNetworkLoading ? "Loading..." : network.displayName}
+                  label={isNetworkLoading ? 'Loading...' : network.displayName}
                   title="Select Network"
                 >
                   {Object.values(availableNetworks).map((network) => (
@@ -306,7 +306,7 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
                       >
                         {val.name}
                       </GraphiQL.MenuItem>
-                    );
+                    )
                   })}
                 </GraphiQL.Menu>
                 {/** @ts-ignore React 18 children prop issue (9th of May 2022) */}
@@ -318,11 +318,11 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
                         key={val.name}
                         label={val.name}
                         title={val.name}
-                        onSelect={() => window.open(val.link, "_blank")}
+                        onSelect={() => window.open(val.link, '_blank')}
                       >
                         {val.name}
                       </GraphiQL.MenuItem>
-                    );
+                    )
                   })}
                 </GraphiQL.Menu>
               </GraphiQL.Toolbar>
@@ -336,7 +336,7 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
         </Box>
       )}
     </>
-  );
-};
+  )
+}
 
-export default SubgraphExplorer;
+export default SubgraphExplorer

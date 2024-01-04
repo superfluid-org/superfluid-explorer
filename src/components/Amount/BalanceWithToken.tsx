@@ -1,11 +1,12 @@
-import { Stack } from "@mui/material";
-import { BigNumberish } from "ethers";
-import { FC } from "react";
-import EtherFormatted from "./EtherFormatted";
-import TokenChip, { TokenChipProps } from "../TokenChip/TokenChip";
+import { Stack } from '@mui/material'
+import { BigNumberish } from 'ethers'
+import { FC } from 'react'
+
+import TokenChip, { TokenChipProps } from '../TokenChip/TokenChip'
+import EtherFormatted from './EtherFormatted'
 
 interface BalanceWithTokenProps extends TokenChipProps {
-  wei: BigNumberish;
+  wei: BigNumberish
 }
 
 const BalanceWithToken: FC<BalanceWithTokenProps> = ({ wei, ...chipProps }) => (
@@ -13,6 +14,6 @@ const BalanceWithToken: FC<BalanceWithTokenProps> = ({ wei, ...chipProps }) => (
     <TokenChip {...chipProps} />
     <EtherFormatted wei={wei} />
   </Stack>
-);
+)
 
-export default BalanceWithToken;
+export default BalanceWithToken

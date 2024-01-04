@@ -1,5 +1,5 @@
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import { TabContext, TabList, TabPanel } from '@mui/lab'
 import {
   Box,
   Breadcrumbs,
@@ -15,84 +15,84 @@ import {
   Tab,
   Tooltip,
   Typography,
-} from "@mui/material";
-import { ethers } from "ethers";
-import { gql } from "graphql-request";
-import { NextPage } from "next";
-import Error from "next/error";
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import AccountIndexes from "./AccountIndexes";
-import AccountStreams from "./AccountStreams";
-import AccountTokenBalance from "./AccountTokenBalance";
-import AccountTokenFlowRate from "./AccountTokenFlowRate";
-import AccountMap from "./AccountMap";
-import AccountTokens from "./AccountTokens";
-import { AddressBookButton } from "../../../components/AddressBook/AddressBook";
-import CopyIconBtn from "../../../components/Copy/CopyIconBtn";
-import CopyLink from "../../../components/Copy/CopyLink";
-import DepletionDate from "../../../components/Date/DepletionDate";
-import EventTableWithInfo from "../../../components/Table/EventTableWithInfo";
-import InfoTooltipBtn from "../../../components/Info/InfoTooltipBtn";
-import AccountNetworkSelect from "../../../components/NetworkSelect/AccountNetworkSelect";
-import SkeletonAddress from "../../../components/Skeleton/SkeletonAddress";
-import SkeletonNetwork from "../../../components/Skeleton/SkeletonNetwork";
-import SubgraphQueryLink from "../../subgraph/SubgraphQueryLink";
+} from '@mui/material'
+import { ethers } from 'ethers'
+import { gql } from 'graphql-request'
+import { NextPage } from 'next'
+import Error from 'next/error'
+import { useRouter } from 'next/router'
+import { useContext, useEffect, useState } from 'react'
+
+import { AddressBookButton } from '../../../components/AddressBook/AddressBook'
+import FlowingBalance from '../../../components/Amount/FlowingBalance'
+import FlowRate from '../../../components/Amount/FlowRate'
+import CopyIconBtn from '../../../components/Copy/CopyIconBtn'
+import CopyLink from '../../../components/Copy/CopyLink'
+import DepletionDate from '../../../components/Date/DepletionDate'
+import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import AccountNetworkSelect from '../../../components/NetworkSelect/AccountNetworkSelect'
+import SkeletonAddress from '../../../components/Skeleton/SkeletonAddress'
+import SkeletonNetwork from '../../../components/Skeleton/SkeletonNetwork'
 import {
   incomingStreamOrderingDefault,
   incomingStreamPagingDefault,
-} from "../../../components/Table/Account/AccountIncomingStreamsTable";
-import {
-  indexSubscriptionOrderingDefault,
-  indexSubscriptionPagingDefault,
-} from "../../../components/Table/Account/AccountIndexSubscriptionsTable";
-import {
-  outgoingStreamOrderingDefault,
-  outgoingStreamPagingDefault,
-} from "../../../components/Table/Account/AccountOutgoingStreamsTable";
+} from '../../../components/Table/Account/AccountIncomingStreamsTable'
 import {
   publishedIndexOrderingDefault,
   publishedIndexPagingDefault,
-} from "../../../components/Table/Account/AccountIndexPublicationsTable";
-import IdContext from "../../../contexts/IdContext";
-import { useNetworkContext } from "../../../contexts/NetworkContext";
-import { useAppSelector } from "../../../redux/hooks";
+} from '../../../components/Table/Account/AccountIndexPublicationsTable'
+import {
+  indexSubscriptionOrderingDefault,
+  indexSubscriptionPagingDefault,
+} from '../../../components/Table/Account/AccountIndexSubscriptionsTable'
+import {
+  outgoingStreamOrderingDefault,
+  outgoingStreamPagingDefault,
+} from '../../../components/Table/Account/AccountOutgoingStreamsTable'
+import EventTableWithInfo from '../../../components/Table/EventTableWithInfo'
+import TokenChip from '../../../components/TokenChip/TokenChip'
+import IdContext from '../../../contexts/IdContext'
+import { useNetworkContext } from '../../../contexts/NetworkContext'
+import { useAppSelector } from '../../../redux/hooks'
 import {
   addressBookSelectors,
   createEntryId,
-} from "../../../redux/slices/addressBook.slice";
-import { ensApi } from "../../../redux/slices/ensResolver.slice";
-import { sfSubgraph } from "../../../redux/store";
-import ellipsisAddress from "../../../utils/ellipsisAddress";
-import TokenChip from "../../../components/TokenChip/TokenChip";
-import FlowingBalance from "../../../components/Amount/FlowingBalance";
-import FlowRate from "../../../components/Amount/FlowRate";
-import AccountPools from "./AccountPools";
+} from '../../../redux/slices/addressBook.slice'
+import { ensApi } from '../../../redux/slices/ensResolver.slice'
+import { sfSubgraph } from '../../../redux/store'
+import ellipsisAddress from '../../../utils/ellipsisAddress'
+import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
+import AccountIndexes from './AccountIndexes'
+import AccountMap from './AccountMap'
+import AccountPools from './AccountPools'
+import AccountStreams from './AccountStreams'
+import AccountTokenBalance from './AccountTokenBalance'
+import AccountTokens from './AccountTokens'
 
 const AccountPage: NextPage = () => {
-  const network = useNetworkContext();
-  const address = useContext(IdContext);
+  const network = useNetworkContext()
+  const address = useContext(IdContext)
   const accountQuery = sfSubgraph.useAccountQuery({
     chainId: network.chainId,
     id: address,
-  });
+  })
 
-  const ensAddressQuery = ensApi.useLookupAddressQuery(address);
+  const ensAddressQuery = ensApi.useLookupAddressQuery(address)
 
-  const ensName = ensAddressQuery.currentData?.name;
+  const ensName = ensAddressQuery.currentData?.name
 
-  const prefetchStreamsQuery = sfSubgraph.usePrefetch("streams");
-  const prefetchIndexesQuery = sfSubgraph.usePrefetch("indexes");
+  const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams')
+  const prefetchIndexesQuery = sfSubgraph.usePrefetch('indexes')
   const prefetchIndexSubscriptionsQuery =
-    sfSubgraph.usePrefetch("indexSubscriptions");
+    sfSubgraph.usePrefetch('indexSubscriptions')
   // const prefetchTokensQuery = sfSubgraph.usePrefetch("accountTokenSnapshots");
   // const prefetchEventsQuery = sfSubgraph.usePrefetch("events");
 
   const tokenSnapshotQuery = sfSubgraph.useAccountTokenSnapshotsQuery({
     chainId: network.chainId,
     order: {
-      orderBy: "balanceUntilUpdatedAt",
-      orderDirection: "desc",
+      orderBy: 'balanceUntilUpdatedAt',
+      orderDirection: 'desc',
     },
     filter: {
       account: address,
@@ -101,13 +101,11 @@ const AccountPage: NextPage = () => {
       take: 50,
       skip: 0,
     },
-  });
+  })
 
-  const router = useRouter();
-  const { tab } = router.query;
-  const [tabValue, setTabValue] = useState<string>(
-    (tab as string) ?? "streams"
-  );
+  const router = useRouter()
+  const { tab } = router.query
+  const [tabValue, setTabValue] = useState<string>((tab as string) ?? 'streams')
 
   useEffect(() => {
     router.replace({
@@ -116,28 +114,28 @@ const AccountPage: NextPage = () => {
         _id: address,
         tab: tabValue,
       },
-    });
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tabValue]);
+  }, [tabValue])
 
   const addressBookEntry = useAppSelector((state: any) =>
     network
       ? addressBookSelectors.selectById(state, createEntryId(network, address))
       : undefined
-  );
+  )
 
   if (
     !accountQuery.isUninitialized &&
     !accountQuery.isLoading &&
     !accountQuery.data
   ) {
-    return <Error statusCode={404} />;
+    return <Error statusCode={404} />
   }
 
-  const tokens = tokenSnapshotQuery.data?.data || [];
+  const tokens = tokenSnapshotQuery.data?.data || []
   const tokensWithBalance = tokens.filter(
     (snapshot) => Number(snapshot.balanceUntilUpdatedAt) !== 0
-  );
+  )
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
       <Stack direction="row" alignItems="center" gap={1}>
@@ -146,7 +144,7 @@ const AccountPage: NextPage = () => {
             {network && network.displayName}
           </Typography>
           <Typography color="text.secondary">Accounts</Typography>
-          <Typography color="text.secondary" sx={{ whiteSpace: "nowrap" }}>
+          <Typography color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
             {accountQuery.data && accountQuery.data.id}
           </Typography>
         </Breadcrumbs>
@@ -161,7 +159,7 @@ const AccountPage: NextPage = () => {
               address={accountQuery.data.id}
             />
             <Typography
-              data-cy={"ensName"}
+              data-cy={'ensName'}
               variant="h4"
               component="h1"
               sx={{ mx: 1 }}
@@ -170,7 +168,7 @@ const AccountPage: NextPage = () => {
               {addressBookEntry ? addressBookEntry.nameTag : ensName}
             </Typography>
             <Typography
-              data-cy={"address"}
+              data-cy={'address'}
               variant="h4"
               component="h1"
               sx={{ mx: 1 }}
@@ -219,10 +217,10 @@ const AccountPage: NextPage = () => {
       </Box>
 
       <Card elevation={2} sx={{ mt: 3 }}>
-        <List sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+        <List sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
           <ListItem>
             <ListItemText
-              data-cy={"network-name"}
+              data-cy={'network-name'}
               secondary="Network"
               primary={
                 network ? (
@@ -238,12 +236,12 @@ const AccountPage: NextPage = () => {
           </ListItem>
           <ListItem>
             <ListItemText
-              data-cy={"account-type"}
+              data-cy={'account-type'}
               secondary={
                 <>
                   Account type
                   <InfoTooltipBtn
-                    dataCy={"account-type-tooltip"}
+                    dataCy={'account-type-tooltip'}
                     title="Either a regular account or a super app."
                   />
                 </>
@@ -251,12 +249,12 @@ const AccountPage: NextPage = () => {
               primary={
                 accountQuery.data ? (
                   accountQuery.data.isSuperApp ? (
-                    "Super App"
+                    'Super App'
                   ) : (
-                    "Regular account"
+                    'Regular account'
                   )
                 ) : (
-                  <Skeleton sx={{ width: "40px" }} />
+                  <Skeleton sx={{ width: '40px' }} />
                 )
               }
             />
@@ -266,7 +264,12 @@ const AccountPage: NextPage = () => {
 
       {(tokenSnapshotQuery.isFetching || tokenSnapshotQuery.isLoading) && (
         <Skeleton
-          sx={{ height: 112, width: "100%", transform: "scale(1)", mt: 3 }}
+          sx={{
+            height: 112,
+            width: '100%',
+            transform: 'scale(1)',
+            mt: 3,
+          }}
         />
       )}
 
@@ -293,16 +296,20 @@ const AccountPage: NextPage = () => {
                       {({ balance, balanceTimestamp, flowRate }) => (
                         <Box
                           sx={{
-                            display: "grid",
-                            gridTemplateColumns: "auto 1fr",
+                            display: 'grid',
+                            gridTemplateColumns: 'auto 1fr',
                             columnGap: 1,
-                            alignItems: "center",
+                            alignItems: 'center',
                           }}
                         >
                           <TokenChip
                             network={network}
                             tokenAddress={tokenSnapshot.token}
-                            ChipProps={{ sx: { width: "100%" } }}
+                            ChipProps={{
+                              sx: {
+                                width: '100%',
+                              },
+                            }}
                           />
                           <FlowingBalance
                             balance={balance}
@@ -310,11 +317,13 @@ const AccountPage: NextPage = () => {
                             flowRate={flowRate}
                           />
 
-                          {flowRate != "0" && (
+                          {flowRate != '0' && (
                             <>
                               <Typography
                                 variant="caption"
-                                sx={{ textAlign: "right" }}
+                                sx={{
+                                  textAlign: 'right',
+                                }}
                               >
                                 Flow rate:
                               </Typography>
@@ -324,11 +333,13 @@ const AccountPage: NextPage = () => {
                             </>
                           )}
 
-                          {flowRate != "0" && flowRate.charAt(0) === "-" && (
+                          {flowRate != '0' && flowRate.charAt(0) === '-' && (
                             <>
                               <Typography
                                 variant="caption"
-                                sx={{ textAlign: "right" }}
+                                sx={{
+                                  textAlign: 'right',
+                                }}
                               >
                                 Pred. liquidation:
                               </Typography>
@@ -354,7 +365,7 @@ const AccountPage: NextPage = () => {
 
       <Card elevation={2} sx={{ mt: 3 }}>
         <TabContext value={tabValue}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList
               variant="scrollable"
               scrollButtons="auto"
@@ -363,7 +374,7 @@ const AccountPage: NextPage = () => {
             >
               <Tab
                 label="Streams"
-                data-cy={"streams-tab"}
+                data-cy={'streams-tab'}
                 value="streams"
                 onMouseEnter={() => {
                   if (network) {
@@ -374,7 +385,7 @@ const AccountPage: NextPage = () => {
                       },
                       order: incomingStreamOrderingDefault,
                       pagination: incomingStreamPagingDefault,
-                    });
+                    })
                     prefetchStreamsQuery({
                       chainId: network.chainId,
                       filter: {
@@ -382,12 +393,12 @@ const AccountPage: NextPage = () => {
                       },
                       order: outgoingStreamOrderingDefault,
                       pagination: outgoingStreamPagingDefault,
-                    });
+                    })
                   }
                 }}
               />
               <Tab
-                data-cy={"indexes-tab"}
+                data-cy={'indexes-tab'}
                 label="Indexes"
                 value="indexes"
                 onMouseEnter={() => {
@@ -399,7 +410,7 @@ const AccountPage: NextPage = () => {
                       },
                       order: publishedIndexOrderingDefault,
                       pagination: publishedIndexPagingDefault,
-                    });
+                    })
                     prefetchIndexSubscriptionsQuery({
                       chainId: network.chainId,
                       filter: {
@@ -407,12 +418,12 @@ const AccountPage: NextPage = () => {
                       },
                       order: indexSubscriptionOrderingDefault,
                       pagination: indexSubscriptionPagingDefault,
-                    });
+                    })
                   }
                 }}
               />
               <Tab
-                data-cy={"pools-tab"}
+                data-cy={'pools-tab'}
                 label="Pools"
                 value="pools"
                 onMouseEnter={() => {
@@ -424,7 +435,7 @@ const AccountPage: NextPage = () => {
                       },
                       order: publishedIndexOrderingDefault,
                       pagination: publishedIndexPagingDefault,
-                    });
+                    })
                     prefetchIndexSubscriptionsQuery({
                       chainId: network.chainId,
                       filter: {
@@ -432,17 +443,17 @@ const AccountPage: NextPage = () => {
                       },
                       order: indexSubscriptionOrderingDefault,
                       pagination: indexSubscriptionPagingDefault,
-                    });
+                    })
                   }
                 }}
               />
               <Tab
-                data-cy={"super-tokens-tab"}
+                data-cy={'super-tokens-tab'}
                 label="Super Tokens"
                 value="tokens"
               />
-              <Tab data-cy={"events-tab"} label="Events" value="events" />
-              <Tab data-cy={"map-tab"} label="Map" value="map" />
+              <Tab data-cy={'events-tab'} label="Events" value="events" />
+              <Tab data-cy={'map-tab'} label="Map" value="map" />
             </TabList>
           </Box>
 
@@ -473,7 +484,7 @@ const AccountPage: NextPage = () => {
         </TabContext>
       </Card>
     </Container>
-  );
-};
+  )
+}
 
-export default AccountPage;
+export default AccountPage

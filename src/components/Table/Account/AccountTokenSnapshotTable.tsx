@@ -1,4 +1,4 @@
-import FilterListIcon from "@mui/icons-material/FilterList";
+import FilterListIcon from '@mui/icons-material/FilterList'
 import {
   Box,
   Button,
@@ -18,279 +18,279 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@mui/material";
+} from '@mui/material'
 import {
   AccountTokenSnapshot_Filter,
   AccountTokenSnapshot_OrderBy,
   createSkipPaging,
   Ordering,
-} from "@superfluid-finance/sdk-core";
-import { AccountTokenSnapshotsQuery } from "@superfluid-finance/sdk-redux";
-import set from "lodash/fp/set";
-import isEqual from "lodash/isEqual";
-import { FC, FormEvent, useEffect, useRef, useState } from "react";
-import useDebounce from "../../../hooks/useDebounce";
-import { Network } from "../../../redux/networks";
-import { sfSubgraph } from "../../../redux/store";
-import AccountTokenBalance from "../../../pages/[_network]/accounts/AccountTokenBalance";
-import AccountTokenFlowRate from "../../../pages/[_network]/accounts/AccountTokenFlowRate";
-import AppLink from "../../AppLink/AppLink";
-import FlowingBalanceWithToken from "../../Amount/FlowingBalanceWithToken";
-import InfinitePagination from "../InfinitePagination";
-import InfoTooltipBtn from "../../Info/InfoTooltipBtn";
-import SuperTokenAddress from "../../Address/SuperTokenAddress";
-import TableLoader from "../TableLoader";
-import { StreamStatus } from "./AccountIncomingStreamsTable";
-import { UnitsStatus } from "./AccountIndexPublicationsTable";
+} from '@superfluid-finance/sdk-core'
+import { AccountTokenSnapshotsQuery } from '@superfluid-finance/sdk-redux'
+import set from 'lodash/fp/set'
+import isEqual from 'lodash/isEqual'
+import { FC, FormEvent, useEffect, useRef, useState } from 'react'
+
+import useDebounce from '../../../hooks/useDebounce'
+import AccountTokenBalance from '../../../pages/[_network]/accounts/AccountTokenBalance'
+import AccountTokenFlowRate from '../../../pages/[_network]/accounts/AccountTokenFlowRate'
+import { Network } from '../../../redux/networks'
+import { sfSubgraph } from '../../../redux/store'
+import SuperTokenAddress from '../../Address/SuperTokenAddress'
+import FlowingBalanceWithToken from '../../Amount/FlowingBalanceWithToken'
+import AppLink from '../../AppLink/AppLink'
+import InfoTooltipBtn from '../../Info/InfoTooltipBtn'
+import InfinitePagination from '../InfinitePagination'
+import TableLoader from '../TableLoader'
+import { StreamStatus } from './AccountIncomingStreamsTable'
+import { UnitsStatus } from './AccountIndexPublicationsTable'
 
 const defaultOrdering = {
-  orderBy: "balanceUntilUpdatedAt",
-  orderDirection: "desc",
-} as Ordering<AccountTokenSnapshot_OrderBy>;
+  orderBy: 'balanceUntilUpdatedAt',
+  orderDirection: 'desc',
+} as Ordering<AccountTokenSnapshot_OrderBy>
 
 export const defaultPaging = createSkipPaging({
   take: 10,
-});
+})
 
 interface AccountTokenSnapshotTableProps {
-  network: Network;
-  accountAddress: string;
+  network: Network
+  accountAddress: string
 }
 
 type RequiredAccountTokenSnapshotsQuery = Required<
-  Omit<AccountTokenSnapshotsQuery, "block">
->;
+  Omit<AccountTokenSnapshotsQuery, 'block'>
+>
 
 const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   network,
   accountAddress,
 }) => {
-  const filterAnchorRef = useRef(null);
+  const filterAnchorRef = useRef(null)
 
-  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [showFilterMenu, setShowFilterMenu] = useState(false)
 
   const [activeStreamsStatus, setActiveStreamsStatus] =
-    useState<StreamStatus | null>(null);
+    useState<StreamStatus | null>(null)
   const [inactiveStreamsStatus, setInactiveStreamsStatus] =
-    useState<StreamStatus | null>(null);
+    useState<StreamStatus | null>(null)
   const [subsWithUnitsStatus, setSubsWithUnitsStatus] =
-    useState<UnitsStatus | null>(null);
+    useState<UnitsStatus | null>(null)
 
   const defaultFilter = {
     account: accountAddress,
-  };
+  }
 
   const createDefaultArg = (): RequiredAccountTokenSnapshotsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
     order: defaultOrdering,
-  });
+  })
 
-  const [queryArg, setQueryArg] = useState<RequiredAccountTokenSnapshotsQuery>(
-    createDefaultArg()
-  );
+  const [queryArg, setQueryArg] =
+    useState<RequiredAccountTokenSnapshotsQuery>(createDefaultArg())
 
   const [queryTrigger, queryResult] =
-    sfSubgraph.useLazyAccountTokenSnapshotsQuery();
+    sfSubgraph.useLazyAccountTokenSnapshotsQuery()
 
-  const queryTriggerDebounced = useDebounce(queryTrigger, 250);
+  const queryTriggerDebounced = useDebounce(queryTrigger, 250)
 
   const onQueryArgChanged = (newArgs: RequiredAccountTokenSnapshotsQuery) => {
-    setQueryArg(newArgs);
+    setQueryArg(newArgs)
 
     if (
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      queryTriggerDebounced(newArgs, true);
+      queryTriggerDebounced(newArgs, true)
     } else {
-      queryTrigger(newArgs, true);
+      queryTrigger(newArgs, true)
     }
-  };
+  }
 
   useEffect(() => {
-    onQueryArgChanged(createDefaultArg());
+    onQueryArgChanged(createDefaultArg())
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, accountAddress]);
+  }, [network, accountAddress])
 
   const setPage = (newPage: number) =>
     onQueryArgChanged(
-      set("pagination.skip", (newPage - 1) * queryArg.pagination.take, queryArg)
-    );
+      set('pagination.skip', (newPage - 1) * queryArg.pagination.take, queryArg)
+    )
 
   const setPageSize = (newPageSize: number) =>
-    onQueryArgChanged(set("pagination.take", newPageSize, queryArg));
+    onQueryArgChanged(set('pagination.take', newPageSize, queryArg))
 
   const onOrderingChanged = (
     newOrdering: Ordering<AccountTokenSnapshot_OrderBy>
-  ) => onQueryArgChanged({ ...queryArg, order: newOrdering });
+  ) => onQueryArgChanged({ ...queryArg, order: newOrdering })
 
   const onSortClicked = (field: AccountTokenSnapshot_OrderBy) => () => {
     if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "desc",
-      });
-    } else if (queryArg.order.orderDirection === "desc") {
+        orderDirection: 'desc',
+      })
+    } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "asc",
-      });
+        orderDirection: 'asc',
+      })
     } else {
-      onOrderingChanged(defaultOrdering);
+      onOrderingChanged(defaultOrdering)
     }
-  };
+  }
 
   const onFilterChange = (newFilter: AccountTokenSnapshot_Filter) => {
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
       filter: newFilter,
-    });
-  };
+    })
+  }
 
   const getActiveStreamsStatusFilter = (
     status: StreamStatus | null
   ): AccountTokenSnapshot_Filter => {
     switch (status) {
       case StreamStatus.Active:
-        return { totalNumberOfActiveStreams_gt: 0 };
+        return { totalNumberOfActiveStreams_gt: 0 }
       case StreamStatus.Inactive:
-        return { totalNumberOfActiveStreams: 0 };
+        return { totalNumberOfActiveStreams: 0 }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   const changeActiveStreamsStatus = (newStatus: StreamStatus | null) => {
     const {
       totalNumberOfActiveStreams_gt,
       totalNumberOfActiveStreams,
       ...newFilter
-    } = queryArg.filter;
+    } = queryArg.filter
 
-    setActiveStreamsStatus(newStatus);
+    setActiveStreamsStatus(newStatus)
     onFilterChange({
       ...newFilter,
       ...getActiveStreamsStatusFilter(newStatus),
-    });
-  };
+    })
+  }
 
   const onActiveStreamsStatusChange = (
     _event: unknown,
     newStatus: StreamStatus
-  ) => changeActiveStreamsStatus(newStatus);
+  ) => changeActiveStreamsStatus(newStatus)
 
-  const clearActiveStreamsStatusFilter = () => changeActiveStreamsStatus(null);
+  const clearActiveStreamsStatusFilter = () => changeActiveStreamsStatus(null)
 
   const getInactiveStreamsStatusFilter = (
     status: StreamStatus | null
   ): AccountTokenSnapshot_Filter => {
     switch (status) {
       case StreamStatus.Active:
-        return { totalNumberOfClosedStreams: 0 };
+        return { totalNumberOfClosedStreams: 0 }
       case StreamStatus.Inactive:
-        return { totalNumberOfClosedStreams_gt: 0 };
+        return { totalNumberOfClosedStreams_gt: 0 }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   const changeInactiveStreamsStatus = (newStatus: StreamStatus | null) => {
     const {
       totalNumberOfClosedStreams,
       totalNumberOfClosedStreams_gt,
       ...newFilter
-    } = queryArg.filter;
+    } = queryArg.filter
 
-    setInactiveStreamsStatus(newStatus);
+    setInactiveStreamsStatus(newStatus)
     onFilterChange({
       ...newFilter,
       ...getInactiveStreamsStatusFilter(newStatus),
-    });
-  };
+    })
+  }
 
   const onInactiveStreamsStatusChange = (
     _event: unknown,
     newStatus: StreamStatus
-  ) => changeInactiveStreamsStatus(newStatus);
+  ) => changeInactiveStreamsStatus(newStatus)
 
   const clearInactiveStreamsStatusFilter = () =>
-    changeInactiveStreamsStatus(null);
+    changeInactiveStreamsStatus(null)
 
   const getSubsWithUnitsStatusFilter = (
     status: UnitsStatus | null
   ): AccountTokenSnapshot_Filter => {
     switch (status) {
       case UnitsStatus.Issued:
-        return { totalSubscriptionsWithUnits_gt: 0 };
+        return { totalSubscriptionsWithUnits_gt: 0 }
       case UnitsStatus.NotIssued:
-        return { totalSubscriptionsWithUnits: 0 };
+        return { totalSubscriptionsWithUnits: 0 }
       default:
-        return {};
+        return {}
     }
-  };
+  }
 
   const changeSubsWithUnitsStatus = (newStatus: UnitsStatus | null) => {
     const {
       totalSubscriptionsWithUnits_gt,
       totalSubscriptionsWithUnits,
       ...newFilter
-    } = queryArg.filter;
+    } = queryArg.filter
 
-    setSubsWithUnitsStatus(newStatus);
+    setSubsWithUnitsStatus(newStatus)
     onFilterChange({
       ...newFilter,
       ...getSubsWithUnitsStatusFilter(newStatus),
-    });
-  };
+    })
+  }
 
   const onSubsWithUnitsStatusChange = (
     _event: unknown,
     newStatus: UnitsStatus
-  ) => changeSubsWithUnitsStatus(newStatus);
+  ) => changeSubsWithUnitsStatus(newStatus)
 
-  const clearSubsWithUnitsStatusFilter = () => changeSubsWithUnitsStatus(null);
+  const clearSubsWithUnitsStatusFilter = () => changeSubsWithUnitsStatus(null)
 
-  const openFilter = () => setShowFilterMenu(true);
-  const closeFilter = () => setShowFilterMenu(false);
+  const openFilter = () => setShowFilterMenu(true)
+  const closeFilter = () => setShowFilterMenu(false)
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    closeFilter();
-  };
+    e.preventDefault()
+    closeFilter()
+  }
 
   const resetFilter = () => {
-    setActiveStreamsStatus(null);
-    setInactiveStreamsStatus(null);
-    setSubsWithUnitsStatus(null);
-    onFilterChange(defaultFilter);
-    closeFilter();
-  };
+    setActiveStreamsStatus(null)
+    setInactiveStreamsStatus(null)
+    setSubsWithUnitsStatus(null)
+    onFilterChange(defaultFilter)
+    closeFilter()
+  }
 
-  const tableRows = queryResult.data?.data || [];
-  const hasNextPage = !!queryResult.data?.nextPaging;
+  const tableRows = queryResult.data?.data || []
+  const hasNextPage = !!queryResult.data?.nextPaging
 
-  const { filter, order, pagination } = queryArg;
+  const { filter, order, pagination } = queryArg
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
-    queryResult.data?.paging || {};
+    queryResult.data?.paging || {}
 
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
-        <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
+        <Typography sx={{ flex: '1 1 100%' }} variant="h6" component="h2">
           Super Tokens
         </Typography>
 
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mx: 2 }}>
           {activeStreamsStatus !== null && (
             <Chip
-              data-cy={"chip-active"}
+              data-cy={'chip-active'}
               label={
                 activeStreamsStatus === StreamStatus.Active
-                  ? "Has active streams"
-                  : "Has no active streams"
+                  ? 'Has active streams'
+                  : 'Has no active streams'
               }
               size="small"
               onDelete={clearActiveStreamsStatusFilter}
@@ -299,11 +299,11 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
 
           {inactiveStreamsStatus !== null && (
             <Chip
-              data-cy={"chip-inactive"}
+              data-cy={'chip-inactive'}
               label={
                 inactiveStreamsStatus === StreamStatus.Inactive
-                  ? "Has inactive streams"
-                  : "Has no inactive streams"
+                  ? 'Has inactive streams'
+                  : 'Has no inactive streams'
               }
               size="small"
               onDelete={clearInactiveStreamsStatusFilter}
@@ -312,11 +312,11 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
 
           {subsWithUnitsStatus !== null && (
             <Chip
-              data-cy={"chip-units"}
+              data-cy={'chip-units'}
               label={
                 subsWithUnitsStatus === UnitsStatus.Issued
-                  ? "Has subscriptions with units"
-                  : "Has no subscriptions with units"
+                  ? 'Has subscriptions with units'
+                  : 'Has no subscriptions with units'
               }
               size="small"
               onDelete={clearSubsWithUnitsStatusFilter}
@@ -333,11 +333,11 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
           open={showFilterMenu}
           anchorEl={filterAnchorRef.current}
           onClose={closeFilter}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <Stack
-            sx={{ p: 3, pb: 2, minWidth: "300px" }}
+            sx={{ p: 3, pb: 2, minWidth: '300px' }}
             component="form"
             onSubmit={onFormSubmit}
             noValidate
@@ -356,13 +356,13 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 onChange={onActiveStreamsStatusChange}
               >
                 <ToggleButton
-                  data-cy={"filter-active-yes"}
+                  data-cy={'filter-active-yes'}
                   value={StreamStatus.Active}
                 >
                   Yes
                 </ToggleButton>
                 <ToggleButton
-                  data-cy={"filter-active-no"}
+                  data-cy={'filter-active-no'}
                   value={StreamStatus.Inactive}
                 >
                   No
@@ -383,13 +383,13 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 onChange={onInactiveStreamsStatusChange}
               >
                 <ToggleButton
-                  data-cy={"filter-closed-yes"}
+                  data-cy={'filter-closed-yes'}
                   value={StreamStatus.Inactive}
                 >
                   Yes
                 </ToggleButton>
                 <ToggleButton
-                  data-cy={"filter-closed-no"}
+                  data-cy={'filter-closed-no'}
                   value={StreamStatus.Active}
                 >
                   No
@@ -410,13 +410,13 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 onChange={onSubsWithUnitsStatusChange}
               >
                 <ToggleButton
-                  data-cy={"filter-subscriptions-units-yes"}
+                  data-cy={'filter-subscriptions-units-yes'}
                   value={UnitsStatus.Issued}
                 >
                   Yes
                 </ToggleButton>
                 <ToggleButton
-                  data-cy={"filter-subscriptions-units-no"}
+                  data-cy={'filter-subscriptions-units-no'}
                   value={UnitsStatus.NotIssued}
                 >
                   No
@@ -428,22 +428,22 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
               {(activeStreamsStatus !== null ||
                 inactiveStreamsStatus !== null ||
                 subsWithUnitsStatus !== null) && (
-                  <Button
-                    data-cy={"reset-filter"}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
-              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
+              <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
           </Stack>
         </Popover>
       </Toolbar>
-      <Table sx={{ tableLayout: "fixed" }}>
+      <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             <TableCell>Token</TableCell>
@@ -453,7 +453,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 title={
                   <>
                     The balance this account holds of this supertoken, at the
-                    current time{" "}
+                    current time{' '}
                   </>
                 }
                 iconSx={{ mb: 0, mr: 0.5 }}
@@ -468,46 +468,46 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
             </TableCell>
             <TableCell width="160px">
               <TableSortLabel
-                active={order?.orderBy === "totalNumberOfActiveStreams"}
+                active={order?.orderBy === 'totalNumberOfActiveStreams'}
                 direction={
-                  order?.orderBy === "totalNumberOfActiveStreams"
+                  order?.orderBy === 'totalNumberOfActiveStreams'
                     ? order?.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("totalNumberOfActiveStreams")}
+                onClick={onSortClicked('totalNumberOfActiveStreams')}
               >
                 Active Streams
               </TableSortLabel>
             </TableCell>
             <TableCell width="160px">
               <TableSortLabel
-                active={order?.orderBy === "totalNumberOfClosedStreams"}
+                active={order?.orderBy === 'totalNumberOfClosedStreams'}
                 direction={
-                  order?.orderBy === "totalNumberOfClosedStreams"
+                  order?.orderBy === 'totalNumberOfClosedStreams'
                     ? order?.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("totalNumberOfClosedStreams")}
+                onClick={onSortClicked('totalNumberOfClosedStreams')}
               >
                 Closed Streams
               </TableSortLabel>
             </TableCell>
             <TableCell width="260px">
               <TableSortLabel
-                active={order?.orderBy === "totalSubscriptionsWithUnits"}
+                active={order?.orderBy === 'totalSubscriptionsWithUnits'}
                 direction={
-                  order?.orderBy === "totalSubscriptionsWithUnits"
+                  order?.orderBy === 'totalSubscriptionsWithUnits'
                     ? order?.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("totalSubscriptionsWithUnits")}
+                onClick={onSortClicked('totalSubscriptionsWithUnits')}
               >
                 Subscriptions With Units
                 <InfoTooltipBtn
                   title={
                     <>
                       The amount of subscribers on an index that hold some
-                      number of units.{" "}
+                      number of units.{' '}
                       <AppLink
                         href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
                         target="_blank"
@@ -567,13 +567,13 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                 />
               </TableCell>
 
-              <TableCell data-cy={"active-streams"}>
+              <TableCell data-cy={'active-streams'}>
                 {tokenSnapshot.totalNumberOfActiveStreams}
               </TableCell>
-              <TableCell data-cy={"closed-streams"}>
+              <TableCell data-cy={'closed-streams'}>
                 {tokenSnapshot.totalNumberOfClosedStreams}
               </TableCell>
-              <TableCell data-cy={"subscriptions-with-units"}>
+              <TableCell data-cy={'subscriptions-with-units'}>
                 {tokenSnapshot.totalSubscriptionsWithUnits}
               </TableCell>
             </TableRow>
@@ -583,10 +583,10 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
             <TableRow>
               <TableCell
                 colSpan={5}
-                sx={{ border: 0, height: "96px" }}
+                sx={{ border: 0, height: '96px' }}
                 align="center"
               >
-                <Typography data-cy={"no-results"} variant="body1">
+                <Typography data-cy={'no-results'} variant="body1">
                   No results
                 </Typography>
               </TableCell>
@@ -609,7 +609,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                   hasNext={hasNextPage}
                   onPageChange={setPage}
                   onPageSizeChange={setPageSize}
-                  sx={{ justifyContent: "flex-end" }}
+                  sx={{ justifyContent: 'flex-end' }}
                 />
               </TableCell>
             </TableRow>
@@ -617,7 +617,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
         )}
       </Table>
     </>
-  );
-};
+  )
+}
 
-export default AccountTokenSnapshotTable;
+export default AccountTokenSnapshotTable

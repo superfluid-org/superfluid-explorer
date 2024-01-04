@@ -1,9 +1,7 @@
-import CloseIcon from "@mui/icons-material/Close";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import FilterListIcon from '@mui/icons-material/FilterList'
 import {
   Box,
   Button,
-  CircularProgress,
   IconButton,
   OutlinedInput,
   Popover,
@@ -18,123 +16,123 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@mui/material";
+} from '@mui/material'
 import {
   createSkipPaging,
-  EventListQuery,
   Event_Filter,
   Event_OrderBy,
+  EventListQuery,
   Ordering,
-} from "@superfluid-finance/sdk-core";
-import omit from "lodash/fp/omit";
-import set from "lodash/fp/set";
-import isEqual from "lodash/isEqual";
-import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
-import useDebounce from "../../hooks/useDebounce";
-import { Network } from "../../redux/networks";
-import { sfSubgraph } from "../../redux/store";
-import ClearInputAdornment from "./ClearInputAdornment";
-import InfinitePagination from "./InfinitePagination";
-import TableLoader from "./TableLoader";
-import TimeAgo from "../TimeAgo/TimeAgo";
-import { TransactionHash } from "../TransactionHash/TransactionHash";
+} from '@superfluid-finance/sdk-core'
+import omit from 'lodash/fp/omit'
+import set from 'lodash/fp/set'
+import isEqual from 'lodash/isEqual'
+import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
+
+import useDebounce from '../../hooks/useDebounce'
+import { Network } from '../../redux/networks'
+import { sfSubgraph } from '../../redux/store'
+import TimeAgo from '../TimeAgo/TimeAgo'
+import { TransactionHash } from '../TransactionHash/TransactionHash'
+import ClearInputAdornment from './ClearInputAdornment'
+import InfinitePagination from './InfinitePagination'
+import TableLoader from './TableLoader'
 
 interface EventsQuery extends EventListQuery {
-  chainId: number;
+  chainId: number
 }
 
 const defaultOrdering = {
-  orderBy: "timestamp",
-  orderDirection: "desc",
-} as Ordering<Event_OrderBy>;
+  orderBy: 'timestamp',
+  orderDirection: 'desc',
+} as Ordering<Event_OrderBy>
 
 export const defaultPaging = createSkipPaging({
   take: 10,
-});
+})
 
 interface EventTableProps {
-  network: Network;
-  accountAddress: string;
+  network: Network
+  accountAddress: string
 }
 
-type RequiredEventsQuery = Required<Omit<EventsQuery, "block">>;
+type RequiredEventsQuery = Required<Omit<EventsQuery, 'block'>>
 
 const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
-  const filterAnchorRef = useRef(null);
-  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const filterAnchorRef = useRef(null)
+  const [showFilterMenu, setShowFilterMenu] = useState(false)
 
   const defaultFilter = {
-    timestamp_gt: "0",
+    timestamp_gt: '0',
     addresses_contains: [accountAddress],
-  };
+  }
 
   const createDefaultArg = (): RequiredEventsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
     order: defaultOrdering,
-  });
+  })
 
-  const [queryArg, setQueryArg] = useState<RequiredEventsQuery>(
-    createDefaultArg()
-  );
+  const [queryArg, setQueryArg] =
+    useState<RequiredEventsQuery>(createDefaultArg())
 
-  const [queryTrigger, queryResult] = sfSubgraph.useLazyEventsQuery();
+  const [queryTrigger, queryResult] = sfSubgraph.useLazyEventsQuery()
 
-  const queryTriggerDebounced = useDebounce(queryTrigger, 250);
+  const queryTriggerDebounced = useDebounce(queryTrigger, 250)
 
   const onQueryArgChanged = (newArgs: RequiredEventsQuery) => {
-    setQueryArg(newArgs);
+    setQueryArg(newArgs)
 
     if (
       queryResult.originalArgs &&
       !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      queryTriggerDebounced(newArgs, true);
+      queryTriggerDebounced(newArgs, true)
     } else {
-      queryTrigger(newArgs, true);
+      queryTrigger(newArgs, true)
     }
-  };
+  }
 
   useEffect(() => {
-    onQueryArgChanged(createDefaultArg());
+    onQueryArgChanged(createDefaultArg())
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, accountAddress]);
+  }, [network, accountAddress])
 
   const setPage = (newPage: number) =>
     onQueryArgChanged(
-      set("pagination.skip", (newPage - 1) * queryArg.pagination.take, queryArg)
-    );
+      set('pagination.skip', (newPage - 1) * queryArg.pagination.take, queryArg)
+    )
 
   const setPageSize = (newPageSize: number) =>
-    onQueryArgChanged(set("pagination.take", newPageSize, queryArg));
+    onQueryArgChanged(set('pagination.take', newPageSize, queryArg))
 
   const onFilterChange = (newFilter: Event_Filter) => {
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
       filter: newFilter,
-    });
-  };
+    })
+  }
 
   const onOrderingChanged = (newOrdering: Ordering<Event_OrderBy>) =>
-    onQueryArgChanged({ ...queryArg, order: newOrdering });
+    onQueryArgChanged({ ...queryArg, order: newOrdering })
 
   const onSortClicked = (field: Event_OrderBy) => () => {
     if (queryArg.order?.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "desc",
-      });
-    } else if (queryArg.order.orderDirection === "desc") {
+        orderDirection: 'desc',
+      })
+    } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: "asc",
-      });
+        orderDirection: 'asc',
+      })
     } else {
-      onOrderingChanged(defaultOrdering);
+      onOrderingChanged(defaultOrdering)
     }
-  };
+  }
 
   const onFilterFieldChange =
     (field: keyof Event_Filter) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -142,42 +140,42 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
         onFilterChange({
           ...queryArg.filter,
           [field]: e.target.value,
-        });
+        })
       } else {
-        onFilterChange(omit(field, queryArg.filter));
+        onFilterChange(omit(field, queryArg.filter))
       }
-    };
+    }
 
   const clearFilterField =
     (...fields: Array<keyof Event_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter));
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
-  const openFilter = () => setShowFilterMenu(true);
-  const closeFilter = () => setShowFilterMenu(false);
+  const openFilter = () => setShowFilterMenu(true)
+  const closeFilter = () => setShowFilterMenu(false)
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    closeFilter();
-  };
+    e.preventDefault()
+    closeFilter()
+  }
 
   const resetFilter = () => {
-    onFilterChange(defaultFilter);
-    closeFilter();
-  };
+    onFilterChange(defaultFilter)
+    closeFilter()
+  }
 
-  const tableRows = queryResult.data?.data || [];
-  const hasNextPage = !!queryResult.data?.nextPaging;
+  const tableRows = queryResult.data?.data || []
+  const hasNextPage = !!queryResult.data?.nextPaging
 
-  const { filter, order, pagination } = queryArg;
+  const { filter, order, pagination } = queryArg
 
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
-    queryResult.data?.paging || {};
+    queryResult.data?.paging || {}
 
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
-        <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="h2">
+        <Typography sx={{ flex: '1 1 100%' }} variant="h6" component="h2">
           Events
         </Typography>
         <Tooltip disableFocusListener title="Filter">
@@ -189,11 +187,11 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
           open={showFilterMenu}
           anchorEl={filterAnchorRef.current}
           onClose={closeFilter}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <Stack
-            sx={{ p: 3, pb: 2, minWidth: "300px" }}
+            sx={{ p: 3, pb: 2, minWidth: '300px' }}
             component="form"
             onSubmit={onFormSubmit}
             noValidate
@@ -207,13 +205,13 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                 autoFocus
                 fullWidth
                 size="small"
-                value={filter.name_contains || ""}
-                onChange={onFilterFieldChange("name_contains")}
-                data-cy={"event_name_input"}
+                value={filter.name_contains || ''}
+                onChange={onFilterFieldChange('name_contains')}
+                data-cy={'event_name_input'}
                 endAdornment={
                   filter.name_contains && (
                     <ClearInputAdornment
-                      onClick={clearFilterField("name_contains")}
+                      onClick={clearFilterField('name_contains')}
                     />
                   )
                 }
@@ -227,13 +225,13 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
               <OutlinedInput
                 fullWidth
                 size="small"
-                value={filter.transactionHash_contains || ""}
-                onChange={onFilterFieldChange("transactionHash_contains")}
-                data-cy={"transaction_hash_input"}
+                value={filter.transactionHash_contains || ''}
+                onChange={onFilterFieldChange('transactionHash_contains')}
+                data-cy={'transaction_hash_input'}
                 endAdornment={
                   filter.transactionHash_contains && (
                     <ClearInputAdornment
-                      onClick={clearFilterField("transactionHash_contains")}
+                      onClick={clearFilterField('transactionHash_contains')}
                     />
                   )
                 }
@@ -242,18 +240,22 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               {(filter.name_contains || filter.transactionHash_contains) && (
-                <Button data-cy={"reset-filter"} onClick={resetFilter} tabIndex={-1}>
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
                   Reset
                 </Button>
               )}
-              <Button data-cy={"close-filter"} type="submit" tabIndex={-1}>
+              <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
             </Stack>
           </Stack>
         </Popover>
       </Toolbar>
-      <Table sx={{ tableLayout: "fixed" }}>
+      <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
@@ -261,13 +263,13 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
             <TableCell>Transaction Hash</TableCell>
             <TableCell width="160px">
               <TableSortLabel
-                active={order?.orderBy === "timestamp"}
+                active={order?.orderBy === 'timestamp'}
                 direction={
-                  order?.orderBy === "timestamp"
+                  order?.orderBy === 'timestamp'
                     ? order?.orderDirection
-                    : "desc"
+                    : 'desc'
                 }
-                onClick={onSortClicked("timestamp")}
+                onClick={onSortClicked('timestamp')}
               >
                 Timestamp
               </TableSortLabel>
@@ -277,11 +279,11 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
         <TableBody>
           {tableRows.map((event) => (
             <TableRow key={event.id} hover>
-              <TableCell data-cy={"event-name"}>{event.name}</TableCell>
-              <TableCell data-cy={"event-block-number"}>
+              <TableCell data-cy={'event-name'}>{event.name}</TableCell>
+              <TableCell data-cy={'event-block-number'}>
                 {event.blockNumber}
               </TableCell>
-              <TableCell data-cy={"transaction-hash"}>
+              <TableCell data-cy={'transaction-hash'}>
                 <TransactionHash
                   network={network}
                   transactionHash={event.transactionHash}
@@ -290,7 +292,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
               <TableCell>
                 <TimeAgo
                   subgraphTime={event.timestamp}
-                  typographyProps={{ typography: "body2" }}
+                  typographyProps={{ typography: 'body2' }}
                 />
               </TableCell>
             </TableRow>
@@ -299,10 +301,12 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
             <TableRow>
               <TableCell
                 colSpan={4}
-                sx={{ border: 0, height: "96px" }}
+                sx={{ border: 0, height: '96px' }}
                 align="center"
               >
-                <Typography data-cy={"no-results"} variant="body1">No results</Typography>
+                <Typography data-cy={'no-results'} variant="body1">
+                  No results
+                </Typography>
               </TableCell>
             </TableRow>
           )}
@@ -323,7 +327,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
                   hasNext={hasNextPage}
                   onPageChange={setPage}
                   onPageSizeChange={setPageSize}
-                  sx={{ justifyContent: "flex-end" }}
+                  sx={{ justifyContent: 'flex-end' }}
                 />
               </TableCell>
             </TableRow>
@@ -331,6 +335,6 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
         )}
       </Table>
     </>
-  );
-};
-export default EventTable;
+  )
+}
+export default EventTable

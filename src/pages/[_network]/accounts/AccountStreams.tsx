@@ -1,9 +1,10 @@
-import { FC, ReactElement } from "react";
-import { Network } from "../../../redux/networks";
-import AppLink from "../../../components/AppLink/AppLink";
-import HelpAlert from "../../../components/Info/HelpAlert";
-import AccountIncomingStreamsTable from "../../../components/Table/Account/AccountIncomingStreamsTable";
-import AccountOutgoingStreamsTable from "../../../components/Table/Account/AccountOutgoingStreamsTable";
+import { FC, ReactElement } from 'react'
+
+import AppLink from '../../../components/AppLink/AppLink'
+import HelpAlert from '../../../components/Info/HelpAlert'
+import AccountIncomingStreamsTable from '../../../components/Table/Account/AccountIncomingStreamsTable'
+import AccountOutgoingStreamsTable from '../../../components/Table/Account/AccountOutgoingStreamsTable'
+import { Network } from '../../../redux/networks'
 
 const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
   network,
@@ -11,14 +12,14 @@ const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
 }): ReactElement => {
   return (
     <>
-      <HelpAlert dataCy={"streams-help-alert"}>
+      <HelpAlert dataCy={'streams-help-alert'}>
         Stream represents super token flow between a sender and a receiver.
         Sender accounts can create, update, and delete streams, while receiver
         accounts can delete streams. However, a pair of addresses may only have
         one stream open per token (but this stream may be updated at any time by
-        the sender).{" "}
+        the sender).{' '}
         <AppLink
-          data-cy={"streams-help-alert-link"}
+          data-cy={'streams-help-alert-link'}
           href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/money-streaming-1"
           target="_blank"
         >
@@ -36,7 +37,7 @@ const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
         accountAddress={accountAddress}
       />
     </>
-  );
-};
+  )
+}
 
-export default AccountStreams;
+export default AccountStreams
