@@ -32,55 +32,64 @@ import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 
-import AccountAddress from '../../../components/Address/AccountAddress'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
-import AppLink from '../../../components/AppLink/AppLink'
 import DetailsButton from '../../../components/Details/DetailsButton'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
-import { DistributionStatus } from '../../../components/Table/Account/AccountIndexPublicationsTable'
 import ClearInputAdornment from '../../../components/Table/ClearInputAdornment'
 import InfinitePagination from '../../../components/Table/InfinitePagination'
 import TableLoader from '../../../components/Table/TableLoader'
+import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import useDebounce from '../../../hooks/useDebounce'
 import { Network } from '../../../redux/networks'
 import { sfSubgraph } from '../../../redux/store'
 import { IndexPublicationDetailsDialog } from '../indexes/IndexPublicationDetails'
 
-const defaultOrdering = {
+export enum DistributionStatus {
+  Distributed,
+  NotDistributed,
+}
+
+export enum UnitsStatus {
+  Issued,
+  NotIssued,
+}
+
+export const publishedIndexOrderingDefault: Ordering<Index_OrderBy> = {
   orderBy: 'createdAtTimestamp',
   orderDirection: 'desc',
-} as Ordering<Index_OrderBy>
+}
 
-export const defaultPaging = createSkipPaging({
+export const publishedIndexPagingDefault = createSkipPaging({
   take: 10,
 })
 
-interface SuperTokenIndexesTableProps {
+interface AccountPublishedIndexesTableProps {
   network: Network
-  tokenAddress: string
+  accountAddress: string
 }
 
 type RequiredIndexesQuery = Required<Omit<IndexesQuery, 'block'>>
 
-const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
+const AccountIndexPublicationsTable: FC<AccountPublishedIndexesTableProps> = ({
   network,
-  tokenAddress,
+  accountAddress,
 }) => {
   const filterAnchorRef = useRef(null)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
 
   const [distributionStatus, setDistributionStatus] =
     useState<DistributionStatus | null>(null)
+  const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null)
 
   const defaultFilter = {
-    token: tokenAddress,
+    publisher: accountAddress,
   }
 
   const createDefaultArg = (): RequiredIndexesQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: defaultPaging,
-    order: defaultOrdering,
+    pagination: publishedIndexPagingDefault,
+    order: publishedIndexOrderingDefault,
   })
 
   const [queryArg, setQueryArg] =
@@ -106,7 +115,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
   useEffect(() => {
     onQueryArgChanged(createDefaultArg())
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, tokenAddress])
+  }, [network, accountAddress])
 
   const setPage = (newPage: number) =>
     onQueryArgChanged(
@@ -131,28 +140,28 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
         orderDirection: 'asc',
       })
     } else {
-      onOrderingChanged(defaultOrdering)
+      onOrderingChanged(publishedIndexOrderingDefault)
     }
   }
 
-  const onFilterChange = (newFilter: Index_Filter) =>
+  const onFilterChange = (newFilter: Index_Filter) => {
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
       filter: newFilter,
     })
+  }
 
-  const onStringFilterChange =
-    (field: string) => (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.value) {
-        onFilterChange({
-          ...queryArg.filter,
-          [field]: e.target.value.toLowerCase(),
-        })
-      } else {
-        onFilterChange(omit(field, queryArg.filter))
-      }
+  const onIndexIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      onFilterChange({
+        ...queryArg.filter,
+        indexId: e.target.value,
+      })
+    } else {
+      onFilterChange(omit('indexId', queryArg.filter))
     }
+  }
 
   const getDistributionStatusFilter = (
     status: DistributionStatus | null
@@ -188,6 +197,32 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
 
   const clearDistributionStatusFilter = () => changeDistributionStatus(null)
 
+  const getUnitsStatusFilter = (status: UnitsStatus | null): Index_Filter => {
+    switch (status) {
+      case UnitsStatus.Issued:
+        return { totalUnits_gt: '0' }
+      case UnitsStatus.NotIssued:
+        return { totalUnits: '0' }
+      default:
+        return {}
+    }
+  }
+
+  const changeUnitsStatus = (newStatus: UnitsStatus | null) => {
+    const { totalUnits_gt, totalUnits, ...newFilter } = queryArg.filter
+
+    setUnitsStatus(newStatus)
+    onFilterChange({
+      ...newFilter,
+      ...getUnitsStatusFilter(newStatus),
+    })
+  }
+
+  const onUnitsStatusChange = (_event: unknown, newStatus: UnitsStatus) =>
+    changeUnitsStatus(newStatus)
+
+  const clearUnitsStatusFilter = () => changeUnitsStatus(null)
+
   const clearFilterField =
     (...fields: Array<keyof Index_Filter>) =>
     () =>
@@ -203,6 +238,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
 
   const resetFilter = () => {
     setDistributionStatus(null)
+    setUnitsStatus(null)
     onFilterChange(defaultFilter)
     closeFilter()
   }
@@ -212,14 +248,16 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
 
   const { filter, order, pagination } = queryArg
 
-  const { skip = defaultPaging.skip, take = defaultPaging.take } =
-    queryResult.data?.paging || {}
+  const {
+    skip = publishedIndexPagingDefault.skip,
+    take = publishedIndexPagingDefault.take,
+  } = queryResult.data?.paging || {}
 
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
         <Typography sx={{ flex: '1 1 100%' }} variant="h6" component="h2">
-          Indexes
+          Publications
         </Typography>
 
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mx: 2 }}>
@@ -235,19 +273,6 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
             />
           )}
 
-          {filter.publisher_contains && (
-            <Chip
-              label={
-                <>
-                  Publisher:{' '}
-                  <b data-cy={'chip-publisher'}>{filter.publisher_contains}</b>
-                </>
-              }
-              size="small"
-              onDelete={clearFilterField('publisher_contains')}
-            />
-          )}
-
           {distributionStatus !== null && (
             <Chip
               data-cy={'chip-distributed'}
@@ -260,10 +285,27 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
               onDelete={clearDistributionStatusFilter}
             />
           )}
+
+          {unitsStatus !== null && (
+            <Chip
+              data-cy={'chip-units'}
+              label={
+                unitsStatus === UnitsStatus.Issued
+                  ? 'Has issued units'
+                  : 'Has not issued units'
+              }
+              size="small"
+              onDelete={clearUnitsStatusFilter}
+            />
+          )}
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton ref={filterAnchorRef} onClick={openFilter}>
+          <IconButton
+            data-cy={'publications-filter'}
+            ref={filterAnchorRef}
+            onClick={openFilter}
+          >
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -291,33 +333,12 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 type="number"
                 inputProps={{ min: 0 }}
                 value={filter.indexId || ''}
-                onChange={onStringFilterChange('indexId')}
+                onChange={onIndexIdChange}
                 data-cy={'indexId-input'}
                 endAdornment={
                   filter.indexId && (
                     <ClearInputAdornment
                       onClick={clearFilterField('indexId')}
-                    />
-                  )
-                }
-              />
-            </Box>
-
-            <Box>
-              <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
-                Publisher address
-              </Typography>
-              <OutlinedInput
-                fullWidth
-                size="small"
-                inputProps={{ min: 0 }}
-                value={filter.publisher_contains || ''}
-                onChange={onStringFilterChange('publisher_contains')}
-                data-cy={'publisher-address-input'}
-                endAdornment={
-                  filter.publisher_contains && (
-                    <ClearInputAdornment
-                      onClick={clearFilterField('publisher_contains')}
                     />
                   )
                 }
@@ -351,10 +372,37 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
               </ToggleButtonGroup>
             </Box>
 
+            <Box>
+              <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
+                Has issued units?
+              </Typography>
+
+              <ToggleButtonGroup
+                size="small"
+                exclusive
+                fullWidth
+                value={unitsStatus}
+                onChange={onUnitsStatusChange}
+              >
+                <ToggleButton
+                  data-cy={'filter-issued-yes'}
+                  value={UnitsStatus.Issued}
+                >
+                  Yes
+                </ToggleButton>
+                <ToggleButton
+                  data-cy={'filter-issued-no'}
+                  value={UnitsStatus.NotIssued}
+                >
+                  No
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               {(filter.indexId ||
-                filter.publisher_contains ||
-                distributionStatus !== null) && (
+                distributionStatus !== null ||
+                unitsStatus !== null) && (
                 <Button
                   data-cy={'reset-filter'}
                   onClick={resetFilter}
@@ -373,34 +421,15 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
       <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
-            <TableCell width="160px">Index ID</TableCell>
-            <TableCell>
-              Publisher
-              <InfoTooltipBtn
-                title={
-                  <>
-                    The creator of an index using the IDA - publishers may
-                    update the index of subscribers and distribute funds to
-                    subscribers.{' '}
-                    <AppLink
-                      href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"
-                      target="_blank"
-                    >
-                      Read more
-                    </AppLink>
-                  </>
-                }
-                iconSx={{ mb: 0, mr: 0.5 }}
-              />
-            </TableCell>
+            <TableCell>Index ID</TableCell>
             <TableCell>
               <TableSortLabel
                 active={
-                  order.orderBy === 'totalAmountDistributedUntilUpdatedAt'
+                  order?.orderBy === 'totalAmountDistributedUntilUpdatedAt'
                 }
                 direction={
-                  order.orderBy === 'totalAmountDistributedUntilUpdatedAt'
-                    ? order.orderDirection
+                  order?.orderBy === 'totalAmountDistributedUntilUpdatedAt'
+                    ? order?.orderDirection
                     : 'desc'
                 }
                 onClick={onSortClicked('totalAmountDistributedUntilUpdatedAt')}
@@ -408,15 +437,32 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 Total Distributed
               </TableSortLabel>
             </TableCell>
-            <TableCell width="220px">
+            <TableCell>
               <TableSortLabel
-                active={order.orderBy === 'createdAtTimestamp'}
+                active={order?.orderBy === 'totalUnits'}
                 direction={
-                  order.orderBy === 'createdAtTimestamp'
-                    ? order.orderDirection
+                  order?.orderBy === 'totalUnits'
+                    ? order?.orderDirection
                     : 'desc'
                 }
-                onClick={onSortClicked('createdAtTimestamp')}
+                onClick={onSortClicked('totalUnits')}
+              >
+                Total Units
+                <InfoTooltipBtn
+                  title="The sum of total pending and approved units issued to subscribers."
+                  iconSx={{ mb: 0, mr: 0.5 }}
+                />
+              </TableSortLabel>
+            </TableCell>
+            <TableCell width="140px">
+              <TableSortLabel
+                active={order?.orderBy === 'updatedAtTimestamp'}
+                direction={
+                  order?.orderBy === 'updatedAtTimestamp'
+                    ? order?.orderDirection
+                    : 'desc'
+                }
+                onClick={onSortClicked('updatedAtTimestamp')}
               >
                 Created
               </TableSortLabel>
@@ -427,27 +473,27 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
         <TableBody>
           {tableRows.map((index) => (
             <TableRow key={index.id} hover>
-              <TableCell data-cy={'index-id'}>{index.indexId}</TableCell>
-              <TableCell>
-                <AccountAddress
-                  dataCy={'publisher'}
-                  network={network}
-                  address={index.publisher}
-                  ellipsis={6}
-                />
+              <TableCell data-cy={'publications-index-id'}>
+                {index.indexId}
               </TableCell>
-              <TableCell data-cy={'total-distributed'}>
+              <TableCell data-cy={'publications-total-distributed'}>
                 <BalanceWithToken
                   wei={index.totalAmountDistributedUntilUpdatedAt}
                   network={network}
                   tokenAddress={index.token}
                 />
               </TableCell>
+              <TableCell data-cy={'publications-units'}>
+                {index.totalUnits}
+              </TableCell>
               <TableCell>
-                {new Date(index.createdAtTimestamp * 1000).toLocaleString()}
+                <TimeAgo
+                  subgraphTime={index.createdAtTimestamp}
+                  typographyProps={{ typography: 'body2' }}
+                />
               </TableCell>
 
-              <TableCell align="right">
+              <TableCell data-cy={'publications-details-buttons'} align="right">
                 <IndexPublicationDetailsDialog
                   network={network}
                   indexId={index.id.toString()}
@@ -465,7 +511,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
                 sx={{ border: 0, height: '96px' }}
                 align="center"
               >
-                <Typography data-cy={'no-results'} variant="body1">
+                <Typography data-cy={'publications-no-results'} variant="body1">
                   No results
                 </Typography>
               </TableCell>
@@ -499,4 +545,4 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
   )
 }
 
-export default SuperTokenIndexesTable
+export default AccountIndexPublicationsTable

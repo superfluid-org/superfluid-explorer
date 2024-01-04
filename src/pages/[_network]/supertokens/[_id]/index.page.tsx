@@ -40,9 +40,9 @@ import { useAppSelector } from '../../../../redux/hooks'
 import { streamGranularityInSeconds } from '../../../../redux/slices/appPreferences.slice'
 import { rpcApi, sfSubgraph } from '../../../../redux/store'
 import SubgraphQueryLink from '../../../subgraph/SubgraphQueryLink'
-import SuperTokenIndexes from '../SuperTokenIndexes'
-import SuperTokenPools from '../SuperTokenPools'
-import SuperTokenStreams from '../SuperTokenStreams'
+import SuperTokenIndexes from './SuperTokenIndexes'
+import SuperTokenPools from './SuperTokenPools'
+import SuperTokenStreams from './SuperTokenStreams'
 
 const SuperTokenPage: NextPage = () => {
   const network = useNetworkContext()
@@ -522,8 +522,12 @@ const SuperTokenPage: NextPage = () => {
               aria-label="tabs"
             >
               <Tab data-cy={'streams-tab'} label="Streams" value="streams" />
-              <Tab data-cy={'indexes-tab'} label="Indexes" value="indexes" />
-              <Tab data-cy={'pools-tab'} label="Pools" value="pools" />
+              <Tab
+                data-cy={'indexes-tab'}
+                label="Indexes (IDA)"
+                value="indexes"
+              />
+              <Tab data-cy={'pools-tab'} label="Pools (GDA)" value="pools" />
               <Tab data-cy={'events-tab'} label="Events" value="events" />
             </TabList>
           </Box>

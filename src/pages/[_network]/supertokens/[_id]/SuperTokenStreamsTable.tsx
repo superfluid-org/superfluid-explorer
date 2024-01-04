@@ -1,6 +1,5 @@
 import FilterListIcon from '@mui/icons-material/FilterList'
 import {
-  Box,
   Button,
   Chip,
   IconButton,
@@ -20,6 +19,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
+import { Box } from '@mui/system'
 import {
   createSkipPaging,
   Ordering,
@@ -32,133 +32,141 @@ import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 
-import useDebounce from '../../../hooks/useDebounce'
-import { StreamDetailsDialog } from '../../../pages/[_network]/streams/StreamDetails'
-import { Network } from '../../../redux/networks'
-import { sfSubgraph } from '../../../redux/store'
-import AccountAddress from '../../Address/AccountAddress'
-import FlowingBalanceWithToken from '../../Amount/FlowingBalanceWithToken'
-import FlowRate from '../../Amount/FlowRate'
-import DetailsButton from '../../Details/DetailsButton'
-import InfoTooltipBtn from '../../Info/InfoTooltipBtn'
-import TimeAgo from '../../TimeAgo/TimeAgo'
-import ClearInputAdornment from '../ClearInputAdornment'
-import InfinitePagination from '../InfinitePagination'
-import TableLoader from '../TableLoader'
-import { StreamStatus } from './AccountIncomingStreamsTable'
+import AccountAddress from '../../../../components/Address/AccountAddress'
+import FlowRate from '../../../../components/Amount/FlowRate'
+import DetailsButton from '../../../../components/Details/DetailsButton'
+import InfoTooltipBtn from '../../../../components/Info/InfoTooltipBtn'
+import ClearInputAdornment from '../../../../components/Table/ClearInputAdornment'
+import InfinitePagination from '../../../../components/Table/InfinitePagination'
+import TableLoader from '../../../../components/Table/TableLoader'
+import useDebounce from '../../../../hooks/useDebounce'
+import { Network } from '../../../../redux/networks'
+import { sfSubgraph } from '../../../../redux/store'
+import { StreamStatus } from '../../accounts/AccountIncomingStreamsTable'
+import { StreamDetailsDialog } from '../../streams/StreamDetails'
 
-export const outgoingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
-  orderBy: 'updatedAtTimestamp',
+const defaultOrdering = {
+  orderBy: 'createdAtTimestamp',
   orderDirection: 'desc',
-}
+} as Ordering<Stream_OrderBy>
 
-export const outgoingStreamPagingDefault = createSkipPaging({
+export const defaultPaging = createSkipPaging({
   take: 10,
 })
 
-interface AccountOutgoingStreamsTableProps {
+interface SuperTokenStreamsTableProps {
   network: Network
-  accountAddress: string
+  tokenAddress: string
 }
 
 type RequiredStreamsQuery = Required<Omit<StreamsQuery, 'block'>>
 
-const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
+const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
   network,
-  accountAddress,
+  tokenAddress,
 }) => {
   const filterAnchorRef = useRef(null)
+
   const [showFilterMenu, setShowFilterMenu] = useState(false)
+
   const [streamStatus, setStreamStatus] = useState<StreamStatus | null>(null)
 
   const defaultFilter = {
-    sender: accountAddress,
+    token: tokenAddress,
   }
 
   const createDefaultArg = (): RequiredStreamsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: outgoingStreamPagingDefault,
-    order: outgoingStreamOrderingDefault,
+    pagination: defaultPaging,
+    order: defaultOrdering,
   })
 
-  const [streamsQueryArg, setStreamsQueryArg] =
+  const [queryArg, setQueryArg] =
     useState<RequiredStreamsQuery>(createDefaultArg())
 
-  const [streamsQueryTrigger, streamsQueryResult] =
-    sfSubgraph.useLazyStreamsQuery()
+  const [queryTrigger, queryResult] = sfSubgraph.useLazyStreamsQuery()
 
-  const streamsQueryTriggerDebounced = useDebounce(streamsQueryTrigger, 250)
+  const queryTriggerDebounced = useDebounce(queryTrigger, 250)
 
-  const onStreamQueryArgsChanged = (newArgs: RequiredStreamsQuery) => {
-    setStreamsQueryArg(newArgs)
+  const onQueryArgChanged = (newArgs: RequiredStreamsQuery) => {
+    setQueryArg(newArgs)
 
     if (
-      streamsQueryResult.originalArgs &&
-      !isEqual(streamsQueryResult.originalArgs.filter, newArgs.filter)
+      queryResult.originalArgs &&
+      !isEqual(queryResult.originalArgs.filter, newArgs.filter)
     ) {
-      streamsQueryTriggerDebounced(newArgs, true)
+      queryTriggerDebounced(newArgs, true)
     } else {
-      streamsQueryTrigger(newArgs, true)
+      queryTrigger(newArgs, true)
     }
   }
 
   useEffect(() => {
-    onStreamQueryArgsChanged(createDefaultArg())
+    onQueryArgChanged(createDefaultArg())
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, accountAddress])
+  }, [network, tokenAddress])
 
   const setPage = (newPage: number) =>
-    onStreamQueryArgsChanged(
-      set(
-        'pagination.skip',
-        (newPage - 1) * streamsQueryArg.pagination.take,
-        streamsQueryArg
-      )
+    onQueryArgChanged(
+      set('pagination.skip', (newPage - 1) * queryArg.pagination.take, queryArg)
     )
 
   const setPageSize = (newPageSize: number) =>
-    onStreamQueryArgsChanged(
-      set('pagination.take', newPageSize, streamsQueryArg)
-    )
+    onQueryArgChanged(set('pagination.take', newPageSize, queryArg))
 
   const onOrderingChanged = (newOrdering: Ordering<Stream_OrderBy>) =>
-    onStreamQueryArgsChanged({ ...streamsQueryArg, order: newOrdering })
+    onQueryArgChanged({ ...queryArg, order: newOrdering })
 
   const onSortClicked = (field: Stream_OrderBy) => () => {
-    if (streamsQueryArg.order?.orderBy !== field) {
+    if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
         orderDirection: 'desc',
       })
-    } else if (streamsQueryArg.order.orderDirection === 'desc') {
+    } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
         orderDirection: 'asc',
       })
     } else {
-      onOrderingChanged(outgoingStreamOrderingDefault)
+      onOrderingChanged(defaultOrdering)
     }
   }
 
-  const onFilterChange = (newFilter: Stream_Filter) => {
-    onStreamQueryArgsChanged({
-      ...streamsQueryArg,
-      pagination: { ...streamsQueryArg.pagination, skip: 0 },
+  const onFilterChange = (newFilter: Stream_Filter) =>
+    onQueryArgChanged({
+      ...queryArg,
+      pagination: { ...queryArg.pagination, skip: 0 },
       filter: newFilter,
     })
+
+  const onSenderChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      onFilterChange({
+        ...queryArg.filter,
+        sender_contains: e.target.value.toLowerCase(),
+      })
+    } else {
+      onFilterChange(omit('sender_contains', queryArg.filter))
+    }
   }
 
   const onReceiverChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
       onFilterChange({
-        ...streamsQueryArg.filter,
+        ...queryArg.filter,
         receiver_contains: e.target.value.toLowerCase(),
       })
     } else {
-      onFilterChange(omit('receiver_contains', streamsQueryArg.filter))
+      onFilterChange(omit('receiver_contains', queryArg.filter))
     }
   }
+
+  const clearFilterField =
+    (...fields: Array<keyof Stream_Filter>) =>
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const getStreamStatusFilter = (
     status: StreamStatus | null
@@ -175,7 +183,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
 
   const changeStreamStatus = (newStatus: StreamStatus | null) => {
     const { currentFlowRate_gt, currentFlowRate, ...newFilter } =
-      streamsQueryArg.filter
+      queryArg.filter
 
     setStreamStatus(newStatus)
     onFilterChange({
@@ -188,11 +196,6 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
     changeStreamStatus(newStatus)
 
   const clearStreamStatusFilter = () => changeStreamStatus(null)
-
-  const clearFilterField =
-    (...fields: Array<keyof Stream_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, streamsQueryArg.filter))
 
   const openFilter = () => setShowFilterMenu(true)
   const closeFilter = () => setShowFilterMenu(false)
@@ -208,29 +211,40 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
     closeFilter()
   }
 
-  const tableRows = streamsQueryResult.data?.data || []
-  const hasNextPage = !!streamsQueryResult.data?.nextPaging
+  const tableRows = queryResult.data?.data || []
+  const hasNextPage = !!queryResult.data?.nextPaging
 
-  const { filter, order, pagination } = streamsQueryArg
+  const { filter, order, pagination } = queryArg
 
-  const {
-    skip = outgoingStreamPagingDefault.skip,
-    take = outgoingStreamPagingDefault.take,
-  } = streamsQueryResult.data?.paging || {}
+  const { skip = defaultPaging.skip, take = defaultPaging.take } =
+    queryResult.data?.paging || {}
 
   return (
     <>
       <Toolbar sx={{ mt: 3, px: 1 }} variant="dense" disableGutters>
         <Typography sx={{ flex: '1 1 100%' }} variant="h6" component="h2">
-          Outgoing streams
+          Streams
         </Typography>
 
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mx: 2 }}>
-          {filter.receiver_contains && (
+          {filter.sender_contains && (
             <Chip
               label={
                 <>
                   Sender:{' '}
+                  <b data-cy={'chip-sender'}>{filter.sender_contains}</b>
+                </>
+              }
+              size="small"
+              onDelete={clearFilterField('sender_contains')}
+            />
+          )}
+
+          {filter.receiver_contains && (
+            <Chip
+              label={
+                <>
+                  Receiver:{' '}
                   <b data-cy={'chip-receiver'}>{filter.receiver_contains}</b>
                 </>
               }
@@ -238,6 +252,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
               onDelete={clearFilterField('receiver_contains')}
             />
           )}
+
           {streamStatus !== null && (
             <Chip
               label={
@@ -257,11 +272,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
-          <IconButton
-            data-cy={'outgoing-filter-button'}
-            ref={filterAnchorRef}
-            onClick={openFilter}
-          >
+          <IconButton ref={filterAnchorRef} onClick={openFilter}>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -281,10 +292,30 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
           >
             <Box>
               <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
-                Receiver address
+                Sender address
               </Typography>
               <OutlinedInput
                 autoFocus
+                fullWidth
+                size="small"
+                value={filter.sender_contains || ''}
+                onChange={onSenderChange}
+                data-cy={'sender-address-input'}
+                endAdornment={
+                  filter.sender_contains && (
+                    <ClearInputAdornment
+                      onClick={clearFilterField('sender_contains')}
+                    />
+                  )
+                }
+              />
+            </Box>
+
+            <Box>
+              <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
+                Receiver address
+              </Typography>
+              <OutlinedInput
                 fullWidth
                 size="small"
                 value={filter.receiver_contains || ''}
@@ -299,6 +330,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 }
               />
             </Box>
+
             <Box>
               <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
                 Is stream active?
@@ -327,7 +359,9 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
             </Box>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {(filter.receiver_contains || streamStatus !== null) && (
+              {(filter.sender_contains ||
+                filter.receiver_contains ||
+                streamStatus !== null) && (
                 <Button
                   data-cy={'reset-filter'}
                   onClick={resetFilter}
@@ -346,15 +380,14 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
       <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
-            <TableCell width="220px">Receiver</TableCell>
-            <TableCell>Total Streamed</TableCell>
+            <TableCell>Sender</TableCell>
+            <TableCell>Receiver</TableCell>
             <TableCell>
               <TableSortLabel
-                sx={{ transition: 'all 200ms ease-in-out' }}
-                active={order?.orderBy === 'currentFlowRate'}
+                active={order.orderBy === 'currentFlowRate'}
                 direction={
-                  order?.orderBy === 'currentFlowRate'
-                    ? order?.orderDirection
+                  order.orderBy === 'currentFlowRate'
+                    ? order.orderDirection
                     : 'desc'
                 }
                 onClick={onSortClicked('currentFlowRate')}
@@ -366,54 +399,49 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 />
               </TableSortLabel>
             </TableCell>
-            <TableCell width="140px">
+            <TableCell width="200px">
               <TableSortLabel
-                active={order?.orderBy === 'updatedAtTimestamp'}
+                active={order.orderBy === 'createdAtTimestamp'}
                 direction={
-                  order?.orderBy === 'updatedAtTimestamp'
-                    ? order?.orderDirection
+                  order.orderBy === 'createdAtTimestamp'
+                    ? order.orderDirection
                     : 'desc'
                 }
-                onClick={onSortClicked('updatedAtTimestamp')}
+                onClick={onSortClicked('createdAtTimestamp')}
               >
-                Updated
+                Created
               </TableSortLabel>
             </TableCell>
-            <TableCell width="68px"></TableCell>
+            <TableCell width="68px" />
           </TableRow>
         </TableHead>
         <TableBody>
           {tableRows.map((stream) => (
             <TableRow key={stream.id} hover>
-              <TableCell data-cy={'outgoing-receiver'}>
+              <TableCell>
                 <AccountAddress
+                  dataCy={'sender'}
+                  network={network}
+                  address={stream.sender}
+                  ellipsis={6}
+                />
+              </TableCell>
+              <TableCell>
+                <AccountAddress
+                  dataCy={'receiver'}
                   network={network}
                   address={stream.receiver}
                   ellipsis={6}
                 />
               </TableCell>
-              <TableCell data-cy={'outgoing-total-streamed'}>
-                <FlowingBalanceWithToken
-                  balance={stream.streamedUntilUpdatedAt}
-                  balanceTimestamp={stream.updatedAtTimestamp}
-                  flowRate={stream.currentFlowRate}
-                  TokenChipProps={{
-                    network,
-                    tokenAddress: stream.token,
-                  }}
-                />
-              </TableCell>
-              <TableCell data-cy={'outgoing-flow-rate'}>
+              <TableCell>
                 <FlowRate flowRate={stream.currentFlowRate} />
               </TableCell>
               <TableCell>
-                <TimeAgo
-                  subgraphTime={stream.updatedAtTimestamp}
-                  typographyProps={{ typography: 'body2' }}
-                />
+                {new Date(stream.createdAtTimestamp * 1000).toLocaleString()}
               </TableCell>
 
-              <TableCell data-cy={'outgoing-details'} align="right">
+              <TableCell align="right">
                 <StreamDetailsDialog network={network} streamId={stream.id}>
                   {(onClick) => <DetailsButton onClick={onClick} />}
                 </StreamDetailsDialog>
@@ -421,14 +449,14 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
             </TableRow>
           ))}
 
-          {streamsQueryResult.isSuccess && tableRows.length === 0 && (
+          {queryResult.isSuccess && tableRows.length === 0 && (
             <TableRow>
               <TableCell
                 colSpan={5}
                 sx={{ border: 0, height: '96px' }}
                 align="center"
               >
-                <Typography data-cy={'outgoing-no-results'} variant="body1">
+                <Typography data-cy={'no-results'} variant="body1">
                   No results
                 </Typography>
               </TableCell>
@@ -436,9 +464,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
           )}
 
           <TableLoader
-            isLoading={
-              streamsQueryResult.isLoading || streamsQueryResult.isFetching
-            }
+            isLoading={queryResult.isLoading || queryResult.isFetching}
             showSpacer={tableRows.length === 0}
           />
         </TableBody>
@@ -449,7 +475,7 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
                 <InfinitePagination
                   page={skip / take + 1}
                   pageSize={pagination.take}
-                  isLoading={streamsQueryResult.isFetching}
+                  isLoading={queryResult.isFetching}
                   hasNext={hasNextPage}
                   onPageChange={setPage}
                   onPageSizeChange={setPageSize}
@@ -464,4 +490,4 @@ const AccountOutgoingStreamsTable: FC<AccountOutgoingStreamsTableProps> = ({
   )
 }
 
-export default AccountOutgoingStreamsTable
+export default SuperTokenStreamsTable

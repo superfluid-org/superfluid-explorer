@@ -1,4 +1,4 @@
-import { Box,Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import NextLink from 'next/link'
 import { FC, memo } from 'react'
 

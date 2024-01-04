@@ -6,7 +6,7 @@ import GraphiQL, { FetcherParams } from 'graphiql'
 // @ts-ignore
 import GraphiQLExplorer from 'graphiql-explorer'
 import type { GraphQLSchema } from 'graphql'
-import { buildClientSchema, getIntrospectionQuery, parse,print } from 'graphql'
+import { buildClientSchema, getIntrospectionQuery, parse, print } from 'graphql'
 import { request } from 'graphql-request'
 import _ from 'lodash'
 import { useRouter } from 'next/router'

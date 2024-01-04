@@ -1,6 +1,6 @@
 import StarIcon from '@mui/icons-material/Star'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
-import { Avatar,IconButton, SvgIconProps, Tooltip } from '@mui/material'
+import { Avatar, IconButton, SvgIconProps, Tooltip } from '@mui/material'
 import { FC, useState } from 'react'
 
 import { useAppSelector } from '../../redux/hooks'

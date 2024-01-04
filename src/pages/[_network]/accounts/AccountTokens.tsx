@@ -2,8 +2,8 @@ import { FC, ReactElement } from 'react'
 
 import AppLink from '../../../components/AppLink/AppLink'
 import HelpAlert from '../../../components/Info/HelpAlert'
-import AccountTokenSnapshotTable from '../../../components/Table/Account/AccountTokenSnapshotTable'
 import { Network } from '../../../redux/networks'
+import AccountTokenSnapshotTable from './AccountTokenSnapshotTable'
 
 const AccountTokens: FC<{
   network: Network

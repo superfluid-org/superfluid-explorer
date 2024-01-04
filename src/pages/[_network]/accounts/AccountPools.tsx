@@ -2,9 +2,9 @@ import { FC, ReactElement } from 'react'
 
 import AppLink from '../../../components/AppLink/AppLink'
 import HelpAlert from '../../../components/Info/HelpAlert'
-import AccountPoolAdminsTable from '../../../components/Table/Account/AccountPoolAdminsTable'
-import AccountPoolMembersTable from '../../../components/Table/Account/AccountPoolMembersTable'
 import { Network } from '../../../redux/networks'
+import AccountPoolAdminsTable from './AccountPoolAdminsTable'
+import AccountPoolMembersTable from './AccountPoolMembersTable'
 
 const AccountPools: FC<{
   network: Network

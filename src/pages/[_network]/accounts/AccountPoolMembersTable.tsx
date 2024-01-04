@@ -28,8 +28,14 @@ import isEqual from 'lodash/isEqual'
 import { FC, FormEvent, useEffect, useRef, useState } from 'react'
 
 import calculatePoolPercentage from '../../../calculatePoolPercentage'
+import AccountAddress from '../../../components/Address/AccountAddress'
+import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import AppLink from '../../../components/AppLink/AppLink'
+import DetailsButton from '../../../components/Details/DetailsButton'
+import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import InfinitePagination from '../../../components/Table/InfinitePagination'
+import TableLoader from '../../../components/Table/TableLoader'
 import useDebounce from '../../../hooks/useDebounce'
-import { PoolMemberDetailsDialog } from '../../../pages/[_network]/pool-members/PoolMemberDetails'
 import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
 import {
@@ -37,13 +43,7 @@ import {
   PoolMember_OrderBy,
 } from '../../../subgraphs/gda/.graphclient'
 import { PoolMembersQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
-import AccountAddress from '../../Address/AccountAddress'
-import BalanceWithToken from '../../Amount/BalanceWithToken'
-import AppLink from '../../AppLink/AppLink'
-import DetailsButton from '../../Details/DetailsButton'
-import InfoTooltipBtn from '../../Info/InfoTooltipBtn'
-import InfinitePagination from '../InfinitePagination'
-import TableLoader from '../TableLoader'
+import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
 import { UnitsStatus } from './AccountPoolAdminsTable'
 
 enum MemberStatus {

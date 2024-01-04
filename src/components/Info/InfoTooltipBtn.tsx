@@ -2,7 +2,6 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
 import { SxProps, Tooltip } from '@mui/material'
 import { FC } from 'react'
 
-
 interface InfoTooltipBtnProps {
   title: NonNullable<React.ReactNode>
   size?: number | string

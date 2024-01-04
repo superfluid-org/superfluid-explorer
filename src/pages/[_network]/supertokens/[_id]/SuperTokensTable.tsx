@@ -32,14 +32,14 @@ import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 
-import useDebounce from '../../hooks/useDebounce'
-import { Network } from '../../redux/networks'
-import { sfSubgraph } from '../../redux/store'
-import AppLink from '../AppLink/AppLink'
-import InfoTooltipBtn from '../Info/InfoTooltipBtn'
-import ClearInputAdornment from './ClearInputAdornment'
-import InfinitePagination from './InfinitePagination'
-import TableLoader from './TableLoader'
+import AppLink from '../../../../components/AppLink/AppLink'
+import InfoTooltipBtn from '../../../../components/Info/InfoTooltipBtn'
+import ClearInputAdornment from '../../../../components/Table/ClearInputAdornment'
+import InfinitePagination from '../../../../components/Table/InfinitePagination'
+import TableLoader from '../../../../components/Table/TableLoader'
+import useDebounce from '../../../../hooks/useDebounce'
+import { Network } from '../../../../redux/networks'
+import { sfSubgraph } from '../../../../redux/store'
 
 export enum ListedStatus {
   Listed,

@@ -40,19 +40,19 @@ import {
   useState,
 } from 'react'
 
+import AccountAddress from '../../../components/Address/AccountAddress'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
+import FlowRate from '../../../components/Amount/FlowRate'
+import DetailsButton from '../../../components/Details/DetailsButton'
+import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import ClearInputAdornment from '../../../components/Table/ClearInputAdornment'
+import InfinitePagination from '../../../components/Table/InfinitePagination'
+import TableLoader from '../../../components/Table/TableLoader'
+import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import useDebounce from '../../../hooks/useDebounce'
-import { StreamDetailsDialog } from '../../../pages/[_network]/streams/StreamDetails'
 import { Network } from '../../../redux/networks'
 import { sfSubgraph } from '../../../redux/store'
-import AccountAddress from '../../Address/AccountAddress'
-import FlowingBalanceWithToken from '../../Amount/FlowingBalanceWithToken'
-import FlowRate from '../../Amount/FlowRate'
-import DetailsButton from '../../Details/DetailsButton'
-import InfoTooltipBtn from '../../Info/InfoTooltipBtn'
-import TimeAgo from '../../TimeAgo/TimeAgo'
-import ClearInputAdornment from '../ClearInputAdornment'
-import InfinitePagination from '../InfinitePagination'
-import TableLoader from '../TableLoader'
+import { StreamDetailsDialog } from '../streams/StreamDetails'
 
 export const incomingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
   orderBy: 'updatedAtTimestamp',

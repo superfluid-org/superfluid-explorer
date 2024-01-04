@@ -2,9 +2,9 @@ import { FC, ReactElement } from 'react'
 
 import AppLink from '../../../components/AppLink/AppLink'
 import InfoHelpAlert from '../../../components/Info/HelpAlert'
-import AccountIndexPublicationsTable from '../../../components/Table/Account/AccountIndexPublicationsTable'
-import AccountIndexSubscriptionsTable from '../../../components/Table/Account/AccountIndexSubscriptionsTable'
 import { Network } from '../../../redux/networks'
+import AccountIndexPublicationsTable from './AccountIndexPublicationsTable'
+import AccountIndexSubscriptionsTable from './AccountIndexSubscriptionsTable'
 
 const AccountIndexes: FC<{
   network: Network

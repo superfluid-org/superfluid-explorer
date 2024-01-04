@@ -2,9 +2,9 @@ import { FC, ReactElement } from 'react'
 
 import AppLink from '../../../components/AppLink/AppLink'
 import HelpAlert from '../../../components/Info/HelpAlert'
-import AccountIncomingStreamsTable from '../../../components/Table/Account/AccountIncomingStreamsTable'
-import AccountOutgoingStreamsTable from '../../../components/Table/Account/AccountOutgoingStreamsTable'
 import { Network } from '../../../redux/networks'
+import AccountIncomingStreamsTable from './AccountIncomingStreamsTable'
+import AccountOutgoingStreamsTable from './AccountOutgoingStreamsTable'
 
 const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
   network,

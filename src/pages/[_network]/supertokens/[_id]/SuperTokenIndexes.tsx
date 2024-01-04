@@ -1,9 +1,9 @@
 import { FC, ReactElement } from 'react'
 
-import AppLink from '../../../components/AppLink/AppLink'
-import HelpAlert from '../../../components/Info/HelpAlert'
-import { Network } from '../../../redux/networks'
-import SuperTokenIndexesTable from './SuperTokenIndexesTable'
+import AppLink from '../../../../components/AppLink/AppLink'
+import HelpAlert from '../../../../components/Info/HelpAlert'
+import { Network } from '../../../../redux/networks'
+import SuperTokenIndexesTable from '../[_id]/SuperTokenIndexesTable'
 
 interface Props {
   network: Network

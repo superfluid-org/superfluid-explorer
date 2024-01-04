@@ -1,8 +1,4 @@
-import {
-  Tooltip,
-  TooltipProps,
-  Typography,
-} from '@mui/material'
+import { Tooltip, TooltipProps, Typography } from '@mui/material'
 import { TypographyProps } from '@mui/system'
 import React, { FC, useMemo } from 'react'
 

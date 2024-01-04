@@ -2,7 +2,7 @@ import React, { FC, ReactNode, useState } from 'react'
 
 import DetailsDialog from '../../../components/Details/DetailsDialog'
 import { Network } from '../../../redux/networks'
-import { PoolPageContent } from './[_id].page'
+import { PoolPageContent } from './PoolPageContent'
 
 export const PoolPublicationDetailsDialog: FC<{
   network: Network

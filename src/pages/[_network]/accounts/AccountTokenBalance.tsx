@@ -1,8 +1,6 @@
 import { FC, PropsWithChildren } from 'react'
 
-import {
-  FlowingBalanceProps,
-} from '../../../components/Amount/FlowingBalance'
+import { FlowingBalanceProps } from '../../../components/Amount/FlowingBalance'
 import { Network } from '../../../redux/networks'
 import { rpcApi } from '../../../redux/store'
 

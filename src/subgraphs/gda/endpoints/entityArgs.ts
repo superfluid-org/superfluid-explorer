@@ -1,6 +1,4 @@
-import {
-  SubgraphGetQuery,
-} from '@superfluid-finance/sdk-core'
+import { SubgraphGetQuery } from '@superfluid-finance/sdk-core'
 
 import { PoolListQuery } from '../entities/pool/pool'
 import { PoolMembersListQuery } from '../entities/poolMember/poolMember'

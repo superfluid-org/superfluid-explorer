@@ -2,7 +2,7 @@
 import 'reactflow/dist/style.css'
 
 import { ethers } from 'ethers'
-import { FC, memo,ReactElement, useCallback, useEffect } from 'react'
+import { FC, memo, ReactElement, useCallback, useEffect } from 'react'
 import ReactFlow, {
   addEdge,
   Background,

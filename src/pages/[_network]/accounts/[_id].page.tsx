@@ -33,22 +33,6 @@ import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
 import AccountNetworkSelect from '../../../components/NetworkSelect/AccountNetworkSelect'
 import SkeletonAddress from '../../../components/Skeleton/SkeletonAddress'
 import SkeletonNetwork from '../../../components/Skeleton/SkeletonNetwork'
-import {
-  incomingStreamOrderingDefault,
-  incomingStreamPagingDefault,
-} from '../../../components/Table/Account/AccountIncomingStreamsTable'
-import {
-  publishedIndexOrderingDefault,
-  publishedIndexPagingDefault,
-} from '../../../components/Table/Account/AccountIndexPublicationsTable'
-import {
-  indexSubscriptionOrderingDefault,
-  indexSubscriptionPagingDefault,
-} from '../../../components/Table/Account/AccountIndexSubscriptionsTable'
-import {
-  outgoingStreamOrderingDefault,
-  outgoingStreamPagingDefault,
-} from '../../../components/Table/Account/AccountOutgoingStreamsTable'
 import EventTableWithInfo from '../../../components/Table/EventTableWithInfo'
 import TokenChip from '../../../components/TokenChip/TokenChip'
 import IdContext from '../../../contexts/IdContext'
@@ -62,8 +46,24 @@ import { ensApi } from '../../../redux/slices/ensResolver.slice'
 import { sfSubgraph } from '../../../redux/store'
 import ellipsisAddress from '../../../utils/ellipsisAddress'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
+import {
+  incomingStreamOrderingDefault,
+  incomingStreamPagingDefault,
+} from './AccountIncomingStreamsTable'
 import AccountIndexes from './AccountIndexes'
+import {
+  publishedIndexOrderingDefault,
+  publishedIndexPagingDefault,
+} from './AccountIndexPublicationsTable'
+import {
+  indexSubscriptionOrderingDefault,
+  indexSubscriptionPagingDefault,
+} from './AccountIndexSubscriptionsTable'
 import AccountMap from './AccountMap'
+import {
+  outgoingStreamOrderingDefault,
+  outgoingStreamPagingDefault,
+} from './AccountOutgoingStreamsTable'
 import AccountPools from './AccountPools'
 import AccountStreams from './AccountStreams'
 import AccountTokenBalance from './AccountTokenBalance'
@@ -105,7 +105,7 @@ const AccountPage: NextPage = () => {
 
   const router = useRouter()
   const { tab } = router.query
-  const [tabValue, setTabValue] = useState<string>((tab as string) ?? 'streams')
+  const [tabValue, setTabValue] = useState<string>((tab as string) ?? 'tokens')
 
   useEffect(() => {
     router.replace({
@@ -373,7 +373,12 @@ const AccountPage: NextPage = () => {
               aria-label="tabs"
             >
               <Tab
-                label="Streams"
+                data-cy={'super-tokens-tab'}
+                label="Super Tokens"
+                value="tokens"
+              />
+              <Tab
+                label="Streams (CFA)"
                 data-cy={'streams-tab'}
                 value="streams"
                 onMouseEnter={() => {
@@ -399,7 +404,7 @@ const AccountPage: NextPage = () => {
               />
               <Tab
                 data-cy={'indexes-tab'}
-                label="Indexes"
+                label="Indexes (IDA)"
                 value="indexes"
                 onMouseEnter={() => {
                   if (network) {
@@ -424,7 +429,7 @@ const AccountPage: NextPage = () => {
               />
               <Tab
                 data-cy={'pools-tab'}
-                label="Pools"
+                label="Pools (GDA)"
                 value="pools"
                 onMouseEnter={() => {
                   if (network) {
@@ -447,11 +452,7 @@ const AccountPage: NextPage = () => {
                   }
                 }}
               />
-              <Tab
-                data-cy={'super-tokens-tab'}
-                label="Super Tokens"
-                value="tokens"
-              />
+
               <Tab data-cy={'events-tab'} label="Events" value="events" />
               <Tab data-cy={'map-tab'} label="Map" value="map" />
             </TabList>
