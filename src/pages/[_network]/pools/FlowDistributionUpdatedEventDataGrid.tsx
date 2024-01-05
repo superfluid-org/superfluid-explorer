@@ -43,6 +43,22 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
 }) => {
   const network = useNetworkContext()
 
+  const rows: FlowDistribution[] =
+    queryResult.data && pool
+      ? queryResult.data.data.map((x) => ({
+        id: x.id,
+        timestamp: x.timestamp,
+        newDistributorToPoolFlowRate: x.newDistributorToPoolFlowRate,
+        newTotalDistributionFlowRate: x.newTotalDistributionFlowRate,
+        adjustmentFlowRate: BigNumber.from(
+          x.adjustmentFlowRate
+        ),
+        adjustmentFlowRecipient:
+          x.adjustmentFlowRecipient,
+        operator: x.operator,
+      }))
+      : []
+
   const columns: GridColDef[] = useMemo(
     () => [
       { field: 'id', hide: true, sortable: false, flex: 1 },
@@ -60,28 +76,8 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
         ),
       },
       {
-        field: 'adjustmentFlowRecipient',
-        headerName: 'Adjustment Flow Recipient',
-        sortable: true,
-        flex: 0.5,
-        renderCell: (params) => (
-          <AccountAddress
-            dataCy={'adjustment-flow-recipient-address'}
-            network={network}
-            address={params.value}
-          />
-        ),
-      },
-      {
-        field: 'timestamp',
-        headerName: 'Distribution Date',
-        sortable: true,
-        flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
-      },
-      {
-        field: 'adjustmentFlowRate',
-        headerName: 'Adjustment Flow Rate',
+        field: 'newDistributorToPoolFlowRate',
+        headerName: 'newDistributorToPoolFlowRate',
         hide: false,
         sortable: false,
         flex: 1.5,
@@ -102,23 +98,76 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
           )
         },
       },
+      {
+        field: 'newTotalDistributionFlowRate',
+        headerName: 'newTotalDistributionFlowRate',
+        hide: false,
+        sortable: false,
+        flex: 1.5,
+        renderCell: (params) => {
+          return (
+            <>
+              <EtherFormatted wei={params.value} />
+              &nbsp;
+              {pool && (
+                <SuperTokenAddress
+                  network={network}
+                  address={pool.token}
+                  format={(token) => token.symbol}
+                  formatLoading={() => ''}
+                />
+              )}
+            </>
+          )
+        },
+      },
+      {
+        field: 'adjustmentFlowRecipient',
+        headerName: 'Adjustment Flow Recipient',
+        hide: true,
+        sortable: true,
+        flex: 0.5,
+        renderCell: (params) => (
+          <AccountAddress
+            dataCy={'adjustment-flow-recipient-address'}
+            network={network}
+            address={params.value}
+          />
+        ),
+      },
+      {
+        field: 'adjustmentFlowRate',
+        headerName: 'Adjustment Flow Rate',
+        hide: true,
+        sortable: false,
+        flex: 1.5,
+        renderCell: (params) => {
+          return (
+            <>
+              <EtherFormatted wei={params.value} />
+              &nbsp;
+              {pool && (
+                <SuperTokenAddress
+                  network={network}
+                  address={pool.token}
+                  format={(token) => token.symbol}
+                  formatLoading={() => ''}
+                />
+              )}
+            </>
+          )
+        },
+      },
+      {
+        field: 'timestamp',
+        headerName: 'Distribution Date',
+        sortable: true,
+        flex: 0.5,
+        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+      },
     ],
     [pool, network]
   )
-
-  const rows: FlowDistribution[] =
-    queryResult.data && pool
-      ? queryResult.data.data.map((flowDistributionUpdatedEvent) => ({
-          id: flowDistributionUpdatedEvent.id,
-          timestamp: flowDistributionUpdatedEvent.timestamp,
-          adjustmentFlowRate: BigNumber.from(
-            flowDistributionUpdatedEvent.adjustmentFlowRate
-          ),
-          adjustmentFlowRecipient:
-            flowDistributionUpdatedEvent.adjustmentFlowRecipient,
-          operator: flowDistributionUpdatedEvent.operator,
-        }))
-      : []
 
   return (
     <AppDataGrid

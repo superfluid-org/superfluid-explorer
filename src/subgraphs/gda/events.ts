@@ -29,13 +29,13 @@ export interface InstantDistributionUpdatedEvent extends EventBase {
   name: 'InstantDistributionUpdated'
   id: SubgraphId
   actualAmount: string
+  requestedAmount: string
   operator: Address
   pool: Address
   poolDistributor: Address
-  requestedAmount: string
   token: Address
-  totalConnectedUnits: string
-  totalDisconnectedUnits: string
+  // totalConnectedUnits: string
+  // totalDisconnectedUnits: string
 }
 
 export interface FlowDistributionUpdatedEvent extends EventBase {

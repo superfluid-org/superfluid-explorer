@@ -27,24 +27,28 @@ interface Props {
 
 interface Distribution {
   id: string
-  totalConnectedUnits: string
-  totalDisconnectedUnits: string
+  // totalConnectedUnits: string
+  // totalDisconnectedUnits: string
   timestamp: number
-  distributionAmount: BigNumber
+  distributionAmount: BigNumber,
+  // requestedAmount: BigNumber,
 }
 
 const calculateDistributionAmount = (
   event: InstantDistributionUpdatedEvent
 ): BigNumber => {
-  const totalUnits = BigNumber.from(event.totalConnectedUnits).add(
-    BigNumber.from(event.totalDisconnectedUnits)
-  )
+  // const totalUnits = event.totalConnectedUnits.add(
+  //   event.totalDisconnectedUnits
+  // )
 
   // const indexValueDifference = BigNumber.from(event.newIndexValue).sub(
   //   BigNumber.from(event.oldIndexValue)
   // );
   //BUG HERE
-  return BigNumber.from(event.actualAmount).mul(totalUnits)
+
+  // return BigNumber.from(event.actualAmount).mul(totalUnits)
+
+  return BigNumber.from("0")
 }
 
 const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
@@ -55,6 +59,22 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
   setOrdering,
 }) => {
   const network = useNetworkContext()
+
+  const rows: Distribution[] =
+    queryResult.data && pool
+      ? queryResult.data.data.map((x) => ({
+        id: x.id,
+        distributionAmount: BigNumber.from(x.actualAmount),
+        // distributionAmount: calculateDistributionAmount(
+        //   instantDistributionUpdatedEvent
+        // ),
+        timestamp: x.timestamp,
+        // totalConnectedUnits:
+        //   instantDistributionUpdatedEvent.totalConnectedUnits,
+        // totalDisconnectedUnits:
+        //   instantDistributionUpdatedEvent.totalDisconnectedUnits,
+      }))
+      : []
 
   const columns: GridColDef[] = useMemo(
     () => [
@@ -89,21 +109,6 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
     ],
     [pool, network]
   )
-
-  const rows: Distribution[] =
-    queryResult.data && pool
-      ? queryResult.data.data.map((instantDistributionUpdatedEvent) => ({
-          id: instantDistributionUpdatedEvent.id,
-          distributionAmount: calculateDistributionAmount(
-            instantDistributionUpdatedEvent
-          ),
-          timestamp: instantDistributionUpdatedEvent.timestamp,
-          totalConnectedUnits:
-            instantDistributionUpdatedEvent.totalConnectedUnits,
-          totalDisconnectedUnits:
-            instantDistributionUpdatedEvent.totalDisconnectedUnits,
-        }))
-      : []
 
   return (
     <AppDataGrid

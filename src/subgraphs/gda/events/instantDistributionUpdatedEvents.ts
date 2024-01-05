@@ -15,6 +15,7 @@ import {
   PoolDistributor,
 } from '../.graphclient'
 import { InstantDistributionUpdatedEvent as PoolInstantDistributionUpdatedEvent } from '../events'
+import { BigNumber } from 'ethers'
 
 export type InstantDistributionUpdatedEventListQuery = SubgraphListQuery<
   InstantDistributionUpdatedEvent_Filter,
@@ -90,11 +91,9 @@ function mapGetAllEventsQueryEvent(
       pool: e.pool.id,
       poolDistributor: e.poolDistributor.id,
       token: e.token,
-      actualAmount: e.actualAmount,
       operator: e.operator,
+      actualAmount: e.actualAmount,
       requestedAmount: e.requestedAmount,
-      totalConnectedUnits: e.pool.totalConnectedUnits,
-      totalDisconnectedUnits: e.pool.totalDisconnectedUnits,
     } as PoolInstantDistributionUpdatedEvent
   })
 }
