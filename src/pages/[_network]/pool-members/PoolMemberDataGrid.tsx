@@ -37,7 +37,9 @@ const PoolMemberDataGrid: FC<Props> = ({
   ordering,
   setOrdering,
 }) => {
-  const columns: GridColDef[] = useMemo(
+  const rows: PoolMember[] = queryResult.data ? queryResult.data.data : []
+
+  const columns: GridColDef<PoolMember>[] = useMemo(
     () => [
       { field: 'id', hide: true },
       {
@@ -45,8 +47,10 @@ const PoolMemberDataGrid: FC<Props> = ({
         headerName: 'Created At',
         sortable: true,
         flex: 0.5,
-        renderCell: (params: GridRenderCellParams<number>) =>
-          params.value ? <TimeAgo subgraphTime={params.value} /> : null,
+        renderCell: (params) =>
+          params.row.createdAtTimestamp ? (
+            <TimeAgo subgraphTime={params.row.createdAtTimestamp} />
+          ) : null,
       },
       {
         field: 'approved',
@@ -100,10 +104,10 @@ const PoolMemberDataGrid: FC<Props> = ({
         field: 'units',
         headerName: 'Member Units',
         flex: 2,
-        renderCell: (params: GridRenderCellParams<string, PoolMember>) => {
+        renderCell: (params) => {
           return (
             <>
-              {params.value}&nbsp;
+              {params.row.units}&nbsp;
               {`(${calculatePoolPercentage(
                 new Decimal(params.row.poolTotalUnits),
                 new Decimal(params.row.units)
@@ -135,8 +139,6 @@ const PoolMemberDataGrid: FC<Props> = ({
     ],
     [network]
   )
-
-  const rows: PoolMember[] = queryResult.data ? queryResult.data.data : []
 
   return (
     <AppDataGrid

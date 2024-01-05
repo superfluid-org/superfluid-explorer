@@ -125,7 +125,7 @@ export const IndexSubscriptionDistributions: FC<{
         headerName: 'Distribution Date',
         sortable: true,
         flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
       },
       {
         field: 'newIndexValue',

@@ -42,7 +42,11 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
   ordering,
   setOrdering,
 }) => {
-  const columns: GridColDef[] = useMemo(
+  const rows: IndexSubscription[] = queryResult.data
+    ? queryResult.data.data
+    : []
+
+  const columns: GridColDef<IndexSubscription>[] = useMemo(
     () => [
       { field: 'id', hide: true },
       {
@@ -50,16 +54,16 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
         headerName: 'Created At',
         sortable: true,
         flex: 0.5,
-        renderCell: (params: GridRenderCellParams<number>) =>
-          params.value ? <TimeAgo subgraphTime={params.value} /> : null,
+        renderCell: (params) =>
+          params.row.createdAtTimestamp ? (
+            <TimeAgo subgraphTime={params.row.createdAtTimestamp} />
+          ) : null,
       },
       {
         field: 'approved',
         headerName: 'Approved',
         flex: 0.5,
-        renderCell: (params: GridRenderCellParams<boolean>) => (
-          <>{params.value ? 'Yes' : 'No'}</>
-        ),
+        renderCell: (params) => <>{params.row.approved ? 'Yes' : 'No'}</>,
         renderHeader: ({ colDef }) => (
           <>
             <GridColumnHeaderTitle
@@ -103,7 +107,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
         ) => {
           return (
             <>
-              {params.value}&nbsp;
+              {params.row.units}&nbsp;
               {`(${calculatePoolPercentage(
                 new Decimal(params.row.indexTotalUnits),
                 new Decimal(params.row.units)
@@ -135,10 +139,6 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
     ],
     [network]
   )
-
-  const rows: IndexSubscription[] = queryResult.data
-    ? queryResult.data.data
-    : []
 
   return (
     <AppDataGrid

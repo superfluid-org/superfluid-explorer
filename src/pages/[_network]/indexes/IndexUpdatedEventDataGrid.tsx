@@ -54,7 +54,18 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
 }) => {
   const network = useNetworkContext()
 
-  const columns: GridColDef[] = useMemo(
+  const rows: Distribution[] =
+    queryResult.data && index
+      ? queryResult.data.data.map((indexUpdatedEvent) => ({
+          id: indexUpdatedEvent.id,
+          distributionAmount: calculateDistributionAmount(indexUpdatedEvent),
+          timestamp: indexUpdatedEvent.timestamp,
+          totalUnitsApproved: indexUpdatedEvent.totalUnitsApproved,
+          totalUnitsPending: indexUpdatedEvent.totalUnitsPending,
+        }))
+      : []
+
+  const columns: GridColDef<Distribution>[] = useMemo(
     () => [
       { field: 'id', hide: true, sortable: false, flex: 1 },
       {
@@ -62,7 +73,7 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
         headerName: 'Distribution Date',
         sortable: true,
         flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
       },
       {
         field: 'distributionAmount',
@@ -73,7 +84,7 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
         renderCell: (params) => {
           return (
             <>
-              <EtherFormatted wei={params.value} />
+              <EtherFormatted wei={params.row.distributionAmount} />
               &nbsp;
               {index && (
                 <SuperTokenAddress
@@ -90,17 +101,6 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
     ],
     [index, network]
   )
-
-  const rows: Distribution[] =
-    queryResult.data && index
-      ? queryResult.data.data.map((indexUpdatedEvent) => ({
-          id: indexUpdatedEvent.id,
-          distributionAmount: calculateDistributionAmount(indexUpdatedEvent),
-          timestamp: indexUpdatedEvent.timestamp,
-          totalUnitsApproved: indexUpdatedEvent.totalUnitsApproved,
-          totalUnitsPending: indexUpdatedEvent.totalUnitsPending,
-        }))
-      : []
 
   return (
     <AppDataGrid

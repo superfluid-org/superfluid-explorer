@@ -30,25 +30,8 @@ interface Distribution {
   // totalConnectedUnits: string
   // totalDisconnectedUnits: string
   timestamp: number
-  distributionAmount: BigNumber,
-  // requestedAmount: BigNumber,
-}
-
-const calculateDistributionAmount = (
-  event: InstantDistributionUpdatedEvent
-): BigNumber => {
-  // const totalUnits = event.totalConnectedUnits.add(
-  //   event.totalDisconnectedUnits
-  // )
-
-  // const indexValueDifference = BigNumber.from(event.newIndexValue).sub(
-  //   BigNumber.from(event.oldIndexValue)
-  // );
-  //BUG HERE
-
-  // return BigNumber.from(event.actualAmount).mul(totalUnits)
-
-  return BigNumber.from("0")
+  actualAmount: BigNumber
+  requestedAmount: BigNumber
 }
 
 const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
@@ -60,35 +43,33 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
 }) => {
   const network = useNetworkContext()
 
-  const rows: Distribution[] =
-    queryResult.data && pool
-      ? queryResult.data.data.map((x) => ({
-        id: x.id,
-        distributionAmount: BigNumber.from(x.actualAmount),
-        // distributionAmount: calculateDistributionAmount(
-        //   instantDistributionUpdatedEvent
-        // ),
-        timestamp: x.timestamp,
-        // totalConnectedUnits:
-        //   instantDistributionUpdatedEvent.totalConnectedUnits,
-        // totalDisconnectedUnits:
-        //   instantDistributionUpdatedEvent.totalDisconnectedUnits,
-      }))
-      : []
+  // const rows: Distribution[] =
+  //   queryResult.data && pool
+  //     ? queryResult.data.data.map((x) => ({
+  //       id: x.id,
+  //       actualAmount: BigNumber.from(x.actualAmount),
+  //       requestedAmount: BigNumber.from(x.requestedAmount),
+  //       timestamp: x.timestamp,
+  //     }))
+  //     : []
 
-  const columns: GridColDef[] = useMemo(
+  const rows: InstantDistributionUpdatedEvent[] = queryResult.data
+    ? queryResult.data.data
+    : []
+
+  const columns: GridColDef<InstantDistributionUpdatedEvent>[] = useMemo(
     () => [
       { field: 'id', hide: true, sortable: false, flex: 1 },
       {
         field: 'timestamp',
-        headerName: 'Distribution Date',
+        headerName: 'Date',
         sortable: true,
         flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
       },
       {
-        field: 'distributionAmount',
-        headerName: 'Distribution Amount',
+        field: 'actualAmount',
+        headerName: 'Distributed Amount',
         hide: false,
         sortable: false,
         flex: 1.5,
@@ -96,7 +77,7 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
           return pool ? (
             <>
               <BalanceWithToken
-                wei={params.row.distributionAmount}
+                wei={params.row.actualAmount}
                 network={network}
                 tokenAddress={pool.token}
               />

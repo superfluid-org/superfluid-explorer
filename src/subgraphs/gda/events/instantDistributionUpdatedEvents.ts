@@ -15,7 +15,6 @@ import {
   PoolDistributor,
 } from '../.graphclient'
 import { InstantDistributionUpdatedEvent as PoolInstantDistributionUpdatedEvent } from '../events'
-import { BigNumber } from 'ethers'
 
 export type InstantDistributionUpdatedEventListQuery = SubgraphListQuery<
   InstantDistributionUpdatedEvent_Filter,

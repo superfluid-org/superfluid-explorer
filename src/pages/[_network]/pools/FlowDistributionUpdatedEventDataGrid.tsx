@@ -43,48 +43,59 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
 }) => {
   const network = useNetworkContext()
 
-  const rows: FlowDistribution[] =
-    queryResult.data && pool
-      ? queryResult.data.data.map((x) => ({
-        id: x.id,
-        timestamp: x.timestamp,
-        newDistributorToPoolFlowRate: x.newDistributorToPoolFlowRate,
-        newTotalDistributionFlowRate: x.newTotalDistributionFlowRate,
-        adjustmentFlowRate: BigNumber.from(
-          x.adjustmentFlowRate
-        ),
-        adjustmentFlowRecipient:
-          x.adjustmentFlowRecipient,
-        operator: x.operator,
-      }))
-      : []
+  // const rows: FlowDistribution[] =
+  //   queryResult.data && pool
+  //     ? queryResult.data.data.map((x) => ({
+  //       id: x.id,
+  //       timestamp: x.timestamp,
+  //       newDistributorToPoolFlowRate: x.newDistributorToPoolFlowRate,
+  //       newTotalDistributionFlowRate: x.newTotalDistributionFlowRate,
+  //       adjustmentFlowRate: BigNumber.from(
+  //         x.adjustmentFlowRate
+  //       ),
+  //       adjustmentFlowRecipient:
+  //         x.adjustmentFlowRecipient,
+  //       operator: x.operator,
+  //     }))
+  //     : []
 
-  const columns: GridColDef[] = useMemo(
+  const rows: FlowDistributionUpdatedEvent[] = queryResult.data
+    ? queryResult.data.data
+    : []
+
+  const columns: GridColDef<FlowDistributionUpdatedEvent>[] = useMemo(
     () => [
       { field: 'id', hide: true, sortable: false, flex: 1 },
       {
-        field: 'operator',
-        headerName: 'Operator',
+        field: 'timestamp',
+        headerName: 'Date',
+        sortable: true,
+        flex: 0.5,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
+      },
+      {
+        field: 'distributor',
+        headerName: 'Distributor',
         sortable: true,
         flex: 0.5,
         renderCell: (params) => (
           <AccountAddress
-            dataCy={'operator-address'}
+            dataCy={'distributor-address'}
             network={network}
-            address={params.value}
+            address={params.row.poolDistributor}
           />
         ),
       },
       {
         field: 'newDistributorToPoolFlowRate',
-        headerName: 'newDistributorToPoolFlowRate',
+        headerName: "Distributor's Flow Rate",
         hide: false,
         sortable: false,
         flex: 1.5,
         renderCell: (params) => {
           return (
             <>
-              <EtherFormatted wei={params.value} />
+              <EtherFormatted wei={params.row.newDistributorToPoolFlowRate} />
               &nbsp;
               {pool && (
                 <SuperTokenAddress
@@ -100,14 +111,14 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
       },
       {
         field: 'newTotalDistributionFlowRate',
-        headerName: 'newTotalDistributionFlowRate',
+        headerName: 'Total Flow Rate',
         hide: false,
         sortable: false,
         flex: 1.5,
         renderCell: (params) => {
           return (
             <>
-              <EtherFormatted wei={params.value} />
+              <EtherFormatted wei={params.row.newTotalDistributionFlowRate} />
               &nbsp;
               {pool && (
                 <SuperTokenAddress
@@ -131,7 +142,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
           <AccountAddress
             dataCy={'adjustment-flow-recipient-address'}
             network={network}
-            address={params.value}
+            address={params.row.adjustmentFlowRecipient}
           />
         ),
       },
@@ -144,7 +155,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
         renderCell: (params) => {
           return (
             <>
-              <EtherFormatted wei={params.value} />
+              <EtherFormatted wei={params.row.adjustmentFlowRate} />
               &nbsp;
               {pool && (
                 <SuperTokenAddress
@@ -157,13 +168,6 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
             </>
           )
         },
-      },
-      {
-        field: 'timestamp',
-        headerName: 'Distribution Date',
-        sortable: true,
-        flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
       },
     ],
     [pool, network]

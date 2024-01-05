@@ -120,11 +120,10 @@ export const PoolMemberDistributions: FC<{
         : skipToken
     )
 
-  const instantDistributionUpdatedEvents:
-    | InstantDistributionUpdatedEvent[]
-    | undefined = instantDistributionUpdatedEventsQuery.data?.data ?? []
+  const instantDistributionUpdatedEvents: InstantDistributionUpdatedEvent[] =
+    instantDistributionUpdatedEventsQuery.data?.data ?? []
 
-  const columns: GridColDef[] = useMemo(
+  const columns: GridColDef<InstantDistributionUpdatedEvent>[] = useMemo(
     () => [
       { field: 'id', hide: true, sortable: false, flex: 1 },
       {
@@ -132,7 +131,7 @@ export const PoolMemberDistributions: FC<{
         headerName: 'Distribution Date',
         sortable: true,
         flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
       },
       {
         field: 'newIndexValue',

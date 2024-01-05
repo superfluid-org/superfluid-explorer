@@ -378,7 +378,7 @@ const AccountPage: NextPage = () => {
                 value="tokens"
               />
               <Tab
-                label="Streams (CFA)"
+                label="Streams"
                 data-cy={'streams-tab'}
                 value="streams"
                 onMouseEnter={() => {
@@ -427,35 +427,33 @@ const AccountPage: NextPage = () => {
                   }
                 }}
               />
-              {
-                network.supportsGDA && (
-                  <Tab
-                    data-cy={'pools-tab'}
-                    label="Pools (GDA)"
-                    value="pools"
-                    onMouseEnter={() => {
-                      if (network) {
-                        prefetchIndexesQuery({
-                          chainId: network.chainId,
-                          filter: {
-                            publisher: address,
-                          },
-                          order: publishedIndexOrderingDefault,
-                          pagination: publishedIndexPagingDefault,
-                        })
-                        prefetchIndexSubscriptionsQuery({
-                          chainId: network.chainId,
-                          filter: {
-                            subscriber: address,
-                          },
-                          order: indexSubscriptionOrderingDefault,
-                          pagination: indexSubscriptionPagingDefault,
-                        })
-                      }
-                    }}
-                  />
-                )
-              }
+              {network.supportsGDA && (
+                <Tab
+                  data-cy={'pools-tab'}
+                  label="Pools (GDA)"
+                  value="pools"
+                  onMouseEnter={() => {
+                    if (network) {
+                      prefetchIndexesQuery({
+                        chainId: network.chainId,
+                        filter: {
+                          publisher: address,
+                        },
+                        order: publishedIndexOrderingDefault,
+                        pagination: publishedIndexPagingDefault,
+                      })
+                      prefetchIndexSubscriptionsQuery({
+                        chainId: network.chainId,
+                        filter: {
+                          subscriber: address,
+                        },
+                        order: indexSubscriptionOrderingDefault,
+                        pagination: indexSubscriptionPagingDefault,
+                      })
+                    }
+                  }}
+                />
+              )}
               <Tab data-cy={'events-tab'} label="Events" value="events" />
               <Tab data-cy={'map-tab'} label="Map" value="map" />
             </TabList>

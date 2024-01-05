@@ -1,4 +1,5 @@
 import {
+  Account,
   RelevantAddressesIntermediate,
   SubgraphListQuery,
   SubgraphQueryHandler,
@@ -12,7 +13,6 @@ import {
   FlowDistributionUpdatedEventsQuery,
   FlowDistributionUpdatedEventsQueryVariables,
   Pool,
-  PoolDistributor,
 } from '../.graphclient'
 import { FlowDistributionUpdatedEvent as PoolFlowDistributionUpdatedEvent } from '../events'
 
@@ -39,7 +39,7 @@ export class FlowDistributionUpdatedEventQueryHandler extends SubgraphQueryHandl
     result: PoolFlowDistributionUpdatedEvent
   ): RelevantAddressesIntermediate {
     return {
-      accounts: [result.operator, result.pool],
+      accounts: [result.operator, result.pool, result.poolDistributor],
       tokens: [result.token],
     }
   }
@@ -73,7 +73,9 @@ function mapGetAllEventsQueryEvent(
       | 'logIndex'
     > & {
         pool: Pick<Pool, 'id'>
-        poolDistributor: Pick<PoolDistributor, 'id'>
+        poolDistributor: {
+          account: Pick<Account, 'id'>
+        }
       }
   >
 ): PoolFlowDistributionUpdatedEvent[] {
@@ -93,7 +95,7 @@ function mapGetAllEventsQueryEvent(
       operator: e.operator,
       pool: e.pool.id,
       adjustmentFlowRecipient: e.adjustmentFlowRecipient,
-      poolDistributor: e.poolDistributor.id,
+      poolDistributor: e.poolDistributor.account.id,
       token: e.token,
       newTotalDistributionFlowRate: e.newTotalDistributionFlowRate,
     } as PoolFlowDistributionUpdatedEvent

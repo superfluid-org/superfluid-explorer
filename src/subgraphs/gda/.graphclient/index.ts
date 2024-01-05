@@ -26200,7 +26200,7 @@ export type FlowDistributionUpdatedEventsQuery = {
       | 'logIndex'
     > & {
         pool: Pick<Pool, 'id'>
-        poolDistributor: Pick<PoolDistributor, 'id'>
+        poolDistributor: { account: Pick<Account, 'id'> }
       }
   >
 }
@@ -26220,6 +26220,7 @@ export type PoolMemberUnitsUpdatedEventsQuery = {
       MemberUnitsUpdatedEvent,
       | 'id'
       | 'units'
+      | 'totalUnits'
       | 'token'
       | 'timestamp'
       | 'blockNumber'
@@ -26269,7 +26270,10 @@ export type FlowDistributionUpdatedEventFragment = {
   | 'order'
   | 'timestamp'
   | 'logIndex'
-> & { pool: Pick<Pool, 'id'>; poolDistributor: Pick<PoolDistributor, 'id'> }
+> & {
+    pool: Pick<Pool, 'id'>
+    poolDistributor: { account: Pick<Account, 'id'> }
+  }
 
 export type MemberUnitsUpdatedEventFragment = {
   __typename: 'MemberUnitsUpdatedEvent'
@@ -26277,6 +26281,7 @@ export type MemberUnitsUpdatedEventFragment = {
   MemberUnitsUpdatedEvent,
   | 'id'
   | 'units'
+  | 'totalUnits'
   | 'token'
   | 'timestamp'
   | 'blockNumber'
@@ -27095,7 +27100,9 @@ export const FlowDistributionUpdatedEventFragmentDoc = gql`
     }
     token
     poolDistributor {
-      id
+      account {
+        id
+      }
     }
   }
   ${EventFieldsFragmentDoc}
@@ -27105,6 +27112,7 @@ export const MemberUnitsUpdatedEventFragmentDoc = gql`
     ...eventFields
     id
     units
+    totalUnits
     token
     timestamp
     poolMember {

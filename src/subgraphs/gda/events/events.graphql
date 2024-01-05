@@ -89,7 +89,9 @@ fragment flowDistributionUpdatedEvent on FlowDistributionUpdatedEvent {
   }
   token
   poolDistributor {
-    id
+    account {
+      id
+    }
   }
 }
 
@@ -97,6 +99,7 @@ fragment memberUnitsUpdatedEvent on MemberUnitsUpdatedEvent {
   ...eventFields
   id
   units
+  totalUnits
   token
   timestamp
   poolMember {

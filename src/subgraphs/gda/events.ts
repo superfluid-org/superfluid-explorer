@@ -5,6 +5,7 @@ import {
   SubgraphId,
   Timestamp,
 } from '@superfluid-finance/sdk-core'
+import { String } from 'lodash'
 
 export type EventBase = {
   id: SubgraphId
@@ -23,6 +24,7 @@ export interface PoolMemberUnitsUpdatedEvent extends EventBase {
   pool: Address
   id: SubgraphId
   units: string
+  totalUnits: String
 }
 
 export interface InstantDistributionUpdatedEvent extends EventBase {

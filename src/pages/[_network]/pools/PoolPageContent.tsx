@@ -471,18 +471,18 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         </Card>
       </Box>
 
-      <Box data-cy={"instant-distributions-grid"} sx={{ mt: 3 }}>
+      <Box data-cy={'instant-distributions-grid'} sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Instant Distributions
           <InfoTooltipBtn
-            dataCy={"distributions-tooltip"}
+            dataCy={'distributions-tooltip'}
             size={22}
             title={
               <>
                 An event in which super tokens are distributed to the entire
-                pool of members for a given pool using the Superfluid GDA.{" "}
+                pool of members for a given pool using the Superfluid GDA.{' '}
                 <AppLink
-                  data-cy={"distributions-tooltip-link"}
+                  data-cy={'distributions-tooltip-link'}
                   href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon#gda-examples-by-illustration"
                   target="_blank"
                 >

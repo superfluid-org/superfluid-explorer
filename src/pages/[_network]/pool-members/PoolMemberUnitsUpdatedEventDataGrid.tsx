@@ -23,7 +23,11 @@ const PoolMemberUnitsUpdatedEventDataGrid: FC<Props> = ({
   ordering,
   setOrdering,
 }) => {
-  const columns: GridColDef[] = useMemo(
+  const rows: PoolMemberUnitsUpdatedEvent[] = queryResult.data
+    ? queryResult.data.data
+    : []
+
+  const columns: GridColDef<PoolMemberUnitsUpdatedEvent>[] = useMemo(
     () => [
       { field: 'id', hide: true, sortable: false, flex: 1 },
       {
@@ -31,16 +35,12 @@ const PoolMemberUnitsUpdatedEventDataGrid: FC<Props> = ({
         headerName: 'Update Date',
         sortable: true,
         flex: 1,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
       },
       { field: 'units', headerName: 'Units', sortable: true, flex: 1 },
     ],
     []
   )
-
-  const rows: PoolMemberUnitsUpdatedEvent[] = queryResult.data
-    ? queryResult.data.data
-    : []
 
   return (
     <AppDataGrid

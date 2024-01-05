@@ -119,11 +119,10 @@ export const PoolMemberFlowDistributions: FC<{
         : skipToken
     )
 
-  const flowDistributionUpdatedEvents:
-    | FlowDistributionUpdatedEvent[]
-    | undefined = flowDistributionUpdatedEventsQuery.data?.data ?? []
+  const flowDistributionUpdatedEvents: FlowDistributionUpdatedEvent[] =
+    flowDistributionUpdatedEventsQuery.data?.data ?? []
 
-  const columns: GridColDef[] = useMemo(
+  const columns: GridColDef<FlowDistributionUpdatedEvent>[] = useMemo(
     () => [
       { field: 'id', hide: true, sortable: false, flex: 1 },
       {
@@ -135,7 +134,7 @@ export const PoolMemberFlowDistributions: FC<{
           <AccountAddress
             dataCy={'operator-address'}
             network={network}
-            address={params.value}
+            address={params.row.operator}
           />
         ),
       },
@@ -148,7 +147,7 @@ export const PoolMemberFlowDistributions: FC<{
           <AccountAddress
             dataCy={'adjustment-flow-recipient-address'}
             network={network}
-            address={params.value}
+            address={params.row.adjustmentFlowRecipient}
           />
         ),
       },
@@ -157,7 +156,7 @@ export const PoolMemberFlowDistributions: FC<{
         headerName: 'Distribution Date',
         sortable: true,
         flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.value} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
       },
       {
         field: 'adjustmentFlowRate',
@@ -168,7 +167,7 @@ export const PoolMemberFlowDistributions: FC<{
         renderCell: (params) => {
           return (
             <>
-              <EtherFormatted wei={params.value} />
+              <EtherFormatted wei={params.row.adjustmentFlowRate} />
               &nbsp;
               {pool && (
                 <SuperTokenAddress

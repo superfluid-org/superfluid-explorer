@@ -29,14 +29,16 @@ const StreamPeriodDataGrid: FC<Props> = ({
   ordering,
   setOrdering,
 }) => {
-  const columns: GridColDef[] = useMemo(
+  const rows = queryResult.data ? queryResult.data.data : []
+
+  const columns: GridColDef<StreamPeriod>[] = useMemo(
     () => [
       { field: 'id', hide: true, sortable: false, flex: 1 },
       {
         field: 'flowRate',
         sortable: true,
         flex: 1,
-        renderCell: (params) => <FlowRate flowRate={params.value} />,
+        renderCell: (params) => <FlowRate flowRate={params.row.flowRate} />,
         renderHeader: ({ colDef }) => (
           <>
             <GridColumnHeaderTitle
@@ -76,7 +78,8 @@ const StreamPeriodDataGrid: FC<Props> = ({
         headerName: 'From',
         sortable: true,
         flex: 1,
-        renderCell: (params) => new Date(params.value * 1000).toLocaleString(),
+        renderCell: (params) =>
+          new Date(params.row.startedAtTimestamp * 1000).toLocaleString(),
       },
       {
         field: 'stoppedAtTimestamp',
@@ -84,13 +87,13 @@ const StreamPeriodDataGrid: FC<Props> = ({
         sortable: true,
         flex: 1,
         renderCell: (params) =>
-          params.value ? new Date(params.value * 1000).toLocaleString() : '-',
+          params.row.stoppedAtTimestamp
+            ? new Date(params.row.stoppedAtTimestamp * 1000).toLocaleString()
+            : '-',
       },
     ],
     []
   )
-
-  const rows = queryResult.data ? queryResult.data.data : []
 
   return (
     <AppDataGrid

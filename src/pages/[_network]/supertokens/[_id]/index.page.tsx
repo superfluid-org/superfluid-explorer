@@ -527,11 +527,9 @@ const SuperTokenPage: NextPage = () => {
                 label="Indexes (IDA)"
                 value="indexes"
               />
-              {
-                network.supportsGDA && (
-                  <Tab data-cy={'pools-tab'} label="Pools (GDA)" value="pools" />
-                )
-              }
+              {network.supportsGDA && (
+                <Tab data-cy={'pools-tab'} label="Pools (GDA)" value="pools" />
+              )}
               <Tab data-cy={'events-tab'} label="Events" value="events" />
             </TabList>
           </Box>
