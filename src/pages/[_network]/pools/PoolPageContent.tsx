@@ -40,9 +40,10 @@ import {
 } from '../../../subgraphs/gda/.graphclient'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
-import PoolMemberDataGrid from '../pool-members/PoolMemberDataGrid'
+import PoolMemberDataGrid from './PoolMemberDataGrid'
 import FlowDistributionUpdatedEventDataGrid from './FlowDistributionUpdatedEventDataGrid'
 import InstantDistributionUpdatedEventDataGrid from './InstantDistributionUpdatedEventDataGrid'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 
 export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   id: id,
@@ -377,10 +378,16 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                   secondary="Total Amount Distributed"
                   primary={
                     pool ? (
-                      <BalanceWithToken
-                        wei={pool.totalAmountDistributedUntilUpdatedAt}
-                        network={network}
-                        tokenAddress={pool.token}
+                      <FlowingBalanceWithToken
+                        balance={
+                          pool.totalAmountDistributedUntilUpdatedAt
+                        }
+                        balanceTimestamp={pool.updatedAtTimestamp}
+                        flowRate={pool.flowRate}
+                        TokenChipProps={{
+                          network: network,
+                          tokenAddress: pool.token
+                        }}
                       />
                     ) : (
                       <Skeleton sx={{ width: '75px' }} />
@@ -397,12 +404,16 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                       secondary="Total Flow Distributed"
                       primary={
                         pool ? (
-                          <BalanceWithToken
-                            wei={
+                          <FlowingBalanceWithToken
+                            balance={
                               pool.totalAmountFlowedDistributedUntilUpdatedAt
                             }
-                            network={network}
-                            tokenAddress={pool.token}
+                            balanceTimestamp={pool.updatedAtTimestamp}
+                            flowRate={pool.flowRate}
+                            TokenChipProps={{
+                              network: network,
+                              tokenAddress: pool.token
+                            }}
                           />
                         ) : (
                           <Skeleton sx={{ width: '75px' }} />

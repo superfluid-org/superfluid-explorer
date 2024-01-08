@@ -17,7 +17,7 @@ import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { PoolMember_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
-import { PoolMemberDetailsDialog } from './PoolMemberDetails'
+import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
 
 interface Props {
   network: Network
@@ -102,18 +102,17 @@ const PoolMemberDataGrid: FC<Props> = ({
       },
       {
         field: 'units',
-        headerName: 'Member Units',
+        headerName: 'Pool Share',
         flex: 2,
         renderCell: (params) => {
           return (
             <>
-              {params.row.units}&nbsp;
-              {`(${calculatePoolPercentage(
+              {`${calculatePoolPercentage(
                 new Decimal(params.row.poolTotalUnits),
                 new Decimal(params.row.units)
               )
                 .toDP(2)
-                .toString()}%)`}
+                .toString()}% (${params.row.units} units)`}
             </>
           )
         },

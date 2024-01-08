@@ -12,6 +12,8 @@ import { useNetworkContext } from '../../../contexts/NetworkContext'
 import { FlowDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { FlowDistributionUpdatedEvent } from '../../../subgraphs/gda/events'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
+import FlowRate from '../../../components/Amount/FlowRate'
 
 interface Props {
   pool: Pool | null | undefined
@@ -94,18 +96,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
         flex: 1.5,
         renderCell: (params) => {
           return (
-            <>
-              <EtherFormatted wei={params.row.newDistributorToPoolFlowRate} />
-              &nbsp;
-              {pool && (
-                <SuperTokenAddress
-                  network={network}
-                  address={pool.token}
-                  format={(token) => token.symbol}
-                  formatLoading={() => ''}
-                />
-              )}
-            </>
+            <FlowRate flowRate={params.row.newDistributorToPoolFlowRate} />
           )
         },
       },
@@ -117,18 +108,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
         flex: 1.5,
         renderCell: (params) => {
           return (
-            <>
-              <EtherFormatted wei={params.row.newTotalDistributionFlowRate} />
-              &nbsp;
-              {pool && (
-                <SuperTokenAddress
-                  network={network}
-                  address={pool.token}
-                  format={(token) => token.symbol}
-                  formatLoading={() => ''}
-                />
-              )}
-            </>
+            <FlowRate flowRate={params.row.newTotalDistributionFlowRate} />
           )
         },
       },
@@ -154,18 +134,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
         flex: 1.5,
         renderCell: (params) => {
           return (
-            <>
-              <EtherFormatted wei={params.row.adjustmentFlowRate} />
-              &nbsp;
-              {pool && (
-                <SuperTokenAddress
-                  network={network}
-                  address={pool.token}
-                  format={(token) => token.symbol}
-                  formatLoading={() => ''}
-                />
-              )}
-            </>
+            <FlowRate flowRate={params.row.adjustmentFlowRate} />
           )
         },
       },

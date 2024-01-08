@@ -40,6 +40,8 @@ import { Pool_Filter, Pool_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolsQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { PoolPublicationDetailsDialog } from '../pools/PoolPublicationDetails'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
+import FlowRate from '../../../components/Amount/FlowRate'
 
 export enum DistributionStatus {
   Distributed,
@@ -222,8 +224,8 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter))
+      () =>
+        onFilterChange(omit(fields, queryArg.filter))
 
   const openFilter = () => setShowFilterMenu(true)
   const closeFilter = () => setShowFilterMenu(false)
@@ -398,14 +400,14 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
               {(filter.id ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button
-                  data-cy={'reset-filter'}
-                  onClick={resetFilter}
-                  tabIndex={-1}
-                >
-                  Reset
-                </Button>
-              )}
+                  <Button
+                    data-cy={'reset-filter'}
+                    onClick={resetFilter}
+                    tabIndex={-1}
+                  >
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -432,22 +434,30 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                 Total Distributed
               </TableSortLabel>
             </TableCell>
+            <TableCell>              <TableSortLabel
+              active={
+                order.orderBy === 'totalMembers'
+              }
+              direction={
+                order.orderBy === 'totalMembers'
+                  ? order.orderDirection
+                  : 'desc'
+              }
+              onClick={onSortClicked('totalMembers')}
+            >
+              Total Members
+            </TableSortLabel></TableCell>
             <TableCell>
               <TableSortLabel
-                active={order?.orderBy === 'totalUnits'}
+                active={order?.orderBy === 'totalMembers'}
                 direction={
-                  order?.orderBy === 'totalUnits'
+                  order?.orderBy === 'totalMembers'
                     ? order?.orderDirection
                     : 'desc'
                 }
-                onClick={onSortClicked('totalUnits')}
+                onClick={onSortClicked('totalMembers')}
               >
-                Total Units
-                <InfoTooltipBtn
-                  dataCy="gda-pool-table-total-units-tooltip"
-                  title="The sum of total pending and approved units issued to members."
-                  iconSx={{ mb: 0, mr: 0.5 }}
-                />
+                Total Members
               </TableSortLabel>
             </TableCell>
             <TableCell width="140px">
@@ -471,14 +481,18 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
             <TableRow key={pool.id} hover>
               <TableCell data-cy={'publications-pool-id'}>{pool.id}</TableCell>
               <TableCell data-cy={'publications-total-distributed'}>
-                <BalanceWithToken
-                  wei={pool.totalAmountDistributedUntilUpdatedAt}
-                  network={network}
-                  tokenAddress={pool.token}
-                />
+                <FlowingBalanceWithToken flowRate={pool.flowRate} balance={pool.totalAmountDistributedUntilUpdatedAt} balanceTimestamp={pool.updatedAtTimestamp} TokenChipProps={
+                  {
+                    tokenAddress: pool.token,
+                    network: network
+                  }
+                } />
+              </TableCell>
+              <TableCell>
+                <FlowRate flowRate={pool.flowRate} />
               </TableCell>
               <TableCell data-cy={'publications-units'}>
-                {pool.totalUnits}
+                {pool.totalMembers.toString()}
               </TableCell>
               <TableCell>
                 <TimeAgo
@@ -486,7 +500,6 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                   typographyProps={{ typography: 'body2' }}
                 />
               </TableCell>
-
               <TableCell data-cy={'publications-details-buttons'} align="right">
                 <PoolPublicationDetailsDialog
                   network={network}
@@ -497,7 +510,6 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
               </TableCell>
             </TableRow>
           ))}
-
           {queryResult.isSuccess && tableRows.length === 0 && (
             <TableRow>
               <TableCell

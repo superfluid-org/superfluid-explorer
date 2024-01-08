@@ -44,6 +44,8 @@ import {
 import { PoolsQuery } from '../../../../subgraphs/gda/endpoints/entityArgs'
 import { DistributionStatus } from '../../accounts/AccountIndexPublicationsTable'
 import { PoolPublicationDetailsDialog } from '../../pools/PoolPublicationDetails'
+import FlowRate from '../../../../components/Amount/FlowRate'
+import FlowingBalanceWithToken from '../../../../components/Amount/FlowingBalanceWithToken'
 
 const defaultOrdering = {
   orderBy: 'createdAtTimestamp',
@@ -189,8 +191,8 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter))
+      () =>
+        onFilterChange(omit(fields, queryArg.filter))
 
   const openFilter = () => setShowFilterMenu(true)
   const closeFilter = () => setShowFilterMenu(false)
@@ -352,14 +354,14 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               {(filter.id ||
                 filter.admin_contains ||
                 distributionStatus !== null) && (
-                <Button
-                  data-cy={'reset-filter'}
-                  onClick={resetFilter}
-                  tabIndex={-1}
-                >
-                  Reset
-                </Button>
-              )}
+                  <Button
+                    data-cy={'reset-filter'}
+                    onClick={resetFilter}
+                    tabIndex={-1}
+                  >
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -404,6 +406,34 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
                 Total Distributed
               </TableSortLabel>
             </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={
+                  order.orderBy === 'flowRate'
+                }
+                direction={
+                  order.orderBy === 'flowRate'
+                    ? order.orderDirection
+                    : 'desc'
+                }
+                onClick={onSortClicked('flowRate')}
+              >
+                Flow Rate
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>              <TableSortLabel
+              active={
+                order.orderBy === 'totalMembers'
+              }
+              direction={
+                order.orderBy === 'totalMembers'
+                  ? order.orderDirection
+                  : 'desc'
+              }
+              onClick={onSortClicked('totalMembers')}
+            >
+              Total Members
+            </TableSortLabel></TableCell>
             <TableCell width="220px">
               <TableSortLabel
                 active={order.orderBy === 'createdAtTimestamp'}
@@ -433,15 +463,22 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
                 />
               </TableCell>
               <TableCell data-cy={'total-distributed'}>
-                <BalanceWithToken
-                  wei={pool.totalAmountDistributedUntilUpdatedAt.toString()}
-                  network={network}
-                  tokenAddress={pool.token}
-                />
+                <FlowingBalanceWithToken flowRate={pool.flowRate} balance={pool.totalAmountDistributedUntilUpdatedAt} balanceTimestamp={pool.updatedAtTimestamp} TokenChipProps={
+                  {
+                    tokenAddress: pool.token,
+                    network: network
+                  }
+                } />
+              </TableCell>
+              <TableCell>
+                <FlowRate flowRate={pool.flowRate} />
               </TableCell>
               <TableCell>
                 {new Date(pool.createdAtTimestamp * 1000).toLocaleString()}
               </TableCell>
+              <TableCell>{
+                pool.totalMembers.toString()
+              }</TableCell>
 
               <TableCell align="right">
                 <PoolPublicationDetailsDialog
@@ -476,7 +513,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
         {tableRows.length > 0 && (
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={5} align="right">
+              <TableCell colSpan={7} align="right">
                 <InfinitePagination
                   page={skip / take + 1}
                   pageSize={pagination.take}

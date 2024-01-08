@@ -566,13 +566,12 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 />
               </TableCell>
               <TableCell data-cy={'member-units'}>
-                {member.units}&nbsp;
-                {`(${calculatePoolPercentage(
+                {`${calculatePoolPercentage(
                   new Decimal(member.poolTotalUnits),
                   new Decimal(member.units)
                 )
                   .toDP(2)
-                  .toString()}%)`}
+                  .toString()}% (${member.units} units)`}
               </TableCell>
 
               <TableCell align="right">

@@ -378,7 +378,7 @@ const AccountPage: NextPage = () => {
                 value="tokens"
               />
               <Tab
-                label="Streams"
+                label="Streams (CFA)"
                 data-cy={'streams-tab'}
                 value="streams"
                 onMouseEnter={() => {
