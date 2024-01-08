@@ -18,6 +18,7 @@ import { Network } from '../../../redux/networks'
 import { PoolMember_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
+import AccountAddress from '../../../components/Address/AccountAddress'
 
 interface Props {
   network: Network
@@ -53,6 +54,18 @@ const PoolMemberDataGrid: FC<Props> = ({
           ) : null,
       },
       {
+        field: 'account',
+        headerName: 'Account',
+        sortable: false,
+        flex: 0.5,
+        renderCell: (params) =>
+        (<AccountAddress
+          network={network}
+          address={params.row.account}
+          ellipsis={6}
+        />)
+      },
+      {
         field: 'approved',
         headerName: 'Connected',
         flex: 0.5,
@@ -75,7 +88,7 @@ const PoolMemberDataGrid: FC<Props> = ({
       },
       {
         field: 'totalAmountClaimed',
-        headerName: 'Total Amount Claimed',
+        headerName: 'Amount Claimed',
         sortable: false,
         flex: 1.5,
         renderCell: (params: GridRenderCellParams<string, PoolMember>) => (

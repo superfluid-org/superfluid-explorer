@@ -45,6 +45,7 @@ import {
 import { PoolsQuery } from '../../../../subgraphs/gda/endpoints/entityArgs'
 import { DistributionStatus } from '../../accounts/AccountIndexPublicationsTable'
 import { PoolPublicationDetailsDialog } from '../../pools/PoolPublicationDetails'
+import TimeAgo from '../../../../components/TimeAgo/TimeAgo'
 
 const defaultOrdering = {
   orderBy: 'createdAtTimestamp',
@@ -190,8 +191,8 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter))
+      () =>
+        onFilterChange(omit(fields, queryArg.filter))
 
   const openFilter = () => setShowFilterMenu(true)
   const closeFilter = () => setShowFilterMenu(false)
@@ -353,14 +354,14 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               {(filter.id ||
                 filter.admin_contains ||
                 distributionStatus !== null) && (
-                <Button
-                  data-cy={'reset-filter'}
-                  onClick={resetFilter}
-                  tabIndex={-1}
-                >
-                  Reset
-                </Button>
-              )}
+                  <Button
+                    data-cy={'reset-filter'}
+                    onClick={resetFilter}
+                    tabIndex={-1}
+                  >
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -427,7 +428,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
                 }
                 onClick={onSortClicked('totalMembers')}
               >
-                Total Members
+                Members
               </TableSortLabel>
             </TableCell>
             <TableCell width="220px">
@@ -472,10 +473,10 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               <TableCell>
                 <FlowRate flowRate={pool.flowRate} />
               </TableCell>
-              <TableCell>
-                {new Date(pool.createdAtTimestamp * 1000).toLocaleString()}
-              </TableCell>
               <TableCell>{pool.totalMembers.toString()}</TableCell>
+              <TableCell>
+                <TimeAgo subgraphTime={pool.createdAtTimestamp} />
+              </TableCell>
 
               <TableCell align="right">
                 <PoolPublicationDetailsDialog

@@ -56,9 +56,9 @@ export const PoolMemberPageContent: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool,
-        }
+        chainId: network.chainId,
+        id: poolMember.pool,
+      }
       : skipToken
   )
 
@@ -89,9 +89,6 @@ export const PoolMemberPageContent: FC<{
     })
 
   const [poolPercentage, setPoolPercentage] = useState<Decimal | undefined>()
-  const [totalWeiAmountClaimed, setTotalWeiAmountClaimed] = useState<
-    BigNumberish | undefined
-  >()
 
   useEffect(() => {
     if (pool && poolMember) {
@@ -99,15 +96,6 @@ export const PoolMemberPageContent: FC<{
         calculatePoolPercentage(
           new Decimal(poolMember.poolTotalUnits),
           new Decimal(poolMember.units)
-        )
-      )
-
-      setTotalWeiAmountClaimed(
-        calculateWeiAmountClaimed(
-          BigNumber.from(pool.totalUnits),
-          BigNumber.from(poolMember.totalAmountClaimed),
-          BigNumber.from(poolMember.poolFlowRateCurrent),
-          BigNumber.from(poolMember.units)
         )
       )
     }
@@ -322,12 +310,12 @@ export const PoolMemberPageContent: FC<{
                 <ListItemText
                   secondary="Total Amount Claimed"
                   primary={
-                    poolMember && pool && totalWeiAmountClaimed ? (
+                    poolMember ? (
                       <>
                         <BalanceWithToken
-                          wei={totalWeiAmountClaimed}
+                          wei={poolMember.totalAmountClaimed}
                           network={network}
-                          tokenAddress={pool.token}
+                          tokenAddress={poolMember.token}
                         />
                       </>
                     ) : (
