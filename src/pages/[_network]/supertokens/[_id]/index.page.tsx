@@ -521,7 +521,11 @@ const SuperTokenPage: NextPage = () => {
               onChange={(_event, newValue: string) => setTabValue(newValue)}
               aria-label="tabs"
             >
-              <Tab data-cy={'streams-tab'} label="Streams (CFA)" value="streams" />
+              <Tab
+                data-cy={'streams-tab'}
+                label="Streams (CFA)"
+                value="streams"
+              />
               <Tab
                 data-cy={'indexes-tab'}
                 label="Indexes (IDA)"

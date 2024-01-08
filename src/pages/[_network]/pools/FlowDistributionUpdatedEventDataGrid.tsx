@@ -4,16 +4,13 @@ import { BigNumber } from 'ethers'
 import { FC, useMemo } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
-import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
-import EtherFormatted from '../../../components/Amount/EtherFormatted'
+import FlowRate from '../../../components/Amount/FlowRate'
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { useNetworkContext } from '../../../contexts/NetworkContext'
 import { FlowDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { FlowDistributionUpdatedEvent } from '../../../subgraphs/gda/events'
-import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
-import FlowRate from '../../../components/Amount/FlowRate'
 
 interface Props {
   pool: Pool | null | undefined
@@ -95,9 +92,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
         sortable: false,
         flex: 1.5,
         renderCell: (params) => {
-          return (
-            <FlowRate flowRate={params.row.newDistributorToPoolFlowRate} />
-          )
+          return <FlowRate flowRate={params.row.newDistributorToPoolFlowRate} />
         },
       },
       {
@@ -107,9 +102,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
         sortable: false,
         flex: 1.5,
         renderCell: (params) => {
-          return (
-            <FlowRate flowRate={params.row.newTotalDistributionFlowRate} />
-          )
+          return <FlowRate flowRate={params.row.newTotalDistributionFlowRate} />
         },
       },
       {
@@ -133,9 +126,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
         sortable: false,
         flex: 1.5,
         renderCell: (params) => {
-          return (
-            <FlowRate flowRate={params.row.adjustmentFlowRate} />
-          )
+          return <FlowRate flowRate={params.row.adjustmentFlowRate} />
         },
       },
     ],

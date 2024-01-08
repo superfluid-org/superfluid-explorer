@@ -27,7 +27,8 @@ import isEqual from 'lodash/isEqual'
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 
 import AccountAddress from '../../../../components/Address/AccountAddress'
-import BalanceWithToken from '../../../../components/Amount/BalanceWithToken'
+import FlowingBalanceWithToken from '../../../../components/Amount/FlowingBalanceWithToken'
+import FlowRate from '../../../../components/Amount/FlowRate'
 import AppLink from '../../../../components/AppLink/AppLink'
 import DetailsButton from '../../../../components/Details/DetailsButton'
 import InfoTooltipBtn from '../../../../components/Info/InfoTooltipBtn'
@@ -44,8 +45,6 @@ import {
 import { PoolsQuery } from '../../../../subgraphs/gda/endpoints/entityArgs'
 import { DistributionStatus } from '../../accounts/AccountIndexPublicationsTable'
 import { PoolPublicationDetailsDialog } from '../../pools/PoolPublicationDetails'
-import FlowRate from '../../../../components/Amount/FlowRate'
-import FlowingBalanceWithToken from '../../../../components/Amount/FlowingBalanceWithToken'
 
 const defaultOrdering = {
   orderBy: 'createdAtTimestamp',
@@ -191,8 +190,8 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter))
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const openFilter = () => setShowFilterMenu(true)
   const closeFilter = () => setShowFilterMenu(false)
@@ -354,14 +353,14 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               {(filter.id ||
                 filter.admin_contains ||
                 distributionStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -408,32 +407,29 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={
-                  order.orderBy === 'flowRate'
-                }
+                active={order.orderBy === 'flowRate'}
                 direction={
-                  order.orderBy === 'flowRate'
-                    ? order.orderDirection
-                    : 'desc'
+                  order.orderBy === 'flowRate' ? order.orderDirection : 'desc'
                 }
                 onClick={onSortClicked('flowRate')}
               >
                 Flow Rate
               </TableSortLabel>
             </TableCell>
-            <TableCell>              <TableSortLabel
-              active={
-                order.orderBy === 'totalMembers'
-              }
-              direction={
-                order.orderBy === 'totalMembers'
-                  ? order.orderDirection
-                  : 'desc'
-              }
-              onClick={onSortClicked('totalMembers')}
-            >
-              Total Members
-            </TableSortLabel></TableCell>
+            <TableCell>
+              {' '}
+              <TableSortLabel
+                active={order.orderBy === 'totalMembers'}
+                direction={
+                  order.orderBy === 'totalMembers'
+                    ? order.orderDirection
+                    : 'desc'
+                }
+                onClick={onSortClicked('totalMembers')}
+              >
+                Total Members
+              </TableSortLabel>
+            </TableCell>
             <TableCell width="220px">
               <TableSortLabel
                 active={order.orderBy === 'createdAtTimestamp'}
@@ -463,12 +459,15 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
                 />
               </TableCell>
               <TableCell data-cy={'total-distributed'}>
-                <FlowingBalanceWithToken flowRate={pool.flowRate} balance={pool.totalAmountDistributedUntilUpdatedAt} balanceTimestamp={pool.updatedAtTimestamp} TokenChipProps={
-                  {
+                <FlowingBalanceWithToken
+                  flowRate={pool.flowRate}
+                  balance={pool.totalAmountDistributedUntilUpdatedAt}
+                  balanceTimestamp={pool.updatedAtTimestamp}
+                  TokenChipProps={{
                     tokenAddress: pool.token,
-                    network: network
-                  }
-                } />
+                    network: network,
+                  }}
+                />
               </TableCell>
               <TableCell>
                 <FlowRate flowRate={pool.flowRate} />
@@ -476,9 +475,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               <TableCell>
                 {new Date(pool.createdAtTimestamp * 1000).toLocaleString()}
               </TableCell>
-              <TableCell>{
-                pool.totalMembers.toString()
-              }</TableCell>
+              <TableCell>{pool.totalMembers.toString()}</TableCell>
 
               <TableCell align="right">
                 <PoolPublicationDetailsDialog

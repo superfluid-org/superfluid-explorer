@@ -1,3 +1,4 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { TabContext, TabPanel } from '@mui/lab'
 import {
   Box,
@@ -5,22 +6,75 @@ import {
   CardContent,
   Container,
   Divider,
+  Link,
   List,
+  ListItem,
   ListItemText,
   Skeleton,
+  Stack,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { FC } from 'react'
 
+import CopyClipboard from '../../../components/Copy/CopyClipboard'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
 import NetworkTabs from '../../../components/NetworkTabs/NetworkTabs'
 import { useNetworkContext } from '../../../contexts/NetworkContext'
-import { networks } from '../../../redux/networks'
+import { Network, networks } from '../../../redux/networks'
 import protocolContracts from '../../../redux/protocolContracts'
 import { rpcApi } from '../../../redux/store'
 import { pseudoAddressToVersionString } from '../../../utils/versionUtils'
-import { AddressListItem } from '../AddressListItem'
+
+interface AddressListItemProps {
+  title: string
+  network: Network
+  address?: string
+  dataCy?: string
+}
+
+const AddressListItem: FC<AddressListItemProps> = ({
+  network,
+  title,
+  address,
+  dataCy,
+}) => (
+  <ListItem>
+    <ListItemText
+      data-cy={dataCy}
+      primary={title}
+      secondary={
+        <Stack
+          component="span"
+          direction="row"
+          alignItems="center"
+          sx={{ fontFamily: 'Roboto Mono' }}
+        >
+          {address || '-'}
+          {address && (
+            <Stack component="span" direction="row" alignItems="center" gap={1}>
+              <CopyClipboard
+                copyText={address}
+                IconProps={{ sx: { fontSize: '16px' } }}
+              />
+              <Tooltip title="View on blockchain Explorer">
+                <Link
+                  href={network.getLinkForAddress(address)}
+                  target="_blank"
+                  sx={{ color: 'inherit' }}
+                >
+                  <OpenInNewIcon sx={{ fontSize: '16px', display: 'block' }} />
+                </Link>
+              </Tooltip>
+            </Stack>
+          )}
+        </Stack>
+      }
+    />
+  </ListItem>
+)
 
 const Protocol: NextPage = () => {
   const network = useNetworkContext()
@@ -42,6 +96,7 @@ const Protocol: NextPage = () => {
     resolver,
     host,
     CFAv1,
+    CFAv1Forwarder,
     IDAv1,
     superTokenFactory,
     superfluidLoader,
@@ -197,6 +252,12 @@ const Protocol: NextPage = () => {
                   title="CFAv1"
                   network={network}
                   address={CFAv1}
+                />
+                <AddressListItem
+                  dataCy={'CFAv1Forwarder-address'}
+                  title="CFAv1Forwarder"
+                  network={network}
+                  address={CFAv1Forwarder}
                 />
                 <AddressListItem
                   dataCy={'IDAv1-address'}

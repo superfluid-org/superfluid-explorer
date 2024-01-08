@@ -26,6 +26,7 @@ import { FC, useState } from 'react'
 import AccountAddress from '../../../components/Address/AccountAddress'
 import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
 import CopyLink from '../../../components/Copy/CopyLink'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
@@ -40,10 +41,9 @@ import {
 } from '../../../subgraphs/gda/.graphclient'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
-import PoolMemberDataGrid from './PoolMemberDataGrid'
 import FlowDistributionUpdatedEventDataGrid from './FlowDistributionUpdatedEventDataGrid'
 import InstantDistributionUpdatedEventDataGrid from './InstantDistributionUpdatedEventDataGrid'
-import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
+import PoolMemberDataGrid from './PoolMemberDataGrid'
 
 export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   id: id,
@@ -379,14 +379,12 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                   primary={
                     pool ? (
                       <FlowingBalanceWithToken
-                        balance={
-                          pool.totalAmountDistributedUntilUpdatedAt
-                        }
+                        balance={pool.totalAmountDistributedUntilUpdatedAt}
                         balanceTimestamp={pool.updatedAtTimestamp}
                         flowRate={pool.flowRate}
                         TokenChipProps={{
                           network: network,
-                          tokenAddress: pool.token
+                          tokenAddress: pool.token,
                         }}
                       />
                     ) : (
@@ -412,7 +410,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                             flowRate={pool.flowRate}
                             TokenChipProps={{
                               network: network,
-                              tokenAddress: pool.token
+                              tokenAddress: pool.token,
                             }}
                           />
                         ) : (

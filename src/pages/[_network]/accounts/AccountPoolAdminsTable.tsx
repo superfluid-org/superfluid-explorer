@@ -26,9 +26,9 @@ import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 
-import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
+import FlowRate from '../../../components/Amount/FlowRate'
 import DetailsButton from '../../../components/Details/DetailsButton'
-import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
 import ClearInputAdornment from '../../../components/Table/ClearInputAdornment'
 import InfinitePagination from '../../../components/Table/InfinitePagination'
 import TableLoader from '../../../components/Table/TableLoader'
@@ -40,8 +40,6 @@ import { Pool_Filter, Pool_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolsQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { PoolPublicationDetailsDialog } from '../pools/PoolPublicationDetails'
-import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
-import FlowRate from '../../../components/Amount/FlowRate'
 
 export enum DistributionStatus {
   Distributed,
@@ -224,8 +222,8 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter))
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const openFilter = () => setShowFilterMenu(true)
   const closeFilter = () => setShowFilterMenu(false)
@@ -400,14 +398,14 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
               {(filter.id ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -434,19 +432,20 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                 Total Distributed
               </TableSortLabel>
             </TableCell>
-            <TableCell>              <TableSortLabel
-              active={
-                order.orderBy === 'totalMembers'
-              }
-              direction={
-                order.orderBy === 'totalMembers'
-                  ? order.orderDirection
-                  : 'desc'
-              }
-              onClick={onSortClicked('totalMembers')}
-            >
-              Total Members
-            </TableSortLabel></TableCell>
+            <TableCell>
+              {' '}
+              <TableSortLabel
+                active={order.orderBy === 'totalMembers'}
+                direction={
+                  order.orderBy === 'totalMembers'
+                    ? order.orderDirection
+                    : 'desc'
+                }
+                onClick={onSortClicked('totalMembers')}
+              >
+                Total Members
+              </TableSortLabel>
+            </TableCell>
             <TableCell>
               <TableSortLabel
                 active={order?.orderBy === 'totalMembers'}
@@ -481,12 +480,15 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
             <TableRow key={pool.id} hover>
               <TableCell data-cy={'publications-pool-id'}>{pool.id}</TableCell>
               <TableCell data-cy={'publications-total-distributed'}>
-                <FlowingBalanceWithToken flowRate={pool.flowRate} balance={pool.totalAmountDistributedUntilUpdatedAt} balanceTimestamp={pool.updatedAtTimestamp} TokenChipProps={
-                  {
+                <FlowingBalanceWithToken
+                  flowRate={pool.flowRate}
+                  balance={pool.totalAmountDistributedUntilUpdatedAt}
+                  balanceTimestamp={pool.updatedAtTimestamp}
+                  TokenChipProps={{
                     tokenAddress: pool.token,
-                    network: network
-                  }
-                } />
+                    network: network,
+                  }}
+                />
               </TableCell>
               <TableCell>
                 <FlowRate flowRate={pool.flowRate} />
