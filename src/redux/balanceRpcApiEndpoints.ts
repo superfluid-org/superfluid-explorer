@@ -1,5 +1,6 @@
 import { SuperToken__factory } from '@superfluid-finance/sdk-core'
 import { getFramework, RpcEndpointBuilder } from '@superfluid-finance/sdk-redux'
+import { BigNumber } from 'ethers'
 
 export type BalanceQueryParams = {
   chainId: number
@@ -19,23 +20,33 @@ export const balanceRpcApiEndpoints = {
       queryFn: async ({ accountAddress, tokenAddress, chainId }) => {
         const framework = await getFramework(chainId)
 
-        const [realtimeBalanceOfNowResult, getNetFlowResult] =
-          await Promise.all([
-            SuperToken__factory.connect(
-              tokenAddress,
-              framework.settings.provider
-            ).realtimeBalanceOfNow(accountAddress),
-            framework.cfaV1.getNetFlow({
-              superToken: tokenAddress,
-              account: accountAddress,
-              providerOrSigner: framework.settings.provider,
-            }),
-          ])
+        const [
+          realtimeBalanceOfNowResult,
+          getCfaNetFlowResult,
+          getGdaNetFlowResult,
+        ] = await Promise.all([
+          SuperToken__factory.connect(
+            tokenAddress,
+            framework.settings.provider
+          ).realtimeBalanceOfNow(accountAddress),
+          framework.cfaV1.getNetFlow({
+            superToken: tokenAddress,
+            account: accountAddress,
+            providerOrSigner: framework.settings.provider,
+          }),
+          framework.gdaV1.getNetFlow({
+            token: tokenAddress,
+            account: accountAddress,
+            providerOrSigner: framework.settings.provider,
+          }),
+        ])
 
         const mappedResult: RealtimeBalance = {
           balance: realtimeBalanceOfNowResult[0].toString(),
           balanceTimestamp: realtimeBalanceOfNowResult[3].toNumber(),
-          flowRate: getNetFlowResult,
+          flowRate: BigNumber.from(getCfaNetFlowResult)
+            .add(BigNumber.from(getGdaNetFlowResult))
+            .toString(),
         }
 
         return {
