@@ -117,7 +117,11 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   )
   const [poolMemberPagingOrdering, setPoolMemberOrdering] = useState<
     Ordering<PoolMember_OrderBy> | undefined
-  >()
+  >({
+    orderBy: 'createdAtTimestamp',
+    orderDirection: 'desc',
+  })
+
   const poolMemberEventQuery = sfGdaSubgraph.usePoolMembersQuery({
     chainId: network.chainId,
     filter: {

@@ -37,5 +37,6 @@ query poolMembers(
     }
     isConnected
     totalAmountClaimed
+    totalAmountReceivedUntilUpdatedAt
   }
 }

@@ -100,7 +100,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
       },
       {
         field: 'units',
-        headerName: 'Subscription Units',
+        headerName: 'Units',
         flex: 2,
         renderCell: (
           params: GridRenderCellParams<string, IndexSubscription>

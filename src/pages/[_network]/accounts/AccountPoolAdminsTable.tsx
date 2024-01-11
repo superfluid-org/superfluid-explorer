@@ -67,6 +67,8 @@ interface AccountPoolAdminsTableProps {
 
 type RequiredPoolsQuery = Required<Omit<PoolsQuery, 'block'>>
 
+const colSpan = 5;
+
 const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
   network,
   accountAddress,
@@ -416,7 +418,6 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
       <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
-            <TableCell>Pool ID</TableCell>
             <TableCell>
               <TableSortLabel
                 active={
@@ -455,7 +456,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                 }
                 onClick={onSortClicked('totalMembers')}
               >
-                Members
+                Active Members
               </TableSortLabel>
             </TableCell>
             <TableCell width="140px">
@@ -468,7 +469,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                 }
                 onClick={onSortClicked('updatedAtTimestamp')}
               >
-                Created
+                Updated
               </TableSortLabel>
             </TableCell>
             <TableCell width="68px" />
@@ -477,7 +478,6 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
         <TableBody>
           {tableRows.map((pool: Pool) => (
             <TableRow key={pool.id} hover>
-              <TableCell data-cy={'publications-pool-id'}>{pool.id}</TableCell>
               <TableCell data-cy={'publications-total-distributed'}>
                 <FlowingBalanceWithToken
                   flowRate={pool.flowRate}
@@ -497,7 +497,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
               </TableCell>
               <TableCell>
                 <TimeAgo
-                  subgraphTime={pool.createdAtTimestamp}
+                  subgraphTime={pool.updatedAtTimestamp}
                   typographyProps={{ typography: 'body2' }}
                 />
               </TableCell>
@@ -509,12 +509,13 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                   {(onClick) => <DetailsButton onClick={onClick} />}
                 </PoolPublicationDetailsDialog>
               </TableCell>
+
             </TableRow>
           ))}
           {queryResult.isSuccess && tableRows.length === 0 && (
             <TableRow>
               <TableCell
-                colSpan={5}
+                colSpan={colSpan}
                 sx={{ border: 0, height: '96px' }}
                 align="center"
               >
@@ -532,7 +533,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
         {tableRows.length > 0 && (
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={5} align="right">
+              <TableCell colSpan={colSpan} align="right">
                 <InfinitePagination
                   page={skip / take + 1}
                   pageSize={pagination.take}

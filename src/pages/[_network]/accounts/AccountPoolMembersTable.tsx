@@ -45,6 +45,8 @@ import {
 import { PoolMembersQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
 import { UnitsStatus } from './AccountPoolAdminsTable'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
+import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 
 enum MemberStatus {
   IsConnected,
@@ -466,7 +468,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
       <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
-            <TableCell>
+            {/* <TableCell>
               Pool Admin
               <InfoTooltipBtn
                 dataCy="gda-admin-tooltip"
@@ -485,7 +487,21 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 }
                 iconSx={{ mb: 0, mr: 0.5 }}
               />
+            </TableCell> */}
+            <TableCell>
+              <TableSortLabel
+                active={order?.orderBy === 'totalAmountReceivedUntilUpdatedAt'}
+                direction={
+                  order?.orderBy === 'totalAmountReceivedUntilUpdatedAt'
+                    ? order?.orderDirection
+                    : 'desc'
+                }
+                onClick={onSortClicked('totalAmountReceivedUntilUpdatedAt')}
+              >
+                Amount Received
+              </TableSortLabel>
             </TableCell>
+
             <TableCell width="160px">
               <TableSortLabel
                 active={order.orderBy === 'isConnected'}
@@ -504,7 +520,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 />
               </TableSortLabel>
             </TableCell>
-            <TableCell>
+            {/* <TableCell>
               <TableSortLabel
                 active={order?.orderBy === 'totalAmountClaimed'}
                 direction={
@@ -516,7 +532,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               >
                 Amount Claimed
               </TableSortLabel>
-            </TableCell>
+            </TableCell> */}
             <TableCell>
               <TableSortLabel
                 active={order?.orderBy === 'units'}
@@ -525,7 +541,20 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 }
                 onClick={onSortClicked('units')}
               >
-                Pool Units
+                Units
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={order?.orderBy === 'updatedAtTimestamp'}
+                direction={
+                  order?.orderBy === 'updatedAtTimestamp'
+                    ? order?.orderDirection
+                    : 'desc'
+                }
+                onClick={onSortClicked('updatedAtTimestamp')}
+              >
+                Updated
               </TableSortLabel>
             </TableCell>
             <TableCell width="68px" />
@@ -534,37 +563,37 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
         <TableBody>
           {tableRows.map((member) => (
             <TableRow key={member.id} hover>
-              <TableCell data-cy={'admin-address'}>
+              {/* <TableCell data-cy={'admin-address'}>
                 <AccountAddress
                   network={network}
                   address={member.admin}
                   ellipsis={6}
                 />
+              </TableCell> */}
+
+
+              <TableCell data-cy={"amount-received"} >
+                <FlowingBalanceWithToken
+                  balance={member.totalAmountReceivedUntilUpdatedAt}
+                  balanceTimestamp={member.updatedAtTimestamp}
+                  flowRate={BigNumber.from(member.poolFlowRateCurrent).mul(member.poolTotalUnits).div(member.units)}
+                  TokenChipProps={{
+                    network: network,
+                    tokenAddress: member.token,
+                  }}
+                />
               </TableCell>
+
               <TableCell data-cy={'connected-status'}>
                 {member.isConnected ? 'Yes' : 'No'}
               </TableCell>
-              {/* <TableCell data-cy={"amount-received"} >
-                <BalanceWithToken
-                  network={network}
-                  // Actual index calculation but not possible with pool since we don't have exposed pool value and other parameters to calculate the recevied amount
-                  // wei={calculateWeiAmountReceived(
-                  //   BigNumber.from(subscription.indexValueCurrent),
-                  //   BigNumber.from(
-                  //     subscription.totalAmountReceivedUntilUpdatedAt
-                  //   ),
-                  //   BigNumber.from(subscription.indexValueUntilUpdatedAt),
-                  //   BigNumber.from(subscription.units)
-                  // )}
-                />
-              </TableCell> */}
-              <TableCell data-cy={'amount-claimed'}>
+              {/* <TableCell data-cy={'amount-claimed'}>
                 <BalanceWithToken
                   network={network}
                   tokenAddress={member.token}
                   wei={BigNumber.from(member.totalAmountClaimed)}
                 />
-              </TableCell>
+              </TableCell> */}
               <TableCell data-cy={'member-units'}>
                 {`${calculatePoolPercentage(
                   new Decimal(member.poolTotalUnits),
@@ -572,6 +601,10 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 )
                   .toDP(2)
                   .toString()}% (${member.units} units)`}
+              </TableCell>
+
+              <TableCell>
+                <TimeAgo subgraphTime={member.updatedAtTimestamp} />
               </TableCell>
 
               <TableCell align="right">

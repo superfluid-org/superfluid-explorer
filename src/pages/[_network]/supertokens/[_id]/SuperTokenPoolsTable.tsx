@@ -63,6 +63,8 @@ interface SuperTokenPoolsTableProps {
 
 type RequiredPoolsQuery = Required<Omit<PoolsQuery, 'block'>>
 
+const colSpan = 5;
+
 const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
   network,
   tokenAddress,
@@ -372,8 +374,8 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
       <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
-            <TableCell width="160px">Pool Address</TableCell>
-            <TableCell>
+            {/* <TableCell width="160px">Pool Address</TableCell> */}
+            {/* <TableCell>
               Pool Admin
               <InfoTooltipBtn
                 title={
@@ -390,7 +392,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
                 }
                 iconSx={{ mb: 0, mr: 0.5 }}
               />
-            </TableCell>
+            </TableCell> */}
             <TableCell>
               <TableSortLabel
                 active={
@@ -428,20 +430,20 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
                 }
                 onClick={onSortClicked('totalMembers')}
               >
-                Members
+                Active Members
               </TableSortLabel>
             </TableCell>
             <TableCell width="220px">
               <TableSortLabel
-                active={order.orderBy === 'createdAtTimestamp'}
+                active={order.orderBy === 'updatedAtTimestamp'}
                 direction={
-                  order.orderBy === 'createdAtTimestamp'
+                  order.orderBy === 'updatedAtTimestamp'
                     ? order.orderDirection
                     : 'desc'
                 }
-                onClick={onSortClicked('createdAtTimestamp')}
+                onClick={onSortClicked('updatedAtTimestamp')}
               >
-                Created
+                Updated
               </TableSortLabel>
             </TableCell>
             <TableCell width="68px" />
@@ -450,7 +452,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
         <TableBody>
           {tableRows.map((pool) => (
             <TableRow key={pool.id} hover>
-              <TableCell data-cy={'pool-id'}>{pool.id}</TableCell>
+              {/* <TableCell data-cy={'pool-id'}>{pool.id}</TableCell>
               <TableCell>
                 <AccountAddress
                   dataCy={'admin'}
@@ -458,7 +460,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
                   address={pool.admin}
                   ellipsis={6}
                 />
-              </TableCell>
+              </TableCell> */}
               <TableCell data-cy={'total-distributed'}>
                 <FlowingBalanceWithToken
                   flowRate={pool.flowRate}
@@ -475,7 +477,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               </TableCell>
               <TableCell>{pool.totalMembers.toString()}</TableCell>
               <TableCell>
-                <TimeAgo subgraphTime={pool.createdAtTimestamp} />
+                <TimeAgo subgraphTime={pool.updatedAtTimestamp} />
               </TableCell>
 
               <TableCell align="right">
@@ -492,7 +494,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
           {queryResult.isSuccess && tableRows.length === 0 && (
             <TableRow>
               <TableCell
-                colSpan={5}
+                colSpan={colSpan}
                 sx={{ border: 0, height: '96px' }}
                 align="center"
               >
@@ -511,7 +513,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
         {tableRows.length > 0 && (
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={7} align="right">
+              <TableCell colSpan={colSpan} align="right">
                 <InfinitePagination
                   page={skip / take + 1}
                   pageSize={pagination.take}

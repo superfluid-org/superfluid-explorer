@@ -35,6 +35,7 @@ export interface PoolMember {
   poolTotalUnits: BigNumber
   poolFlowRateCurrent: BigNumber
   pool: SubgraphId
+  totalAmountReceivedUntilUpdatedAt: BigNumber
 }
 
 export type PoolMembersListQuery = SubgraphListQuery<
@@ -96,7 +97,7 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
       poolTotalUnits: x.pool.totalUnits,
       token: x.pool.token.id,
       tokenSymbol: x.pool.token.symbol,
-      admin: x.pool.admin.id,
+      admin: x.pool.admin.id
     }))
 
   requestDocument = PoolMembersDocument

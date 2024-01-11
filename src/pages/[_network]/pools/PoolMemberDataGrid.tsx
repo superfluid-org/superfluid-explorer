@@ -44,13 +44,13 @@ const PoolMemberDataGrid: FC<Props> = ({
     () => [
       { field: 'id', hide: true },
       {
-        field: 'createdAtTimestamp',
-        headerName: 'Created At',
+        field: 'updatedAtTimestamp',
+        headerName: 'Updated',
         sortable: true,
         flex: 0.5,
         renderCell: (params) =>
-          params.row.createdAtTimestamp ? (
-            <TimeAgo subgraphTime={params.row.createdAtTimestamp} />
+          params.row.updatedAtTimestamp ? (
+            <TimeAgo subgraphTime={params.row.updatedAtTimestamp} />
           ) : null,
       },
       {
@@ -115,7 +115,7 @@ const PoolMemberDataGrid: FC<Props> = ({
       },
       {
         field: 'units',
-        headerName: 'Pool Share',
+        headerName: 'Units',
         flex: 2,
         renderCell: (params) => {
           return (

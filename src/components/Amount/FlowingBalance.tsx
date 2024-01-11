@@ -10,12 +10,12 @@ import EtherFormatted from './EtherFormatted'
 const ANIMATION_MINIMUM_STEP_TIME = 75
 
 export interface FlowingBalanceProps {
-  balance: string
+  balance: BigNumberish
   /**
    * Timestamp in Subgraph's UTC.
    */
   balanceTimestamp: number
-  flowRate: string
+  flowRate: BigNumberish
 }
 
 const FlowingBalance: FC<FlowingBalanceProps> = ({
