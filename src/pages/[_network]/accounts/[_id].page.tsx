@@ -333,7 +333,7 @@ const AccountPage: NextPage = () => {
                             </>
                           )}
 
-                          {flowRate != '0' && flowRate.charAt(0) === '-' && (
+                          {flowRate != '0' && flowRate.toString().charAt(0) === '-' && (
                             <>
                               <Typography
                                 variant="caption"

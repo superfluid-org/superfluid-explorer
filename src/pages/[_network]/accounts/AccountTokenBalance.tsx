@@ -3,6 +3,7 @@ import { FC, PropsWithChildren } from 'react'
 import { FlowingBalanceProps } from '../../../components/Amount/FlowingBalance'
 import { Network } from '../../../redux/networks'
 import { rpcApi } from '../../../redux/store'
+import { BigNumberish } from 'ethers'
 
 export const AccountTokenBalance: FC<{
   network: Network
@@ -13,9 +14,9 @@ export const AccountTokenBalance: FC<{
    */
   placeholder: FlowingBalanceProps
   children: (context: {
-    balance: string
+    balance: BigNumberish
     balanceTimestamp: number
-    flowRate: string
+    flowRate: BigNumberish
   }) => PropsWithChildren['children']
 }> = ({ children, network, tokenAddress, accountAddress, placeholder }) => {
   const realtimeBalanceQuery = rpcApi.useRealtimeBalanceQuery({

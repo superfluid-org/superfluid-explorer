@@ -25,19 +25,19 @@ export const AccountTokenFlowRate: FC<{
   placeholder,
   TokenChipProps,
 }) => {
-  const realtimeBalanceQuery = rpcApi.useRealtimeBalanceQuery({
-    chainId: network.chainId,
-    tokenAddress: tokenAddress,
-    accountAddress: accountAddress,
-  })
+    const realtimeBalanceQuery = rpcApi.useRealtimeBalanceQuery({
+      chainId: network.chainId,
+      tokenAddress: tokenAddress,
+      accountAddress: accountAddress,
+    })
 
-  const flowRate = realtimeBalanceQuery?.data?.flowRate || placeholder?.flowRate
+    const flowRate = realtimeBalanceQuery?.data?.flowRate || placeholder?.flowRate
 
-  if (flowRate) {
-    return <FlowRate flowRate={flowRate}></FlowRate>
-  } else {
-    return null
+    if (flowRate) {
+      return <FlowRate flowRate={flowRate}></FlowRate>
+    } else {
+      return null
+    }
   }
-}
 
 export default AccountTokenFlowRate

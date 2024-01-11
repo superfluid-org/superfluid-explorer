@@ -1,11 +1,11 @@
 import { Box, Tooltip, TooltipProps } from '@mui/material'
-import { BigNumber } from 'ethers'
+import { BigNumber, BigNumberish } from 'ethers'
 import React from 'react'
 
 interface DepletionDateProps {
-  balance: string
+  balance: BigNumberish
   balanceTimestamp: number
-  flowRate: string
+  flowRate: BigNumberish
   tooltipProps?: TooltipProps
 }
 
@@ -15,7 +15,7 @@ const DepletionDate: React.FC<DepletionDateProps> = ({
   flowRate,
   tooltipProps,
 }) => {
-  const flowRateNum = parseFloat(flowRate)
+  const flowRateNum = parseFloat(flowRate.toString())
 
   if (flowRateNum < 0) {
     const balanceBigNumber = BigNumber.from(balance)

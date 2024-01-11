@@ -40,7 +40,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
     }
 
     const ticksPerSecond = 1000 / ANIMATION_MINIMUM_STEP_TIME
-    const flowRatePerTick = new Decimal(flowRate).div(ticksPerSecond).toFixed(0)
+    const flowRatePerTick = new Decimal(flowRateBigNumber.toString()).div(ticksPerSecond).toFixed(0)
 
     const afterEtherDecimal = utils.formatEther(flowRatePerTick).split('.')[1]
     const numberAfterDecimalWithoutLeadingZeroes = Number(afterEtherDecimal)
@@ -52,7 +52,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
 
     // This will usually have the last 3 numbers flowing smoothly.
     return lengthToFirstSignificatDecimal + 2
-  }, [flowRate, currentEtherDecimalPlaces])
+  }, [flowRateBigNumber, currentEtherDecimalPlaces])
 
   const balanceTimestampMs = useMemo(
     () => ethers.BigNumber.from(balanceTimestamp).mul(1000),

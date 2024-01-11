@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
-import { BigNumber } from 'ethers'
+import { BigNumber, BigNumberish } from 'ethers'
 import { FC } from 'react'
 
 import { useAppSelector } from '../../redux/hooks'
@@ -8,7 +8,7 @@ import { streamGranularityInSeconds } from '../../redux/slices/appPreferences.sl
 import EtherFormatted from './EtherFormatted'
 
 const FlowRate: FC<{
-  flowRate: string
+  flowRate: BigNumberish
 }> = ({ flowRate }) => {
   const streamGranularity = useAppSelector(
     (state) => state.appPreferences.streamGranularity
