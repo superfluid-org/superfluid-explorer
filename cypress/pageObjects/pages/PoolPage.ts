@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { BasePage } from '../BasePage'
 import { timeAgo } from '../../../src/utils/dateTime'
-import calculatePoolPercentage from '../../../src/calculatePoolPercentage'
+import { calculatePoolPercentage } from '../../../src/hooks/usePoolPercentage'
 import Decimal from 'decimal.js'
 
 const POOL_TOKEN = '[data-cy=token-address]'

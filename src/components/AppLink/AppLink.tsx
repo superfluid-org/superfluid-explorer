@@ -78,7 +78,15 @@ const AppLink = React.forwardRef<HTMLAnchorElement, LinkProps>(
         return <Anchor className={className} href={href} ref={ref} {...other} />
       }
 
-      return <MuiLink className={className} href={href} ref={ref} {...other} />
+      return (
+        <MuiLink
+          underline="hover"
+          className={className}
+          href={href}
+          ref={ref}
+          {...other}
+        />
+      )
     }
 
     if (noLinkStyle) {
@@ -94,6 +102,7 @@ const AppLink = React.forwardRef<HTMLAnchorElement, LinkProps>(
 
     return (
       <MuiLink
+        underline="hover"
         component={NextLinkComposed}
         linkAs={linkAs}
         className={className}

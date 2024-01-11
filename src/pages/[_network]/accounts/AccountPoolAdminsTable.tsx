@@ -67,7 +67,7 @@ interface AccountPoolAdminsTableProps {
 
 type RequiredPoolsQuery = Required<Omit<PoolsQuery, 'block'>>
 
-const colSpan = 5;
+const colSpan = 5
 
 const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
   network,
@@ -224,8 +224,8 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter))
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const openFilter = () => setShowFilterMenu(true)
   const closeFilter = () => setShowFilterMenu(false)
@@ -400,14 +400,14 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
               {(filter.id ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -437,9 +437,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
               <TableSortLabel
                 active={order.orderBy === 'flowRate'}
                 direction={
-                  order.orderBy === 'flowRate'
-                    ? order.orderDirection
-                    : 'desc'
+                  order.orderBy === 'flowRate' ? order.orderDirection : 'desc'
                 }
                 onClick={onSortClicked('flowRate')}
               >
@@ -509,7 +507,6 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                   {(onClick) => <DetailsButton onClick={onClick} />}
                 </PoolPublicationDetailsDialog>
               </TableCell>
-
             </TableRow>
           ))}
           {queryResult.isSuccess && tableRows.length === 0 && (

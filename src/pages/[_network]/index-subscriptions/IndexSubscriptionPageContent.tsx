@@ -20,13 +20,11 @@ import {
   SkipPaging,
   SubscriptionUnitsUpdatedEvent_OrderBy,
 } from '@superfluid-finance/sdk-core'
-import Decimal from 'decimal.js'
 import { BigNumber, BigNumberish } from 'ethers'
 import { gql } from 'graphql-request'
 import Error from 'next/error'
 import { FC, useEffect, useState } from 'react'
 
-import calculatePoolPercentage from '../../../calculatePoolPercentage'
 import calculateWeiAmountReceived from '../../../calculateWeiAmountReceived'
 import AccountAddress from '../../../components/Address/AccountAddress'
 import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
@@ -34,6 +32,7 @@ import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
 import CopyLink from '../../../components/Copy/CopyLink'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 import SkeletonAddress from '../../../components/Skeleton/SkeletonAddress'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
@@ -90,20 +89,12 @@ export const IndexSubscriptionPageContent: FC<{
       order: subscriptionUnitsUpdatedEventPagingOrdering,
     })
 
-  const [poolPercentage, setPoolPercentage] = useState<Decimal | undefined>()
   const [totalWeiAmountReceived, setTotalWeiAmountReceived] = useState<
     BigNumberish | undefined
   >()
 
   useEffect(() => {
     if (index && indexSubscription) {
-      setPoolPercentage(
-        calculatePoolPercentage(
-          new Decimal(indexSubscription.indexTotalUnits),
-          new Decimal(indexSubscription.units)
-        )
-      )
-
       setTotalWeiAmountReceived(
         calculateWeiAmountReceived(
           BigNumber.from(index.indexValue),
@@ -301,7 +292,7 @@ export const IndexSubscriptionPageContent: FC<{
                 <ListItemText
                   secondary={
                     <>
-                      Units (Pool %)
+                      Units
                       <InfoTooltipBtn
                         dataCy={'units-tooltip'}
                         title={
@@ -323,12 +314,10 @@ export const IndexSubscriptionPageContent: FC<{
                   }
                   primary={
                     indexSubscription && index ? (
-                      <>
-                        {indexSubscription.units} / {index.totalUnits} (
-                        {poolPercentage &&
-                          poolPercentage.toDP(2).toString() + ' %'}
-                        )
-                      </>
+                      <PoolPercentage
+                        totalUnits={indexSubscription.units}
+                        individualUnits={index.totalUnits}
+                      />
                     ) : (
                       <Skeleton sx={{ width: '150px' }} />
                     )

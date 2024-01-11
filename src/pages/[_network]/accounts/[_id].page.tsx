@@ -333,25 +333,26 @@ const AccountPage: NextPage = () => {
                             </>
                           )}
 
-                          {flowRate != '0' && flowRate.toString().charAt(0) === '-' && (
-                            <>
-                              <Typography
-                                variant="caption"
-                                sx={{
-                                  textAlign: 'right',
-                                }}
-                              >
-                                Pred. liquidation:
-                              </Typography>
-                              <Typography variant="caption">
-                                <DepletionDate
-                                  balance={balance}
-                                  balanceTimestamp={balanceTimestamp}
-                                  flowRate={flowRate}
-                                />
-                              </Typography>
-                            </>
-                          )}
+                          {flowRate != '0' &&
+                            flowRate.toString().charAt(0) === '-' && (
+                              <>
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    textAlign: 'right',
+                                  }}
+                                >
+                                  Pred. liquidation:
+                                </Typography>
+                                <Typography variant="caption">
+                                  <DepletionDate
+                                    balance={balance}
+                                    balanceTimestamp={balanceTimestamp}
+                                    flowRate={flowRate}
+                                  />
+                                </Typography>
+                              </>
+                            )}
                         </Box>
                       )}
                     </AccountTokenBalance>

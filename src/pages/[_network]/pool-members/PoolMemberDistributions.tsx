@@ -37,9 +37,9 @@ export const PoolMemberDistributions: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-        chainId: network.chainId,
-        id: poolMember.pool,
-      }
+          chainId: network.chainId,
+          id: poolMember.pool,
+        }
       : skipToken
   )
 
@@ -98,25 +98,25 @@ export const PoolMemberDistributions: FC<{
   const subscribersUnitsUpdatedEvents:
     | PoolMemberUnitsUpdatedEvent[]
     | undefined = useMemo(
-      () => memberUnitsUpdatedEventsQuery.data?.items ?? [],
-      [memberUnitsUpdatedEventsQuery.data]
-    )
+    () => memberUnitsUpdatedEventsQuery.data?.items ?? [],
+    [memberUnitsUpdatedEventsQuery.data]
+  )
 
   const instantDistributionUpdatedEventsQuery =
     sfGdaSubgraph.useInstantDistributionUpdatedEventsQuery(
       pool && subscribersStartTime
         ? {
-          chainId: network.chainId,
-          filter: {
-            pool: pool.id,
-            timestamp_gte: subscribersStartTime.toString(),
-            ...(subscribersEndTime
-              ? { timestamp_lte: subscribersEndTime.toString() }
-              : {}),
-          },
-          order: instantDistributionUpdatedEventOrdering,
-          pagination: instantDistributionUpdatedEventPaging,
-        }
+            chainId: network.chainId,
+            filter: {
+              pool: pool.id,
+              timestamp_gte: subscribersStartTime.toString(),
+              ...(subscribersEndTime
+                ? { timestamp_lte: subscribersEndTime.toString() }
+                : {}),
+            },
+            order: instantDistributionUpdatedEventOrdering,
+            pagination: instantDistributionUpdatedEventPaging,
+          }
         : skipToken
     )
 

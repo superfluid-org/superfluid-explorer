@@ -26,7 +26,6 @@ const TokenChip: FC<TokenChipProps> = ({
   return (
     <AppLink
       data-cy={'token-link'}
-      className="address"
       href={`/${network.slugName}/supertokens/${tokenAddress}`}
       sx={{ textDecoration: 'none', flexShrink: 0 }}
     >

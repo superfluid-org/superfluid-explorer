@@ -20,21 +20,20 @@ import {
   Typography,
 } from '@mui/material'
 import { createSkipPaging, Ordering } from '@superfluid-finance/sdk-core'
-import Decimal from 'decimal.js'
 import { BigNumber } from 'ethers'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
 import { FC, FormEvent, useEffect, useRef, useState } from 'react'
 
-import calculatePoolPercentage from '../../../calculatePoolPercentage'
-import AccountAddress from '../../../components/Address/AccountAddress'
-import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
 import DetailsButton from '../../../components/Details/DetailsButton'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 import InfinitePagination from '../../../components/Table/InfinitePagination'
 import TableLoader from '../../../components/Table/TableLoader'
+import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import useDebounce from '../../../hooks/useDebounce'
 import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
@@ -45,8 +44,6 @@ import {
 import { PoolMembersQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
 import { UnitsStatus } from './AccountPoolAdminsTable'
-import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
-import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 
 enum MemberStatus {
   IsConnected,
@@ -158,8 +155,8 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof PoolMember_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter))
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const getMemberStatusFilter = (
     status: MemberStatus | null
@@ -450,14 +447,14 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               {(memberStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -571,12 +568,13 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 />
               </TableCell> */}
 
-
-              <TableCell data-cy={"amount-received"} >
+              <TableCell data-cy={'amount-received'}>
                 <FlowingBalanceWithToken
                   balance={member.totalAmountReceivedUntilUpdatedAt}
                   balanceTimestamp={member.updatedAtTimestamp}
-                  flowRate={BigNumber.from(member.poolFlowRateCurrent).mul(member.poolTotalUnits).div(member.units)}
+                  flowRate={BigNumber.from(member.poolFlowRateCurrent)
+                    .mul(member.poolTotalUnits)
+                    .div(member.units)}
                   TokenChipProps={{
                     network: network,
                     tokenAddress: member.token,
@@ -595,12 +593,10 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 />
               </TableCell> */}
               <TableCell data-cy={'member-units'}>
-                {`${calculatePoolPercentage(
-                  new Decimal(member.poolTotalUnits),
-                  new Decimal(member.units)
-                )
-                  .toDP(2)
-                  .toString()}% (${member.units} units)`}
+                <PoolPercentage
+                  totalUnits={member.poolTotalUnits}
+                  individualUnits={member.units}
+                />
               </TableCell>
 
               <TableCell>

@@ -1,6 +1,6 @@
 import { BasePage } from '../BasePage'
 import Decimal from 'decimal.js'
-import calculatePoolPercentage from '../../../src/calculatePoolPercentage'
+import { calculatePoolPercentage } from '../../../src/hooks/usePoolPercentage'
 
 const ACCOUNT_TYPE = '[data-cy=account-type] span'
 const ACCOUNT_SYMBOL = '[data-cy=token-symbol]'

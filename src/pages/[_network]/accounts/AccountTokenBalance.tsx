@@ -1,9 +1,9 @@
+import { BigNumberish } from 'ethers'
 import { FC, PropsWithChildren } from 'react'
 
 import { FlowingBalanceProps } from '../../../components/Amount/FlowingBalance'
 import { Network } from '../../../redux/networks'
 import { rpcApi } from '../../../redux/store'
-import { BigNumberish } from 'ethers'
 
 export const AccountTokenBalance: FC<{
   network: Network

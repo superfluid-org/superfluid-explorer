@@ -26,20 +26,19 @@ import {
   Ordering,
 } from '@superfluid-finance/sdk-core'
 import { IndexSubscriptionsQuery } from '@superfluid-finance/sdk-redux'
-import Decimal from 'decimal.js'
 import { BigNumber } from 'ethers'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
 import { FC, FormEvent, useEffect, useRef, useState } from 'react'
 
-import calculatePoolPercentage from '../../../calculatePoolPercentage'
 import calculateWeiAmountReceived from '../../../calculateWeiAmountReceived'
 import AccountAddress from '../../../components/Address/AccountAddress'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
 import DetailsButton from '../../../components/Details/DetailsButton'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 import InfinitePagination from '../../../components/Table/InfinitePagination'
 import TableLoader from '../../../components/Table/TableLoader'
 import useDebounce from '../../../hooks/useDebounce'
@@ -160,8 +159,8 @@ const AccountIndexSubscriptionsTable: FC<
 
   const clearFilterField =
     (...fields: Array<keyof IndexSubscription_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter))
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const getSubscriptionStatusFilter = (
     status: SubscriptionStatus | null
@@ -457,14 +456,14 @@ const AccountIndexSubscriptionsTable: FC<
               {(subscriptionStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -564,13 +563,10 @@ const AccountIndexSubscriptionsTable: FC<
                 />
               </TableCell>
               <TableCell data-cy={'subscription-units'}>
-                {subscription.units}&nbsp;
-                {`(${calculatePoolPercentage(
-                  new Decimal(subscription.indexTotalUnits),
-                  new Decimal(subscription.units)
-                )
-                  .toDP(2)
-                  .toString()}%)`}
+                <PoolPercentage
+                  totalUnits={subscription.indexTotalUnits}
+                  individualUnits={subscription.units}
+                />
               </TableCell>
 
               <TableCell align="right">

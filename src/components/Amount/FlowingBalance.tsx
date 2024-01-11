@@ -40,7 +40,9 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
     }
 
     const ticksPerSecond = 1000 / ANIMATION_MINIMUM_STEP_TIME
-    const flowRatePerTick = new Decimal(flowRateBigNumber.toString()).div(ticksPerSecond).toFixed(0)
+    const flowRatePerTick = new Decimal(flowRateBigNumber.toString())
+      .div(ticksPerSecond)
+      .toFixed(0)
 
     const afterEtherDecimal = utils.formatEther(flowRatePerTick).split('.')[1]
     const numberAfterDecimalWithoutLeadingZeroes = Number(afterEtherDecimal)

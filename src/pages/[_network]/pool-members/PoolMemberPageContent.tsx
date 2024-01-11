@@ -17,20 +17,17 @@ import {
   Ordering,
   SkipPaging,
 } from '@superfluid-finance/sdk-core'
-import Decimal from 'decimal.js'
-import { BigNumber, BigNumberish } from 'ethers'
 import { gql } from 'graphql-request'
 import Error from 'next/error'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 
-import calculatePoolPercentage from '../../../calculatePoolPercentage'
-import calculateWeiAmountClaimed from '../../../calculateWeiAmountReceived'
 import AccountAddress from '../../../components/Address/AccountAddress'
 import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
 import CopyLink from '../../../components/Copy/CopyLink'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 import SkeletonAddress from '../../../components/Skeleton/SkeletonAddress'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
@@ -56,9 +53,9 @@ export const PoolMemberPageContent: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-        chainId: network.chainId,
-        id: poolMember.pool,
-      }
+          chainId: network.chainId,
+          id: poolMember.pool,
+        }
       : skipToken
   )
 
@@ -87,20 +84,6 @@ export const PoolMemberPageContent: FC<{
       pagination: poolMemberUnitsUpdatedEventPaging,
       order: poolMemberUnitsUpdatedEventPagingOrdering,
     })
-
-  const [poolPercentage, setPoolPercentage] = useState<Decimal | undefined>()
-
-  useEffect(() => {
-    if (pool && poolMember) {
-      setPoolPercentage(
-        calculatePoolPercentage(
-          new Decimal(poolMember.poolTotalUnits),
-          new Decimal(poolMember.units)
-        )
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poolMember, pool])
 
   if (!poolQuery.isUninitialized && !poolQuery.isLoading && !poolQuery.data) {
     return <Error statusCode={404} />
@@ -248,7 +231,7 @@ export const PoolMemberPageContent: FC<{
                 <ListItemText
                   secondary={
                     <>
-                      Units (Pool %)
+                      Units
                       <InfoTooltipBtn
                         dataCy={'units-tooltip'}
                         title={
@@ -270,12 +253,10 @@ export const PoolMemberPageContent: FC<{
                   }
                   primary={
                     poolMember && pool ? (
-                      <>
-                        {poolMember.units} / {pool.totalUnits} (
-                        {poolPercentage &&
-                          poolPercentage.toDP(2).toString() + '%'}
-                        )
-                      </>
+                      <PoolPercentage
+                        totalUnits={pool.totalUnits}
+                        individualUnits={poolMember.units}
+                      />
                     ) : (
                       <Skeleton sx={{ width: '150px' }} />
                     )

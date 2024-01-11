@@ -11,15 +11,14 @@ import {
   PagedResult,
   SkipPaging,
 } from '@superfluid-finance/sdk-core'
-import Decimal from 'decimal.js'
 import { BigNumber } from 'ethers'
 import { FC, useMemo } from 'react'
 
-import calculatePoolPercentage from '../../../calculatePoolPercentage'
 import calculateWeiAmountReceived from '../../../calculateWeiAmountReceived'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { IndexSubscriptionDetailsDialog } from './IndexSubscriptionDetails'
@@ -106,15 +105,10 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
           params: GridRenderCellParams<string, IndexSubscription>
         ) => {
           return (
-            <>
-              {params.row.units}&nbsp;
-              {`(${calculatePoolPercentage(
-                new Decimal(params.row.indexTotalUnits),
-                new Decimal(params.row.units)
-              )
-                .toDP(2)
-                .toString()}%)`}
-            </>
+            <PoolPercentage
+              totalUnits={params.row.indexTotalUnits}
+              individualUnits={params.row.units}
+            />
           )
         },
       },

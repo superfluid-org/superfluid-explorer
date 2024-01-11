@@ -428,14 +428,14 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
               {(activeStreamsStatus !== null ||
                 inactiveStreamsStatus !== null ||
                 subsWithUnitsStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>

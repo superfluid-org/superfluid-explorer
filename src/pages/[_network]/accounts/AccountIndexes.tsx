@@ -14,8 +14,8 @@ const AccountIndexes: FC<{
     <>
       <InfoHelpAlert>
         A pool of subscribers, each of which who holds a given number of units
-        in the index. An index is created by a publisher who may update the index
-        or distribute funds to the index using the Instant Distribution
+        in the index. An index is created by a publisher who may update the
+        index or distribute funds to the index using the Instant Distribution
         Agreement (IDA).{' '}
         <AppLink
           href="https://docs.superfluid.finance/superfluid/protocol-developers/interactive-tutorials/instant-distribution"

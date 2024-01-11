@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import { BasePage } from '../BasePage'
-import calculatePoolPercentage from '../../../src/calculatePoolPercentage'
+import { calculatePoolPercentage } from '../../../src/hooks/usePoolPercentage'
 import Decimal from 'decimal.js'
 import { timeAgo } from '../../../src/utils/dateTime'
 

@@ -5,20 +5,19 @@ import {
   GridRenderCellParams,
 } from '@mui/x-data-grid'
 import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
-import Decimal from 'decimal.js'
 import { BigNumber } from 'ethers'
 import { FC, useMemo } from 'react'
 
-import calculatePoolPercentage from '../../../calculatePoolPercentage'
+import AccountAddress from '../../../components/Address/AccountAddress'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
+import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { PoolMember_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
-import AccountAddress from '../../../components/Address/AccountAddress'
 
 interface Props {
   network: Network
@@ -58,12 +57,13 @@ const PoolMemberDataGrid: FC<Props> = ({
         headerName: 'Account',
         sortable: false,
         flex: 0.5,
-        renderCell: (params) =>
-        (<AccountAddress
-          network={network}
-          address={params.row.account}
-          ellipsis={6}
-        />)
+        renderCell: (params) => (
+          <AccountAddress
+            network={network}
+            address={params.row.account}
+            ellipsis={6}
+          />
+        ),
       },
       {
         field: 'approved',
@@ -119,14 +119,10 @@ const PoolMemberDataGrid: FC<Props> = ({
         flex: 2,
         renderCell: (params) => {
           return (
-            <>
-              {`${calculatePoolPercentage(
-                new Decimal(params.row.poolTotalUnits),
-                new Decimal(params.row.units)
-              )
-                .toDP(2)
-                .toString()}% (${params.row.units} units)`}
-            </>
+            <PoolPercentage
+              totalUnits={params.row.poolTotalUnits}
+              individualUnits={params.row.units}
+            />
           )
         },
       },
