@@ -30,7 +30,7 @@ const FlowRate: FC<{
       placement="right"
       arrow
     >
-      <Box component="span">
+      <Box component="span" className="tooltip-underline">
         <EtherFormatted wei={flowRateConverted} />/{streamGranularity}
       </Box>
     </Tooltip>
