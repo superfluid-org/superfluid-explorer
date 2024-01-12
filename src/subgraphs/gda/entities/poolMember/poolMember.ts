@@ -36,6 +36,7 @@ export interface PoolMember {
   poolFlowRateCurrent: BigNumber
   pool: SubgraphId
   totalAmountReceivedUntilUpdatedAt: BigNumber
+  poolTotalAmountDistributedUntilUpdatedAt: BigNumber
 }
 
 export type PoolMembersListQuery = SubgraphListQuery<

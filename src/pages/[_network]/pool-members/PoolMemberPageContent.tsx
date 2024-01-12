@@ -38,6 +38,9 @@ import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMembe
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import { PoolMemberFlowDistributions } from './PoolMemberFlowDistributions'
 import PoolMemberUnitsUpdatedEventDataGrid from './PoolMemberUnitsUpdatedEventDataGrid'
+import { useTotalAmountRecivedFromPoolMember } from './getTotalAmountReceivedFromPoolMember'
+import FlowRate from '../../../components/Amount/FlowRate'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 
 export const PoolMemberPageContent: FC<{
   poolMemberId: string
@@ -53,9 +56,9 @@ export const PoolMemberPageContent: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool,
-        }
+        chainId: network.chainId,
+        id: poolMember.pool,
+      }
       : skipToken
   )
 
@@ -84,6 +87,8 @@ export const PoolMemberPageContent: FC<{
       pagination: poolMemberUnitsUpdatedEventPaging,
       order: poolMemberUnitsUpdatedEventPagingOrdering,
     })
+
+  const totalAmountReceivedForPoolMember = useTotalAmountRecivedFromPoolMember(poolMember, pool);
 
   if (!poolQuery.isUninitialized && !poolQuery.isLoading && !poolQuery.data) {
     return <Error statusCode={404} />
@@ -287,7 +292,22 @@ export const PoolMemberPageContent: FC<{
                   }
                 />
               </ListItem>
-              <ListItem data-cy={'subscription-total-amount-claimed'} divider>
+              <ListItem data-cy={'subscription-total-amount-received'} divider>
+                <ListItemText
+                  secondary="Total Amount Received"
+                  primary={
+                    poolMember && totalAmountReceivedForPoolMember ? (
+                      <FlowingBalanceWithToken balance={totalAmountReceivedForPoolMember.memberCurrentTotalAmountReceived} balanceTimestamp={totalAmountReceivedForPoolMember.timestamp} flowRate={totalAmountReceivedForPoolMember.memberFlowRate} TokenChipProps={{
+                        network: network,
+                        tokenAddress: poolMember?.token
+                      }} />
+                    ) : (
+                      <Skeleton sx={{ width: '100px' }} />
+                    )
+                  }
+                />
+              </ListItem>
+              {/* <ListItem data-cy={'subscription-total-amount-claimed'} divider>
                 <ListItemText
                   secondary="Total Amount Claimed"
                   primary={
@@ -304,7 +324,7 @@ export const PoolMemberPageContent: FC<{
                     )
                   }
                 />
-              </ListItem>
+              </ListItem> */}
               <Grid container>
                 <Grid item xs={6}>
                   <ListItem>
