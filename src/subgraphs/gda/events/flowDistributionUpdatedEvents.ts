@@ -81,6 +81,7 @@ function mapGetAllEventsQueryEvent(
 ): PoolFlowDistributionUpdatedEvent[] {
   return flowDistributionUpdatedEvents.map((e) => {
     return {
+      ...e,
       name: 'FlowDistributionUpdated',
       id: e.id,
       blockNumber: Number(e.blockNumber),

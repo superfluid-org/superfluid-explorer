@@ -66,23 +66,25 @@ function mapGetAllEventsQueryEvent(
       | 'gasPrice'
       | 'order'
       | 'logIndex'
+      | 'totalUnits'
     > & { poolMember: Pick<PoolMember, 'id'>; pool: Pick<Pool, 'id'> }
   >
 ): PoolMemberUnitsUpdatedEvent[] {
-  return memberUnitsUpdatedEvents.map((memberUnitEvent) => {
+  return memberUnitsUpdatedEvents.map((e) => {
     return {
+      ...e,
       name: 'MemberUnitsUpdated',
-      id: memberUnitEvent.id,
-      blockNumber: Number(memberUnitEvent.blockNumber),
-      order: Number(memberUnitEvent.order),
-      timestamp: Number(memberUnitEvent.timestamp),
-      logIndex: Number(memberUnitEvent.logIndex),
-      transactionHash: memberUnitEvent.transactionHash,
-      gasPrice: memberUnitEvent.gasPrice,
-      token: memberUnitEvent.token,
-      pool: memberUnitEvent.pool.id,
-      poolMember: memberUnitEvent.poolMember.id,
-      units: memberUnitEvent.units,
+      id: e.id,
+      blockNumber: Number(e.blockNumber),
+      order: Number(e.order),
+      timestamp: Number(e.timestamp),
+      logIndex: Number(e.logIndex),
+      transactionHash: e.transactionHash,
+      gasPrice: e.gasPrice,
+      token: e.token,
+      pool: e.pool.id,
+      poolMember: e.poolMember.id,
+      units: e.units,
     } as PoolMemberUnitsUpdatedEvent
   })
 }

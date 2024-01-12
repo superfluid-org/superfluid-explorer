@@ -56,21 +56,21 @@ export const AppDataGrid: FC<Props> = ({
     sortingMode: 'server',
     sortModel: ordering
       ? [
-          {
-            field: ordering.orderBy,
-            sort: ordering.orderDirection,
-          },
-        ]
+        {
+          field: ordering.orderBy,
+          sort: ordering.orderDirection,
+        },
+      ]
       : [],
     onSortModelChange: (sortModel) =>
       setOrdering(
         sortModel[0]
           ? {
-              orderBy: sortModel[0].field,
-              orderDirection: sortModel[0].sort!, // TODO(KK): Forbidden
-            }
+            orderBy: sortModel[0].field,
+            orderDirection: sortModel[0].sort!, // TODO(KK): Forbidden
+          }
           : undefined
-      ),
+      )
   }
 
   const finalDataGridProps = _.merge(defaultDataGridProps, dataGridProps)

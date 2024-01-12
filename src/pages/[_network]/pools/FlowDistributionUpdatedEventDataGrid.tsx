@@ -11,6 +11,7 @@ import { useNetworkContext } from '../../../contexts/NetworkContext'
 import { FlowDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { FlowDistributionUpdatedEvent } from '../../../subgraphs/gda/events'
+import { useFlowDistributionUpdatedColumns } from './useFlowDistributionUpdatedColumns'
 
 interface Props {
   pool: Pool | null | undefined
@@ -62,76 +63,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
     ? queryResult.data.data
     : []
 
-  const columns: GridColDef<FlowDistributionUpdatedEvent>[] = useMemo(
-    () => [
-      { field: 'id', hide: true, sortable: false, flex: 1 },
-      {
-        field: 'timestamp',
-        headerName: 'Date',
-        sortable: true,
-        flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
-      },
-      {
-        field: 'distributor',
-        headerName: 'Distributor',
-        sortable: true,
-        flex: 0.5,
-        renderCell: (params) => (
-          <AccountAddress
-            dataCy={'distributor-address'}
-            network={network}
-            address={params.row.poolDistributor}
-          />
-        ),
-      },
-      {
-        field: 'newDistributorToPoolFlowRate',
-        headerName: "Distributor's Flow Rate",
-        hide: false,
-        sortable: false,
-        flex: 1.5,
-        renderCell: (params) => {
-          return <FlowRate flowRate={params.row.newDistributorToPoolFlowRate} />
-        },
-      },
-      {
-        field: 'newTotalDistributionFlowRate',
-        headerName: 'Total Flow Rate',
-        hide: false,
-        sortable: false,
-        flex: 1.5,
-        renderCell: (params) => {
-          return <FlowRate flowRate={params.row.newTotalDistributionFlowRate} />
-        },
-      },
-      {
-        field: 'adjustmentFlowRecipient',
-        headerName: 'Adjustment Flow Recipient',
-        hide: true,
-        sortable: true,
-        flex: 0.5,
-        renderCell: (params) => (
-          <AccountAddress
-            dataCy={'adjustment-flow-recipient-address'}
-            network={network}
-            address={params.row.adjustmentFlowRecipient}
-          />
-        ),
-      },
-      {
-        field: 'adjustmentFlowRate',
-        headerName: 'Adjustment Flow Rate',
-        hide: true,
-        sortable: false,
-        flex: 1.5,
-        renderCell: (params) => {
-          return <FlowRate flowRate={params.row.adjustmentFlowRate} />
-        },
-      },
-    ],
-    [pool, network]
-  )
+  const columns = useFlowDistributionUpdatedColumns(network)
 
   return (
     <AppDataGrid

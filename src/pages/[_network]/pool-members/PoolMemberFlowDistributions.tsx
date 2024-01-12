@@ -21,6 +21,7 @@ import {
   FlowDistributionUpdatedEvent,
   PoolMemberUnitsUpdatedEvent,
 } from '../../../subgraphs/gda/events'
+import { useFlowDistributionUpdatedColumns } from '../pools/useFlowDistributionUpdatedColumns'
 
 export const PoolMemberFlowDistributions: FC<{
   network: Network
@@ -36,9 +37,9 @@ export const PoolMemberFlowDistributions: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool,
-        }
+        chainId: network.chainId,
+        id: poolMember.pool,
+      }
       : skipToken
   )
 
@@ -94,96 +95,28 @@ export const PoolMemberFlowDistributions: FC<{
     [memberUnitsUpdatedEventsQuery]
   )
 
-  const subscribersUnitsUpdatedEvents:
-    | PoolMemberUnitsUpdatedEvent[]
-    | undefined = useMemo(
-    () => memberUnitsUpdatedEventsQuery.data?.items ?? [],
-    [memberUnitsUpdatedEventsQuery.data]
-  )
-
   const flowDistributionUpdatedEventsQuery =
     sfGdaSubgraph.useFlowDistributionUpdatedEventsQuery(
       pool && subscribersStartTime
         ? {
-            chainId: network.chainId,
-            filter: {
-              pool: pool.id,
-              timestamp_gte: subscribersStartTime.toString(),
-              ...(subscribersEndTime
-                ? { timestamp_lte: subscribersEndTime.toString() }
-                : {}),
-            },
-            order: flowDistributionUpdatedEventOrdering,
-            pagination: flowDistributionUpdatedEventPaging,
-          }
+          chainId: network.chainId,
+          filter: {
+            pool: pool.id,
+            timestamp_gte: subscribersStartTime.toString(),
+            ...(subscribersEndTime
+              ? { timestamp_lte: subscribersEndTime.toString() }
+              : {}),
+          },
+          order: flowDistributionUpdatedEventOrdering,
+          pagination: flowDistributionUpdatedEventPaging,
+        }
         : skipToken
     )
 
   const flowDistributionUpdatedEvents: FlowDistributionUpdatedEvent[] =
     flowDistributionUpdatedEventsQuery.data?.data ?? []
 
-  const columns: GridColDef<FlowDistributionUpdatedEvent>[] = useMemo(
-    () => [
-      { field: 'id', hide: true, sortable: false, flex: 1 },
-      {
-        field: 'operator',
-        headerName: 'Operator',
-        sortable: true,
-        flex: 0.5,
-        renderCell: (params) => (
-          <AccountAddress
-            dataCy={'operator-address'}
-            network={network}
-            address={params.row.operator}
-          />
-        ),
-      },
-      {
-        field: 'adjustmentFlowRecipient',
-        headerName: 'Adjustment Flow Recipient',
-        sortable: true,
-        flex: 0.5,
-        renderCell: (params) => (
-          <AccountAddress
-            dataCy={'adjustment-flow-recipient-address'}
-            network={network}
-            address={params.row.adjustmentFlowRecipient}
-          />
-        ),
-      },
-      {
-        field: 'timestamp',
-        headerName: 'Distribution Date',
-        sortable: true,
-        flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
-      },
-      {
-        field: 'adjustmentFlowRate',
-        headerName: 'Adjustment Flow Rate',
-        hide: false,
-        sortable: false,
-        flex: 1.5,
-        renderCell: (params) => {
-          return (
-            <>
-              <EtherFormatted wei={params.row.adjustmentFlowRate} />
-              &nbsp;
-              {pool && (
-                <SuperTokenAddress
-                  network={network}
-                  address={pool.token}
-                  format={(token) => token.symbol}
-                  formatLoading={() => ''}
-                />
-              )}
-            </>
-          )
-        },
-      },
-    ],
-    [network, pool]
-  )
+  const columns = useFlowDistributionUpdatedColumns(network)
 
   return (
     <AppDataGrid

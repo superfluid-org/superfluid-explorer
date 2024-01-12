@@ -27,7 +27,7 @@ const FlowRate: FC<{
     <Tooltip
       data-cy={'flowrate'}
       title={`${flowRate} wei/s`}
-      placement="right"
+      placement="bottom"
       arrow
     >
       <Box component="span" className="tooltip-underline">

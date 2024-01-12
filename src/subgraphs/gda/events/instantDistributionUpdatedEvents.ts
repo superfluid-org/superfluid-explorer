@@ -79,6 +79,7 @@ function mapGetAllEventsQueryEvent(
 ): PoolInstantDistributionUpdatedEvent[] {
   return flowDistributionUpdatedEvents.map((e) => {
     return {
+      ...e,
       name: 'InstantDistributionUpdated',
       id: e.id,
       blockNumber: Number(e.blockNumber),

@@ -6,6 +6,7 @@ import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { MemberUnitsUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolMemberUnitsUpdatedEvent } from '../../../subgraphs/gda/events'
+import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 
 interface Props {
   queryResult: {
@@ -32,12 +33,12 @@ const PoolMemberUnitsUpdatedEventDataGrid: FC<Props> = ({
       { field: 'id', hide: true, sortable: false, flex: 1 },
       {
         field: 'timestamp',
-        headerName: 'Update Date',
+        headerName: 'Date',
         sortable: true,
         flex: 1,
         renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
       },
-      { field: 'units', headerName: 'Units', sortable: true, flex: 1 },
+      { field: 'units', headerName: 'Units', sortable: true, flex: 1, renderCell: (params) => <PoolPercentage totalUnits={params.row.totalUnits} individualUnits={params.row.units}  /> },
     ],
     []
   )
