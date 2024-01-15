@@ -23,7 +23,7 @@ import { FC, useState } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
 import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
-import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
 import CopyLink from '../../../components/Copy/CopyLink'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
@@ -37,10 +37,8 @@ import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import { PoolMemberFlowDistributions } from './PoolMemberFlowDistributions'
+import { useTotalAmountRecivedFromPoolMember } from './PoolMemberTotalAmountReceived'
 import PoolMemberUnitsUpdatedEventDataGrid from './PoolMemberUnitsUpdatedEventDataGrid'
-import { useTotalAmountRecivedFromPoolMember } from './getTotalAmountReceivedFromPoolMember'
-import FlowRate from '../../../components/Amount/FlowRate'
-import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 
 export const PoolMemberPageContent: FC<{
   poolMemberId: string
@@ -56,9 +54,9 @@ export const PoolMemberPageContent: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-        chainId: network.chainId,
-        id: poolMember.pool,
-      }
+          chainId: network.chainId,
+          id: poolMember.pool,
+        }
       : skipToken
   )
 
@@ -88,7 +86,10 @@ export const PoolMemberPageContent: FC<{
       order: poolMemberUnitsUpdatedEventPagingOrdering,
     })
 
-  const totalAmountReceivedForPoolMember = useTotalAmountRecivedFromPoolMember(poolMember, pool);
+  const totalAmountReceivedForPoolMember = useTotalAmountRecivedFromPoolMember(
+    poolMember,
+    pool
+  )
 
   if (!poolQuery.isUninitialized && !poolQuery.isLoading && !poolQuery.data) {
     return <Error statusCode={404} />
@@ -297,10 +298,21 @@ export const PoolMemberPageContent: FC<{
                   secondary="Total Amount Received"
                   primary={
                     poolMember && totalAmountReceivedForPoolMember ? (
-                      <FlowingBalanceWithToken balance={totalAmountReceivedForPoolMember.memberCurrentTotalAmountReceived} balanceTimestamp={totalAmountReceivedForPoolMember.timestamp} flowRate={totalAmountReceivedForPoolMember.memberFlowRate} TokenChipProps={{
-                        network: network,
-                        tokenAddress: poolMember?.token
-                      }} />
+                      <FlowingBalanceWithToken
+                        balance={
+                          totalAmountReceivedForPoolMember.memberCurrentTotalAmountReceived
+                        }
+                        balanceTimestamp={
+                          totalAmountReceivedForPoolMember.timestamp
+                        }
+                        flowRate={
+                          totalAmountReceivedForPoolMember.memberFlowRate
+                        }
+                        TokenChipProps={{
+                          network: network,
+                          tokenAddress: poolMember?.token,
+                        }}
+                      />
                     ) : (
                       <Skeleton sx={{ width: '100px' }} />
                     )

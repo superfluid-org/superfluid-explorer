@@ -21,7 +21,7 @@ export interface PoolMemberUnitsUpdatedEvent extends EventBase {
   token: Address
   poolMember: Address
   pool: Address
-  id: SubgraphId  
+  id: SubgraphId
   units: string
   totalUnits: string
 }

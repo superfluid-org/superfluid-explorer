@@ -22,7 +22,11 @@ const TimeAgo: FC<{
         }
         {...tooltipProps}
       >
-        <Typography component="span" className="tooltip-underline" {...typographyProps}>
+        <Typography
+          component="span"
+          className="tooltip-underline"
+          {...typographyProps}
+        >
           {timeAgo(date.getTime())}
         </Typography>
       </Tooltip>

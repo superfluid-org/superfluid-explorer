@@ -1,12 +1,8 @@
-import { GridColDef } from '@mui/x-data-grid'
 import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
-import { FC, useMemo } from 'react'
+import { FC } from 'react'
 
-import AccountAddress from '../../../components/Address/AccountAddress'
-import FlowRate from '../../../components/Amount/FlowRate'
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
-import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { useNetworkContext } from '../../../contexts/NetworkContext'
 import { FlowDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'

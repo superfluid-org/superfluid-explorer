@@ -20,7 +20,6 @@ import {
   Typography,
 } from '@mui/material'
 import { createSkipPaging, Ordering } from '@superfluid-finance/sdk-core'
-import { BigNumber } from 'ethers'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
@@ -43,8 +42,8 @@ import {
 } from '../../../subgraphs/gda/.graphclient'
 import { PoolMembersQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
+import { PoolMemberTotalAmountReceived } from '../pool-members/PoolMemberTotalAmountReceived'
 import { UnitsStatus } from './AccountPoolAdminsTable'
-import { TotalAmountReceivedFromPoolMember } from '../pool-members/getTotalAmountReceivedFromPoolMember'
 
 enum MemberStatus {
   IsConnected,
@@ -156,8 +155,8 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof PoolMember_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter))
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const getMemberStatusFilter = (
     status: MemberStatus | null
@@ -448,14 +447,14 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               {(memberStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -570,13 +569,21 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               </TableCell> */}
 
               <TableCell data-cy={'amount-received'}>
-                <TotalAmountReceivedFromPoolMember member={member} pool={{
-                  flowRate: member.poolFlowRateCurrent,
-                  totalAmountDistributedUntilUpdatedAt: member.poolTotalAmountDistributedUntilUpdatedAt,
-                  totalUnits: member.poolTotalUnits,
-                  updatedAtTimestamp: member.poolUpdatedAtTimestamp,
-                }}>
-                  {({ memberCurrentTotalAmountReceived, timestamp, memberFlowRate }) => (
+                <PoolMemberTotalAmountReceived
+                  member={member}
+                  pool={{
+                    flowRate: member.poolFlowRateCurrent,
+                    totalAmountDistributedUntilUpdatedAt:
+                      member.poolTotalAmountDistributedUntilUpdatedAt,
+                    totalUnits: member.poolTotalUnits,
+                    updatedAtTimestamp: member.poolUpdatedAtTimestamp,
+                  }}
+                >
+                  {({
+                    memberCurrentTotalAmountReceived,
+                    timestamp,
+                    memberFlowRate,
+                  }) => (
                     <FlowingBalanceWithToken
                       balance={memberCurrentTotalAmountReceived}
                       balanceTimestamp={timestamp}
@@ -587,8 +594,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                       }}
                     />
                   )}
-                </TotalAmountReceivedFromPoolMember>
-
+                </PoolMemberTotalAmountReceived>
               </TableCell>
 
               <TableCell data-cy={'connected-status'}>

@@ -1,4 +1,3 @@
-import { GridColDef } from '@mui/x-data-grid'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import {
   createSkipPaging,
@@ -7,20 +6,13 @@ import {
 } from '@superfluid-finance/sdk-core'
 import { FC, useMemo, useState } from 'react'
 
-import AccountAddress from '../../../components/Address/AccountAddress'
-import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
-import EtherFormatted from '../../../components/Amount/EtherFormatted'
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
-import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
 import { FlowDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
-import {
-  FlowDistributionUpdatedEvent,
-  PoolMemberUnitsUpdatedEvent,
-} from '../../../subgraphs/gda/events'
+import { FlowDistributionUpdatedEvent } from '../../../subgraphs/gda/events'
 import { useFlowDistributionUpdatedColumns } from '../pools/useFlowDistributionUpdatedColumns'
 
 export const PoolMemberFlowDistributions: FC<{
@@ -37,9 +29,9 @@ export const PoolMemberFlowDistributions: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-        chainId: network.chainId,
-        id: poolMember.pool,
-      }
+          chainId: network.chainId,
+          id: poolMember.pool,
+        }
       : skipToken
   )
 
@@ -99,17 +91,17 @@ export const PoolMemberFlowDistributions: FC<{
     sfGdaSubgraph.useFlowDistributionUpdatedEventsQuery(
       pool && subscribersStartTime
         ? {
-          chainId: network.chainId,
-          filter: {
-            pool: pool.id,
-            timestamp_gte: subscribersStartTime.toString(),
-            ...(subscribersEndTime
-              ? { timestamp_lte: subscribersEndTime.toString() }
-              : {}),
-          },
-          order: flowDistributionUpdatedEventOrdering,
-          pagination: flowDistributionUpdatedEventPaging,
-        }
+            chainId: network.chainId,
+            filter: {
+              pool: pool.id,
+              timestamp_gte: subscribersStartTime.toString(),
+              ...(subscribersEndTime
+                ? { timestamp_lte: subscribersEndTime.toString() }
+                : {}),
+            },
+            order: flowDistributionUpdatedEventOrdering,
+            pagination: flowDistributionUpdatedEventPaging,
+          }
         : skipToken
     )
 

@@ -14,7 +14,10 @@ export const PoolPercentage: FC<{
   )
 
   return (
-    <Tooltip title={`${individualUnits} units out of ${totalUnits}`} className="tooltip-underline">
+    <Tooltip
+      title={`${individualUnits} units out of ${totalUnits}`}
+      className="tooltip-underline"
+    >
       <span className="tooltip-underline">{percentageString}</span>
     </Tooltip>
   )

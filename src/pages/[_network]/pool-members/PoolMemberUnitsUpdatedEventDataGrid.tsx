@@ -3,10 +3,10 @@ import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
 import { FC, useMemo } from 'react'
 
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
+import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { MemberUnitsUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolMemberUnitsUpdatedEvent } from '../../../subgraphs/gda/events'
-import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 
 interface Props {
   queryResult: {
@@ -38,7 +38,18 @@ const PoolMemberUnitsUpdatedEventDataGrid: FC<Props> = ({
         flex: 1,
         renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
       },
-      { field: 'units', headerName: 'Units', sortable: true, flex: 1, renderCell: (params) => <PoolPercentage totalUnits={params.row.totalUnits} individualUnits={params.row.units}  /> },
+      {
+        field: 'units',
+        headerName: 'Units',
+        sortable: true,
+        flex: 1,
+        renderCell: (params) => (
+          <PoolPercentage
+            totalUnits={params.row.totalUnits}
+            individualUnits={params.row.units}
+          />
+        ),
+      },
     ],
     []
   )
