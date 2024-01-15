@@ -44,6 +44,7 @@ import {
 import { PoolMembersQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
 import { UnitsStatus } from './AccountPoolAdminsTable'
+import { TotalAmountReceivedFromPoolMember } from '../pool-members/getTotalAmountReceivedFromPoolMember'
 
 enum MemberStatus {
   IsConnected,
@@ -155,8 +156,8 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof PoolMember_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter))
+      () =>
+        onFilterChange(omit(fields, queryArg.filter))
 
   const getMemberStatusFilter = (
     status: MemberStatus | null
@@ -447,14 +448,14 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               {(memberStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button
-                  data-cy={'reset-filter'}
-                  onClick={resetFilter}
-                  tabIndex={-1}
-                >
-                  Reset
-                </Button>
-              )}
+                  <Button
+                    data-cy={'reset-filter'}
+                    onClick={resetFilter}
+                    tabIndex={-1}
+                  >
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -569,17 +570,25 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               </TableCell> */}
 
               <TableCell data-cy={'amount-received'}>
-                <FlowingBalanceWithToken
-                  balance={member.totalAmountReceivedUntilUpdatedAt}
-                  balanceTimestamp={member.updatedAtTimestamp}
-                  flowRate={BigNumber.from(member.poolFlowRateCurrent)
-                    .mul(member.poolTotalUnits)
-                    .div(member.units)}
-                  TokenChipProps={{
-                    network: network,
-                    tokenAddress: member.token,
-                  }}
-                />
+                <TotalAmountReceivedFromPoolMember member={member} pool={{
+                  flowRate: member.poolFlowRateCurrent,
+                  totalAmountDistributedUntilUpdatedAt: member.poolTotalAmountDistributedUntilUpdatedAt,
+                  totalUnits: member.poolTotalUnits,
+                  updatedAtTimestamp: member.poolUpdatedAtTimestamp,
+                }}>
+                  {({ memberCurrentTotalAmountReceived, timestamp, memberFlowRate }) => (
+                    <FlowingBalanceWithToken
+                      balance={memberCurrentTotalAmountReceived}
+                      balanceTimestamp={timestamp}
+                      flowRate={memberFlowRate}
+                      TokenChipProps={{
+                        network: network,
+                        tokenAddress: member.token,
+                      }}
+                    />
+                  )}
+                </TotalAmountReceivedFromPoolMember>
+
               </TableCell>
 
               <TableCell data-cy={'connected-status'}>

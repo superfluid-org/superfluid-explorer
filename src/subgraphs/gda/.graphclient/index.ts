@@ -22512,7 +22512,7 @@ export type PoolMembersQueryVariables = Exact<{
 export type PoolMembersQuery = { poolMembers: Array<(
     Pick<PoolMember, 'id' | 'createdAtTimestamp' | 'createdAtBlockNumber' | 'updatedAtTimestamp' | 'updatedAtBlockNumber' | 'units' | 'isConnected' | 'totalAmountClaimed' | 'totalAmountReceivedUntilUpdatedAt' | 'poolTotalAmountDistributedUntilUpdatedAt'>
     & { pool: (
-      Pick<Pool, 'id' | 'totalUnits' | 'flowRate'>
+      Pick<Pool, 'id' | 'totalUnits' | 'flowRate' | 'updatedAtTimestamp'>
       & { token: Pick<Token, 'id' | 'symbol'>, admin: Pick<Account, 'id'> }
     ), account: Pick<Account, 'id'> }
   )> };
@@ -22996,6 +22996,7 @@ export const PoolMembersDocument = gql`
       admin {
         id
       }
+      updatedAtTimestamp
     }
     account {
       id

@@ -37,6 +37,7 @@ export interface PoolMember {
   pool: SubgraphId
   totalAmountReceivedUntilUpdatedAt: BigNumber
   poolTotalAmountDistributedUntilUpdatedAt: BigNumber
+  poolUpdatedAtTimestamp: Timestamp
 }
 
 export type PoolMembersListQuery = SubgraphListQuery<
@@ -96,6 +97,7 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
       pool: x.pool.id,
       poolFlowRateCurrent: x.pool.flowRate,
       poolTotalUnits: x.pool.totalUnits,
+      poolUpdatedAtTimestamp: Number(x.pool.updatedAtTimestamp),
       token: x.pool.token.id,
       tokenSymbol: x.pool.token.symbol,
       admin: x.pool.admin.id,
