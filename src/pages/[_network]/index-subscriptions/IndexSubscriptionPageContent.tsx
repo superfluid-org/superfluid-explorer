@@ -403,7 +403,7 @@ export const IndexSubscriptionPageContent: FC<{
 
       <Box data-cy={'units-updated-grid'} sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-          Units Updated (i.e. Pool % Updated)
+          Units Updated
         </Typography>
         <Card elevation={2}>
           <SubscriptionUnitsUpdatedEventDataGrid

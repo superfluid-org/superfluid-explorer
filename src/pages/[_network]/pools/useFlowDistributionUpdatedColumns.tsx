@@ -10,19 +10,19 @@ import { FlowDistributionUpdatedEvent } from '../../../subgraphs/gda/events'
 export const useFlowDistributionUpdatedColumns = (network: Network) => {
   const columns: GridColDef<FlowDistributionUpdatedEvent>[] = useMemo(
     () => [
-      { field: 'id', hide: true, sortable: false, flex: 1 },
+      { field: 'id', hide: true, sortable: false, flex: 2 },
       {
         field: 'timestamp',
         headerName: 'Date',
         sortable: true,
-        flex: 0.5,
+        flex: 1,
         renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
       },
       {
         field: 'distributor',
         headerName: 'Distributor',
         sortable: true,
-        flex: 0.5,
+        flex: 1,
         renderCell: (params) => (
           <AccountAddress
             dataCy={'distributor-address'}
@@ -36,7 +36,7 @@ export const useFlowDistributionUpdatedColumns = (network: Network) => {
         headerName: "Distributor's Flow Rate",
         hide: false,
         sortable: false,
-        flex: 1.5,
+        flex: 2,
         renderCell: (params) => {
           return <FlowRate flowRate={params.row.newDistributorToPoolFlowRate} />
         },
@@ -46,17 +46,27 @@ export const useFlowDistributionUpdatedColumns = (network: Network) => {
         headerName: 'Total Flow Rate',
         hide: false,
         sortable: false,
-        flex: 1.5,
+        flex: 2,
         renderCell: (params) => {
           return <FlowRate flowRate={params.row.newTotalDistributionFlowRate} />
         },
       },
       {
+        field: 'adjustmentFlowRate',
+        headerName: 'Adjustment Flow Rate',
+        hide: false,
+        sortable: false,
+        flex: 1,
+        renderCell: (params) => {
+          return <FlowRate flowRate={params.row.adjustmentFlowRate} />
+        },
+      },
+      {
         field: 'adjustmentFlowRecipient',
-        headerName: 'Adjustment Flow Recipient',
-        hide: true,
+        headerName: 'Adjustment Flow Receiver',
+        hide: false,
         sortable: true,
-        flex: 0.5,
+        flex: 1,
         renderCell: (params) => (
           <AccountAddress
             dataCy={'adjustment-flow-recipient-address'}
@@ -64,16 +74,6 @@ export const useFlowDistributionUpdatedColumns = (network: Network) => {
             address={params.row.adjustmentFlowRecipient}
           />
         ),
-      },
-      {
-        field: 'adjustmentFlowRate',
-        headerName: 'Adjustment Flow Rate',
-        hide: true,
-        sortable: false,
-        flex: 1.5,
-        renderCell: (params) => {
-          return <FlowRate flowRate={params.row.adjustmentFlowRate} />
-        },
       },
     ],
     [network]

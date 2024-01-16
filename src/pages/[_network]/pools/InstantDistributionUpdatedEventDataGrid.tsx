@@ -4,6 +4,7 @@ import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
 import { FC, useMemo } from 'react'
 
+import AccountAddress from '../../../components/Address/AccountAddress'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
@@ -59,25 +60,58 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
 
   const columns: GridColDef<InstantDistributionUpdatedEvent>[] = useMemo(
     () => [
-      { field: 'id', hide: true, sortable: false, flex: 1 },
+      { field: 'id', hide: true, sortable: false, flex: 2 },
       {
         field: 'timestamp',
         headerName: 'Date',
         sortable: true,
-        flex: 0.5,
+        flex: 1,
         renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
+      },
+      {
+        field: 'distributor',
+        headerName: 'Distributor',
+        sortable: true,
+        flex: 2,
+        renderCell: (params) => (
+          <AccountAddress
+            dataCy={'instant-distributor-address'}
+            network={network}
+            address={params.row.poolDistributor}
+          />
+        ),
       },
       {
         field: 'actualAmount',
         headerName: 'Distributed Amount',
         hide: false,
         sortable: false,
-        flex: 1.5,
+        flex: 2,
         renderCell: (params) => {
           return pool ? (
             <>
               <BalanceWithToken
                 wei={params.row.actualAmount}
+                network={network}
+                tokenAddress={pool.token}
+              />
+            </>
+          ) : (
+            <Skeleton sx={{ width: '100px' }} />
+          )
+        },
+      },
+      {
+        field: 'requestedAmount',
+        headerName: 'Requested Amount',
+        hide: false,
+        sortable: false,
+        flex: 1,
+        renderCell: (params) => {
+          return pool ? (
+            <>
+              <BalanceWithToken
+                wei={params.row.requestedAmount}
                 network={network}
                 tokenAddress={pool.token}
               />

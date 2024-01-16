@@ -5,11 +5,10 @@ import {
   GridRenderCellParams,
 } from '@mui/x-data-grid'
 import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
-import { BigNumber } from 'ethers'
 import { FC, useMemo } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
-import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
 import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
@@ -18,6 +17,7 @@ import { Network } from '../../../redux/networks'
 import { PoolMember_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
+import { PoolMemberTotalAmountReceived } from '../pool-members/PoolMemberTotalAmountReceived'
 
 interface Props {
   network: Network
@@ -46,7 +46,7 @@ const PoolMemberDataGrid: FC<Props> = ({
         field: 'updatedAtTimestamp',
         headerName: 'Updated',
         sortable: true,
-        flex: 0.5,
+        flex: 1,
         renderCell: (params) =>
           params.row.updatedAtTimestamp ? (
             <TimeAgo subgraphTime={params.row.updatedAtTimestamp} />
@@ -56,7 +56,7 @@ const PoolMemberDataGrid: FC<Props> = ({
         field: 'account',
         headerName: 'Account',
         sortable: false,
-        flex: 0.5,
+        flex: 1,
         renderCell: (params) => (
           <AccountAddress
             network={network}
@@ -68,7 +68,7 @@ const PoolMemberDataGrid: FC<Props> = ({
       {
         field: 'approved',
         headerName: 'Connected',
-        flex: 0.5,
+        flex: 1,
         renderCell: (params: GridRenderCellParams<boolean>) => {
           return <>{params.row.isConnected ? 'Yes' : 'No'}</>
         },
@@ -90,27 +90,34 @@ const PoolMemberDataGrid: FC<Props> = ({
         field: 'totalAmountClaimed',
         headerName: 'Amount Claimed',
         sortable: false,
-        flex: 1.5,
+        flex: 2,
         renderCell: (params: GridRenderCellParams<string, PoolMember>) => (
-          /* <TableCell data-cy={"amount-received"} >
-                <BalanceWithToken
-                  network={network}
-                  // Actual index calculation but not possible with pool since we don't have exposed pool value and other parameters to calculate the recevied amount
-                  wei={calculateWeiAmountReceived(
-                    BigNumber.from(subscription.indexValueCurrent),
-                    BigNumber.from(
-                      subscription.totalAmountReceivedUntilUpdatedAt
-                    ),
-                    BigNumber.from(subscription.indexValueUntilUpdatedAt),
-                    BigNumber.from(subscription.units)
-                  )}
-                />
-              </TableCell> */
-          <BalanceWithToken
-            network={network}
-            tokenAddress={params.row.token}
-            wei={BigNumber.from(params.row.totalAmountClaimed)}
-          />
+          <PoolMemberTotalAmountReceived
+            member={params.row}
+            pool={{
+              flowRate: params.row.poolFlowRateCurrent,
+              totalAmountDistributedUntilUpdatedAt:
+                params.row.poolTotalAmountDistributedUntilUpdatedAt,
+              totalUnits: params.row.poolTotalUnits,
+              updatedAtTimestamp: params.row.poolUpdatedAtTimestamp,
+            }}
+          >
+            {({
+              memberCurrentTotalAmountReceived,
+              memberFlowRate,
+              timestamp,
+            }) => (
+              <FlowingBalanceWithToken
+                balance={memberCurrentTotalAmountReceived}
+                balanceTimestamp={timestamp}
+                flowRate={memberFlowRate}
+                TokenChipProps={{
+                  network: network,
+                  tokenAddress: params.row.token,
+                }}
+              />
+            )}
+          </PoolMemberTotalAmountReceived>
         ),
       },
       {
@@ -129,7 +136,7 @@ const PoolMemberDataGrid: FC<Props> = ({
       {
         field: 'details',
         headerName: 'Details',
-        flex: 0.5,
+        flex: 1,
         sortable: false,
         renderCell: (cellParams) => (
           <PoolMemberDetailsDialog
