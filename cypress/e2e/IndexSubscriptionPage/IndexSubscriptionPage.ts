@@ -1,4 +1,5 @@
 import { Given, Then } from 'cypress-cucumber-preprocessor/steps'
+
 import { CommonElements } from '../../pageObjects/components/CommonElements'
 import { IndexSubscriptionPage } from '../../pageObjects/pages/IndexSubscriptionPage'
 import { LandingPage } from '../../pageObjects/pages/LandingPage'

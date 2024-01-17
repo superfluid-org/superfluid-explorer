@@ -1,10 +1,10 @@
 import { Given, Then } from 'cypress-cucumber-preprocessor/steps'
 
+import { BasePage } from '../../pageObjects/BasePage'
 import { CommonElements } from '../../pageObjects/components/CommonElements'
+import { AccountPage } from '../../pageObjects/pages/AccountPage'
 import { LandingPage } from '../../pageObjects/pages/LandingPage'
 import { TokenPage } from '../../pageObjects/pages/TokenPage'
-import { AccountPage } from '../../pageObjects/pages/AccountPage'
-import { BasePage } from '../../pageObjects/BasePage'
 
 Given(`User has opened the {string} page`, (page) => {
   LandingPage.openPage(page)

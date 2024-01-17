@@ -1,7 +1,8 @@
 import { Given, Then } from 'cypress-cucumber-preprocessor/steps'
-import { LandingPage } from '../../pageObjects/pages/LandingPage'
+
 import { BasePage } from '../../pageObjects/BasePage'
 import { CommonElements } from '../../pageObjects/components/CommonElements'
+import { LandingPage } from '../../pageObjects/pages/LandingPage'
 
 Then(`The latest streams for {string} are shown`, (network) => {
   LandingPage.latestStreamsAreVisible(network)

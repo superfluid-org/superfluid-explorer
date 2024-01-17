@@ -49,7 +49,7 @@ export class CommonElements extends BasePage {
   static validateAccountPageLink(network: string) {
     cy.get('@lastOpenedResult').then((result) => {
       this.validatePageUrl(
-        '/' + network + '/accounts/' + result + '?tab=streams'
+        '/' + network + '/accounts/' + result + '?tab=tokens'
       )
     })
   }

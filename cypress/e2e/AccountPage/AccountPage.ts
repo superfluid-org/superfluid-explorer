@@ -1,7 +1,8 @@
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
-import { LandingPage } from '../../pageObjects/pages/LandingPage'
-import { AccountPage } from '../../pageObjects/pages/AccountPage'
+
 import { CommonElements } from '../../pageObjects/components/CommonElements'
+import { AccountPage } from '../../pageObjects/pages/AccountPage'
+import { LandingPage } from '../../pageObjects/pages/LandingPage'
 
 Given(`User has opened the {string} page on {string}`, (page, network) => {
   LandingPage.openDataPage(page, network)
@@ -337,4 +338,16 @@ When(`User waits for the tables to load`, () => {
 })
 Then(`User sees only the pools they have units in`, () => {
   AccountPage.validateOnlyPoolsWithMemberUnitsAreVisible()
+})
+
+Given(`User changes the ether decimal places to {int}`, (num) => {
+  CommonElements.changeDecimalPlaces(num)
+})
+
+Then(`User opens the settings menu`, () => {
+  CommonElements.openSettingsMenu()
+})
+
+Then(`User closes the settings menu`, () => {
+  CommonElements.closeSettingsMenu()
 })

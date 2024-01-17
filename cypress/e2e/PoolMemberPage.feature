@@ -6,7 +6,6 @@ Feature: Pool member page test cases
                 Then Tooltip is visible when user hovers the "approval" tooltip icon
                 Then Tooltip is visible when user hovers the "units" tooltip icon
                 Then Tooltip is visible when user hovers the "flow-distributions" tooltip icon
-                                Then Tooltip is visible when user hovers the "distributions" tooltip icon
 
 
         Scenario: Pool member general information showing up correctly

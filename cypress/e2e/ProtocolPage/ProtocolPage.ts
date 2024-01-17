@@ -1,6 +1,7 @@
 import { Given, Then } from 'cypress-cucumber-preprocessor/steps'
-import { ProtocolPage } from '../../pageObjects/pages/ProtocolPage'
+
 import { CommonElements } from '../../pageObjects/components/CommonElements'
+import { ProtocolPage } from '../../pageObjects/pages/ProtocolPage'
 
 Then('User switches network for {string}', (network) => {
   ProtocolPage.switchNetwork(network)

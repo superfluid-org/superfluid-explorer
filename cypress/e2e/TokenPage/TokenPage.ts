@@ -1,6 +1,7 @@
 import { Given, Then } from 'cypress-cucumber-preprocessor/steps'
-import { LandingPage } from '../../pageObjects/pages/LandingPage'
+
 import { CommonElements } from '../../pageObjects/components/CommonElements'
+import { LandingPage } from '../../pageObjects/pages/LandingPage'
 import { TokenPage } from '../../pageObjects/pages/TokenPage'
 
 Given(`User has opened the {string} page on {string}`, (page, network) => {

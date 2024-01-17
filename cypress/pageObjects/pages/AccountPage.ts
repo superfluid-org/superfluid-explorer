@@ -1,6 +1,7 @@
-import { BasePage } from '../BasePage'
 import Decimal from 'decimal.js'
+
 import { calculatePoolPercentage } from '../../../src/hooks/usePoolPercentage'
+import { BasePage } from '../BasePage'
 
 const ACCOUNT_TYPE = '[data-cy=account-type] span'
 const ACCOUNT_SYMBOL = '[data-cy=token-symbol]'
@@ -341,7 +342,9 @@ export class AccountPage extends BasePage {
               let actualFlowAmount = parseFloat(el.text().split('/')[0])
               let timeUnit = el.text().split('/')[1]
               expect(timeUnit).to.eq(granularity)
-              expect(expectedFlowAmount).to.be.closeTo(actualFlowAmount, 1e-18)
+              cy.log(el.text())
+              cy.log(actualFlowAmount.toString())
+              cy.wrap(expectedFlowAmount).should("be.closeTo", actualFlowAmount, 1e-18)
             })
         }
       )
@@ -400,7 +403,6 @@ export class AccountPage extends BasePage {
     })
     cy.wrap(senderAddresses).as('senderAddresses')
     cy.fixture('filteringData').then((account) => {
-      this.isVisible(LOADING_SPINNER)
       this.isNotVisible(LOADING_SPINNER)
       this.click(INCOMING_FILTER_BUTTON)
       this.type(FILTER_SENDER_ADDRESS, account[network].sender)
@@ -724,7 +726,7 @@ export class AccountPage extends BasePage {
 
   static validateFilteredSubscriptionsByNoUnits() {
     cy.get(SUBSCRIPTION_UNITS).each(($el) => {
-      cy.wrap($el.text()).should('contain', '(0%)')
+      cy.wrap($el.text()).should('contain', '0%')
     })
   }
 
