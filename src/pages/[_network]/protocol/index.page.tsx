@@ -103,6 +103,7 @@ const Protocol: NextPage = () => {
     TOGA,
     batchLiquidator,
     GDAv1,
+    GDAv1Forwarder,
     flowScheduler,
     vestingScheduler,
     existentialNFTCloneFactory,
@@ -260,16 +261,22 @@ const Protocol: NextPage = () => {
                   address={CFAv1Forwarder}
                 />
                 <AddressListItem
-                  dataCy={'IDAv1-address'}
-                  title="IDAv1"
-                  network={network}
-                  address={IDAv1}
-                />
-                <AddressListItem
                   dataCy={'GDAv1-address'}
                   title="GDAv1"
                   network={network}
                   address={GDAv1}
+                />
+                <AddressListItem
+                  dataCy={'GDAv1Forwarder-address'}
+                  title="GDAv1Forwarder"
+                  network={network}
+                  address={GDAv1Forwarder}
+                />
+                <AddressListItem
+                  dataCy={'IDAv1-address'}
+                  title="IDAv1"
+                  network={network}
+                  address={IDAv1}
                 />
                 <AddressListItem
                   dataCy={'SuperTokenFactory-address'}

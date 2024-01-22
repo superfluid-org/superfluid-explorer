@@ -1,6 +1,5 @@
 import metadata from '@superfluid-finance/metadata'
 
-import { findNetworkOrThrow } from '../utils/findNetwork'
 import { networksByChainId } from './networks'
 
 interface ContractAddresses {
@@ -13,6 +12,7 @@ interface ContractAddresses {
   superfluidLoader: string
   TOGA?: string
   GDAv1?: string
+  GDAv1Forwarder?: string
   flowScheduler?: string
   vestingScheduler?: string
   batchLiquidator?: string
@@ -35,6 +35,7 @@ const networkMetadataToChainId = metadata.networks.reduce(
       superfluidLoader: config.contractsV1.superfluidLoader,
       TOGA: config.contractsV1.toga,
       GDAv1: config.contractsV1.gdaV1,
+      GDAv1Forwarder: config.contractsV1.gdaV1Forwarder,
       batchLiquidator: config.contractsV1.batchLiquidator,
       flowScheduler: config.contractsV1.flowScheduler,
       vestingScheduler: config.contractsV1.vestingScheduler,
@@ -52,8 +53,6 @@ const getNetwork = (chainId: number) => {
   }
   return network
 }
-
-findNetworkOrThrow
 
 const protocolContracts: NetworkContracts = {
   [getNetwork(1).slugName]: networkMetadataToChainId[1],

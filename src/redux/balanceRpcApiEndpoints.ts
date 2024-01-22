@@ -2,6 +2,9 @@ import { SuperToken__factory } from '@superfluid-finance/sdk-core'
 import { getFramework, RpcEndpointBuilder } from '@superfluid-finance/sdk-redux'
 import { BigNumber } from 'ethers'
 
+import { findNetworkOrThrow } from '../utils/findNetwork'
+import { networks } from './networks'
+
 export type BalanceQueryParams = {
   chainId: number
   tokenAddress: string
@@ -19,6 +22,7 @@ export const balanceRpcApiEndpoints = {
     realtimeBalance: builder.query<RealtimeBalance, BalanceQueryParams>({
       queryFn: async ({ accountAddress, tokenAddress, chainId }) => {
         const framework = await getFramework(chainId)
+        const network = findNetworkOrThrow(networks, chainId)
 
         const [
           realtimeBalanceOfNowResult,
@@ -34,11 +38,13 @@ export const balanceRpcApiEndpoints = {
             account: accountAddress,
             providerOrSigner: framework.settings.provider,
           }),
-          framework.gdaV1.getNetFlow({
-            token: tokenAddress,
-            account: accountAddress,
-            providerOrSigner: framework.settings.provider,
-          }),
+          network.supportsGDA
+            ? framework.gdaV1.getNetFlow({
+                token: tokenAddress,
+                account: accountAddress,
+                providerOrSigner: framework.settings.provider,
+              })
+            : BigNumber.from(0),
         ])
 
         const mappedResult: RealtimeBalance = {

@@ -103,7 +103,7 @@ export const networks: Network[] = [
     slugName: 'bnb-smart-chain',
     chainId: 56,
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: true,
     rpcUrl: `https://bsc-dataseed1.binance.org`,
     subgraphUrl:
       'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-v1-bsc-mainnet',

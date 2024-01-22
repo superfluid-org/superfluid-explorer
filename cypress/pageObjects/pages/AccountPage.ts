@@ -344,7 +344,11 @@ export class AccountPage extends BasePage {
               expect(timeUnit).to.eq(granularity)
               cy.log(el.text())
               cy.log(actualFlowAmount.toString())
-              cy.wrap(expectedFlowAmount).should("be.closeTo", actualFlowAmount, 1e-18)
+              cy.wrap(expectedFlowAmount).should(
+                'be.closeTo',
+                actualFlowAmount,
+                1e-18
+              )
             })
         }
       )

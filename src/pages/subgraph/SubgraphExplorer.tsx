@@ -5,7 +5,7 @@ import { Box, IconButton, Snackbar, SnackbarCloseReason } from '@mui/material'
 import GraphiQL, { FetcherParams } from 'graphiql'
 // @ts-ignore
 import GraphiQLExplorer from 'graphiql-explorer'
-import type { GraphQLSchema } from 'graphql'
+import type { GraphQLSchema, IntrospectionQuery } from 'graphql'
 import { buildClientSchema, getIntrospectionQuery, parse, print } from 'graphql'
 import { request } from 'graphql-request'
 import _ from 'lodash'
@@ -101,7 +101,7 @@ const ADDRESS_REGEX = /^(.*?)((0x)?[0-9a-fA-F]{40})(.*?)$/gm
 const getGraphQLIntrospectionClientSchemaMemoized = _.memoize(
   (_subgraphUrl: string) =>
     request(_subgraphUrl, getIntrospectionQuery()).then((introspectionResult) =>
-      buildClientSchema(introspectionResult)
+      buildClientSchema(introspectionResult as IntrospectionQuery)
     )
 )
 

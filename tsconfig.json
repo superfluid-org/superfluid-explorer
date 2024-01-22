@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "incremental": true,
-    "types": ["cypress"]
+    "types": ["cypress"],
   },
   "include": [
     "next-env.d.ts",
@@ -24,7 +24,7 @@
     "**/*.tsx",
     "cypress/**/*.ts",
     "cypress/e2e/PoolPage",
-    "cypress/e2e/PoolMemberPage"
+    "cypress/e2e/PoolMemberPage",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
