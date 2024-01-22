@@ -6,7 +6,7 @@ import {
   IconButton,
   Toolbar,
   useMediaQuery,
-  useTheme,
+  useTheme
 } from '@mui/material'
 import { useRouter } from 'next/router'
 import { FC, PropsWithChildren, useEffect } from 'react'
@@ -45,8 +45,8 @@ const DetailsDialog: FC<
       // TransitionComponent={Transition}
       PaperProps={{
         sx: {
-          bgcolor: 'background.default',
-        },
+          bgcolor: 'background.default'
+        }
       }}
       fullScreen={fullScreen}
       scroll="body"

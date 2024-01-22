@@ -3,7 +3,7 @@ import {
   CircularProgress,
   styled,
   TableCell,
-  TableRow,
+  TableRow
 } from '@mui/material'
 import { FC } from 'react'
 
@@ -25,7 +25,7 @@ const LoaderBackdrop = styled(Box)<{ isLoading: boolean }>(
     overflow: 'hidden',
     opacity: isLoading ? 1 : 0,
     visibility: isLoading ? 'visible' : 'hidden',
-    transition: 'all 200ms ease-in-out',
+    transition: 'all 200ms ease-in-out'
   })
 )
 
@@ -38,7 +38,7 @@ interface TableLoaderProps {
 const TableLoader: FC<TableLoaderProps> = ({
   isLoading,
   showSpacer,
-  minHeight = '96px',
+  minHeight = '96px'
 }) => (
   <>
     {showSpacer && isLoading && (

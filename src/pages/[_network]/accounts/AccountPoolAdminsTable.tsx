@@ -18,7 +18,7 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import { createSkipPaging, Ordering } from '@superfluid-finance/sdk-core'
 import omit from 'lodash/fp/omit'
@@ -26,6 +26,7 @@ import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 
+import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
 import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 import FlowRate from '../../../components/Amount/FlowRate'
 import DetailsButton from '../../../components/Details/DetailsButton'
@@ -43,21 +44,21 @@ import { PoolPublicationDetailsDialog } from '../pools/PoolPublicationDetails'
 
 export enum DistributionStatus {
   Distributed,
-  NotDistributed,
+  NotDistributed
 }
 
 export enum UnitsStatus {
   Issued,
-  NotIssued,
+  NotIssued
 }
 
 export const poolAdminsOrderingDefault: Ordering<Pool_OrderBy> = {
   orderBy: 'createdAtTimestamp',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 }
 
 export const poolAdminsPagingDefault = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 interface AccountPoolAdminsTableProps {
@@ -71,7 +72,7 @@ const colSpan = 5
 
 const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
   network,
-  accountAddress,
+  accountAddress
 }) => {
   const filterAnchorRef = useRef(null)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
@@ -81,14 +82,14 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
   const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null)
 
   const defaultFilter = {
-    admin: accountAddress,
+    admin: accountAddress
   }
 
   const createDefaultArg = (): RequiredPoolsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: poolAdminsPagingDefault,
-    order: poolAdminsOrderingDefault,
+    order: poolAdminsOrderingDefault
   })
 
   const [queryArg, setQueryArg] =
@@ -131,12 +132,12 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
     if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(poolAdminsOrderingDefault)
@@ -147,7 +148,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
   }
 
@@ -155,7 +156,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
     if (e.target.value) {
       onFilterChange({
         ...queryArg.filter,
-        id: e.target.value,
+        id: e.target.value
       })
     } else {
       onFilterChange(omit('id', queryArg.filter))
@@ -185,7 +186,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
     setDistributionStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getDistributionStatusFilter(newStatus),
+      ...getDistributionStatusFilter(newStatus)
     })
   }
 
@@ -213,7 +214,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
     setUnitsStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getUnitsStatusFilter(newStatus),
+      ...getUnitsStatusFilter(newStatus)
     })
   }
 
@@ -249,7 +250,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
 
   const {
     skip = poolAdminsPagingDefault.skip,
-    take = poolAdminsPagingDefault.take,
+    take = poolAdminsPagingDefault.take
   } = queryResult.data?.paging || {}
 
   return (
@@ -418,6 +419,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
       <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
+            <TableCell>Pool ID</TableCell>
             <TableCell>
               <TableSortLabel
                 active={
@@ -476,6 +478,13 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
         <TableBody>
           {tableRows.map((pool: Pool) => (
             <TableRow key={pool.id} hover>
+              <TableCell className="address">
+                <AccountAddressFormatted
+                  network={network}
+                  address={pool.id}
+                  ellipsis={6}
+                />
+              </TableCell>
               <TableCell data-cy={'publications-total-distributed'}>
                 <FlowingBalanceWithToken
                   flowRate={pool.flowRate}
@@ -483,7 +492,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
                   balanceTimestamp={pool.updatedAtTimestamp}
                   TokenChipProps={{
                     tokenAddress: pool.token,
-                    network: network,
+                    network: network
                   }}
                 />
               </TableCell>

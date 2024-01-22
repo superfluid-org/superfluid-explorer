@@ -7,7 +7,7 @@ import {
   SubgraphId,
   SubgraphListQuery,
   SubgraphQueryHandler,
-  Timestamp,
+  Timestamp
 } from '@superfluid-finance/sdk-core'
 import { SubgraphClient } from '@superfluid-finance/sdk-core/dist/module/subgraph/SubgraphClient'
 
@@ -16,7 +16,7 @@ import {
   PoolMember_OrderBy,
   PoolMembersDocument,
   PoolMembersQuery,
-  PoolMembersQueryVariables,
+  PoolMembersQueryVariables
 } from '../../.graphclient'
 
 export interface PoolMember {
@@ -56,7 +56,7 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
     tokenKeys: (keyof PoolMember_Filter)[]
   } => ({
     accountKeys: ['account'],
-    tokenKeys: [],
+    tokenKeys: []
   })
 
   async get(
@@ -69,11 +69,11 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
 
     const response = await this.querySubgraph(subgraphClient, {
       where: {
-        id: query.id,
+        id: query.id
       },
       skip: 0,
       take: 1,
-      block: query.block,
+      block: query.block
     } as unknown as PoolMembersQueryVariables)
 
     return this.mapFromSubgraphResponse(response)[0] ?? null
@@ -83,7 +83,7 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
     result: PoolMember
   ): RelevantAddressesIntermediate => ({
     tokens: [result.token],
-    accounts: [result.admin, result.account],
+    accounts: [result.admin, result.account]
   })
 
   mapFromSubgraphResponse = (response: PoolMembersQuery): PoolMember[] =>
@@ -100,7 +100,7 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
       poolUpdatedAtTimestamp: Number(x.pool.updatedAtTimestamp),
       token: x.pool.token.id,
       tokenSymbol: x.pool.token.symbol,
-      admin: x.pool.admin.id,
+      admin: x.pool.admin.id
     }))
 
   requestDocument = PoolMembersDocument

@@ -2,7 +2,7 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 import {
   createSkipPaging,
   Ordering,
-  SkipPaging,
+  SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { FC, useMemo, useState } from 'react'
 
@@ -21,7 +21,7 @@ export const PoolMemberFlowDistributions: FC<{
 }> = ({ network, poolMemberId }) => {
   const poolMemberQuery = sfGdaSubgraph.usePoolMemberQuery({
     chainId: network.chainId,
-    id: poolMemberId,
+    id: poolMemberId
   })
 
   const poolMember: PoolMember | undefined | null = poolMemberQuery.data
@@ -30,7 +30,7 @@ export const PoolMemberFlowDistributions: FC<{
     poolMember
       ? {
           chainId: network.chainId,
-          id: poolMember.pool,
+          id: poolMember.pool
         }
       : skipToken
   )
@@ -39,35 +39,35 @@ export const PoolMemberFlowDistributions: FC<{
 
   const [
     flowDistributionUpdatedEventPaging,
-    setFlowDistributionUpdatedEventPaging,
+    setFlowDistributionUpdatedEventPaging
   ] = useState<SkipPaging>(
     createSkipPaging({
-      take: 10,
+      take: 10
     })
   )
   const [
     flowDistributionUpdatedEventOrdering,
-    setFlowDistributionUpdatedEventOrdering,
+    setFlowDistributionUpdatedEventOrdering
   ] = useState<Ordering<FlowDistributionUpdatedEvent_OrderBy> | undefined>({
     orderBy: 'timestamp',
-    orderDirection: 'desc',
+    orderDirection: 'desc'
   })
 
   const memberUnitsUpdatedEventsQuery =
     sfGdaSubgraph.usePoolMemberUnitsUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        poolMember: poolMemberId,
+        poolMember: poolMemberId
       },
       pagination: {
         take: 999,
-        skip: 0,
+        skip: 0
       },
       // Very important to order by timestamp in descending direction. Later `distributionAmount` logic depends on it.
       order: {
         orderBy: 'timestamp',
-        orderDirection: 'desc',
-      },
+        orderDirection: 'desc'
+      }
     })
 
   const subscribersEndTime = useMemo<number | undefined>(
@@ -97,10 +97,10 @@ export const PoolMemberFlowDistributions: FC<{
               timestamp_gte: subscribersStartTime.toString(),
               ...(subscribersEndTime
                 ? { timestamp_lte: subscribersEndTime.toString() }
-                : {}),
+                : {})
             },
             order: flowDistributionUpdatedEventOrdering,
-            pagination: flowDistributionUpdatedEventPaging,
+            pagination: flowDistributionUpdatedEventPaging
           }
         : skipToken
     )

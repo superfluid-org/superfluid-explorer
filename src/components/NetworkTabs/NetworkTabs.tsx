@@ -6,7 +6,7 @@ import { useAvailableNetworks } from '../../contexts/AvailableNetworksContext'
 import { track } from '../../hooks/useMatomo'
 import {
   defaultStreamQueryOrdering,
-  defaultStreamQueryPaging,
+  defaultStreamQueryPaging
 } from '../../pages/NetworkStreams'
 import { useAppSelector } from '../../redux/hooks'
 import { sfSubgraph } from '../../redux/store'
@@ -20,12 +20,12 @@ type NetworkTabsProps = {
 
 const NetworkTabs: React.FC<NetworkTabsProps> = ({
   setActiveTab,
-  prefetch,
+  prefetch
 }) => {
   const { availableNetworks } = useAvailableNetworks()
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams', {
-    ifOlderThan: 45,
+    ifOlderThan: 45
   })
 
   const displayedTestnetChainIds = useAppSelector(
@@ -63,7 +63,7 @@ const NetworkTabs: React.FC<NetworkTabsProps> = ({
                   prefetchStreamsQuery({
                     chainId: network.chainId,
                     order: defaultStreamQueryOrdering,
-                    pagination: defaultStreamQueryPaging,
+                    pagination: defaultStreamQueryPaging
                   })
                 }
               }}

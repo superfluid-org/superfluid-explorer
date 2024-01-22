@@ -66,7 +66,7 @@ MyDocument.getInitialProps = async (ctx) => {
       enhanceApp: (App: any) =>
         function EnhanceApp(props) {
           return <App emotionCache={cache} {...props} />
-        },
+        }
     })
 
   const initialProps = await Document.getInitialProps(ctx)
@@ -87,7 +87,7 @@ MyDocument.getInitialProps = async (ctx) => {
     // Styles fragment is rendered after the app and page rendering finish.
     styles: [
       ...React.Children.toArray(initialProps.styles),
-      ...emotionStyleTags,
-    ],
+      ...emotionStyleTags
+    ]
   }
 }

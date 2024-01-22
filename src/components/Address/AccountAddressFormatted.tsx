@@ -5,7 +5,7 @@ import { useAppSelector } from '../../redux/hooks'
 import { Network } from '../../redux/networks'
 import {
   addressBookSelectors,
-  createEntryId,
+  createEntryId
 } from '../../redux/slices/addressBook.slice'
 import ellipsisAddress from '../../utils/ellipsisAddress'
 

@@ -7,11 +7,11 @@ import { useAddressDisplay } from './useAddressDisplay'
 import { useSearchAddressBook } from './useSearchAddressBook'
 import {
   SubgraphSearchByAddressResult,
-  useSearchSubgraphByAddress,
+  useSearchSubgraphByAddress
 } from './useSearchSubgraphByAddress'
 import {
   SubgraphSearchByTokenSymbolResult,
-  useSearchSubgraphByTokenSymbol,
+  useSearchSubgraphByTokenSymbol
 } from './useSearchSubgraphByTokenSymbol'
 
 export type NetworkSearchResult = {
@@ -47,7 +47,7 @@ export const useSearch = (searchTerm: string) => {
           (searchQuery.data as SubgraphSearchByAddressResult) ?? {
             accounts: [],
             tokensByAddress: [],
-            tokensByUnderlyingAddress: [],
+            tokensByUnderlyingAddress: []
           }
 
         return {
@@ -57,7 +57,7 @@ export const useSearch = (searchTerm: string) => {
           tokens: searchResult.tokensByAddress.concat(
             searchResult.tokensByUnderlyingAddress
           ),
-          accounts: searchResult.accounts,
+          accounts: searchResult.accounts
         }
       })
 
@@ -67,7 +67,7 @@ export const useSearch = (searchTerm: string) => {
       .map((searchQuery) => {
         const searchResult: SubgraphSearchByTokenSymbolResult =
           (searchQuery.currentData as SubgraphSearchByTokenSymbolResult) ?? {
-            tokensBySymbol: [],
+            tokensBySymbol: []
           }
 
         return {
@@ -75,7 +75,7 @@ export const useSearch = (searchTerm: string) => {
           isFetching: searchQuery.isFetching,
           error: searchQuery.error,
           tokens: searchResult.tokensBySymbol,
-          accounts: [],
+          accounts: []
         }
       })
 
@@ -94,20 +94,20 @@ export const useSearch = (searchTerm: string) => {
       subgraphSearchByAddressResultsMappedDictionary[network.slugName] ?? {
         isFetching: false,
         accounts: [],
-        tokens: [],
+        tokens: []
       }
 
     const searchByTokenSymbolMappedResult =
       subgraphSearchByTokenSymbolResultsMappedDictionary[network.slugName] ?? {
         isFetching: false,
         accounts: [],
-        tokens: [],
+        tokens: []
       }
 
     const addressBookResult = addressBookMappedResultsDictionary[
       network.slugName
     ] ?? {
-      accounts: [],
+      accounts: []
     }
 
     return {
@@ -125,7 +125,7 @@ export const useSearch = (searchTerm: string) => {
             .concat(searchByTokenSymbolMappedResult.tokens)
             .map((x) => ({
               ...x,
-              id: ethers.utils.getAddress(x.id),
+              id: ethers.utils.getAddress(x.id)
             })),
           (x) => x.id
         ),
@@ -138,10 +138,10 @@ export const useSearch = (searchTerm: string) => {
           .map((x) => ({
             ...x,
             id: ethers.utils.getAddress(x.id),
-            ENS: addressDisplay.ensName,
+            ENS: addressDisplay.ensName
           })),
         (x) => x.id
-      ),
+      )
     }
   })
 }

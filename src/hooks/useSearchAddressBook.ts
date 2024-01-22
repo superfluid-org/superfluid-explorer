@@ -25,7 +25,7 @@ export const useSearchAddressBook = (searchTerm: string) => {
         .filter((x) =>
           x.nameTag.toLowerCase().includes(searchTerm.toLowerCase())
         )
-        .map((x) => ({ id: x.address })),
+        .map((x) => ({ id: x.address }))
     }
   })
 }

@@ -6,7 +6,7 @@ const StyledButton = styled(IconButton)(({ theme }) => ({
   background:
     theme.palette.mode === 'light'
       ? 'rgba(0, 0, 0, 0.03)'
-      : 'rgba(255, 255, 255, 0.05)',
+      : 'rgba(255, 255, 255, 0.05)'
 }))
 
 interface DetailsButtonProps {

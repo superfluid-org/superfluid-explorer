@@ -11,13 +11,13 @@ export default function Copyright() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'right',
-        alignItems: 'center',
+        alignItems: 'center'
       }}
     >
       <Typography
         sx={{
           position: 'absolute',
-          bottom: 0,
+          bottom: 0
         }}
         variant="body2"
         color="text.secondary"

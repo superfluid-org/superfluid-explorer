@@ -3,7 +3,7 @@ import {
   BigNumber,
   BlockNumber,
   SubgraphId,
-  Timestamp,
+  Timestamp
 } from '@superfluid-finance/sdk-core'
 
 export type EventBase = {

@@ -17,14 +17,14 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import { Box } from '@mui/system'
 import {
   createSkipPaging,
   Ordering,
   Stream_Filter,
-  Stream_OrderBy,
+  Stream_OrderBy
 } from '@superfluid-finance/sdk-core'
 import { StreamsQuery } from '@superfluid-finance/sdk-redux'
 import omit from 'lodash/fp/omit'
@@ -37,7 +37,7 @@ import {
   Fragment,
   useEffect,
   useRef,
-  useState,
+  useState
 } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
@@ -56,16 +56,16 @@ import { StreamDetailsDialog } from '../streams/StreamDetails'
 
 export const incomingStreamOrderingDefault: Ordering<Stream_OrderBy> = {
   orderBy: 'updatedAtTimestamp',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 }
 
 export const incomingStreamPagingDefault = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 export enum StreamStatus {
   Active,
-  Inactive,
+  Inactive
 }
 
 interface AccountIncomingStreamsTableProps {
@@ -77,7 +77,7 @@ type RequiredStreamQuery = Required<Omit<StreamsQuery, 'block'>>
 
 const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
   network,
-  accountAddress,
+  accountAddress
 }) => {
   const filterAnchorRef = useRef(null)
 
@@ -86,14 +86,14 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
   const [streamStatus, setStreamStatus] = useState<StreamStatus | null>(null)
 
   const defaultFilter = {
-    receiver: accountAddress,
+    receiver: accountAddress
   }
 
   const createDefaultArg = (): RequiredStreamQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: incomingStreamPagingDefault,
-    order: incomingStreamOrderingDefault,
+    order: incomingStreamOrderingDefault
   })
 
   const [streamsQueryArg, setStreamsQueryArg] =
@@ -143,12 +143,12 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
     if (streamsQueryArg.order?.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (streamsQueryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(incomingStreamOrderingDefault)
@@ -159,7 +159,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
     onStreamQueryArgsChanged({
       ...streamsQueryArg,
       pagination: { ...streamsQueryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
   }
 
@@ -167,7 +167,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
     if (e.target.value) {
       onFilterChange({
         ...streamsQueryArg.filter,
-        sender_contains: e.target.value.toLowerCase(),
+        sender_contains: e.target.value.toLowerCase()
       })
     } else {
       onFilterChange(omit('sender_contains', streamsQueryArg.filter))
@@ -194,7 +194,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
     setStreamStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getStreamStatusFilter(newStatus),
+      ...getStreamStatusFilter(newStatus)
     })
   }
 
@@ -229,7 +229,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
 
   const {
     skip = incomingStreamPagingDefault.skip,
-    take = incomingStreamPagingDefault.take,
+    take = incomingStreamPagingDefault.take
   } = streamsQueryResult.data?.paging || {}
 
   return (
@@ -415,7 +415,7 @@ const AccountIncomingStreamsTable: FC<AccountIncomingStreamsTableProps> = ({
                   flowRate={stream.currentFlowRate}
                   TokenChipProps={{
                     network,
-                    tokenAddress: stream.token,
+                    tokenAddress: stream.token
                   }}
                 />
               </TableCell>

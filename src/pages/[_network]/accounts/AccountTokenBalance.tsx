@@ -22,7 +22,7 @@ export const AccountTokenBalance: FC<{
   const realtimeBalanceQuery = rpcApi.useRealtimeBalanceQuery({
     chainId: network.chainId,
     tokenAddress: tokenAddress,
-    accountAddress: accountAddress,
+    accountAddress: accountAddress
   })
 
   const balance = realtimeBalanceQuery?.data?.balance || placeholder?.balance
@@ -37,7 +37,7 @@ export const AccountTokenBalance: FC<{
         {children({
           balance,
           balanceTimestamp,
-          flowRate,
+          flowRate
         })}
       </>
     )

@@ -15,7 +15,7 @@ import React, {
   PropsWithChildren,
   SyntheticEvent,
   useEffect,
-  useState,
+  useState
 } from 'react'
 
 import FullPageLoader from '../../components/Layout/FullPageLoader'
@@ -26,12 +26,12 @@ import useSfTheme from '../../styles/useSfTheme'
 const DocumentationLinks = [
   {
     name: 'Subgraph',
-    link: 'https://docs.superfluid.finance/superfluid/docs/subgraph',
+    link: 'https://docs.superfluid.finance/superfluid/docs/subgraph'
   },
   {
     name: 'Protocol',
-    link: 'https://docs.superfluid.finance/superfluid',
-  },
+    link: 'https://docs.superfluid.finance/superfluid'
+  }
 ]
 
 const ExampleQueries = [
@@ -45,7 +45,7 @@ const ExampleQueries = [
     underlyingAddress
   }
 }
-`,
+`
   },
   {
     name: 'Accounts',
@@ -59,7 +59,7 @@ const ExampleQueries = [
     isSuperApp
   }
 }
-`,
+`
   },
   {
     name: 'Flow events paginated',
@@ -77,8 +77,8 @@ const ExampleQueries = [
     totalAmountStreamedUntilTimestamp
   }
 }
-`,
-  },
+`
+  }
 ]
 
 const DEFAULT_QUERY = `# Hi! Welcome to Superfluid's GraphiQL instance for querying Superfluid's Subgraphs (powered by The Graph).
@@ -178,10 +178,10 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(parsedParams),
-      credentials: 'same-origin',
+      credentials: 'same-origin'
     })
     setFetchedFromUrl(subgraphUrl)
     return data.json().catch(() => data.text())
@@ -203,7 +203,7 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
     return {
       ...graphQLParams,
       query: parsedQuery,
-      variables: JSON.parse(parsedVariables),
+      variables: JSON.parse(parsedVariables)
     }
   }
 
@@ -246,7 +246,7 @@ const SubgraphExplorer: FC<PropsWithChildren<unknown>> = () => {
           className="graphiql-container"
           sx={{
             height: '100%',
-            filter: `invert(${isDarkTheme ? 0.925 : 0})`,
+            filter: `invert(${isDarkTheme ? 0.925 : 0})`
           }}
         >
           <GraphiQLExplorer

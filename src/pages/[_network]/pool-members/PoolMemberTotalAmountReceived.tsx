@@ -55,7 +55,7 @@ export const getTotalAmountReceivedFromPoolMember = (
     return {
       memberCurrentTotalAmountReceived: BigNumber.from(0),
       memberFlowRate: BigNumber.from(0),
-      timestamp: currentTimestamp,
+      timestamp: currentTimestamp
     }
   }
 
@@ -84,6 +84,6 @@ export const getTotalAmountReceivedFromPoolMember = (
   return {
     memberCurrentTotalAmountReceived,
     memberFlowRate: memberFlowRate,
-    timestamp: currentTimestamp,
+    timestamp: currentTimestamp
   }
 }

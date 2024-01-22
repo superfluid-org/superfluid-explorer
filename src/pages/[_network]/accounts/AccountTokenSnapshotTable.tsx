@@ -17,13 +17,13 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   AccountTokenSnapshot_Filter,
   AccountTokenSnapshot_OrderBy,
   createSkipPaging,
-  Ordering,
+  Ordering
 } from '@superfluid-finance/sdk-core'
 import { AccountTokenSnapshotsQuery } from '@superfluid-finance/sdk-redux'
 import set from 'lodash/fp/set'
@@ -46,11 +46,11 @@ import AccountTokenFlowRate from './AccountTokenFlowRate'
 
 const defaultOrdering = {
   orderBy: 'balanceUntilUpdatedAt',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 } as Ordering<AccountTokenSnapshot_OrderBy>
 
 export const defaultPaging = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 interface AccountTokenSnapshotTableProps {
@@ -64,7 +64,7 @@ type RequiredAccountTokenSnapshotsQuery = Required<
 
 const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
   network,
-  accountAddress,
+  accountAddress
 }) => {
   const filterAnchorRef = useRef(null)
 
@@ -78,14 +78,14 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
     useState<UnitsStatus | null>(null)
 
   const defaultFilter = {
-    account: accountAddress,
+    account: accountAddress
   }
 
   const createDefaultArg = (): RequiredAccountTokenSnapshotsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
-    order: defaultOrdering,
+    order: defaultOrdering
   })
 
   const [queryArg, setQueryArg] =
@@ -130,12 +130,12 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
     if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(defaultOrdering)
@@ -146,7 +146,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
   }
 
@@ -173,7 +173,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
     setActiveStreamsStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getActiveStreamsStatusFilter(newStatus),
+      ...getActiveStreamsStatusFilter(newStatus)
     })
   }
 
@@ -207,7 +207,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
     setInactiveStreamsStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getInactiveStreamsStatusFilter(newStatus),
+      ...getInactiveStreamsStatusFilter(newStatus)
     })
   }
 
@@ -242,7 +242,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
     setSubsWithUnitsStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getSubsWithUnitsStatusFilter(newStatus),
+      ...getSubsWithUnitsStatusFilter(newStatus)
     })
   }
 
@@ -539,7 +539,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                   placeholder={{
                     balance: tokenSnapshot.balanceUntilUpdatedAt,
                     balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
-                    flowRate: tokenSnapshot.totalNetFlowRate,
+                    flowRate: tokenSnapshot.totalNetFlowRate
                   }}
                 >
                   {({ balance, balanceTimestamp, flowRate }) => (
@@ -561,7 +561,7 @@ const AccountTokenSnapshotTable: FC<AccountTokenSnapshotTableProps> = ({
                   placeholder={{
                     balance: tokenSnapshot.balanceUntilUpdatedAt,
                     balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
-                    flowRate: tokenSnapshot.totalNetFlowRate,
+                    flowRate: tokenSnapshot.totalNetFlowRate
                   }}
                   TokenChipProps={null}
                 />

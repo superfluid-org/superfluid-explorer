@@ -2,14 +2,14 @@ import { Button } from '@mui/material'
 import {
   GridColDef,
   GridColumnHeaderTitle,
-  GridRenderCellParams,
+  GridRenderCellParams
 } from '@mui/x-data-grid'
 import {
   IndexSubscription,
   IndexSubscription_OrderBy,
   Ordering,
   PagedResult,
-  SkipPaging,
+  SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
 import { FC, useMemo } from 'react'
@@ -39,7 +39,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
   queryResult,
   setPaging,
   ordering,
-  setOrdering,
+  setOrdering
 }) => {
   const rows: IndexSubscription[] = queryResult.data
     ? queryResult.data.data
@@ -56,7 +56,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
         renderCell: (params) =>
           params.row.createdAtTimestamp ? (
             <TimeAgo subgraphTime={params.row.createdAtTimestamp} />
-          ) : null,
+          ) : null
       },
       {
         field: 'approved',
@@ -75,7 +75,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
               iconSx={{ mb: 0, mr: 0.5 }}
             />
           </>
-        ),
+        )
       },
       {
         field: 'totalAmountReceivedUntilUpdatedAt',
@@ -95,7 +95,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
             network={network}
             tokenAddress={params.row.token}
           />
-        ),
+        )
       },
       {
         field: 'units',
@@ -110,7 +110,7 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
               individualUnits={params.row.units}
             />
           )
-        },
+        }
       },
       {
         field: 'details',
@@ -128,8 +128,8 @@ const IndexSubscriptionDataGrid: FC<Props> = ({
               </Button>
             )}
           </IndexSubscriptionDetailsDialog>
-        ),
-      },
+        )
+      }
     ],
     [network]
   )

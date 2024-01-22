@@ -16,8 +16,8 @@ const SuperTokens: NextPage = ({}) => {
     router.replace({
       query: {
         ...router.query,
-        _network: newValue,
-      },
+        _network: newValue
+      }
     })
 
   return (

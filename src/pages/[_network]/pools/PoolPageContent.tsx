@@ -12,18 +12,19 @@ import {
   Skeleton,
   Stack,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   createSkipPaging,
   Ordering,
-  SkipPaging,
+  SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { gql } from 'graphql-request'
 import Error from 'next/error'
 import { FC, useState } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
+import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
 import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
 import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
@@ -37,7 +38,7 @@ import { sfGdaSubgraph } from '../../../redux/store'
 import {
   FlowDistributionUpdatedEvent_OrderBy,
   InstantDistributionUpdatedEvent_OrderBy,
-  PoolMember_OrderBy,
+  PoolMember_OrderBy
 } from '../../../subgraphs/gda/.graphclient'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
@@ -47,46 +48,46 @@ import PoolMemberDataGrid from './PoolMemberDataGrid'
 
 export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   id: id,
-  network,
+  network
 }) => {
   const poolQuery = sfGdaSubgraph.usePoolQuery({
     chainId: network.chainId,
-    id: id,
+    id: id
   })
 
   const pool: Pool | null | undefined = poolQuery.data
 
   const [
     instantDistributionUpdatedEventPaging,
-    setInstantDistributionUpdatedEventPaging,
+    setInstantDistributionUpdatedEventPaging
   ] = useState<SkipPaging>(
     createSkipPaging({
-      take: 10,
+      take: 10
     })
   )
 
   const [
     instantDistributionUpdatedEventOrdering,
-    setInstantDistributionUpdatedEventOrdering,
+    setInstantDistributionUpdatedEventOrdering
   ] = useState<Ordering<InstantDistributionUpdatedEvent_OrderBy> | undefined>({
     orderBy: 'timestamp',
-    orderDirection: 'desc',
+    orderDirection: 'desc'
   })
 
   const [
     flowDistributionUpdatedEventOrdering,
-    setFlowDistributionUpdatedEventOrdering,
+    setFlowDistributionUpdatedEventOrdering
   ] = useState<Ordering<FlowDistributionUpdatedEvent_OrderBy> | undefined>({
     orderBy: 'timestamp',
-    orderDirection: 'desc',
+    orderDirection: 'desc'
   })
 
   const [
     flowDistributionUpdatedEventPaging,
-    setFlowDistributionUpdatedEventPaging,
+    setFlowDistributionUpdatedEventPaging
   ] = useState<SkipPaging>(
     createSkipPaging({
-      take: 10,
+      take: 10
     })
   )
 
@@ -94,41 +95,41 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
     sfGdaSubgraph.useInstantDistributionUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        pool: id,
+        pool: id
       },
       pagination: instantDistributionUpdatedEventPaging,
-      order: instantDistributionUpdatedEventOrdering,
+      order: instantDistributionUpdatedEventOrdering
     })
 
   const flowDistributionUpdatedEventQuery =
     sfGdaSubgraph.useFlowDistributionUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        pool: id,
+        pool: id
       },
       pagination: flowDistributionUpdatedEventPaging,
-      order: flowDistributionUpdatedEventOrdering,
+      order: flowDistributionUpdatedEventOrdering
     })
 
   const [poolMemberPaging, setPoolMemberPaging] = useState<SkipPaging>(
     createSkipPaging({
-      take: 10,
+      take: 10
     })
   )
   const [poolMemberPagingOrdering, setPoolMemberOrdering] = useState<
     Ordering<PoolMember_OrderBy> | undefined
   >({
     orderBy: 'createdAtTimestamp',
-    orderDirection: 'desc',
+    orderDirection: 'desc'
   })
 
   const poolMemberEventQuery = sfGdaSubgraph.usePoolMembersQuery({
     chainId: network.chainId,
     filter: {
-      pool: id,
+      pool: id
     },
     pagination: poolMemberPaging,
-    order: poolMemberPagingOrdering,
+    order: poolMemberPagingOrdering
   })
 
   if (!poolQuery.isUninitialized && !poolQuery.isLoading && !poolQuery.data) {
@@ -272,7 +273,16 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                       />
                     </>
                   }
-                  primary={pool ? pool.id : <Skeleton sx={{ width: '20px' }} />}
+                  primary={
+                    pool ? (
+                      <AccountAddressFormatted
+                        network={network}
+                        address={pool.id}
+                      />
+                    ) : (
+                      <Skeleton sx={{ width: '20px' }} />
+                    )
+                  }
                 />
               </ListItem>
               <Grid container>
@@ -388,7 +398,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                         flowRate={pool.flowRate}
                         TokenChipProps={{
                           network: network,
-                          tokenAddress: pool.token,
+                          tokenAddress: pool.token
                         }}
                       />
                     ) : (
@@ -414,7 +424,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                             flowRate={pool.flowRate}
                             TokenChipProps={{
                               network: network,
-                              tokenAddress: pool.token,
+                              tokenAddress: pool.token
                             }}
                           />
                         ) : (

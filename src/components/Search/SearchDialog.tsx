@@ -12,7 +12,7 @@ import {
   ListItemButton,
   ListItemText,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material'
 import _ from 'lodash'
 import NextLink from 'next/link'
@@ -32,7 +32,7 @@ import QueryError from './QueryError'
 
 const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
   open,
-  close,
+  close
 }) => {
   const addressBookEntries = useAppSelector((state) =>
     addressBookSelectors.selectAll(state)
@@ -88,7 +88,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
       <DialogContent>
         <TextField
           sx={{
-            mt: 1,
+            mt: 1
           }}
           variant="outlined"
           label="Search"
@@ -111,7 +111,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                   <SearchIcon />
                 )}
               </InputAdornment>
-            ),
+            )
           }}
           onChange={(e) => setSearchTerm(e.currentTarget.value)}
         />
@@ -145,7 +145,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                             display: 'flex',
                             alignItems: 'flex-start',
                             flexDirection: 'column',
-                            justifyContent: 'flex-start',
+                            justifyContent: 'flex-start'
                           }}
                         >
                           {account.ENS ? (

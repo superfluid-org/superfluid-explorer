@@ -9,7 +9,7 @@ import {
   IndexUpdatedEvent_OrderBy,
   Ordering,
   SkipPaging,
-  SubscriptionUnitsUpdatedEvent,
+  SubscriptionUnitsUpdatedEvent
 } from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
 import _ from 'lodash'
@@ -27,7 +27,7 @@ export const IndexSubscriptionDistributions: FC<{
 }> = ({ network, indexSubscriptionId }) => {
   const indexSubscriptionQuery = sfSubgraph.useIndexSubscriptionQuery({
     chainId: network.chainId,
-    id: indexSubscriptionId,
+    id: indexSubscriptionId
   })
   const indexSubscription: IndexSubscription | undefined | null =
     indexSubscriptionQuery.data
@@ -36,7 +36,7 @@ export const IndexSubscriptionDistributions: FC<{
     indexSubscription
       ? {
           chainId: network.chainId,
-          id: indexSubscription.index,
+          id: indexSubscription.index
         }
       : skipToken
   )
@@ -46,31 +46,31 @@ export const IndexSubscriptionDistributions: FC<{
   const [indexUpdatedEventPaging, setIndexUpdatedEventPaging] =
     useState<SkipPaging>(
       createSkipPaging({
-        take: 10,
+        take: 10
       })
     )
   const [indexUpdatedEventOrdering, setIndexUpdatedEventOrdering] = useState<
     Ordering<IndexUpdatedEvent_OrderBy> | undefined
   >({
     orderBy: 'timestamp',
-    orderDirection: 'desc',
+    orderDirection: 'desc'
   })
 
   const subscriptionUnitsUpdatedEventsQuery =
     sfSubgraph.useSubscriptionUnitsUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        subscription: indexSubscriptionId,
+        subscription: indexSubscriptionId
       },
       pagination: {
         take: 999,
-        skip: 0,
+        skip: 0
       },
       // Very important to order by timestamp in descending direction. Later `distributionAmount` logic depends on it.
       order: {
         orderBy: 'timestamp',
-        orderDirection: 'desc',
-      },
+        orderDirection: 'desc'
+      }
     })
 
   const subscriptionEndTime = useMemo<number | undefined>(
@@ -106,10 +106,10 @@ export const IndexSubscriptionDistributions: FC<{
             timestamp_gte: subscriptionStartTime.toString(),
             ...(subscriptionEndTime
               ? { timestamp_lte: subscriptionEndTime.toString() }
-              : {}),
+              : {})
           },
           order: indexUpdatedEventOrdering,
-          pagination: indexUpdatedEventPaging,
+          pagination: indexUpdatedEventPaging
         }
       : skipToken
   )
@@ -125,7 +125,7 @@ export const IndexSubscriptionDistributions: FC<{
         headerName: 'Distribution Date',
         sortable: true,
         flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />
       },
       {
         field: 'newIndexValue',
@@ -190,8 +190,8 @@ export const IndexSubscriptionDistributions: FC<{
               tokenAddress={index.token}
             />
           )
-        },
-      },
+        }
+      }
     ],
     [network, index, subscriptionUnitsUpdatedEvents]
   )

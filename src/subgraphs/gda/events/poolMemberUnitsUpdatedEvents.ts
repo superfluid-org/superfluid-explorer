@@ -1,7 +1,7 @@
 import {
   RelevantAddressesIntermediate,
   SubgraphListQuery,
-  SubgraphQueryHandler,
+  SubgraphQueryHandler
 } from '@superfluid-finance/sdk-core'
 
 import {
@@ -12,7 +12,7 @@ import {
   PoolMember,
   PoolMemberUnitsUpdatedEventsDocument,
   PoolMemberUnitsUpdatedEventsQuery,
-  PoolMemberUnitsUpdatedEventsQueryVariables,
+  PoolMemberUnitsUpdatedEventsQueryVariables
 } from '../.graphclient'
 import { PoolMemberUnitsUpdatedEvent } from '../events'
 
@@ -32,7 +32,7 @@ export class PoolMemberUnitsUpdatedEventQueryHandler extends SubgraphQueryHandle
     tokenKeys: (keyof MemberUnitsUpdatedEvent_Filter)[]
   } => ({
     accountKeys: ['poolMember', 'pool'],
-    tokenKeys: ['token'],
+    tokenKeys: ['token']
   })
 
   getRelevantAddressesFromResultCore(
@@ -40,7 +40,7 @@ export class PoolMemberUnitsUpdatedEventQueryHandler extends SubgraphQueryHandle
   ): RelevantAddressesIntermediate {
     return {
       accounts: [result.poolMember, result.pool],
-      tokens: [result.token],
+      tokens: [result.token]
     }
   }
 
@@ -84,7 +84,7 @@ function mapGetAllEventsQueryEvent(
       token: e.token,
       pool: e.pool.id,
       poolMember: e.poolMember.id,
-      units: e.units,
+      units: e.units
     } as PoolMemberUnitsUpdatedEvent
   })
 }

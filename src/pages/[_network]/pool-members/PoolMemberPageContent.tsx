@@ -9,13 +9,13 @@ import {
   ListItemText,
   Skeleton,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import {
   createSkipPaging,
   Ordering,
-  SkipPaging,
+  SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { gql } from 'graphql-request'
 import Error from 'next/error'
@@ -46,7 +46,7 @@ export const PoolMemberPageContent: FC<{
 }> = ({ poolMemberId, network }) => {
   const poolMemberQuery = sfGdaSubgraph.usePoolMemberQuery({
     chainId: network.chainId,
-    id: poolMemberId,
+    id: poolMemberId
   })
 
   const poolMember: PoolMember | undefined | null = poolMemberQuery.data
@@ -55,7 +55,7 @@ export const PoolMemberPageContent: FC<{
     poolMember
       ? {
           chainId: network.chainId,
-          id: poolMember.pool,
+          id: poolMember.pool
         }
       : skipToken
   )
@@ -63,27 +63,27 @@ export const PoolMemberPageContent: FC<{
   const pool: Pool | undefined | null = poolQuery.data
   const [
     poolMemberUnitsUpdatedEventPaging,
-    setPoolMemberUnitsUpdatedEventPaging,
+    setPoolMemberUnitsUpdatedEventPaging
   ] = useState<SkipPaging>(
     createSkipPaging({
-      take: 10,
+      take: 10
     })
   )
   const [
     poolMemberUnitsUpdatedEventPagingOrdering,
-    setPoolMemberUnitsUpdatedEventOrdering,
+    setPoolMemberUnitsUpdatedEventOrdering
   ] = useState<Ordering<MemberUnitsUpdatedEvent_OrderBy> | undefined>({
     orderBy: 'timestamp',
-    orderDirection: 'desc',
+    orderDirection: 'desc'
   })
   const poolMemberUnitsUpdatedEventQuery =
     sfGdaSubgraph.usePoolMemberUnitsUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        poolMember: poolMemberId,
+        poolMember: poolMemberId
       },
       pagination: poolMemberUnitsUpdatedEventPaging,
-      order: poolMemberUnitsUpdatedEventPagingOrdering,
+      order: poolMemberUnitsUpdatedEventPagingOrdering
     })
 
   const totalAmountReceivedForPoolMember = useTotalAmountRecivedFromPoolMember(
@@ -310,7 +310,7 @@ export const PoolMemberPageContent: FC<{
                         }
                         TokenChipProps={{
                           network: network,
-                          tokenAddress: poolMember?.token,
+                          tokenAddress: poolMember?.token
                         }}
                       />
                     ) : (

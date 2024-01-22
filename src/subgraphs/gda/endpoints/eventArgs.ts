@@ -4,7 +4,7 @@ import {
   IndexUpdatedEventListQuery,
   SubgraphGetQuery,
   SubscriptionUnitsUpdatedEventListQuery,
-  TransferEventListQuery,
+  TransferEventListQuery
 } from '@superfluid-finance/sdk-core'
 
 export interface EventQuery extends SubgraphGetQuery {

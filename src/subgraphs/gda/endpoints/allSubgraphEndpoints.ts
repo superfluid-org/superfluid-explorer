@@ -7,5 +7,5 @@ export const allSubgraphEndpoints = {
     Object.assign(
       createEntityEndpoints(builder),
       createEventQueryEndpoints(builder)
-    ),
+    )
 }

@@ -1,7 +1,7 @@
 import {
   RelevantAddressesIntermediate,
   SubgraphListQuery,
-  SubgraphQueryHandler,
+  SubgraphQueryHandler
 } from '@superfluid-finance/sdk-core'
 
 import {
@@ -11,8 +11,7 @@ import {
   InstantDistributionUpdatedEventsDocument,
   InstantDistributionUpdatedEventsQuery,
   InstantDistributionUpdatedEventsQueryVariables,
-  Pool,
-  PoolDistributor,
+  Pool
 } from '../.graphclient'
 import { InstantDistributionUpdatedEvent as PoolInstantDistributionUpdatedEvent } from '../events'
 
@@ -32,7 +31,7 @@ export class InstantDistributionUpdatedEventQueryHandler extends SubgraphQueryHa
     tokenKeys: (keyof InstantDistributionUpdatedEvent_Filter)[]
   } => ({
     accountKeys: ['operator', 'pool'],
-    tokenKeys: ['token'],
+    tokenKeys: ['token']
   })
 
   getRelevantAddressesFromResultCore(
@@ -40,7 +39,7 @@ export class InstantDistributionUpdatedEventQueryHandler extends SubgraphQueryHa
   ): RelevantAddressesIntermediate {
     return {
       accounts: [result.operator, result.pool],
-      tokens: [result.token],
+      tokens: [result.token]
     }
   }
 
@@ -73,7 +72,11 @@ function mapGetAllEventsQueryEvent(
           Pool,
           'id' | 'totalConnectedUnits' | 'totalDisconnectedUnits'
         >
-        poolDistributor: Pick<PoolDistributor, 'id'>
+        poolDistributor: {
+          account: {
+            id: string
+          }
+        }
       }
   >
 ): PoolInstantDistributionUpdatedEvent[] {
@@ -89,11 +92,11 @@ function mapGetAllEventsQueryEvent(
       timestamp: Number(e.timestamp),
       logIndex: Number(e.logIndex),
       pool: e.pool.id,
-      poolDistributor: e.poolDistributor.id,
+      poolDistributor: e.poolDistributor.account.id,
       token: e.token,
       operator: e.operator,
       actualAmount: e.actualAmount,
-      requestedAmount: e.requestedAmount,
+      requestedAmount: e.requestedAmount
     } as PoolInstantDistributionUpdatedEvent
   })
 }

@@ -13,7 +13,7 @@ const DepletionDate: React.FC<DepletionDateProps> = ({
   balance,
   balanceTimestamp,
   flowRate,
-  tooltipProps,
+  tooltipProps
 }) => {
   const flowRateNum = parseFloat(flowRate.toString())
 

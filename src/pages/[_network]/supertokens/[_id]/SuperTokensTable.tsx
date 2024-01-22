@@ -18,13 +18,13 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   createSkipPaging,
   Ordering,
   Token_Filter,
-  Token_OrderBy,
+  Token_OrderBy
 } from '@superfluid-finance/sdk-core'
 import { TokensQuery } from '@superfluid-finance/sdk-redux'
 import isEqual from 'lodash/fp/isEqual'
@@ -43,7 +43,7 @@ import { sfSubgraph } from '../../../../redux/store'
 
 export enum ListedStatus {
   Listed,
-  NotListed,
+  NotListed
 }
 
 interface SuperTokensTableProps {
@@ -54,15 +54,15 @@ type RequiredTokensQuery = Required<Omit<TokensQuery, 'block'>>
 
 const defaultOrdering = {
   orderBy: 'isListed',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 } as Ordering<Token_OrderBy>
 
 const defaultFilter: Token_Filter = {
-  isSuperToken: true,
+  isSuperToken: true
 }
 
 export const defaultPaging = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
@@ -75,7 +75,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
-    order: defaultOrdering,
+    order: defaultOrdering
   })
 
   const [queryArg, setQueryArg] =
@@ -118,12 +118,12 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     if (queryArg.order?.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(defaultOrdering)
@@ -134,7 +134,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     onQueryArgsChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
   }
 
@@ -147,7 +147,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     if (e.target.value) {
       onFilterChange({
         ...queryArg.filter,
-        name_contains_nocase: e.target.value,
+        name_contains_nocase: e.target.value
       })
     } else {
       onFilterChange(omit('name_contains_nocase', queryArg.filter))
@@ -158,7 +158,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     if (e.target.value) {
       onFilterChange({
         ...queryArg.filter,
-        symbol_contains_nocase: e.target.value,
+        symbol_contains_nocase: e.target.value
       })
     } else {
       onFilterChange(omit('symbol_contains_nocase', queryArg.filter))
@@ -182,7 +182,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     setListedStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getListedStatusFilter(newStatus),
+      ...getListedStatusFilter(newStatus)
     })
   }
 
@@ -429,7 +429,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                   href={`/${network.slugName}/supertokens/${token.id}`}
                   sx={{
                     textDecoration: 'none',
-                    flexShrink: 0,
+                    flexShrink: 0
                   }}
                 >
                   <Chip
@@ -438,7 +438,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                     label={token.symbol || <>&#8211;</>}
                     sx={{
                       cursor: 'pointer',
-                      lineHeight: '24px',
+                      lineHeight: '24px'
                     }}
                   />
                 </AppLink>

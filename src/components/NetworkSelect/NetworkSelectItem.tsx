@@ -18,7 +18,7 @@ const NetworkSelectItem: FC<NetworkSelectItemProps> = ({
   address,
   active,
   loading,
-  onClick,
+  onClick
 }) => (
   <NextLink href={`/${network.slugName}/accounts/${address}`} passHref>
     <MenuItem

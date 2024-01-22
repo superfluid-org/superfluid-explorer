@@ -18,7 +18,7 @@ const CopyClipboard: FC<CopyClipboardProps> = ({
   copyText,
   description = 'Copy to clipboard',
   TooltipProps,
-  IconProps,
+  IconProps
 }) => {
   const [isCopied, setIsCopied] = useState(false)
 
@@ -49,8 +49,8 @@ const CopyClipboard: FC<CopyClipboardProps> = ({
               fontSize: 'inherit',
               cursor: 'pointer',
               ml: 1,
-              verticalAlign: 'middle',
-            },
+              verticalAlign: 'middle'
+            }
           },
           IconProps
         )}

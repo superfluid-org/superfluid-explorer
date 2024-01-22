@@ -18,13 +18,13 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   createSkipPaging,
   Index_Filter,
   Index_OrderBy,
-  Ordering,
+  Ordering
 } from '@superfluid-finance/sdk-core'
 import { IndexesQuery } from '@superfluid-finance/sdk-redux'
 import omit from 'lodash/fp/omit'
@@ -46,21 +46,21 @@ import { IndexPublicationDetailsDialog } from '../indexes/IndexPublicationDetail
 
 export enum DistributionStatus {
   Distributed,
-  NotDistributed,
+  NotDistributed
 }
 
 export enum UnitsStatus {
   Issued,
-  NotIssued,
+  NotIssued
 }
 
 export const publishedIndexOrderingDefault: Ordering<Index_OrderBy> = {
   orderBy: 'createdAtTimestamp',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 }
 
 export const publishedIndexPagingDefault = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 interface AccountPublishedIndexesTableProps {
@@ -72,7 +72,7 @@ type RequiredIndexesQuery = Required<Omit<IndexesQuery, 'block'>>
 
 const AccountIndexPublicationsTable: FC<AccountPublishedIndexesTableProps> = ({
   network,
-  accountAddress,
+  accountAddress
 }) => {
   const filterAnchorRef = useRef(null)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
@@ -82,14 +82,14 @@ const AccountIndexPublicationsTable: FC<AccountPublishedIndexesTableProps> = ({
   const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null)
 
   const defaultFilter = {
-    publisher: accountAddress,
+    publisher: accountAddress
   }
 
   const createDefaultArg = (): RequiredIndexesQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: publishedIndexPagingDefault,
-    order: publishedIndexOrderingDefault,
+    order: publishedIndexOrderingDefault
   })
 
   const [queryArg, setQueryArg] =
@@ -132,12 +132,12 @@ const AccountIndexPublicationsTable: FC<AccountPublishedIndexesTableProps> = ({
     if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(publishedIndexOrderingDefault)
@@ -148,7 +148,7 @@ const AccountIndexPublicationsTable: FC<AccountPublishedIndexesTableProps> = ({
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
   }
 
@@ -156,7 +156,7 @@ const AccountIndexPublicationsTable: FC<AccountPublishedIndexesTableProps> = ({
     if (e.target.value) {
       onFilterChange({
         ...queryArg.filter,
-        indexId: e.target.value,
+        indexId: e.target.value
       })
     } else {
       onFilterChange(omit('indexId', queryArg.filter))
@@ -186,7 +186,7 @@ const AccountIndexPublicationsTable: FC<AccountPublishedIndexesTableProps> = ({
     setDistributionStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getDistributionStatusFilter(newStatus),
+      ...getDistributionStatusFilter(newStatus)
     })
   }
 
@@ -214,7 +214,7 @@ const AccountIndexPublicationsTable: FC<AccountPublishedIndexesTableProps> = ({
     setUnitsStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getUnitsStatusFilter(newStatus),
+      ...getUnitsStatusFilter(newStatus)
     })
   }
 
@@ -250,7 +250,7 @@ const AccountIndexPublicationsTable: FC<AccountPublishedIndexesTableProps> = ({
 
   const {
     skip = publishedIndexPagingDefault.skip,
-    take = publishedIndexPagingDefault.take,
+    take = publishedIndexPagingDefault.take
   } = queryResult.data?.paging || {}
 
   return (

@@ -26,7 +26,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://etherscan.io/address/${address}`,
+      `https://etherscan.io/address/${address}`
   },
   {
     displayName: 'Gnosis Chain',
@@ -40,7 +40,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://gnosisscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://gnosisscan.io/address/${address}`,
+      `https://gnosisscan.io/address/${address}`
   },
   {
     displayName: 'Polygon',
@@ -54,7 +54,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://polygonscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://polygonscan.com/address/${address}`,
+      `https://polygonscan.com/address/${address}`
   },
   {
     displayName: 'Optimism',
@@ -68,7 +68,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://optimistic.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://optimistic.etherscan.io/address/${address}`,
+      `https://optimistic.etherscan.io/address/${address}`
   },
   {
     displayName: 'Arbitrum One',
@@ -82,7 +82,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://arbiscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://arbiscan.io/address/${address}`,
+      `https://arbiscan.io/address/${address}`
   },
   {
     displayName: 'Avalanche C',
@@ -96,7 +96,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://snowtrace.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://snowtrace.io/address/${address}`,
+      `https://snowtrace.io/address/${address}`
   },
   {
     displayName: 'BNB Smart Chain',
@@ -110,7 +110,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://bscscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://bscscan.com/address/${address}`,
+      `https://bscscan.com/address/${address}`
   },
   {
     displayName: 'Celo',
@@ -124,7 +124,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://celoscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://celoscan.io/address/${address}`,
+      `https://celoscan.io/address/${address}`
   },
   {
     isTestnet: false,
@@ -137,7 +137,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://basescan.org/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://basescan.org/address/${address}`,
+      `https://basescan.org/address/${address}`
   },
   // testnets
   {
@@ -152,7 +152,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://goerli.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://goerli.etherscan.io/address/${address}`,
+      `https://goerli.etherscan.io/address/${address}`
   },
   {
     displayName: 'Mumbai',
@@ -166,7 +166,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://mumbai.polygonscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://mumbai.polygonscan.com/address/${address}`,
+      `https://mumbai.polygonscan.com/address/${address}`
   },
   {
     displayName: 'Avalanche Fuji',
@@ -180,7 +180,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://testnet.snowtrace.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://testnet.snowtrace.io/address/${address}`,
+      `https://testnet.snowtrace.io/address/${address}`
   },
   {
     displayName: 'Optimism Goerli',
@@ -194,7 +194,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://goerli-optimism.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://goerli-optimism.etherscan.io/address/${address}`,
+      `https://goerli-optimism.etherscan.io/address/${address}`
   },
   {
     displayName: 'Arbitrum Goerli',
@@ -208,7 +208,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://goerli.arbiscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://goerli.arbiscan.io/address/${address}`,
+      `https://goerli.arbiscan.io/address/${address}`
   },
   {
     isTestnet: true,
@@ -222,7 +222,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://sepolia.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://sepolia.etherscan.io/address/${address}`,
+      `https://sepolia.etherscan.io/address/${address}`
   },
   {
     isTestnet: true,
@@ -235,7 +235,7 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://testnet-zkevm.polygonscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://testnet-zkevm.polygonscan.com/address/${address}`,
+      `https://testnet-zkevm.polygonscan.com/address/${address}`
   },
   {
     isTestnet: true,
@@ -248,8 +248,8 @@ export const networks: Network[] = [
     getLinkForTransaction: (txHash: string): string =>
       `https://goerli.basescan.org/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://goerli.basescan.org/address/${address}`,
-  },
+      `https://goerli.basescan.org/address/${address}`
+  }
 ]
 
 export const networksByName = new Map(

@@ -12,7 +12,7 @@ interface Props {
 
 const SuperTokenIndexes: FC<Props> = ({
   network,
-  tokenAddress,
+  tokenAddress
 }): ReactElement => {
   return (
     <>

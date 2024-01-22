@@ -10,7 +10,7 @@ interface InfoHelpAlertProps {
 const InfoHelpAlert: FC<PropsWithChildren<InfoHelpAlertProps>> = ({
   sx,
   dataCy = {},
-  children,
+  children
 }) => {
   return (
     <Paper
@@ -18,7 +18,7 @@ const InfoHelpAlert: FC<PropsWithChildren<InfoHelpAlertProps>> = ({
       sx={{
         bgcolor: 'transparent',
         p: 1.5,
-        ...sx,
+        ...sx
       }}
     >
       <Stack direction="row" columnGap={2} color="text.secondary">

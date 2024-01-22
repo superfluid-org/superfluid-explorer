@@ -9,7 +9,7 @@ export default function FullPageLoader() {
         display: 'flex',
         justifyContent: 'center',
         height: '100vh',
-        width: '100vw',
+        width: '100vw'
       }}
     >
       <CircularProgress />

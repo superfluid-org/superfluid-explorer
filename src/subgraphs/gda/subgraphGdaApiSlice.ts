@@ -4,7 +4,7 @@ import { typeGuard } from '@superfluid-finance/sdk-core'
 import {
   cacheTagTypes,
   getSerializeQueryArgs,
-  subgraphBaseQuery,
+  subgraphBaseQuery
 } from '@superfluid-finance/sdk-redux'
 
 import { CacheTime } from './cacheTime'
@@ -20,7 +20,7 @@ export const createSubgraphGdaApiSlice = <T extends ModuleName>(
     baseQuery: subgraphBaseQuery(),
     tagTypes: cacheTagTypes,
     endpoints: (_builder: GdaSubgraphEndpointBuilder) => ({}),
-    serializeQueryArgs: getSerializeQueryArgs(),
+    serializeQueryArgs: getSerializeQueryArgs()
   })
 
 export type SubgraphGdaApiSliceEmpty = ReturnType<

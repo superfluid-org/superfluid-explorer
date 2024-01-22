@@ -6,13 +6,13 @@ import {
   TableCell,
   TableFooter,
   TableRow,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   createSkipPaging,
   Ordering,
   SkipPaging,
-  Stream_OrderBy,
+  Stream_OrderBy
 } from '@superfluid-finance/sdk-core'
 import { FC, useState } from 'react'
 
@@ -26,11 +26,11 @@ import { sfSubgraph } from '../redux/store'
 
 export const defaultStreamQueryOrdering: Ordering<Stream_OrderBy> = {
   orderBy: 'createdAtTimestamp',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 }
 
 export const defaultStreamQueryPaging: SkipPaging = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 interface NetworkStreamsProps {
@@ -43,13 +43,13 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
   const query = sfSubgraph.useStreamsQuery({
     chainId: network.chainId,
     order: defaultStreamQueryOrdering,
-    pagination: paging,
+    pagination: paging
   })
 
   const onPageChange = (newPage: number) =>
     setPaging({
       ...paging,
-      skip: (newPage - 1) * paging.take,
+      skip: (newPage - 1) * paging.take
     })
 
   const streams = query.data?.data ?? []
@@ -119,7 +119,7 @@ interface SenderReceiverProps {
 const SenderReceiver: FC<SenderReceiverProps> = ({
   network,
   fromAddress,
-  toAddress,
+  toAddress
 }) => (
   <Box
     display="grid"
@@ -132,14 +132,14 @@ const SenderReceiver: FC<SenderReceiverProps> = ({
       dataCy={'account-address'}
       network={network}
       address={fromAddress}
-      ellipsis={10}
+      ellipsis={6}
     />
     <Typography variant="body2">Receiver:</Typography>
     <AccountAddress
       dataCy={'account-address'}
       network={network}
       address={toAddress}
-      ellipsis={10}
+      ellipsis={6}
     />
   </Box>
 )

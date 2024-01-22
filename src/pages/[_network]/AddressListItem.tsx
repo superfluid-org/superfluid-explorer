@@ -16,7 +16,7 @@ export const AddressListItem: FC<AddressListItemProps> = ({
   network,
   title,
   address,
-  dataCy,
+  dataCy
 }) => (
   <ListItem>
     <ListItemText
@@ -45,7 +45,7 @@ export const AddressListItem: FC<AddressListItemProps> = ({
                   <OpenInNewIcon
                     sx={{
                       fontSize: '16px',
-                      display: 'block',
+                      display: 'block'
                     }}
                   />
                 </Link>

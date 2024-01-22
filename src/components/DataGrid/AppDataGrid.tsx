@@ -3,13 +3,13 @@ import {
   DataGrid,
   DataGridProps,
   GridColumns,
-  GridRowsProp,
+  GridRowsProp
 } from '@mui/x-data-grid'
 import {
   ILightEntity,
   Ordering,
   PagedResult,
-  SkipPaging,
+  SkipPaging
 } from '@superfluid-finance/sdk-core'
 import _ from 'lodash'
 import { FC, ReactElement } from 'react'
@@ -34,7 +34,7 @@ export const AppDataGrid: FC<Props> = ({
   setPaging,
   ordering,
   setOrdering,
-  dataGridProps,
+  dataGridProps
 }): ReactElement => {
   const defaultDataGridProps: DataGridProps = {
     autoHeight: true,
@@ -48,8 +48,8 @@ export const AppDataGrid: FC<Props> = ({
         AppDataGridPagination({
           paging: queryResult.data?.paging as SkipPaging,
           hasNextPage: !!queryResult.data?.nextPaging,
-          setPaging,
-        }),
+          setPaging
+        })
     },
     loading: queryResult.isFetching,
     disableSelectionOnClick: true,
@@ -58,8 +58,8 @@ export const AppDataGrid: FC<Props> = ({
       ? [
           {
             field: ordering.orderBy,
-            sort: ordering.orderDirection,
-          },
+            sort: ordering.orderDirection
+          }
         ]
       : [],
     onSortModelChange: (sortModel) =>
@@ -67,10 +67,10 @@ export const AppDataGrid: FC<Props> = ({
         sortModel[0]
           ? {
               orderBy: sortModel[0].field,
-              orderDirection: sortModel[0].sort!, // TODO(KK): Forbidden
+              orderDirection: sortModel[0].sort! // TODO(KK): Forbidden
             }
           : undefined
-      ),
+      )
   }
 
   const finalDataGridProps = _.merge(defaultDataGridProps, dataGridProps)
@@ -87,7 +87,7 @@ interface PaginationProps {
 const AppDataGridPagination: FC<PaginationProps> = ({
   paging,
   hasNextPage,
-  setPaging,
+  setPaging
 }) => {
   if (!paging) {
     return <></>
@@ -105,7 +105,7 @@ const AppDataGridPagination: FC<PaginationProps> = ({
       onChange={(event, value) =>
         setPaging({
           skip: (value - 1) * pageSize,
-          take: paging.take,
+          take: paging.take
         })
       }
     />

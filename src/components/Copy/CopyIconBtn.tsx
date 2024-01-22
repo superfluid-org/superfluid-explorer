@@ -12,7 +12,7 @@ interface CopyIconBtnProps {
 const CopyIconBtn: FC<CopyIconBtnProps> = ({
   copyText,
   description = 'Copy to clipboard',
-  TooltipProps,
+  TooltipProps
 }) => {
   const [isCopied, setIsCopied] = useState(false)
 

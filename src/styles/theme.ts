@@ -7,37 +7,37 @@ export const createSfTheme = (mode: 'light' | 'dark' = 'light') =>
     palette: {
       mode: mode,
       primary: {
-        main: '#00991F',
+        main: '#00991F'
       },
       secondary: {
-        main: '#4816E2',
+        main: '#4816E2'
       },
       error: {
-        main: red.A400,
+        main: red.A400
       },
       info: {
-        main: 'rgba(0, 0, 0, 0.87)',
+        main: 'rgba(0, 0, 0, 0.87)'
       },
       background:
         mode === 'light'
           ? {
-              default: '#F9F9F9',
+              default: '#F9F9F9'
             }
-          : {},
+          : {}
     },
     components: {
       MuiButtonBase: {
         // The properties to apply
         defaultProps: {
-          disableRipple: true, // No more ripple, on the whole application!
-        },
+          disableRipple: true // No more ripple, on the whole application!
+        }
       },
       MuiChip: {
         styleOverrides: {
           root: {
-            borderRadius: '8px',
-          },
-        },
+            borderRadius: '8px'
+          }
+        }
       },
       MuiTable: {
         styleOverrides: {
@@ -48,9 +48,9 @@ export const createSfTheme = (mode: 'light' | 'dark' = 'light') =>
                 ? 'rgba(224, 224, 224, 1)'
                 : 'rgba(81, 81, 81, 1)'
             }`,
-            borderCollapse: 'initial',
-          },
-        },
+            borderCollapse: 'initial'
+          }
+        }
       },
       MuiTableHead: {
         styleOverrides: {
@@ -58,19 +58,19 @@ export const createSfTheme = (mode: 'light' | 'dark' = 'light') =>
             // This makes sortable column headings visible when table header is hovered:
             '&:hover .MuiTableSortLabel-root:not(.Mui-active):not(:hover) .MuiTableSortLabel-icon':
               {
-                opacity: 0.5,
-              },
-          },
-        },
+                opacity: 0.5
+              }
+          }
+        }
       },
       MuiTableBody: {
         styleOverrides: {
           root: {
             position: 'relative',
             // This removes border bottom from last row of the table.
-            'tr:last-of-type td': { border: 0 },
-          },
-        },
+            'tr:last-of-type td': { border: 0 }
+          }
+        }
       },
       MuiTableCell: {
         styleOverrides: {
@@ -78,7 +78,7 @@ export const createSfTheme = (mode: 'light' | 'dark' = 'light') =>
             padding: '0 16px',
             height: '52px',
             textOverflow: 'ellipsis',
-            overflow: 'hidden',
+            overflow: 'hidden'
           },
           footer: {
             padding: '0 8px',
@@ -88,12 +88,12 @@ export const createSfTheme = (mode: 'light' | 'dark' = 'light') =>
                 ? 'rgba(224, 224, 224, 1)'
                 : 'rgba(81, 81, 81, 1)'
             }`,
-            borderBottom: 'initial',
-          },
-        },
-      },
+            borderBottom: 'initial'
+          }
+        }
+      }
     },
     shape: {
-      borderRadius: 7,
-    },
+      borderRadius: 7
+    }
   })

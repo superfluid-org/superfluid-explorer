@@ -18,7 +18,7 @@ export const getEntryId = (addressBookEntry: AddressBookEntry) => {
 }
 
 export const addressBookAdapter = createEntityAdapter({
-  selectId: (entry: AddressBookEntry) => getEntryId(entry),
+  selectId: (entry: AddressBookEntry) => getEntryId(entry)
 })
 
 const sliceName = 'addressBook'
@@ -28,14 +28,14 @@ export const addressBookSlice = createSlice({
   initialState: addressBookAdapter.getInitialState(),
   reducers: {
     entryUpserted: addressBookAdapter.upsertOne,
-    entryRemoved: addressBookAdapter.removeOne,
+    entryRemoved: addressBookAdapter.removeOne
   },
   extraReducers: {
     [REHYDRATE]: (state, { payload }) => ({
       ...state,
-      ...(payload ? payload[sliceName] : {}),
-    }),
-  },
+      ...(payload ? payload[sliceName] : {})
+    })
+  }
 })
 
 export const addressBookSelectors = addressBookAdapter.getSelectors(

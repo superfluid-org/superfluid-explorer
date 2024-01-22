@@ -4,7 +4,7 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 import {
   createSkipPaging,
   Ordering,
-  SkipPaging,
+  SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
 import _ from 'lodash'
@@ -20,7 +20,7 @@ import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import {
   InstantDistributionUpdatedEvent,
-  PoolMemberUnitsUpdatedEvent,
+  PoolMemberUnitsUpdatedEvent
 } from '../../../subgraphs/gda/events'
 
 export const PoolMemberDistributions: FC<{
@@ -29,7 +29,7 @@ export const PoolMemberDistributions: FC<{
 }> = ({ network, poolMemberId }) => {
   const poolMemberQuery = sfGdaSubgraph.usePoolMemberQuery({
     chainId: network.chainId,
-    id: poolMemberId,
+    id: poolMemberId
   })
 
   const poolMember: PoolMember | undefined | null = poolMemberQuery.data
@@ -38,7 +38,7 @@ export const PoolMemberDistributions: FC<{
     poolMember
       ? {
           chainId: network.chainId,
-          id: poolMember.pool,
+          id: poolMember.pool
         }
       : skipToken
   )
@@ -47,35 +47,35 @@ export const PoolMemberDistributions: FC<{
 
   const [
     instantDistributionUpdatedEventPaging,
-    setInstantDistributionUpdatedEventPaging,
+    setInstantDistributionUpdatedEventPaging
   ] = useState<SkipPaging>(
     createSkipPaging({
-      take: 10,
+      take: 10
     })
   )
   const [
     instantDistributionUpdatedEventOrdering,
-    setInstantDistributionUpdatedEventOrdering,
+    setInstantDistributionUpdatedEventOrdering
   ] = useState<Ordering<InstantDistributionUpdatedEvent_OrderBy> | undefined>({
     orderBy: 'timestamp',
-    orderDirection: 'desc',
+    orderDirection: 'desc'
   })
 
   const memberUnitsUpdatedEventsQuery =
     sfGdaSubgraph.usePoolMemberUnitsUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        poolMember: poolMemberId,
+        poolMember: poolMemberId
       },
       pagination: {
         take: 999,
-        skip: 0,
+        skip: 0
       },
       // Very important to order by timestamp in descending direction. Later `distributionAmount` logic depends on it.
       order: {
         orderBy: 'timestamp',
-        orderDirection: 'desc',
-      },
+        orderDirection: 'desc'
+      }
     })
 
   const subscribersEndTime = useMemo<number | undefined>(
@@ -112,10 +112,10 @@ export const PoolMemberDistributions: FC<{
               timestamp_gte: subscribersStartTime.toString(),
               ...(subscribersEndTime
                 ? { timestamp_lte: subscribersEndTime.toString() }
-                : {}),
+                : {})
             },
             order: instantDistributionUpdatedEventOrdering,
-            pagination: instantDistributionUpdatedEventPaging,
+            pagination: instantDistributionUpdatedEventPaging
           }
         : skipToken
     )
@@ -131,7 +131,7 @@ export const PoolMemberDistributions: FC<{
         headerName: 'Distribution Date',
         sortable: true,
         flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />
       },
       {
         field: 'newIndexValue',
@@ -199,8 +199,8 @@ export const PoolMemberDistributions: FC<{
               tokenAddress={pool.token}
             />
           )
-        },
-      },
+        }
+      }
     ],
     [network, pool, subscribersUnitsUpdatedEvents]
   )

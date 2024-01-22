@@ -7,7 +7,7 @@ import {
   Stack,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -44,7 +44,7 @@ export const SfAppBar = () => {
             component={Box}
             maxWidth="md"
             sx={{
-              display: searchOpen ? 'none' : 'inline',
+              display: searchOpen ? 'none' : 'inline'
             }}
           >
             <SearchBar>
@@ -56,7 +56,7 @@ export const SfAppBar = () => {
                   position: 'absolute',
                   top: 0,
                   left: 0,
-                  zIndex: 10,
+                  zIndex: 10
                 }}
                 onClick={() => setSearchOpen(true)}
               ></Box>
@@ -83,7 +83,7 @@ export const SfAppBar = () => {
                     fontWeight: 500,
                     fontSize: '16px',
                     color: 'white',
-                    textTransform: 'none',
+                    textTransform: 'none'
                   }}
                 >
                   Tokens
@@ -100,7 +100,7 @@ export const SfAppBar = () => {
                     fontWeight: 500,
                     fontSize: '16px',
                     color: 'white',
-                    textTransform: 'none',
+                    textTransform: 'none'
                   }}
                 >
                   Protocol
@@ -117,7 +117,7 @@ export const SfAppBar = () => {
                     fontWeight: 500,
                     fontSize: '16px',
                     color: 'white',
-                    textTransform: 'none',
+                    textTransform: 'none'
                   }}
                 >
                   Subgraph

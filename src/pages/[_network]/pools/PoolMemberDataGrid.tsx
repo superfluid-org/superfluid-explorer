@@ -2,7 +2,7 @@ import { Button } from '@mui/material'
 import {
   GridColDef,
   GridColumnHeaderTitle,
-  GridRenderCellParams,
+  GridRenderCellParams
 } from '@mui/x-data-grid'
 import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
 import { FC, useMemo } from 'react'
@@ -35,7 +35,7 @@ const PoolMemberDataGrid: FC<Props> = ({
   queryResult,
   setPaging,
   ordering,
-  setOrdering,
+  setOrdering
 }) => {
   const rows: PoolMember[] = queryResult.data ? queryResult.data.data : []
 
@@ -50,7 +50,7 @@ const PoolMemberDataGrid: FC<Props> = ({
         renderCell: (params) =>
           params.row.updatedAtTimestamp ? (
             <TimeAgo subgraphTime={params.row.updatedAtTimestamp} />
-          ) : null,
+          ) : null
       },
       {
         field: 'account',
@@ -63,7 +63,7 @@ const PoolMemberDataGrid: FC<Props> = ({
             address={params.row.account}
             ellipsis={6}
           />
-        ),
+        )
       },
       {
         field: 'approved',
@@ -84,7 +84,7 @@ const PoolMemberDataGrid: FC<Props> = ({
               iconSx={{ mb: 0, mr: 0.5 }}
             />
           </>
-        ),
+        )
       },
       {
         field: 'totalAmountClaimed',
@@ -99,13 +99,13 @@ const PoolMemberDataGrid: FC<Props> = ({
               totalAmountDistributedUntilUpdatedAt:
                 params.row.poolTotalAmountDistributedUntilUpdatedAt,
               totalUnits: params.row.poolTotalUnits,
-              updatedAtTimestamp: params.row.poolUpdatedAtTimestamp,
+              updatedAtTimestamp: params.row.poolUpdatedAtTimestamp
             }}
           >
             {({
               memberCurrentTotalAmountReceived,
               memberFlowRate,
-              timestamp,
+              timestamp
             }) => (
               <FlowingBalanceWithToken
                 balance={memberCurrentTotalAmountReceived}
@@ -113,12 +113,12 @@ const PoolMemberDataGrid: FC<Props> = ({
                 flowRate={memberFlowRate}
                 TokenChipProps={{
                   network: network,
-                  tokenAddress: params.row.token,
+                  tokenAddress: params.row.token
                 }}
               />
             )}
           </PoolMemberTotalAmountReceived>
-        ),
+        )
       },
       {
         field: 'units',
@@ -131,7 +131,7 @@ const PoolMemberDataGrid: FC<Props> = ({
               individualUnits={params.row.units}
             />
           )
-        },
+        }
       },
       {
         field: 'details',
@@ -149,8 +149,8 @@ const PoolMemberDataGrid: FC<Props> = ({
               </Button>
             )}
           </PoolMemberDetailsDialog>
-        ),
-      },
+        )
+      }
     ],
     [network]
   )

@@ -18,7 +18,7 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import { createSkipPaging, Ordering } from '@superfluid-finance/sdk-core'
 import omit from 'lodash/fp/omit'
@@ -26,6 +26,7 @@ import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
 
+import { AccountAddressFormatted } from '../../../../components/Address/AccountAddressFormatted'
 import FlowingBalanceWithToken from '../../../../components/Amount/FlowingBalanceWithToken'
 import FlowRate from '../../../../components/Amount/FlowRate'
 import DetailsButton from '../../../../components/Details/DetailsButton'
@@ -38,7 +39,7 @@ import { Network } from '../../../../redux/networks'
 import { sfGdaSubgraph } from '../../../../redux/store'
 import {
   Pool_Filter,
-  Pool_OrderBy,
+  Pool_OrderBy
 } from '../../../../subgraphs/gda/.graphclient'
 import { PoolsQuery } from '../../../../subgraphs/gda/endpoints/entityArgs'
 import { DistributionStatus } from '../../accounts/AccountIndexPublicationsTable'
@@ -46,11 +47,11 @@ import { PoolPublicationDetailsDialog } from '../../pools/PoolPublicationDetails
 
 const defaultOrdering = {
   orderBy: 'createdAtTimestamp',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 } as Ordering<Pool_OrderBy>
 
 export const defaultPaging = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 interface SuperTokenPoolsTableProps {
@@ -64,7 +65,7 @@ const colSpan = 5
 
 const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
   network,
-  tokenAddress,
+  tokenAddress
 }) => {
   const filterAnchorRef = useRef(null)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
@@ -73,14 +74,14 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
     useState<DistributionStatus | null>(null)
 
   const defaultFilter = {
-    token: tokenAddress,
+    token: tokenAddress
   }
 
   const createDefaultArg = (): RequiredPoolsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
-    order: defaultOrdering,
+    order: defaultOrdering
   })
 
   const [queryArg, setQueryArg] =
@@ -123,12 +124,12 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
     if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(defaultOrdering)
@@ -139,7 +140,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
 
   const onStringFilterChange =
@@ -147,7 +148,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
       if (e.target.value) {
         onFilterChange({
           ...queryArg.filter,
-          [field]: e.target.value.toLowerCase(),
+          [field]: e.target.value.toLowerCase()
         })
       } else {
         onFilterChange(omit(field, queryArg.filter))
@@ -177,7 +178,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
     setDistributionStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getDistributionStatusFilter(newStatus),
+      ...getDistributionStatusFilter(newStatus)
     })
   }
 
@@ -371,7 +372,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
       <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
-            {/* <TableCell width="160px">Pool Address</TableCell> */}
+            <TableCell width="160px">Pool ID</TableCell>
             {/* <TableCell>
               Pool Admin
               <InfoTooltipBtn
@@ -458,6 +459,13 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
                   ellipsis={6}
                 />
               </TableCell> */}
+              <TableCell className="address">
+                <AccountAddressFormatted
+                  network={network}
+                  address={pool.id}
+                  ellipsis={6}
+                />
+              </TableCell>
               <TableCell data-cy={'total-distributed'}>
                 <FlowingBalanceWithToken
                   flowRate={pool.flowRate}
@@ -465,7 +473,7 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
                   balanceTimestamp={pool.updatedAtTimestamp}
                   TokenChipProps={{
                     tokenAddress: pool.token,
-                    network: network,
+                    network: network
                   }}
                 />
               </TableCell>

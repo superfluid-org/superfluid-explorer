@@ -20,7 +20,7 @@ const Home: NextPage = () => {
         sx={{
           width: '100%',
           pt: 8,
-          pb: 6,
+          pb: 6
         }}
       >
         <Container maxWidth="sm">

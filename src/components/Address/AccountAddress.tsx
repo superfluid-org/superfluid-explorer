@@ -12,7 +12,7 @@ const AccountAddress: FC<{
   dataCy?: string
 }> = ({ network, address, ellipsis, dataCy }) => {
   const prefetchAccountQuery = sfSubgraph.usePrefetch('account', {
-    ifOlderThan: 45,
+    ifOlderThan: 45
   })
 
   const [prefetchTimeoutId, setPrefetchTimeoutId] = useState<any | undefined>()
@@ -30,7 +30,7 @@ const AccountAddress: FC<{
             () =>
               prefetchAccountQuery({
                 chainId: network.chainId,
-                id: address,
+                id: address
               }),
             100
           )

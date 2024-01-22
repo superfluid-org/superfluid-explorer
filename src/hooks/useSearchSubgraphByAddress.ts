@@ -76,8 +76,8 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
             document: searchByAddressDocument,
             variables: {
               addressId: searchTerm.toLowerCase(),
-              addressBytes: searchTerm.toLowerCase(),
-            },
+              addressBytes: searchTerm.toLowerCase()
+            }
           }
         : skipToken
     )

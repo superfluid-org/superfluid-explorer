@@ -9,7 +9,7 @@ import {
   ListItemText,
   Skeleton,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import {
@@ -18,7 +18,7 @@ import {
   IndexSubscription,
   Ordering,
   SkipPaging,
-  SubscriptionUnitsUpdatedEvent_OrderBy,
+  SubscriptionUnitsUpdatedEvent_OrderBy
 } from '@superfluid-finance/sdk-core'
 import { BigNumber, BigNumberish } from 'ethers'
 import { gql } from 'graphql-request'
@@ -47,7 +47,7 @@ export const IndexSubscriptionPageContent: FC<{
 }> = ({ indexSubscriptionId, network }) => {
   const indexSubscriptionQuery = sfSubgraph.useIndexSubscriptionQuery({
     chainId: network.chainId,
-    id: indexSubscriptionId,
+    id: indexSubscriptionId
   })
 
   const indexSubscription: IndexSubscription | undefined | null =
@@ -57,7 +57,7 @@ export const IndexSubscriptionPageContent: FC<{
     indexSubscription
       ? {
           chainId: network.chainId,
-          id: indexSubscription.index,
+          id: indexSubscription.index
         }
       : skipToken
   )
@@ -66,27 +66,27 @@ export const IndexSubscriptionPageContent: FC<{
 
   const [
     subscriptionUnitsUpdatedEventPaging,
-    setSubscriptionUnitsUpdatedEventPaging,
+    setSubscriptionUnitsUpdatedEventPaging
   ] = useState<SkipPaging>(
     createSkipPaging({
-      take: 10,
+      take: 10
     })
   )
   const [
     subscriptionUnitsUpdatedEventPagingOrdering,
-    setSubscriptionUnitsUpdatedEventOrdering,
+    setSubscriptionUnitsUpdatedEventOrdering
   ] = useState<Ordering<SubscriptionUnitsUpdatedEvent_OrderBy> | undefined>({
     orderBy: 'timestamp',
-    orderDirection: 'desc',
+    orderDirection: 'desc'
   })
   const subscriptionUnitsUpdatedEventQuery =
     sfSubgraph.useSubscriptionUnitsUpdatedEventsQuery({
       chainId: network.chainId,
       filter: {
-        subscription: indexSubscriptionId.toLowerCase(),
+        subscription: indexSubscriptionId.toLowerCase()
       },
       pagination: subscriptionUnitsUpdatedEventPaging,
-      order: subscriptionUnitsUpdatedEventPagingOrdering,
+      order: subscriptionUnitsUpdatedEventPagingOrdering
     })
 
   const [totalWeiAmountReceived, setTotalWeiAmountReceived] = useState<

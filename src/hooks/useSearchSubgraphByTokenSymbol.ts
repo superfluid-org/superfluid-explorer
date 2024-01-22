@@ -41,8 +41,8 @@ export const useSearchSubgraphByTokenSymbol = (searchTerm: string) => {
             chainId: network.chainId,
             document: searchByTokenSymbolDocument,
             variables: {
-              tokenSymbol: searchTerm,
-            },
+              tokenSymbol: searchTerm
+            }
           }
         : skipToken
     )

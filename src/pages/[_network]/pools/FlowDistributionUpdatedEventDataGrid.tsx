@@ -35,7 +35,7 @@ const FlowDistributionUpdatedEventDataGrid: FC<Props> = ({
   queryResult,
   setPaging,
   ordering,
-  setOrdering,
+  setOrdering
 }) => {
   const network = useNetworkContext()
 

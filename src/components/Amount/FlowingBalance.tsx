@@ -21,7 +21,7 @@ export interface FlowingBalanceProps {
 const FlowingBalance: FC<FlowingBalanceProps> = ({
   balance,
   balanceTimestamp,
-  flowRate,
+  flowRate
 }): ReactElement => {
   const currentEtherDecimalPlaces = useAppSelector(
     (state) => state.appPreferences.etherDecimalPlaces
@@ -109,7 +109,7 @@ const FlowingBalance: FC<FlowingBalanceProps> = ({
       data-cy={'total-streamed'}
       component="span"
       sx={{
-        textOverflow: 'ellipsis',
+        textOverflow: 'ellipsis'
       }}
     >
       {currentEtherDecimalPlaces !== 0 ? (

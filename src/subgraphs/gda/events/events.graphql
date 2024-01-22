@@ -69,7 +69,9 @@ fragment instantDistributionUpdatedEvent on InstantDistributionUpdatedEvent {
     totalDisconnectedUnits
   }
   poolDistributor {
-    id
+    account {
+      id
+    }
   }
   requestedAmount
   token

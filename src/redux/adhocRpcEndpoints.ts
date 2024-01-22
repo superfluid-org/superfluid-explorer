@@ -12,19 +12,19 @@ export const adhocRpcEndpoints = {
 
         const minimumDeposit = await framework.governance.getMinimumDeposit({
           token: tokenAddress,
-          providerOrSigner: framework.settings.provider,
+          providerOrSigner: framework.settings.provider
         })
 
         return {
-          data: minimumDeposit,
+          data: minimumDeposit
         }
       },
       providesTags: (_result, _error, arg) => [
         {
           type: 'GENERAL',
-          id: arg.chainId, // TODO(KK): Could be made more specific.
-        },
-      ],
+          id: arg.chainId // TODO(KK): Could be made more specific.
+        }
+      ]
     }),
     protocolVersion: builder.query<string, { chainId: number }>({
       queryFn: async ({ chainId }) => {
@@ -35,15 +35,15 @@ export const adhocRpcEndpoints = {
           .get('versionString.v1')
 
         return {
-          data: protocolVersion,
+          data: protocolVersion
         }
       },
       providesTags: (_result, _error, arg) => [
         {
           type: 'GENERAL',
-          id: arg.chainId, // TODO(KK): Could be made more specific.
-        },
-      ],
-    }),
-  }),
+          id: arg.chainId // TODO(KK): Could be made more specific.
+        }
+      ]
+    })
+  })
 }

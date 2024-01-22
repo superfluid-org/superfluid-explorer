@@ -5,7 +5,7 @@ import {
   IndexUpdatedEvent_OrderBy,
   Ordering,
   PagedResult,
-  SkipPaging,
+  SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
 import { FC, useMemo } from 'react'
@@ -50,7 +50,7 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
   queryResult,
   setPaging,
   ordering,
-  setOrdering,
+  setOrdering
 }) => {
   const network = useNetworkContext()
 
@@ -61,7 +61,7 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
           distributionAmount: calculateDistributionAmount(indexUpdatedEvent),
           timestamp: indexUpdatedEvent.timestamp,
           totalUnitsApproved: indexUpdatedEvent.totalUnitsApproved,
-          totalUnitsPending: indexUpdatedEvent.totalUnitsPending,
+          totalUnitsPending: indexUpdatedEvent.totalUnitsPending
         }))
       : []
 
@@ -73,7 +73,7 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
         headerName: 'Distribution Date',
         sortable: true,
         flex: 0.5,
-        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />
       },
       {
         field: 'distributionAmount',
@@ -96,8 +96,8 @@ const IndexUpdatedEventDataGrid: FC<Props> = ({
               )}
             </>
           )
-        },
-      },
+        }
+      }
     ],
     [index, network]
   )

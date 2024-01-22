@@ -6,13 +6,13 @@ import {
   createApiWithReactHooks,
   initializeRpcApiSlice,
   initializeSubgraphApiSlice,
-  setFrameworkForSdkRedux,
+  setFrameworkForSdkRedux
 } from '@superfluid-finance/sdk-redux'
 import { ethers } from 'ethers'
 import {
   nextReduxCookieMiddleware,
   SERVE_COOKIES,
-  wrapMakeStore,
+  wrapMakeStore
 } from 'next-redux-cookie-wrapper'
 import { createWrapper } from 'next-redux-wrapper'
 import {
@@ -23,7 +23,7 @@ import {
   persistStore,
   PURGE,
   REGISTER,
-  REHYDRATE,
+  REHYDRATE
 } from 'redux-persist'
 import storageLocal from 'redux-persist/lib/storage'
 
@@ -58,8 +58,8 @@ const infuraProviders = networks.map((network) => ({
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
-      customSubgraphQueriesEndpoint: network.subgraphUrl,
-    }),
+      customSubgraphQueriesEndpoint: network.subgraphUrl
+    })
 }))
 
 export const makeStore = wrapMakeStore(() => {
@@ -79,7 +79,7 @@ export const makeStore = wrapMakeStore(() => {
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
       [ensApi.reducerPath]: ensApi.reducer,
-      [sfGdaSubgraph.reducerPath]: sfGdaSubgraph.reducer,
+      [sfGdaSubgraph.reducerPath]: sfGdaSubgraph.reducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -91,21 +91,21 @@ export const makeStore = wrapMakeStore(() => {
             PERSIST,
             PURGE,
             REGISTER,
-            SERVE_COOKIES,
-          ], // Ignore redux-persist actions: https://stackoverflow.com/a/62610422
-        },
+            SERVE_COOKIES
+          ] // Ignore redux-persist actions: https://stackoverflow.com/a/62610422
+        }
       })
         .prepend(
           nextReduxCookieMiddleware({
             compress: true,
             subtrees: ['appPreferences'],
-            expires: addDays(new Date(), 14),
+            expires: addDays(new Date(), 14)
           })
         )
         .concat(rpcApi.middleware)
         .concat(sfSubgraph.middleware)
         .concat(ensApi.middleware)
-        .concat(sfGdaSubgraph.middleware),
+        .concat(sfGdaSubgraph.middleware)
   })
 
   if (!isServer()) {
@@ -122,5 +122,5 @@ export type AppDispatch = AppStore['dispatch']
 export const wrapper = createWrapper<AppStore>(makeStore, {
   debug: true,
   serializeState: (state) => JSON.stringify(state),
-  deserializeState: (state) => JSON.parse(state),
+  deserializeState: (state) => JSON.parse(state)
 })

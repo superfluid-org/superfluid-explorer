@@ -17,7 +17,7 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import { createSkipPaging, Ordering } from '@superfluid-finance/sdk-core'
 import omit from 'lodash/fp/omit'
@@ -25,6 +25,7 @@ import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
 import { FC, FormEvent, useEffect, useRef, useState } from 'react'
 
+import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
 import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
 import DetailsButton from '../../../components/Details/DetailsButton'
@@ -38,7 +39,7 @@ import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
 import {
   PoolMember_Filter,
-  PoolMember_OrderBy,
+  PoolMember_OrderBy
 } from '../../../subgraphs/gda/.graphclient'
 import { PoolMembersQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
@@ -47,17 +48,17 @@ import { UnitsStatus } from './AccountPoolAdminsTable'
 
 enum MemberStatus {
   IsConnected,
-  IsNotConnected,
+  IsNotConnected
 }
 
 enum DistributionStatus {
   HasClaimed,
-  HasNotClaimed,
+  HasNotClaimed
 }
 
 export const PoolMembersOrderingDefault: Ordering<PoolMember_OrderBy> = {
   orderBy: 'createdAtTimestamp',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 }
 
 export const PoolMembersPagingDefault = createSkipPaging({ take: 10 })
@@ -71,7 +72,7 @@ type RequiredPoolMembersQuery = Required<Omit<PoolMembersQuery, 'block'>>
 
 const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
   network,
-  accountAddress,
+  accountAddress
 }) => {
   const filterAnchorRef = useRef(null)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
@@ -83,14 +84,14 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
   const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null)
 
   const defaultFilter = {
-    account: accountAddress,
+    account: accountAddress
   }
 
   const createDefaultArg = (): RequiredPoolMembersQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: PoolMembersPagingDefault,
-    order: PoolMembersOrderingDefault,
+    order: PoolMembersOrderingDefault
   })
 
   const [queryArg, setQueryArg] =
@@ -133,12 +134,12 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
     if (queryArg.order?.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(PoolMembersOrderingDefault)
@@ -149,7 +150,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
   }
 
@@ -177,7 +178,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
     setMemberStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getMemberStatusFilter(newStatus),
+      ...getMemberStatusFilter(newStatus)
     })
   }
 
@@ -206,7 +207,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
     setDistributionStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getDistributionFilter(newStatus),
+      ...getDistributionFilter(newStatus)
     })
   }
 
@@ -236,7 +237,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
     setUnitsStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getUnitsStatusFilter(newStatus),
+      ...getUnitsStatusFilter(newStatus)
     })
   }
 
@@ -268,7 +269,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
 
   const {
     skip = PoolMembersPagingDefault.skip,
-    take = PoolMembersPagingDefault.take,
+    take = PoolMembersPagingDefault.take
   } = queryResult.data?.paging || {}
 
   return (
@@ -485,6 +486,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 iconSx={{ mb: 0, mr: 0.5 }}
               />
             </TableCell> */}
+            <TableCell>Pool ID</TableCell>
             <TableCell>
               <TableSortLabel
                 active={order?.orderBy === 'totalAmountReceivedUntilUpdatedAt'}
@@ -560,13 +562,13 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
         <TableBody>
           {tableRows.map((member) => (
             <TableRow key={member.id} hover>
-              {/* <TableCell data-cy={'admin-address'}>
-                <AccountAddress
+              <TableCell data-cy={'pool-id'} className="address">
+                <AccountAddressFormatted
                   network={network}
-                  address={member.admin}
+                  address={member.pool}
                   ellipsis={6}
                 />
-              </TableCell> */}
+              </TableCell>
 
               <TableCell data-cy={'amount-received'}>
                 <PoolMemberTotalAmountReceived
@@ -576,13 +578,13 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                     totalAmountDistributedUntilUpdatedAt:
                       member.poolTotalAmountDistributedUntilUpdatedAt,
                     totalUnits: member.poolTotalUnits,
-                    updatedAtTimestamp: member.poolUpdatedAtTimestamp,
+                    updatedAtTimestamp: member.poolUpdatedAtTimestamp
                   }}
                 >
                   {({
                     memberCurrentTotalAmountReceived,
                     timestamp,
-                    memberFlowRate,
+                    memberFlowRate
                   }) => (
                     <FlowingBalanceWithToken
                       balance={memberCurrentTotalAmountReceived}
@@ -590,7 +592,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                       flowRate={memberFlowRate}
                       TokenChipProps={{
                         network: network,
-                        tokenAddress: member.token,
+                        tokenAddress: member.token
                       }}
                     />
                   )}

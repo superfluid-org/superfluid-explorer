@@ -27,7 +27,7 @@ export const balanceRpcApiEndpoints = {
         const [
           realtimeBalanceOfNowResult,
           getCfaNetFlowResult,
-          getGdaNetFlowResult,
+          getGdaNetFlowResult
         ] = await Promise.all([
           SuperToken__factory.connect(
             tokenAddress,
@@ -36,15 +36,15 @@ export const balanceRpcApiEndpoints = {
           framework.cfaV1.getNetFlow({
             superToken: tokenAddress,
             account: accountAddress,
-            providerOrSigner: framework.settings.provider,
+            providerOrSigner: framework.settings.provider
           }),
           network.supportsGDA
             ? framework.gdaV1.getNetFlow({
                 token: tokenAddress,
                 account: accountAddress,
-                providerOrSigner: framework.settings.provider,
+                providerOrSigner: framework.settings.provider
               })
-            : BigNumber.from(0),
+            : BigNumber.from(0)
         ])
 
         const mappedResult: RealtimeBalance = {
@@ -52,19 +52,19 @@ export const balanceRpcApiEndpoints = {
           balanceTimestamp: realtimeBalanceOfNowResult[3].toNumber(),
           flowRate: BigNumber.from(getCfaNetFlowResult)
             .add(BigNumber.from(getGdaNetFlowResult))
-            .toString(),
+            .toString()
         }
 
         return {
-          data: mappedResult,
+          data: mappedResult
         }
       },
       providesTags: (_result, _error, arg) => [
         {
           type: 'GENERAL',
-          id: arg.chainId, // TODO(KK): Could be made more specific.
-        },
-      ],
-    }),
-  }),
+          id: arg.chainId // TODO(KK): Could be made more specific.
+        }
+      ]
+    })
+  })
 }

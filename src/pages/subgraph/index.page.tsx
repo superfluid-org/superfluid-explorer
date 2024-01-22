@@ -5,7 +5,7 @@ import FullPageLoader from '../../components/Layout/FullPageLoader'
 
 const NoSsr = dynamic(() => import('./SubgraphExplorer'), {
   ssr: false,
-  loading: () => <FullPageLoader />,
+  loading: () => <FullPageLoader />
 })
 
 // NOTE: Don't start loading the Subgraph component on the server.

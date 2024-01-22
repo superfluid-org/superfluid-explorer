@@ -4,5 +4,5 @@ export enum CacheTime {
   TwoMinutes = 120,
   ThreeMinutes = 180,
   FiveMinutes = 300,
-  Forever = Number.MAX_VALUE,
+  Forever = Number.MAX_VALUE
 }

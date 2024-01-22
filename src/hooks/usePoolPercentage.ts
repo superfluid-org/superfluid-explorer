@@ -14,7 +14,7 @@ export const usePoolPercentage = (
     )
     return {
       percentageDecimal,
-      percentageString: percentageDecimal.toDP(2).toString() + '%',
+      percentageString: percentageDecimal.toDP(2).toString() + '%'
     }
   }, [totalUnits.toString(), individualUnits.toString()])
 }

@@ -6,7 +6,7 @@ import {
   Stack,
   SxProps,
   Theme,
-  Typography,
+  Typography
 } from '@mui/material'
 import times from 'lodash/times'
 import { FC } from 'react'
@@ -33,7 +33,7 @@ const InfinitePagination: FC<InfinitePaginationProps> = ({
   siblingCount = DEFAULT_SIBLING_COUNT,
   sx,
   onPageChange,
-  onPageSizeChange,
+  onPageSizeChange
 }) => {
   const trailingSiblings = Math.min(siblingCount, page - 1)
   const lastHiddenPage = page - trailingSiblings
@@ -56,8 +56,8 @@ const InfinitePagination: FC<InfinitePaginationProps> = ({
             onChange={handlePageSizeChange}
             sx={{
               '.MuiSelect-select': {
-                padding: '4px 32px 4px 4px',
-              },
+                padding: '4px 32px 4px 4px'
+              }
             }}
           >
             <MenuItem value={5}>5</MenuItem>

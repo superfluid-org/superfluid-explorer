@@ -39,7 +39,7 @@ const networkMetadataToChainId = metadata.networks.reduce(
       batchLiquidator: config.contractsV1.batchLiquidator,
       flowScheduler: config.contractsV1.flowScheduler,
       vestingScheduler: config.contractsV1.vestingScheduler,
-      existentialNFTCloneFactory: config.contractsV1.existentialNFTCloneFactory,
+      existentialNFTCloneFactory: config.contractsV1.existentialNFTCloneFactory
     }
     return acc
   },
@@ -71,7 +71,7 @@ const protocolContracts: NetworkContracts = {
   [getNetwork(11155111).slugName]: networkMetadataToChainId[11155111],
   [getNetwork(1442).slugName]: networkMetadataToChainId[1442],
   [getNetwork(84531).slugName]: networkMetadataToChainId[84531],
-  [getNetwork(8453).slugName]: networkMetadataToChainId[8453],
+  [getNetwork(8453).slugName]: networkMetadataToChainId[8453]
 }
 
 export default protocolContracts

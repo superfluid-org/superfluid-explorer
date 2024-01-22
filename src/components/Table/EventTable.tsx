@@ -15,14 +15,14 @@ import {
   TableSortLabel,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   createSkipPaging,
   Event_Filter,
   Event_OrderBy,
   EventListQuery,
-  Ordering,
+  Ordering
 } from '@superfluid-finance/sdk-core'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
@@ -44,11 +44,11 @@ interface EventsQuery extends EventListQuery {
 
 const defaultOrdering = {
   orderBy: 'timestamp',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 } as Ordering<Event_OrderBy>
 
 export const defaultPaging = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 interface EventTableProps {
@@ -64,14 +64,14 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
 
   const defaultFilter = {
     timestamp_gt: '0',
-    addresses_contains: [accountAddress],
+    addresses_contains: [accountAddress]
   }
 
   const createDefaultArg = (): RequiredEventsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
-    order: defaultOrdering,
+    order: defaultOrdering
   })
 
   const [queryArg, setQueryArg] =
@@ -111,7 +111,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
   }
 
@@ -122,12 +122,12 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
     if (queryArg.order?.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(defaultOrdering)
@@ -139,7 +139,7 @@ const EventTable: FC<EventTableProps> = ({ network, accountAddress }) => {
       if (e.target.value) {
         onFilterChange({
           ...queryArg.filter,
-          [field]: e.target.value,
+          [field]: e.target.value
         })
       } else {
         onFilterChange(omit(field, queryArg.filter))

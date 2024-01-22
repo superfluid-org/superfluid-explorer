@@ -4,7 +4,7 @@ import {
   SelectionSetNode,
   FieldNode,
   GraphQLScalarType,
-  GraphQLScalarTypeConfig,
+  GraphQLScalarTypeConfig
 } from 'graphql'
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 import { gql } from '@graphql-mesh/utils'
@@ -27,7 +27,7 @@ import {
   ExecuteMeshFn,
   SubscribeMeshFn,
   MeshContext as BaseMeshContext,
-  MeshInstance,
+  MeshInstance
 } from '@graphql-mesh/runtime'
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store'
 import { path as pathModule } from '@graphql-mesh/cross-helpers'
@@ -19776,7 +19776,7 @@ export interface SubscriptionSubscriberObject<
   TKey extends string,
   TParent,
   TContext,
-  TArgs,
+  TArgs
 > {
   subscribe: SubscriptionSubscribeFn<
     { [key in TKey]: TResult },
@@ -19802,7 +19802,7 @@ export type SubscriptionObject<
   TKey extends string,
   TParent,
   TContext,
-  TArgs,
+  TArgs
 > =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>
@@ -19812,7 +19812,7 @@ export type SubscriptionResolver<
   TKey extends string,
   TParent = {},
   TContext = {},
-  TArgs = {},
+  TArgs = {}
 > =
   | ((
       ...args: any[]
@@ -19837,7 +19837,7 @@ export type DirectiveResolverFn<
   TResult = {},
   TParent = {},
   TContext = {},
-  TArgs = {},
+  TArgs = {}
 > = (
   next: NextResolverFn<TResult>,
   parent: TParent,
@@ -20358,7 +20358,7 @@ export type EntityDirectiveResolver<
   Result,
   Parent,
   ContextType = MeshContext,
-  Args = EntityDirectiveArgs,
+  Args = EntityDirectiveArgs
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type SubgraphIdDirectiveArgs = {
@@ -20369,7 +20369,7 @@ export type SubgraphIdDirectiveResolver<
   Result,
   Parent,
   ContextType = MeshContext,
-  Args = SubgraphIdDirectiveArgs,
+  Args = SubgraphIdDirectiveArgs
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type DerivedFromDirectiveArgs = {
@@ -20380,13 +20380,13 @@ export type DerivedFromDirectiveResolver<
   Result,
   Parent,
   ContextType = MeshContext,
-  Args = DerivedFromDirectiveArgs,
+  Args = DerivedFromDirectiveArgs
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type AccountResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['Account'] = ResolversParentTypes['Account'],
+    ResolversParentTypes['Account'] = ResolversParentTypes['Account']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -20482,7 +20482,7 @@ export type AccountResolvers<
 export type AccountTokenSnapshotResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['AccountTokenSnapshot'] = ResolversParentTypes['AccountTokenSnapshot'],
+    ResolversParentTypes['AccountTokenSnapshot'] = ResolversParentTypes['AccountTokenSnapshot']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   updatedAtTimestamp?: Resolver<
@@ -20729,7 +20729,7 @@ export type AccountTokenSnapshotResolvers<
 export type AccountTokenSnapshotLogResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['AccountTokenSnapshotLog'] = ResolversParentTypes['AccountTokenSnapshotLog'],
+    ResolversParentTypes['AccountTokenSnapshotLog'] = ResolversParentTypes['AccountTokenSnapshotLog']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   timestamp?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>
@@ -20957,7 +20957,7 @@ export type AccountTokenSnapshotLogResolvers<
 export type AgreementClassRegisteredEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['AgreementClassRegisteredEvent'] = ResolversParentTypes['AgreementClassRegisteredEvent'],
+    ResolversParentTypes['AgreementClassRegisteredEvent'] = ResolversParentTypes['AgreementClassRegisteredEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -20977,7 +20977,7 @@ export type AgreementClassRegisteredEventResolvers<
 export type AgreementClassUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['AgreementClassUpdatedEvent'] = ResolversParentTypes['AgreementClassUpdatedEvent'],
+    ResolversParentTypes['AgreementClassUpdatedEvent'] = ResolversParentTypes['AgreementClassUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -20997,7 +20997,7 @@ export type AgreementClassUpdatedEventResolvers<
 export type AgreementLiquidatedByEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['AgreementLiquidatedByEvent'] = ResolversParentTypes['AgreementLiquidatedByEvent'],
+    ResolversParentTypes['AgreementLiquidatedByEvent'] = ResolversParentTypes['AgreementLiquidatedByEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21029,7 +21029,7 @@ export type AgreementLiquidatedByEventResolvers<
 export type AgreementLiquidatedV2EventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['AgreementLiquidatedV2Event'] = ResolversParentTypes['AgreementLiquidatedV2Event'],
+    ResolversParentTypes['AgreementLiquidatedV2Event'] = ResolversParentTypes['AgreementLiquidatedV2Event']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21072,7 +21072,7 @@ export type AgreementLiquidatedV2EventResolvers<
 export type AppRegisteredEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['AppRegisteredEvent'] = ResolversParentTypes['AppRegisteredEvent'],
+    ResolversParentTypes['AppRegisteredEvent'] = ResolversParentTypes['AppRegisteredEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21091,7 +21091,7 @@ export type AppRegisteredEventResolvers<
 export type ApprovalEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['ApprovalEvent'] = ResolversParentTypes['ApprovalEvent'],
+    ResolversParentTypes['ApprovalEvent'] = ResolversParentTypes['ApprovalEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21112,7 +21112,7 @@ export type ApprovalEventResolvers<
 export type ApprovalForAllEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['ApprovalForAllEvent'] = ResolversParentTypes['ApprovalForAllEvent'],
+    ResolversParentTypes['ApprovalForAllEvent'] = ResolversParentTypes['ApprovalForAllEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21143,7 +21143,7 @@ export interface BigIntScalarConfig
 export type BondIncreasedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['BondIncreasedEvent'] = ResolversParentTypes['BondIncreasedEvent'],
+    ResolversParentTypes['BondIncreasedEvent'] = ResolversParentTypes['BondIncreasedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21163,7 +21163,7 @@ export type BondIncreasedEventResolvers<
 export type BufferAdjustedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['BufferAdjustedEvent'] = ResolversParentTypes['BufferAdjustedEvent'],
+    ResolversParentTypes['BufferAdjustedEvent'] = ResolversParentTypes['BufferAdjustedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21195,7 +21195,7 @@ export type BufferAdjustedEventResolvers<
 export type BurnedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['BurnedEvent'] = ResolversParentTypes['BurnedEvent'],
+    ResolversParentTypes['BurnedEvent'] = ResolversParentTypes['BurnedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21224,7 +21224,7 @@ export interface BytesScalarConfig
 export type CfAv1LiquidationPeriodChangedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['CFAv1LiquidationPeriodChangedEvent'] = ResolversParentTypes['CFAv1LiquidationPeriodChangedEvent'],
+    ResolversParentTypes['CFAv1LiquidationPeriodChangedEvent'] = ResolversParentTypes['CFAv1LiquidationPeriodChangedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21251,7 +21251,7 @@ export type CfAv1LiquidationPeriodChangedEventResolvers<
 export type ConfigChangedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['ConfigChangedEvent'] = ResolversParentTypes['ConfigChangedEvent'],
+    ResolversParentTypes['ConfigChangedEvent'] = ResolversParentTypes['ConfigChangedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21275,7 +21275,7 @@ export type ConfigChangedEventResolvers<
 export type CustomSuperTokenCreatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['CustomSuperTokenCreatedEvent'] = ResolversParentTypes['CustomSuperTokenCreatedEvent'],
+    ResolversParentTypes['CustomSuperTokenCreatedEvent'] = ResolversParentTypes['CustomSuperTokenCreatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21294,7 +21294,7 @@ export type CustomSuperTokenCreatedEventResolvers<
 export type DistributionClaimedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['DistributionClaimedEvent'] = ResolversParentTypes['DistributionClaimedEvent'],
+    ResolversParentTypes['DistributionClaimedEvent'] = ResolversParentTypes['DistributionClaimedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21317,7 +21317,7 @@ export type DistributionClaimedEventResolvers<
 export type EventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['Event'] = ResolversParentTypes['Event'],
+    ResolversParentTypes['Event'] = ResolversParentTypes['Event']
 > = ResolversObject<{
   __resolveType: TypeResolveFn<
     | 'AgreementClassRegisteredEvent'
@@ -21391,7 +21391,7 @@ export type EventResolvers<
 export type ExitRateChangedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['ExitRateChangedEvent'] = ResolversParentTypes['ExitRateChangedEvent'],
+    ResolversParentTypes['ExitRateChangedEvent'] = ResolversParentTypes['ExitRateChangedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21411,7 +21411,7 @@ export type ExitRateChangedEventResolvers<
 export type FlowDistributionUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['FlowDistributionUpdatedEvent'] = ResolversParentTypes['FlowDistributionUpdatedEvent'],
+    ResolversParentTypes['FlowDistributionUpdatedEvent'] = ResolversParentTypes['FlowDistributionUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21460,7 +21460,7 @@ export type FlowDistributionUpdatedEventResolvers<
 export type FlowOperatorResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['FlowOperator'] = ResolversParentTypes['FlowOperator'],
+    ResolversParentTypes['FlowOperator'] = ResolversParentTypes['FlowOperator']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -21515,7 +21515,7 @@ export type FlowOperatorResolvers<
 export type FlowOperatorUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['FlowOperatorUpdatedEvent'] = ResolversParentTypes['FlowOperatorUpdatedEvent'],
+    ResolversParentTypes['FlowOperatorUpdatedEvent'] = ResolversParentTypes['FlowOperatorUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21546,7 +21546,7 @@ export type FlowOperatorUpdatedEventResolvers<
 export type FlowUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['FlowUpdatedEvent'] = ResolversParentTypes['FlowUpdatedEvent'],
+    ResolversParentTypes['FlowUpdatedEvent'] = ResolversParentTypes['FlowUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21589,7 +21589,7 @@ export type FlowUpdatedEventResolvers<
 export type GovernanceReplacedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['GovernanceReplacedEvent'] = ResolversParentTypes['GovernanceReplacedEvent'],
+    ResolversParentTypes['GovernanceReplacedEvent'] = ResolversParentTypes['GovernanceReplacedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21609,7 +21609,7 @@ export type GovernanceReplacedEventResolvers<
 export type IndexResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['Index'] = ResolversParentTypes['Index'],
+    ResolversParentTypes['Index'] = ResolversParentTypes['Index']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -21704,7 +21704,7 @@ export type IndexResolvers<
 export type IndexCreatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['IndexCreatedEvent'] = ResolversParentTypes['IndexCreatedEvent'],
+    ResolversParentTypes['IndexCreatedEvent'] = ResolversParentTypes['IndexCreatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21727,7 +21727,7 @@ export type IndexCreatedEventResolvers<
 export type IndexDistributionClaimedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['IndexDistributionClaimedEvent'] = ResolversParentTypes['IndexDistributionClaimedEvent'],
+    ResolversParentTypes['IndexDistributionClaimedEvent'] = ResolversParentTypes['IndexDistributionClaimedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21751,7 +21751,7 @@ export type IndexDistributionClaimedEventResolvers<
 export type IndexSubscribedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['IndexSubscribedEvent'] = ResolversParentTypes['IndexSubscribedEvent'],
+    ResolversParentTypes['IndexSubscribedEvent'] = ResolversParentTypes['IndexSubscribedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21775,7 +21775,7 @@ export type IndexSubscribedEventResolvers<
 export type IndexSubscriptionResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['IndexSubscription'] = ResolversParentTypes['IndexSubscription'],
+    ResolversParentTypes['IndexSubscription'] = ResolversParentTypes['IndexSubscription']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -21854,7 +21854,7 @@ export type IndexSubscriptionResolvers<
 export type IndexUnitsUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['IndexUnitsUpdatedEvent'] = ResolversParentTypes['IndexUnitsUpdatedEvent'],
+    ResolversParentTypes['IndexUnitsUpdatedEvent'] = ResolversParentTypes['IndexUnitsUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21880,7 +21880,7 @@ export type IndexUnitsUpdatedEventResolvers<
 export type IndexUnsubscribedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['IndexUnsubscribedEvent'] = ResolversParentTypes['IndexUnsubscribedEvent'],
+    ResolversParentTypes['IndexUnsubscribedEvent'] = ResolversParentTypes['IndexUnsubscribedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21904,7 +21904,7 @@ export type IndexUnsubscribedEventResolvers<
 export type IndexUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['IndexUpdatedEvent'] = ResolversParentTypes['IndexUpdatedEvent'],
+    ResolversParentTypes['IndexUpdatedEvent'] = ResolversParentTypes['IndexUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21939,7 +21939,7 @@ export type IndexUpdatedEventResolvers<
 export type InstantDistributionUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['InstantDistributionUpdatedEvent'] = ResolversParentTypes['InstantDistributionUpdatedEvent'],
+    ResolversParentTypes['InstantDistributionUpdatedEvent'] = ResolversParentTypes['InstantDistributionUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21974,7 +21974,7 @@ export interface Int8ScalarConfig
 export type JailEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['JailEvent'] = ResolversParentTypes['JailEvent'],
+    ResolversParentTypes['JailEvent'] = ResolversParentTypes['JailEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -21994,7 +21994,7 @@ export type JailEventResolvers<
 export type MemberUnitsUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['MemberUnitsUpdatedEvent'] = ResolversParentTypes['MemberUnitsUpdatedEvent'],
+    ResolversParentTypes['MemberUnitsUpdatedEvent'] = ResolversParentTypes['MemberUnitsUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -22018,7 +22018,7 @@ export type MemberUnitsUpdatedEventResolvers<
 export type MetadataUpdateEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['MetadataUpdateEvent'] = ResolversParentTypes['MetadataUpdateEvent'],
+    ResolversParentTypes['MetadataUpdateEvent'] = ResolversParentTypes['MetadataUpdateEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -22037,7 +22037,7 @@ export type MetadataUpdateEventResolvers<
 export type MintedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['MintedEvent'] = ResolversParentTypes['MintedEvent'],
+    ResolversParentTypes['MintedEvent'] = ResolversParentTypes['MintedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -22061,7 +22061,7 @@ export type MintedEventResolvers<
 export type NewPicEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['NewPICEvent'] = ResolversParentTypes['NewPICEvent'],
+    ResolversParentTypes['NewPICEvent'] = ResolversParentTypes['NewPICEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -22083,7 +22083,7 @@ export type NewPicEventResolvers<
 export type PppConfigurationChangedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['PPPConfigurationChangedEvent'] = ResolversParentTypes['PPPConfigurationChangedEvent'],
+    ResolversParentTypes['PPPConfigurationChangedEvent'] = ResolversParentTypes['PPPConfigurationChangedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -22110,8 +22110,7 @@ export type PppConfigurationChangedEventResolvers<
 
 export type PoolResolvers<
   ContextType = MeshContext,
-  ParentType extends
-    ResolversParentTypes['Pool'] = ResolversParentTypes['Pool'],
+  ParentType extends ResolversParentTypes['Pool'] = ResolversParentTypes['Pool']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -22239,7 +22238,7 @@ export type PoolResolvers<
 export type PoolConnectionUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['PoolConnectionUpdatedEvent'] = ResolversParentTypes['PoolConnectionUpdatedEvent'],
+    ResolversParentTypes['PoolConnectionUpdatedEvent'] = ResolversParentTypes['PoolConnectionUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -22262,7 +22261,7 @@ export type PoolConnectionUpdatedEventResolvers<
 export type PoolCreatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['PoolCreatedEvent'] = ResolversParentTypes['PoolCreatedEvent'],
+    ResolversParentTypes['PoolCreatedEvent'] = ResolversParentTypes['PoolCreatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -22284,7 +22283,7 @@ export type PoolCreatedEventResolvers<
 export type PoolDistributorResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['PoolDistributor'] = ResolversParentTypes['PoolDistributor'],
+    ResolversParentTypes['PoolDistributor'] = ResolversParentTypes['PoolDistributor']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -22356,7 +22355,7 @@ export type PoolDistributorResolvers<
 export type PoolMemberResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['PoolMember'] = ResolversParentTypes['PoolMember'],
+    ResolversParentTypes['PoolMember'] = ResolversParentTypes['PoolMember']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -22422,7 +22421,7 @@ export type PoolMemberResolvers<
 export type QueryResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
+    ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = ResolversObject<{
   flowUpdatedEvent?: Resolver<
     Maybe<ResolversTypes['FlowUpdatedEvent']>,
@@ -23473,7 +23472,7 @@ export type QueryResolvers<
 export type ResolverEntryResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['ResolverEntry'] = ResolversParentTypes['ResolverEntry'],
+    ResolversParentTypes['ResolverEntry'] = ResolversParentTypes['ResolverEntry']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -23511,7 +23510,7 @@ export type ResolverEntryResolvers<
 export type RewardAddressChangedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['RewardAddressChangedEvent'] = ResolversParentTypes['RewardAddressChangedEvent'],
+    ResolversParentTypes['RewardAddressChangedEvent'] = ResolversParentTypes['RewardAddressChangedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -23534,7 +23533,7 @@ export type RewardAddressChangedEventResolvers<
 export type RoleAdminChangedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['RoleAdminChangedEvent'] = ResolversParentTypes['RoleAdminChangedEvent'],
+    ResolversParentTypes['RoleAdminChangedEvent'] = ResolversParentTypes['RoleAdminChangedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -23555,7 +23554,7 @@ export type RoleAdminChangedEventResolvers<
 export type RoleGrantedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['RoleGrantedEvent'] = ResolversParentTypes['RoleGrantedEvent'],
+    ResolversParentTypes['RoleGrantedEvent'] = ResolversParentTypes['RoleGrantedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -23576,7 +23575,7 @@ export type RoleGrantedEventResolvers<
 export type RoleRevokedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['RoleRevokedEvent'] = ResolversParentTypes['RoleRevokedEvent'],
+    ResolversParentTypes['RoleRevokedEvent'] = ResolversParentTypes['RoleRevokedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -23597,7 +23596,7 @@ export type RoleRevokedEventResolvers<
 export type SfMetaResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SFMeta'] = ResolversParentTypes['SFMeta'],
+    ResolversParentTypes['SFMeta'] = ResolversParentTypes['SFMeta']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   timestamp?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>
@@ -23610,7 +23609,7 @@ export type SfMetaResolvers<
 export type SentEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SentEvent'] = ResolversParentTypes['SentEvent'],
+    ResolversParentTypes['SentEvent'] = ResolversParentTypes['SentEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -23635,7 +23634,7 @@ export type SentEventResolvers<
 export type SetEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SetEvent'] = ResolversParentTypes['SetEvent'],
+    ResolversParentTypes['SetEvent'] = ResolversParentTypes['SetEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -23660,7 +23659,7 @@ export type SetEventResolvers<
 export type StreamResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['Stream'] = ResolversParentTypes['Stream'],
+    ResolversParentTypes['Stream'] = ResolversParentTypes['Stream']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -23712,7 +23711,7 @@ export type StreamResolvers<
 export type StreamPeriodResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['StreamPeriod'] = ResolversParentTypes['StreamPeriod'],
+    ResolversParentTypes['StreamPeriod'] = ResolversParentTypes['StreamPeriod']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   stream?: Resolver<ResolversTypes['Stream'], ParentType, ContextType>
@@ -23762,7 +23761,7 @@ export type StreamPeriodResolvers<
 export type StreamRevisionResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['StreamRevision'] = ResolversParentTypes['StreamRevision'],
+    ResolversParentTypes['StreamRevision'] = ResolversParentTypes['StreamRevision']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   revisionIndex?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
@@ -23774,7 +23773,7 @@ export type StreamRevisionResolvers<
 export type SubscriptionResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription'],
+    ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
 > = ResolversObject<{
   flowUpdatedEvent?: SubscriptionResolver<
     Maybe<ResolversTypes['FlowUpdatedEvent']>,
@@ -25075,7 +25074,7 @@ export type SubscriptionResolvers<
 export type SubscriptionApprovedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SubscriptionApprovedEvent'] = ResolversParentTypes['SubscriptionApprovedEvent'],
+    ResolversParentTypes['SubscriptionApprovedEvent'] = ResolversParentTypes['SubscriptionApprovedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25103,7 +25102,7 @@ export type SubscriptionApprovedEventResolvers<
 export type SubscriptionDistributionClaimedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SubscriptionDistributionClaimedEvent'] = ResolversParentTypes['SubscriptionDistributionClaimedEvent'],
+    ResolversParentTypes['SubscriptionDistributionClaimedEvent'] = ResolversParentTypes['SubscriptionDistributionClaimedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25131,7 +25130,7 @@ export type SubscriptionDistributionClaimedEventResolvers<
 export type SubscriptionRevokedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SubscriptionRevokedEvent'] = ResolversParentTypes['SubscriptionRevokedEvent'],
+    ResolversParentTypes['SubscriptionRevokedEvent'] = ResolversParentTypes['SubscriptionRevokedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25159,7 +25158,7 @@ export type SubscriptionRevokedEventResolvers<
 export type SubscriptionUnitsUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SubscriptionUnitsUpdatedEvent'] = ResolversParentTypes['SubscriptionUnitsUpdatedEvent'],
+    ResolversParentTypes['SubscriptionUnitsUpdatedEvent'] = ResolversParentTypes['SubscriptionUnitsUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25189,7 +25188,7 @@ export type SubscriptionUnitsUpdatedEventResolvers<
 export type SuperTokenCreatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SuperTokenCreatedEvent'] = ResolversParentTypes['SuperTokenCreatedEvent'],
+    ResolversParentTypes['SuperTokenCreatedEvent'] = ResolversParentTypes['SuperTokenCreatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25208,7 +25207,7 @@ export type SuperTokenCreatedEventResolvers<
 export type SuperTokenFactoryUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SuperTokenFactoryUpdatedEvent'] = ResolversParentTypes['SuperTokenFactoryUpdatedEvent'],
+    ResolversParentTypes['SuperTokenFactoryUpdatedEvent'] = ResolversParentTypes['SuperTokenFactoryUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25227,7 +25226,7 @@ export type SuperTokenFactoryUpdatedEventResolvers<
 export type SuperTokenLogicCreatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SuperTokenLogicCreatedEvent'] = ResolversParentTypes['SuperTokenLogicCreatedEvent'],
+    ResolversParentTypes['SuperTokenLogicCreatedEvent'] = ResolversParentTypes['SuperTokenLogicCreatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25246,7 +25245,7 @@ export type SuperTokenLogicCreatedEventResolvers<
 export type SuperTokenLogicUpdatedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SuperTokenLogicUpdatedEvent'] = ResolversParentTypes['SuperTokenLogicUpdatedEvent'],
+    ResolversParentTypes['SuperTokenLogicUpdatedEvent'] = ResolversParentTypes['SuperTokenLogicUpdatedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25266,7 +25265,7 @@ export type SuperTokenLogicUpdatedEventResolvers<
 export type SuperTokenMinimumDepositChangedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['SuperTokenMinimumDepositChangedEvent'] = ResolversParentTypes['SuperTokenMinimumDepositChangedEvent'],
+    ResolversParentTypes['SuperTokenMinimumDepositChangedEvent'] = ResolversParentTypes['SuperTokenMinimumDepositChangedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25289,7 +25288,7 @@ export type SuperTokenMinimumDepositChangedEventResolvers<
 export type TokenResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['Token'] = ResolversParentTypes['Token'],
+    ResolversParentTypes['Token'] = ResolversParentTypes['Token']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -25329,7 +25328,7 @@ export type TokenResolvers<
 export type TokenDowngradedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['TokenDowngradedEvent'] = ResolversParentTypes['TokenDowngradedEvent'],
+    ResolversParentTypes['TokenDowngradedEvent'] = ResolversParentTypes['TokenDowngradedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   account?: Resolver<ResolversTypes['Account'], ParentType, ContextType>
@@ -25350,7 +25349,7 @@ export type TokenDowngradedEventResolvers<
 export type TokenGovernanceConfigResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['TokenGovernanceConfig'] = ResolversParentTypes['TokenGovernanceConfig'],
+    ResolversParentTypes['TokenGovernanceConfig'] = ResolversParentTypes['TokenGovernanceConfig']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   createdAtTimestamp?: Resolver<
@@ -25401,7 +25400,7 @@ export type TokenGovernanceConfigResolvers<
 export type TokenStatisticResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['TokenStatistic'] = ResolversParentTypes['TokenStatistic'],
+    ResolversParentTypes['TokenStatistic'] = ResolversParentTypes['TokenStatistic']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   updatedAtTimestamp?: Resolver<
@@ -25543,7 +25542,7 @@ export type TokenStatisticResolvers<
 export type TokenStatisticLogResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['TokenStatisticLog'] = ResolversParentTypes['TokenStatisticLog'],
+    ResolversParentTypes['TokenStatisticLog'] = ResolversParentTypes['TokenStatisticLog']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   timestamp?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>
@@ -25684,7 +25683,7 @@ export type TokenStatisticLogResolvers<
 export type TokenUpgradedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['TokenUpgradedEvent'] = ResolversParentTypes['TokenUpgradedEvent'],
+    ResolversParentTypes['TokenUpgradedEvent'] = ResolversParentTypes['TokenUpgradedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   account?: Resolver<ResolversTypes['Account'], ParentType, ContextType>
@@ -25705,7 +25704,7 @@ export type TokenUpgradedEventResolvers<
 export type TransferEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['TransferEvent'] = ResolversParentTypes['TransferEvent'],
+    ResolversParentTypes['TransferEvent'] = ResolversParentTypes['TransferEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25728,7 +25727,7 @@ export type TransferEventResolvers<
 export type TrustedForwarderChangedEventResolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['TrustedForwarderChangedEvent'] = ResolversParentTypes['TrustedForwarderChangedEvent'],
+    ResolversParentTypes['TrustedForwarderChangedEvent'] = ResolversParentTypes['TrustedForwarderChangedEvent']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>
@@ -25752,7 +25751,7 @@ export type TrustedForwarderChangedEventResolvers<
 export type _Block_Resolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['_Block_'] = ResolversParentTypes['_Block_'],
+    ResolversParentTypes['_Block_'] = ResolversParentTypes['_Block_']
 > = ResolversObject<{
   hash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
@@ -25763,7 +25762,7 @@ export type _Block_Resolvers<
 export type _Meta_Resolvers<
   ContextType = MeshContext,
   ParentType extends
-    ResolversParentTypes['_Meta_'] = ResolversParentTypes['_Meta_'],
+    ResolversParentTypes['_Meta_'] = ResolversParentTypes['_Meta_']
 > = ResolversObject<{
   block?: Resolver<ResolversTypes['_Block_'], ParentType, ContextType>
   deployment?: Resolver<ResolversTypes['String'], ParentType, ContextType>
@@ -25897,11 +25896,11 @@ const rootStore = new MeshStore(
   new FsStoreStorageAdapter({
     cwd: baseDir,
     importFn,
-    fileType: 'ts',
+    fileType: 'ts'
   }),
   {
     readonly: true,
-    validate: false,
+    validate: false
   }
 )
 
@@ -25915,7 +25914,7 @@ export async function getMeshOptions(): Promise<GetMeshOptions> {
     importFn,
     store: rootStore.child('cache'),
     pubsub,
-    logger,
+    logger
   } as any)
 
   const sources: MeshResolvedSource[] = []
@@ -25928,26 +25927,26 @@ export async function getMeshOptions(): Promise<GetMeshOptions> {
     config: {
       endpoint:
         '{context.url:https://polygon-mumbai.subgraph.x.superfluid.dev}',
-      retry: 5,
+      retry: 5
     },
     baseDir,
     cache,
     pubsub,
     store: sourcesStore.child('gda'),
     logger: logger.child('gda'),
-    importFn,
+    importFn
   })
   sources[0] = {
     name: 'gda',
     handler: gdaHandler,
-    transforms: gdaTransforms,
+    transforms: gdaTransforms
   }
   const additionalResolvers = [] as any[]
   const merger = new (BareMerger as any)({
     cache,
     pubsub,
     logger: logger.child('bareMerger'),
-    store: rootStore.child('bareMerger'),
+    store: rootStore.child('bareMerger')
   })
 
   return {
@@ -25967,56 +25966,56 @@ export async function getMeshOptions(): Promise<GetMeshOptions> {
           get rawSDL() {
             return printWithCache(GetPoolDocument)
           },
-          location: 'GetPoolDocument.graphql',
+          location: 'GetPoolDocument.graphql'
         },
         {
           document: PoolsDocument,
           get rawSDL() {
             return printWithCache(PoolsDocument)
           },
-          location: 'PoolsDocument.graphql',
+          location: 'PoolsDocument.graphql'
         },
         {
           document: PoolMembersDocument,
           get rawSDL() {
             return printWithCache(PoolMembersDocument)
           },
-          location: 'PoolMembersDocument.graphql',
+          location: 'PoolMembersDocument.graphql'
         },
         {
           document: InstantDistributionUpdatedEventsDocument,
           get rawSDL() {
             return printWithCache(InstantDistributionUpdatedEventsDocument)
           },
-          location: 'InstantDistributionUpdatedEventsDocument.graphql',
+          location: 'InstantDistributionUpdatedEventsDocument.graphql'
         },
         {
           document: FlowDistributionUpdatedEventsDocument,
           get rawSDL() {
             return printWithCache(FlowDistributionUpdatedEventsDocument)
           },
-          location: 'FlowDistributionUpdatedEventsDocument.graphql',
+          location: 'FlowDistributionUpdatedEventsDocument.graphql'
         },
         {
           document: PoolMemberUnitsUpdatedEventsDocument,
           get rawSDL() {
             return printWithCache(PoolMemberUnitsUpdatedEventsDocument)
           },
-          location: 'PoolMemberUnitsUpdatedEventsDocument.graphql',
-        },
+          location: 'PoolMemberUnitsUpdatedEventsDocument.graphql'
+        }
       ]
     },
-    fetchFn,
+    fetchFn
   }
 }
 
 export function createBuiltMeshHTTPHandler<
-  TServerContext = {},
+  TServerContext = {}
 >(): MeshHTTPHandler<TServerContext> {
   return createMeshHTTPHandler<TServerContext>({
     baseDir,
     getBuiltMesh: getBuiltGraphClient,
-    rawServeConfig: undefined,
+    rawServeConfig: undefined
   })
 }
 
@@ -26210,7 +26209,7 @@ export type InstantDistributionUpdatedEventsQuery = {
           Pool,
           'id' | 'totalConnectedUnits' | 'totalDisconnectedUnits'
         >
-        poolDistributor: Pick<PoolDistributor, 'id'>
+        poolDistributor: { account: Pick<Account, 'id'> }
       }
   >
 }
@@ -26293,7 +26292,7 @@ export type InstantDistributionUpdatedEventFragment = {
   | 'logIndex'
 > & {
     pool: Pick<Pool, 'id' | 'totalConnectedUnits' | 'totalDisconnectedUnits'>
-    poolDistributor: Pick<PoolDistributor, 'id'>
+    poolDistributor: { account: Pick<Account, 'id'> }
   }
 
 export type FlowDistributionUpdatedEventFragment = {
@@ -27122,7 +27121,9 @@ export const InstantDistributionUpdatedEventFragmentDoc = gql`
       totalDisconnectedUnits
     }
     poolDistributor {
-      id
+      account {
+        id
+      }
     }
     requestedAmount
     token
@@ -27392,7 +27393,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         variables,
         options
       ) as Promise<PoolMemberUnitsUpdatedEventsQuery>
-    },
+    }
   }
 }
 export type Sdk = ReturnType<typeof getSdk>

@@ -17,13 +17,13 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   createSkipPaging,
   IndexSubscription_Filter,
   IndexSubscription_OrderBy,
-  Ordering,
+  Ordering
 } from '@superfluid-finance/sdk-core'
 import { IndexSubscriptionsQuery } from '@superfluid-finance/sdk-redux'
 import { BigNumber } from 'ethers'
@@ -49,12 +49,12 @@ import { UnitsStatus } from './AccountIndexPublicationsTable'
 
 enum SubscriptionStatus {
   Approved,
-  NotApproved,
+  NotApproved
 }
 
 enum DistributionStatus {
   HasReceived,
-  HasNotReceived,
+  HasNotReceived
 }
 
 export const indexSubscriptionOrderingDefault: Ordering<IndexSubscription_OrderBy> =
@@ -85,14 +85,14 @@ const AccountIndexSubscriptionsTable: FC<
   const [unitsStatus, setUnitsStatus] = useState<UnitsStatus | null>(null)
 
   const defaultFilter = {
-    subscriber: accountAddress,
+    subscriber: accountAddress
   }
 
   const createDefaultArg = (): RequiredIndexSubscriptionsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: indexSubscriptionPagingDefault,
-    order: indexSubscriptionOrderingDefault,
+    order: indexSubscriptionOrderingDefault
   })
 
   const [queryArg, setQueryArg] =
@@ -137,12 +137,12 @@ const AccountIndexSubscriptionsTable: FC<
     if (queryArg.order?.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(indexSubscriptionOrderingDefault)
@@ -153,7 +153,7 @@ const AccountIndexSubscriptionsTable: FC<
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
   }
 
@@ -181,7 +181,7 @@ const AccountIndexSubscriptionsTable: FC<
     setSubscriptionStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getSubscriptionStatusFilter(newStatus),
+      ...getSubscriptionStatusFilter(newStatus)
     })
   }
 
@@ -215,7 +215,7 @@ const AccountIndexSubscriptionsTable: FC<
     setDistributionStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getDistributionFilter(newStatus),
+      ...getDistributionFilter(newStatus)
     })
   }
 
@@ -245,7 +245,7 @@ const AccountIndexSubscriptionsTable: FC<
     setUnitsStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getUnitsStatusFilter(newStatus),
+      ...getUnitsStatusFilter(newStatus)
     })
   }
 
@@ -277,7 +277,7 @@ const AccountIndexSubscriptionsTable: FC<
 
   const {
     skip = indexSubscriptionPagingDefault.skip,
-    take = indexSubscriptionPagingDefault.take,
+    take = indexSubscriptionPagingDefault.take
   } = queryResult.data?.paging || {}
 
   return (

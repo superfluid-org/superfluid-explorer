@@ -14,7 +14,7 @@ import {
   Stack,
   Tab,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import { ethers } from 'ethers'
 import { gql } from 'graphql-request'
@@ -40,7 +40,7 @@ import { useNetworkContext } from '../../../contexts/NetworkContext'
 import { useAppSelector } from '../../../redux/hooks'
 import {
   addressBookSelectors,
-  createEntryId,
+  createEntryId
 } from '../../../redux/slices/addressBook.slice'
 import { ensApi } from '../../../redux/slices/ensResolver.slice'
 import { sfSubgraph } from '../../../redux/store'
@@ -48,21 +48,21 @@ import ellipsisAddress from '../../../utils/ellipsisAddress'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import {
   incomingStreamOrderingDefault,
-  incomingStreamPagingDefault,
+  incomingStreamPagingDefault
 } from './AccountIncomingStreamsTable'
 import AccountIndexes from './AccountIndexes'
 import {
   publishedIndexOrderingDefault,
-  publishedIndexPagingDefault,
+  publishedIndexPagingDefault
 } from './AccountIndexPublicationsTable'
 import {
   indexSubscriptionOrderingDefault,
-  indexSubscriptionPagingDefault,
+  indexSubscriptionPagingDefault
 } from './AccountIndexSubscriptionsTable'
 import AccountMap from './AccountMap'
 import {
   outgoingStreamOrderingDefault,
-  outgoingStreamPagingDefault,
+  outgoingStreamPagingDefault
 } from './AccountOutgoingStreamsTable'
 import AccountPools from './AccountPools'
 import AccountStreams from './AccountStreams'
@@ -74,7 +74,7 @@ const AccountPage: NextPage = () => {
   const address = useContext(IdContext)
   const accountQuery = sfSubgraph.useAccountQuery({
     chainId: network.chainId,
-    id: address,
+    id: address
   })
 
   const ensAddressQuery = ensApi.useLookupAddressQuery(address)
@@ -92,15 +92,15 @@ const AccountPage: NextPage = () => {
     chainId: network.chainId,
     order: {
       orderBy: 'balanceUntilUpdatedAt',
-      orderDirection: 'desc',
+      orderDirection: 'desc'
     },
     filter: {
-      account: address,
+      account: address
     },
     pagination: {
       take: 50,
-      skip: 0,
-    },
+      skip: 0
+    }
   })
 
   const router = useRouter()
@@ -112,8 +112,8 @@ const AccountPage: NextPage = () => {
       query: {
         _network: network.slugName,
         _id: address,
-        tab: tabValue,
-      },
+        tab: tabValue
+      }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue])
@@ -268,7 +268,7 @@ const AccountPage: NextPage = () => {
             height: 112,
             width: '100%',
             transform: 'scale(1)',
-            mt: 3,
+            mt: 3
           }}
         />
       )}
@@ -290,7 +290,7 @@ const AccountPage: NextPage = () => {
                       placeholder={{
                         balance: tokenSnapshot.balanceUntilUpdatedAt,
                         balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
-                        flowRate: tokenSnapshot.totalNetFlowRate,
+                        flowRate: tokenSnapshot.totalNetFlowRate
                       }}
                     >
                       {({ balance, balanceTimestamp, flowRate }) => (
@@ -299,7 +299,7 @@ const AccountPage: NextPage = () => {
                             display: 'grid',
                             gridTemplateColumns: 'auto 1fr',
                             columnGap: 1,
-                            alignItems: 'center',
+                            alignItems: 'center'
                           }}
                         >
                           <TokenChip
@@ -307,8 +307,8 @@ const AccountPage: NextPage = () => {
                             tokenAddress={tokenSnapshot.token}
                             ChipProps={{
                               sx: {
-                                width: '100%',
-                              },
+                                width: '100%'
+                              }
                             }}
                           />
                           <FlowingBalance
@@ -322,7 +322,7 @@ const AccountPage: NextPage = () => {
                               <Typography
                                 variant="caption"
                                 sx={{
-                                  textAlign: 'right',
+                                  textAlign: 'right'
                                 }}
                               >
                                 Flow rate:
@@ -339,7 +339,7 @@ const AccountPage: NextPage = () => {
                                 <Typography
                                   variant="caption"
                                   sx={{
-                                    textAlign: 'right',
+                                    textAlign: 'right'
                                   }}
                                 >
                                   Pred. liquidation:
@@ -387,18 +387,18 @@ const AccountPage: NextPage = () => {
                     prefetchStreamsQuery({
                       chainId: network.chainId,
                       filter: {
-                        receiver: address,
+                        receiver: address
                       },
                       order: incomingStreamOrderingDefault,
-                      pagination: incomingStreamPagingDefault,
+                      pagination: incomingStreamPagingDefault
                     })
                     prefetchStreamsQuery({
                       chainId: network.chainId,
                       filter: {
-                        sender: address,
+                        sender: address
                       },
                       order: outgoingStreamOrderingDefault,
-                      pagination: outgoingStreamPagingDefault,
+                      pagination: outgoingStreamPagingDefault
                     })
                   }
                 }}
@@ -412,18 +412,18 @@ const AccountPage: NextPage = () => {
                     prefetchIndexesQuery({
                       chainId: network.chainId,
                       filter: {
-                        publisher: address,
+                        publisher: address
                       },
                       order: publishedIndexOrderingDefault,
-                      pagination: publishedIndexPagingDefault,
+                      pagination: publishedIndexPagingDefault
                     })
                     prefetchIndexSubscriptionsQuery({
                       chainId: network.chainId,
                       filter: {
-                        subscriber: address,
+                        subscriber: address
                       },
                       order: indexSubscriptionOrderingDefault,
-                      pagination: indexSubscriptionPagingDefault,
+                      pagination: indexSubscriptionPagingDefault
                     })
                   }
                 }}
@@ -438,18 +438,18 @@ const AccountPage: NextPage = () => {
                       prefetchIndexesQuery({
                         chainId: network.chainId,
                         filter: {
-                          publisher: address,
+                          publisher: address
                         },
                         order: publishedIndexOrderingDefault,
-                        pagination: publishedIndexPagingDefault,
+                        pagination: publishedIndexPagingDefault
                       })
                       prefetchIndexSubscriptionsQuery({
                         chainId: network.chainId,
                         filter: {
-                          subscriber: address,
+                          subscriber: address
                         },
                         order: indexSubscriptionOrderingDefault,
-                        pagination: indexSubscriptionPagingDefault,
+                        pagination: indexSubscriptionPagingDefault
                       })
                     }
                   }}

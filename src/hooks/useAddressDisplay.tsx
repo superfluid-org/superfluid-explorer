@@ -30,13 +30,13 @@ export const useAddressDisplay = (
 
 export const useName = (name: string, skip: boolean): AddressDisplayResult => {
   const ensAddressQuery = ensApi.useResolveNameQuery(name, {
-    skip,
+    skip
   })
   return {
     addressChecksummed: ensAddressQuery.currentData?.address,
     ensName: !!ensAddressQuery.currentData?.address ? name : null,
     avatar: undefined,
-    isFetching: ensAddressQuery.isFetching,
+    isFetching: ensAddressQuery.isFetching
   }
 }
 
@@ -45,7 +45,7 @@ export const useAddress = (
   skip: boolean
 ): AddressDisplayResult => {
   const ensLookupQuery = ensApi.useLookupAddressQuery(address, {
-    skip,
+    skip
   })
   return {
     addressChecksummed: !skip
@@ -53,6 +53,6 @@ export const useAddress = (
       : undefined,
     ensName: ensLookupQuery.data?.name,
     avatar: undefined,
-    isFetching: ensLookupQuery.isFetching,
+    isFetching: ensLookupQuery.isFetching
   }
 }

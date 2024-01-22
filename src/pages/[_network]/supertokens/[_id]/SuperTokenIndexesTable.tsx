@@ -18,13 +18,13 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   createSkipPaging,
   Index_Filter,
   Index_OrderBy,
-  Ordering,
+  Ordering
 } from '@superfluid-finance/sdk-core'
 import { IndexesQuery } from '@superfluid-finance/sdk-redux'
 import omit from 'lodash/fp/omit'
@@ -48,11 +48,11 @@ import { IndexPublicationDetailsDialog } from '../../indexes/IndexPublicationDet
 
 const defaultOrdering = {
   orderBy: 'createdAtTimestamp',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 } as Ordering<Index_OrderBy>
 
 export const defaultPaging = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 interface SuperTokenIndexesTableProps {
@@ -64,7 +64,7 @@ type RequiredIndexesQuery = Required<Omit<IndexesQuery, 'block'>>
 
 const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
   network,
-  tokenAddress,
+  tokenAddress
 }) => {
   const filterAnchorRef = useRef(null)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
@@ -73,14 +73,14 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
     useState<DistributionStatus | null>(null)
 
   const defaultFilter = {
-    token: tokenAddress,
+    token: tokenAddress
   }
 
   const createDefaultArg = (): RequiredIndexesQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
-    order: defaultOrdering,
+    order: defaultOrdering
   })
 
   const [queryArg, setQueryArg] =
@@ -123,12 +123,12 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
     if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(defaultOrdering)
@@ -139,7 +139,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
 
   const onStringFilterChange =
@@ -147,7 +147,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
       if (e.target.value) {
         onFilterChange({
           ...queryArg.filter,
-          [field]: e.target.value.toLowerCase(),
+          [field]: e.target.value.toLowerCase()
         })
       } else {
         onFilterChange(omit(field, queryArg.filter))
@@ -177,7 +177,7 @@ const SuperTokenIndexesTable: FC<SuperTokenIndexesTableProps> = ({
     setDistributionStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getDistributionStatusFilter(newStatus),
+      ...getDistributionStatusFilter(newStatus)
     })
   }
 

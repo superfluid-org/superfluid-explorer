@@ -17,14 +17,14 @@ import {
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import { Box } from '@mui/system'
 import {
   createSkipPaging,
   Ordering,
   Stream_Filter,
-  Stream_OrderBy,
+  Stream_OrderBy
 } from '@superfluid-finance/sdk-core'
 import { StreamsQuery } from '@superfluid-finance/sdk-redux'
 import omit from 'lodash/fp/omit'
@@ -47,11 +47,11 @@ import { StreamDetailsDialog } from '../../streams/StreamDetails'
 
 const defaultOrdering = {
   orderBy: 'createdAtTimestamp',
-  orderDirection: 'desc',
+  orderDirection: 'desc'
 } as Ordering<Stream_OrderBy>
 
 export const defaultPaging = createSkipPaging({
-  take: 10,
+  take: 10
 })
 
 interface SuperTokenStreamsTableProps {
@@ -63,7 +63,7 @@ type RequiredStreamsQuery = Required<Omit<StreamsQuery, 'block'>>
 
 const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
   network,
-  tokenAddress,
+  tokenAddress
 }) => {
   const filterAnchorRef = useRef(null)
 
@@ -72,14 +72,14 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
   const [streamStatus, setStreamStatus] = useState<StreamStatus | null>(null)
 
   const defaultFilter = {
-    token: tokenAddress,
+    token: tokenAddress
   }
 
   const createDefaultArg = (): RequiredStreamsQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
     pagination: defaultPaging,
-    order: defaultOrdering,
+    order: defaultOrdering
   })
 
   const [queryArg, setQueryArg] =
@@ -122,12 +122,12 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
     if (queryArg.order.orderBy !== field) {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'desc',
+        orderDirection: 'desc'
       })
     } else if (queryArg.order.orderDirection === 'desc') {
       onOrderingChanged({
         orderBy: field,
-        orderDirection: 'asc',
+        orderDirection: 'asc'
       })
     } else {
       onOrderingChanged(defaultOrdering)
@@ -138,14 +138,14 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
     onQueryArgChanged({
       ...queryArg,
       pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter,
+      filter: newFilter
     })
 
   const onSenderChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
       onFilterChange({
         ...queryArg.filter,
-        sender_contains: e.target.value.toLowerCase(),
+        sender_contains: e.target.value.toLowerCase()
       })
     } else {
       onFilterChange(omit('sender_contains', queryArg.filter))
@@ -156,7 +156,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
     if (e.target.value) {
       onFilterChange({
         ...queryArg.filter,
-        receiver_contains: e.target.value.toLowerCase(),
+        receiver_contains: e.target.value.toLowerCase()
       })
     } else {
       onFilterChange(omit('receiver_contains', queryArg.filter))
@@ -188,7 +188,7 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
     setStreamStatus(newStatus)
     onFilterChange({
       ...newFilter,
-      ...getStreamStatusFilter(newStatus),
+      ...getStreamStatusFilter(newStatus)
     })
   }
 

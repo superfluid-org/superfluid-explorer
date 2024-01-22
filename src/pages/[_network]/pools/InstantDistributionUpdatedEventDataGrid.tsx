@@ -40,7 +40,7 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
   queryResult,
   setPaging,
   ordering,
-  setOrdering,
+  setOrdering
 }) => {
   const network = useNetworkContext()
 
@@ -66,20 +66,21 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
         headerName: 'Date',
         sortable: true,
         flex: 1,
-        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />
       },
       {
         field: 'distributor',
         headerName: 'Distributor',
         sortable: true,
-        flex: 2,
+        flex: 1,
         renderCell: (params) => (
           <AccountAddress
             dataCy={'instant-distributor-address'}
             network={network}
             address={params.row.poolDistributor}
+            ellipsis={6}
           />
-        ),
+        )
       },
       {
         field: 'actualAmount',
@@ -99,7 +100,7 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
           ) : (
             <Skeleton sx={{ width: '100px' }} />
           )
-        },
+        }
       },
       {
         field: 'requestedAmount',
@@ -119,8 +120,8 @@ const InstantDistributionUpdatedEventDataGrid: FC<Props> = ({
           ) : (
             <Skeleton sx={{ width: '100px' }} />
           )
-        },
-      },
+        }
+      }
     ],
     [pool, network]
   )

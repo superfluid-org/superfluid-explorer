@@ -16,7 +16,7 @@ export const streamGranularityInSeconds = {
   hour: 3600,
   day: 86400,
   week: 86400 * 7,
-  month: 86400 * 30,
+  month: 86400 * 30
 }
 
 type etherDecimalPlaces = 18 | 9 | 5 | 0
@@ -30,10 +30,10 @@ const initialState: IAppPreferences = {
     .reduce(
       (acc, n) => ({
         ...acc,
-        [n.chainId]: true,
+        [n.chainId]: true
       }),
       {}
-    ),
+    )
 }
 
 const sliceName = 'appPreferences'
@@ -60,19 +60,19 @@ export const themePreferenceSlice = createSlice({
     toggleDisplayedTestnets(state, action: PayloadAction<Network['chainId']>) {
       state.displayedTestNets[action.payload] =
         !state.displayedTestNets[action.payload]
-    },
+    }
   },
   extraReducers: {
     [HYDRATE]: (state, { payload }) => ({
       ...state,
-      ...payload[sliceName],
-    }),
-  },
+      ...payload[sliceName]
+    })
+  }
 })
 
 export const {
   changeThemePreference,
   changeStreamGranularity,
   changeEtherDecimalPlaces,
-  toggleDisplayedTestnets,
+  toggleDisplayedTestnets
 } = themePreferenceSlice.actions

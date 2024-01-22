@@ -4,7 +4,7 @@ export const epochs: [string, number][] = [
   ['day', 86400],
   ['hour', 3600],
   ['minute', 60],
-  ['second', 1],
+  ['second', 1]
 ]
 
 export const getDuration = (timeAgoInSeconds: number) => {
@@ -13,13 +13,13 @@ export const getDuration = (timeAgoInSeconds: number) => {
     if (interval >= 1) {
       return {
         interval: interval,
-        epoch: name,
+        epoch: name
       }
     }
   }
   return {
     interval: 0,
-    epoch: 'second',
+    epoch: 'second'
   }
 }
 

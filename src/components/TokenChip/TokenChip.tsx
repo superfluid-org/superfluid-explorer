@@ -14,11 +14,11 @@ export interface TokenChipProps {
 const TokenChip: FC<TokenChipProps> = ({
   network,
   tokenAddress,
-  ChipProps = { sx: {} },
+  ChipProps = { sx: {} }
 }) => {
   const tokenQuery = sfSubgraph.useTokenQuery({
     chainId: network.chainId,
-    id: tokenAddress,
+    id: tokenAddress
   })
 
   if (!tokenQuery.data) return null

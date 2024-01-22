@@ -12,7 +12,7 @@ interface Props {
 
 const SuperTokenPools: FC<Props> = ({
   network,
-  tokenAddress,
+  tokenAddress
 }): ReactElement => {
   return (
     <>

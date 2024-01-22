@@ -8,7 +8,7 @@ import AccountOutgoingStreamsTable from './AccountOutgoingStreamsTable'
 
 const AccountStreams: FC<{ network: Network; accountAddress: string }> = ({
   network,
-  accountAddress,
+  accountAddress
 }): ReactElement => {
   return (
     <>

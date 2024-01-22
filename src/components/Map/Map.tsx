@@ -9,7 +9,7 @@ import ReactFlow, {
   Controls,
   Position,
   useEdgesState,
-  useNodesState,
+  useNodesState
 } from 'reactflow'
 
 import { Network } from '../../redux/networks'
@@ -18,7 +18,7 @@ import UserBlock from './UserBlock'
 
 export enum StreamStatus {
   Active,
-  Inactive,
+  Inactive
 }
 
 interface Edge {
@@ -52,9 +52,9 @@ const Map: FC<{
             address={accountAddress}
             color={'#00991F'}
           />
-        ),
-      },
-    },
+        )
+      }
+    }
   ]
 
   const initialEdges: Edge[] = [{ id: 'e1-2', source: '1', target: '2' }]
@@ -77,11 +77,11 @@ const Map: FC<{
       chainId: network.chainId,
       filter: {
         sender: accountAddress,
-        currentFlowRate_not: '0',
+        currentFlowRate_not: '0'
       },
       pagination: {
-        take: Infinity,
-      },
+        take: Infinity
+      }
     },
     {
       selectFromResult: (queryResult) => {
@@ -100,17 +100,15 @@ const Map: FC<{
               id: `${stream.receiver}-${i}`,
               position: { x: i * 150, y: 500 },
               data: {
-                label: (
-                  <UserBlock network={network} address={stream.receiver} />
-                ),
+                label: <UserBlock network={network} address={stream.receiver} />
               },
               flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${
                 stream.tokenSymbol
               }`,
-              sourcePosition: Position.Top,
+              sourcePosition: Position.Top
             }
             return node
-          }),
+          })
         ]
 
         const outgoingEdgeList: Edge[] = outgoingNodeList.map((node) => ({
@@ -118,16 +116,16 @@ const Map: FC<{
           label: node.flowRate,
           source: accountAddress,
           target: node.id,
-          animated: true,
+          animated: true
         }))
 
         return {
           ...queryResult,
           outgoingStreams,
           outgoingNodeList,
-          outgoingEdgeList,
+          outgoingEdgeList
         }
-      },
+      }
     }
   )
 
@@ -141,11 +139,11 @@ const Map: FC<{
       chainId: network.chainId,
       filter: {
         receiver: accountAddress,
-        currentFlowRate_not: '0',
+        currentFlowRate_not: '0'
       },
       pagination: {
-        take: Infinity,
-      },
+        take: Infinity
+      }
     },
     {
       selectFromResult: (queryResult) => {
@@ -164,15 +162,15 @@ const Map: FC<{
               id: `${stream.sender}-${i}`,
               position: { x: i * 300, y: 100 },
               data: {
-                label: <UserBlock network={network} address={stream.sender} />,
+                label: <UserBlock network={network} address={stream.sender} />
               },
               flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${
                 stream.tokenSymbol
               }`,
-              sourcePosition: Position.Bottom,
+              sourcePosition: Position.Bottom
             }
             return node
-          }),
+          })
         ]
 
         const incomingEdgeList: Edge[] = incomingNodeList.map((node) => ({
@@ -180,16 +178,16 @@ const Map: FC<{
           label: node.flowRate,
           source: node.id,
           target: accountAddress,
-          animated: true,
+          animated: true
         }))
 
         return {
           ...queryResult,
           incomingStreams,
           incomingNodeList,
-          incomingEdgeList,
+          incomingEdgeList
         }
-      },
+      }
     }
   )
 
@@ -211,7 +209,7 @@ const Map: FC<{
     outgoingEdgeList,
     incomingEdgeList,
     outgoingStreamsQuery.isSuccess,
-    incomingStreamsQuery.isSuccess,
+    incomingStreamsQuery.isSuccess
   ])
 
   return (
@@ -219,7 +217,7 @@ const Map: FC<{
       style={{
         width: '100%',
         minHeight: '500px',
-        backgroundColor: '#303030',
+        backgroundColor: '#303030'
       }}
       nodes={nodes}
       edges={edges}

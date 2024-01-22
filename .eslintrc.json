@@ -1,12 +1,6 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "prettier"
-  ],
-  "plugins": [
-    "simple-import-sort",
-    "unused-imports"
-  ],
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["simple-import-sort", "unused-imports"],
   "rules": {
     "react-hooks/exhaustive-deps": "off",
     "react/display-name": "off",
@@ -19,9 +13,7 @@
     "no-restricted-imports": [
       "error",
       {
-        "patterns": [
-          "@mui/*/*/*"
-        ]
+        "patterns": ["@mui/*/*/*"]
       }
     ]
   }

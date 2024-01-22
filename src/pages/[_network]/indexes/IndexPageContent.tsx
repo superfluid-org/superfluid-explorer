@@ -9,7 +9,7 @@ import {
   ListItemText,
   Skeleton,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   createSkipPaging,
@@ -17,7 +17,7 @@ import {
   IndexSubscription_OrderBy,
   IndexUpdatedEvent_OrderBy,
   Ordering,
-  SkipPaging,
+  SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { gql } from 'graphql-request'
 import Error from 'next/error'
@@ -39,11 +39,11 @@ import IndexUpdatedEventDataGrid from './IndexUpdatedEventDataGrid'
 
 export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
   indexId,
-  network,
+  network
 }) => {
   const indexQuery = sfSubgraph.useIndexQuery({
     chainId: network.chainId,
-    id: indexId,
+    id: indexId
   })
 
   const index: Index | null | undefined = indexQuery.data
@@ -51,27 +51,27 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
   const [indexUpdatedEventPaging, setIndexUpdatedEventPaging] =
     useState<SkipPaging>(
       createSkipPaging({
-        take: 10,
+        take: 10
       })
     )
   const [indexUpdatedEventPagingOrdering, setIndexUpdatedEventOrdering] =
     useState<Ordering<IndexUpdatedEvent_OrderBy> | undefined>({
       orderBy: 'timestamp',
-      orderDirection: 'desc',
+      orderDirection: 'desc'
     })
   const indexUpdatedEventQuery = sfSubgraph.useIndexUpdatedEventsQuery({
     chainId: network.chainId,
     filter: {
-      index: indexId.toLowerCase(),
+      index: indexId.toLowerCase()
     },
     pagination: indexUpdatedEventPaging,
-    order: indexUpdatedEventPagingOrdering,
+    order: indexUpdatedEventPagingOrdering
   })
 
   const [indexSubscriptionPaging, setIndexSubscriptionPaging] =
     useState<SkipPaging>(
       createSkipPaging({
-        take: 10,
+        take: 10
       })
     )
   const [indexSubscriptionPagingOrdering, setIndexSubscriptionOrdering] =
@@ -79,10 +79,10 @@ export const IndexPageContent: FC<{ indexId: string; network: Network }> = ({
   const indexSubscriptionEventQuery = sfSubgraph.useIndexSubscriptionsQuery({
     chainId: network.chainId,
     filter: {
-      index: indexId.toLowerCase(),
+      index: indexId.toLowerCase()
     },
     pagination: indexSubscriptionPaging,
-    order: indexSubscriptionPagingOrdering,
+    order: indexSubscriptionPagingOrdering
   })
 
   if (

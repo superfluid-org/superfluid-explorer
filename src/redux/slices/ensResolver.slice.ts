@@ -27,11 +27,11 @@ export const ensApi = createApi({
             data: address
               ? {
                   name,
-                  address: address,
+                  address: address
                 }
-              : null,
+              : null
           }
-        },
+        }
       }),
       lookupAddress: builder.query<
         { address: string; name: string } | null,
@@ -43,11 +43,11 @@ export const ensApi = createApi({
             data: name
               ? {
                   name,
-                  address: ethers.utils.getAddress(address),
+                  address: ethers.utils.getAddress(address)
                 }
-              : null,
+              : null
           }
-        },
+        }
       }),
       lookupAvatar: builder.query<
         { address: string; avatar: string } | null,
@@ -59,12 +59,12 @@ export const ensApi = createApi({
             data: avatar
               ? {
                   address,
-                  avatar: avatar,
+                  avatar: avatar
                 }
-              : null,
+              : null
           }
-        },
-      }),
+        }
+      })
     }
-  },
+  }
 })

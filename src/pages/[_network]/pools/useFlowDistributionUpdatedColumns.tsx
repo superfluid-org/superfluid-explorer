@@ -16,7 +16,7 @@ export const useFlowDistributionUpdatedColumns = (network: Network) => {
         headerName: 'Date',
         sortable: true,
         flex: 1,
-        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />
       },
       {
         field: 'distributor',
@@ -29,7 +29,7 @@ export const useFlowDistributionUpdatedColumns = (network: Network) => {
             network={network}
             address={params.row.poolDistributor}
           />
-        ),
+        )
       },
       {
         field: 'newDistributorToPoolFlowRate',
@@ -39,7 +39,7 @@ export const useFlowDistributionUpdatedColumns = (network: Network) => {
         flex: 2,
         renderCell: (params) => {
           return <FlowRate flowRate={params.row.newDistributorToPoolFlowRate} />
-        },
+        }
       },
       {
         field: 'newTotalDistributionFlowRate',
@@ -49,7 +49,7 @@ export const useFlowDistributionUpdatedColumns = (network: Network) => {
         flex: 2,
         renderCell: (params) => {
           return <FlowRate flowRate={params.row.newTotalDistributionFlowRate} />
-        },
+        }
       },
       {
         field: 'adjustmentFlowRate',
@@ -59,7 +59,7 @@ export const useFlowDistributionUpdatedColumns = (network: Network) => {
         flex: 1,
         renderCell: (params) => {
           return <FlowRate flowRate={params.row.adjustmentFlowRate} />
-        },
+        }
       },
       {
         field: 'adjustmentFlowRecipient',
@@ -73,8 +73,8 @@ export const useFlowDistributionUpdatedColumns = (network: Network) => {
             network={network}
             address={params.row.adjustmentFlowRecipient}
           />
-        ),
-      },
+        )
+      }
     ],
     [network]
   )

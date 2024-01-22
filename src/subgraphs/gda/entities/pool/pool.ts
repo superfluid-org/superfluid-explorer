@@ -6,7 +6,7 @@ import {
   SubgraphId,
   SubgraphListQuery,
   SubgraphQueryHandler,
-  Timestamp,
+  Timestamp
 } from '@superfluid-finance/sdk-core'
 
 import {
@@ -15,7 +15,7 @@ import {
   Pool_OrderBy,
   PoolsDocument,
   PoolsQuery,
-  PoolsQueryVariables,
+  PoolsQueryVariables
 } from '../../.graphclient'
 
 export type PoolListQuery = SubgraphListQuery<Pool_Filter, Pool_OrderBy>
@@ -74,7 +74,7 @@ export const mapSubgraphGDAPool = (x: SubgraphPool): Pool => {
     poolCreatedEvent: x.poolCreatedEvent.id,
     admin: x.admin.id,
     token: x.token.id,
-    tokenSymbol: x.token.symbol,
+    tokenSymbol: x.token.symbol
   }
 
   return mappedPool
@@ -91,14 +91,14 @@ export class PoolQueryHandler extends SubgraphQueryHandler<
     tokenKeys: (keyof Pool_Filter)[]
   } => ({
     accountKeys: ['admin'],
-    tokenKeys: ['token'],
+    tokenKeys: ['token']
   })
 
   getRelevantAddressesFromResultCore = (
     result: Pool
   ): RelevantAddressesIntermediate => ({
     tokens: [result.token],
-    accounts: [result.admin],
+    accounts: [result.admin]
   })
 
   mapFromSubgraphResponse = (response: PoolsQuery): Pool[] =>
@@ -117,7 +117,7 @@ export class PoolQueryHandler extends SubgraphQueryHandler<
       poolCreatedEvent: pool_.poolCreatedEvent.id,
       admin: pool_.admin.id,
       token: pool_.token.id,
-      tokenSymbol: pool_.token.symbol,
+      tokenSymbol: pool_.token.symbol
     }))
 
   requestDocument = PoolsDocument

@@ -13,7 +13,7 @@ import {
   Stack,
   Tab,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import { Box } from '@mui/system'
 import { Token } from '@superfluid-finance/sdk-core'
@@ -50,19 +50,19 @@ const SuperTokenPage: NextPage = () => {
 
   const tokenQuery = sfSubgraph.useTokenQuery({
     chainId: network.chainId,
-    id: address,
+    id: address
   })
 
   const superToken: Token | null | undefined = tokenQuery.data
 
   const minimumDepositQuery = rpcApi.useMinimumDepositQuery({
     chainId: network.chainId,
-    tokenAddress: address,
+    tokenAddress: address
   })
 
   const tokenStatisticsQuery = sfSubgraph.useTokenStatisticQuery({
     chainId: network.chainId,
-    id: address,
+    id: address
   })
 
   const tokenStatistics = tokenStatisticsQuery.data
@@ -90,8 +90,8 @@ const SuperTokenPage: NextPage = () => {
       query: {
         _network: network.slugName,
         _id: address,
-        tab: tabValue,
-      },
+        tab: tabValue
+      }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue])
@@ -296,7 +296,7 @@ const SuperTokenPage: NextPage = () => {
                               <OpenInNewIcon
                                 sx={{
                                   ml: 0.5,
-                                  fontSize: 'inherit',
+                                  fontSize: 'inherit'
                                 }}
                               />
                             </Grid>
@@ -318,7 +318,7 @@ const SuperTokenPage: NextPage = () => {
             <List
               sx={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
+                gridTemplateColumns: '1fr 1fr'
               }}
             >
               <ListItem divider>
@@ -410,8 +410,8 @@ const SuperTokenPage: NextPage = () => {
             display: 'grid',
             gridTemplateColumns: {
               sm: '1fr',
-              md: '1fr 1fr',
-            },
+              md: '1fr 1fr'
+            }
           }}
         >
           <ListItem divider>

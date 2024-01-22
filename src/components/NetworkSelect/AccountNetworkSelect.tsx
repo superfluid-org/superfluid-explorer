@@ -22,7 +22,7 @@ interface AccountNetworkSelectProps {
 
 export default memo<AccountNetworkSelectProps>(function AccountNetworkSelect({
   activeNetwork,
-  address,
+  address
 }) {
   const { availableNetworks } = useAvailableNetworks()
 
@@ -49,10 +49,10 @@ export default memo<AccountNetworkSelectProps>(function AccountNetworkSelect({
         isNetworkAvailable(n.chainId)
           ? {
               chainId: n.chainId,
-              id: address,
+              id: address
             }
           : skipToken
-      ),
+      )
     }))
     .filter(
       ({ account, network }) =>

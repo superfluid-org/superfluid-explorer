@@ -13,7 +13,7 @@ import {
   Skeleton,
   Stack,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
@@ -39,7 +39,7 @@ const AddressListItem: FC<AddressListItemProps> = ({
   network,
   title,
   address,
-  dataCy,
+  dataCy
 }) => (
   <ListItem>
     <ListItemText
@@ -81,15 +81,15 @@ const Protocol: NextPage = () => {
   const router = useRouter()
 
   const protocolVersionResponse = rpcApi.useProtocolVersionQuery({
-    chainId: network.chainId,
+    chainId: network.chainId
   })
 
   const onTabChange = (newValue: string) =>
     router.replace({
       query: {
         ...router.query,
-        _network: newValue,
-      },
+        _network: newValue
+      }
     })
 
   const {
@@ -106,7 +106,7 @@ const Protocol: NextPage = () => {
     GDAv1Forwarder,
     flowScheduler,
     vestingScheduler,
-    existentialNFTCloneFactory,
+    existentialNFTCloneFactory
   } = protocolContracts[network.slugName] || {}
 
   return (
@@ -132,7 +132,7 @@ const Protocol: NextPage = () => {
               sx={{
                 px: 2,
                 mt: 2,
-                mb: 2,
+                mb: 2
               }}
             >
               Governance parameters
@@ -146,7 +146,7 @@ const Protocol: NextPage = () => {
                 <Box
                   sx={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gridTemplateColumns: 'repeat(3, 1fr)'
                   }}
                 >
                   <ListItemText
@@ -189,7 +189,7 @@ const Protocol: NextPage = () => {
                 <Box
                   sx={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gridTemplateColumns: 'repeat(3, 1fr)'
                   }}
                 >
                   <ListItemText
@@ -222,7 +222,7 @@ const Protocol: NextPage = () => {
               sx={{
                 px: 2,
                 mt: 4,
-                mb: 2,
+                mb: 2
               }}
             >
               Contract addresses
@@ -233,7 +233,7 @@ const Protocol: NextPage = () => {
                 sx={{
                   display: 'grid',
                   gridTemplateColumns: '1fr 1fr',
-                  pb: 2,
+                  pb: 2
                 }}
               >
                 <AddressListItem
@@ -328,7 +328,7 @@ const Protocol: NextPage = () => {
               sx={{
                 px: 2,
                 mt: 4,
-                mb: 2,
+                mb: 2
               }}
             >
               Versions

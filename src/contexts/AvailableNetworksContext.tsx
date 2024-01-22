@@ -3,7 +3,7 @@ import {
   FC,
   PropsWithChildren,
   useContext,
-  useMemo,
+  useMemo
 } from 'react'
 
 import { Network, networks } from '../redux/networks'
@@ -17,11 +17,11 @@ const AvailableNetworksContext = createContext<AvailableNetworksContextValue>(
 )
 
 export const AvailableNetworksProvider: FC<PropsWithChildren<{}>> = ({
-  children,
+  children
 }) => {
   const contextValue = useMemo<AvailableNetworksContextValue>(
     () => ({
-      availableNetworks: networks,
+      availableNetworks: networks
     }),
     []
   )

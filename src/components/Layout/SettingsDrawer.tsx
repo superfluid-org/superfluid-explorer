@@ -10,7 +10,7 @@ import {
   styled,
   ToggleButton,
   ToggleButtonGroup,
-  Typography,
+  Typography
 } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
@@ -25,7 +25,7 @@ import {
   changeEtherDecimalPlaces,
   changeStreamGranularity,
   changeThemePreference,
-  toggleDisplayedTestnets,
+  toggleDisplayedTestnets
 } from '../../redux/slices/appPreferences.slice'
 import InfoTooltipBtn from '../Info/InfoTooltipBtn'
 import NetworkDisplay from '../NetworkDisplay/NetworkDisplay'
@@ -36,7 +36,7 @@ const Heading = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   fontSize: theme.typography.pxToRem(11),
   textTransform: 'uppercase',
-  letterSpacing: '.08rem',
+  letterSpacing: '.08rem'
 }))
 
 const IconToggleButton = styled(ToggleButton)({
@@ -44,14 +44,14 @@ const IconToggleButton = styled(ToggleButton)({
   justifyContent: 'center',
   width: '100%',
   '& > *': {
-    marginRight: '8px',
-  },
+    marginRight: '8px'
+  }
 })
 
 // Inspired by solution in MUI documentaiton: https://github.com/mui/material-ui/blob/5b0d0c343c9b195e7328cc20461c9adc1f5ac02d/docs/src/modules/components/AppSettingsDrawer.js
 const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
   open,
-  onClose,
+  onClose
 }) => {
   const dispatch = useAppDispatch()
   const currentThemePreference = useAppSelector(
@@ -80,7 +80,7 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          p: 2,
+          p: 2
         }}
       >
         <Typography variant="body1" fontWeight="500">

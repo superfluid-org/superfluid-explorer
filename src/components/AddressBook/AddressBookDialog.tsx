@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  TextField,
+  TextField
 } from '@mui/material'
 import { ethers } from 'ethers'
 import { FC, useEffect, useState } from 'react'
@@ -17,7 +17,7 @@ import {
   addressBookSelectors,
   addressBookSlice,
   createEntryId,
-  getEntryId,
+  getEntryId
 } from '../../redux/slices/addressBook.slice'
 
 export const AddressBookDialog: FC<{
@@ -56,7 +56,7 @@ export const AddressBookDialog: FC<{
         addressBookSlice.actions.entryUpserted({
           chainId: network.chainId,
           address: ethers.utils.getAddress(address),
-          nameTag: nameTagTrimmed,
+          nameTag: nameTagTrimmed
         })
       )
     }

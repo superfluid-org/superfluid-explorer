@@ -9,14 +9,14 @@ import {
   ListItemText,
   Skeleton,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material'
 import {
   createSkipPaging,
   Ordering,
   SkipPaging,
   Stream,
-  StreamPeriod_OrderBy,
+  StreamPeriod_OrderBy
 } from '@superfluid-finance/sdk-core'
 import { gql } from 'graphql-request'
 import Error from 'next/error'
@@ -38,11 +38,11 @@ import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 
 export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
   streamId,
-  network,
+  network
 }) => {
   const streamQuery = sfSubgraph.useStreamQuery({
     chainId: network.chainId,
-    id: streamId,
+    id: streamId
   })
 
   const stream: Stream | null | undefined = streamQuery.data
@@ -53,15 +53,15 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
     Ordering<StreamPeriod_OrderBy> | undefined
   >({
     orderBy: 'startedAtTimestamp',
-    orderDirection: 'desc',
+    orderDirection: 'desc'
   })
   const streamPeriodListQuery = sfSubgraph.useStreamPeriodsQuery({
     chainId: network.chainId,
     filter: {
-      stream: streamId,
+      stream: streamId
     },
     pagination: streamPeriodPaging,
-    order: streamPeriodOrdering,
+    order: streamPeriodOrdering
   })
 
   if (
@@ -204,8 +204,8 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
             display: 'grid',
             gridTemplateColumns: {
               sm: '1fr',
-              md: '1fr 1fr',
-            },
+              md: '1fr 1fr'
+            }
           }}
         >
           <ListItem>
@@ -241,7 +241,7 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
                       flowRate={stream.currentFlowRate}
                       TokenChipProps={{
                         network,
-                        tokenAddress: stream.token,
+                        tokenAddress: stream.token
                       }}
                     />
                   </>

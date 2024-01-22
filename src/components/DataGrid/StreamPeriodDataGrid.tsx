@@ -4,7 +4,7 @@ import {
   PagedResult,
   SkipPaging,
   StreamPeriod,
-  StreamPeriod_OrderBy,
+  StreamPeriod_OrderBy
 } from '@superfluid-finance/sdk-core'
 import { FC, useMemo } from 'react'
 
@@ -27,7 +27,7 @@ const StreamPeriodDataGrid: FC<Props> = ({
   queryResult,
   setPaging,
   ordering,
-  setOrdering,
+  setOrdering
 }) => {
   const rows = queryResult.data ? queryResult.data.data : []
 
@@ -51,7 +51,7 @@ const StreamPeriodDataGrid: FC<Props> = ({
               iconSx={{ mb: 0, mr: 0.5 }}
             />
           </>
-        ),
+        )
       },
       {
         field: 'totalAmountStreamed',
@@ -67,11 +67,11 @@ const StreamPeriodDataGrid: FC<Props> = ({
                 balanceTimestamp: streamPeriod.startedAtTimestamp,
                 flowRate: streamPeriod.stoppedAtTimestamp
                   ? '0'
-                  : streamPeriod.flowRate,
+                  : streamPeriod.flowRate
               }}
             />
           )
-        },
+        }
       },
       {
         field: 'startedAtTimestamp',
@@ -79,7 +79,7 @@ const StreamPeriodDataGrid: FC<Props> = ({
         sortable: true,
         flex: 1,
         renderCell: (params) =>
-          new Date(params.row.startedAtTimestamp * 1000).toLocaleString(),
+          new Date(params.row.startedAtTimestamp * 1000).toLocaleString()
       },
       {
         field: 'stoppedAtTimestamp',
@@ -89,8 +89,8 @@ const StreamPeriodDataGrid: FC<Props> = ({
         renderCell: (params) =>
           params.row.stoppedAtTimestamp
             ? new Date(params.row.stoppedAtTimestamp * 1000).toLocaleString()
-            : '-',
-      },
+            : '-'
+      }
     ],
     []
   )

@@ -6,19 +6,19 @@ import {
   SubgraphGetQuery,
   SubgraphGetQueryHandler,
   SubgraphListQuery,
-  SubgraphListQueryHandler,
+  SubgraphListQueryHandler
 } from '@superfluid-finance/sdk-core'
 import {
   createGeneralTags,
   getSubgraphClient,
-  provideSpecificCacheTagsFromRelevantAddresses,
+  provideSpecificCacheTagsFromRelevantAddresses
 } from '@superfluid-finance/sdk-redux'
 
 import { CacheTime } from '../cacheTime'
 import {
   FlowDistributionUpdatedEvent,
   InstantDistributionUpdatedEvent,
-  PoolMemberUnitsUpdatedEvent,
+  PoolMemberUnitsUpdatedEvent
 } from '../events'
 import { FlowDistributionUpdatedEventQueryHandler } from '../events/flowDistributionUpdatedEvents'
 import { InstantDistributionUpdatedEventQueryHandler } from '../events/instantDistributionUpdatedEvents'
@@ -30,7 +30,7 @@ import {
   InstantDistributionUpdatedEventQuery,
   InstantDistributionUpdatedEventsQuery,
   PoolMemberUnitsUpdatedEventQuery,
-  PoolMemberUnitsUpdatedEventsQuery,
+  PoolMemberUnitsUpdatedEventsQuery
 } from './entityArgs'
 
 export const createEventQueryEndpoints = (
@@ -53,7 +53,7 @@ export const createEventQueryEndpoints = (
  */
 function get<
   TReturn extends ILightEntity,
-  TQuery extends { chainId: number } & SubgraphGetQuery,
+  TQuery extends { chainId: number } & SubgraphGetQuery
 >(
   builder: GdaSubgraphEndpointBuilder,
   queryHandler: SubgraphGetQueryHandler<TReturn> &
@@ -63,10 +63,10 @@ function get<
     queryFn: async (arg) => {
       const subgraphClient = await getSubgraphClient(arg.chainId)
       return {
-        data: await queryHandler.get(subgraphClient, arg),
+        data: await queryHandler.get(subgraphClient, arg)
       }
     },
-    keepUnusedDataFor: CacheTime.Forever, // Events don't change (unless re-org but that's handled by invalidating whole cache anyway).
+    keepUnusedDataFor: CacheTime.Forever // Events don't change (unless re-org but that's handled by invalidating whole cache anyway).
   })
 }
 
@@ -77,7 +77,7 @@ function list<
   TReturn extends ILightEntity,
   TQuery extends { chainId: number } & SubgraphListQuery<TFilter, TOrderBy>,
   TFilter extends { [key: string]: unknown } = NonNullable<TQuery['filter']>,
-  TOrderBy extends string = NonNullable<TQuery['order']>['orderBy'],
+  TOrderBy extends string = NonNullable<TQuery['order']>['orderBy']
 >(
   builder: GdaSubgraphEndpointBuilder,
   queryHandler: SubgraphListQueryHandler<TReturn, TQuery, TFilter> &
@@ -87,7 +87,7 @@ function list<
     queryFn: async (arg) => {
       const subgraphClient = await getSubgraphClient(arg.chainId)
       return {
-        data: await queryHandler.list(subgraphClient, arg),
+        data: await queryHandler.list(subgraphClient, arg)
       }
     },
     providesTags: (_result, _error, arg) => [
@@ -95,7 +95,7 @@ function list<
       ...provideSpecificCacheTagsFromRelevantAddresses(
         arg.chainId,
         queryHandler.getRelevantAddressesFromFilter(arg.filter)
-      ),
-    ],
+      )
+    ]
   })
 }

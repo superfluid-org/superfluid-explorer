@@ -17,11 +17,11 @@ const SuperTokenAddress: FC<{
   network,
   address,
   format = (token) => `${token.name} (${token.symbol})`,
-  formatLoading = () => ethers.utils.getAddress(address),
+  formatLoading = () => ethers.utils.getAddress(address)
 }) => {
   const tokenQuery = sfSubgraph.useTokenQuery({
     chainId: network.chainId,
-    id: address,
+    id: address
   })
 
   return (

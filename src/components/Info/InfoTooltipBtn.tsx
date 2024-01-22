@@ -13,7 +13,7 @@ const InfoTooltipBtn: FC<InfoTooltipBtnProps> = ({
   title,
   size,
   iconSx = {},
-  dataCy,
+  dataCy
 }) => (
   <Tooltip data-cy={dataCy} title={title}>
     <HelpOutlineOutlinedIcon
@@ -22,7 +22,7 @@ const InfoTooltipBtn: FC<InfoTooltipBtnProps> = ({
         ml: 1,
         mb: 0.25,
         verticalAlign: 'middle',
-        ...iconSx,
+        ...iconSx
       }}
     />
   </Tooltip>

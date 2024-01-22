@@ -22,7 +22,7 @@ const PoolMemberUnitsUpdatedEventDataGrid: FC<Props> = ({
   queryResult,
   setPaging,
   ordering,
-  setOrdering,
+  setOrdering
 }) => {
   const rows: PoolMemberUnitsUpdatedEvent[] = queryResult.data
     ? queryResult.data.data
@@ -36,7 +36,7 @@ const PoolMemberUnitsUpdatedEventDataGrid: FC<Props> = ({
         headerName: 'Date',
         sortable: true,
         flex: 1,
-        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />
       },
       {
         field: 'units',
@@ -48,8 +48,8 @@ const PoolMemberUnitsUpdatedEventDataGrid: FC<Props> = ({
             totalUnits={params.row.totalUnits}
             individualUnits={params.row.units}
           />
-        ),
-      },
+        )
+      }
     ],
     []
   )

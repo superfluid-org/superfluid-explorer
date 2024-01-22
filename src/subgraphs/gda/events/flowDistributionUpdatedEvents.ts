@@ -2,7 +2,7 @@ import {
   Account,
   RelevantAddressesIntermediate,
   SubgraphListQuery,
-  SubgraphQueryHandler,
+  SubgraphQueryHandler
 } from '@superfluid-finance/sdk-core'
 
 import {
@@ -12,7 +12,7 @@ import {
   FlowDistributionUpdatedEventsDocument,
   FlowDistributionUpdatedEventsQuery,
   FlowDistributionUpdatedEventsQueryVariables,
-  Pool,
+  Pool
 } from '../.graphclient'
 import { FlowDistributionUpdatedEvent as PoolFlowDistributionUpdatedEvent } from '../events'
 
@@ -32,7 +32,7 @@ export class FlowDistributionUpdatedEventQueryHandler extends SubgraphQueryHandl
     tokenKeys: (keyof FlowDistributionUpdatedEvent_Filter)[]
   } => ({
     accountKeys: ['operator', 'pool'],
-    tokenKeys: ['token'],
+    tokenKeys: ['token']
   })
 
   getRelevantAddressesFromResultCore(
@@ -40,7 +40,7 @@ export class FlowDistributionUpdatedEventQueryHandler extends SubgraphQueryHandl
   ): RelevantAddressesIntermediate {
     return {
       accounts: [result.operator, result.pool, result.poolDistributor],
-      tokens: [result.token],
+      tokens: [result.token]
     }
   }
 
@@ -98,7 +98,7 @@ function mapGetAllEventsQueryEvent(
       adjustmentFlowRecipient: e.adjustmentFlowRecipient,
       poolDistributor: e.poolDistributor.account.id,
       token: e.token,
-      newTotalDistributionFlowRate: e.newTotalDistributionFlowRate,
+      newTotalDistributionFlowRate: e.newTotalDistributionFlowRate
     } as PoolFlowDistributionUpdatedEvent
   })
 }

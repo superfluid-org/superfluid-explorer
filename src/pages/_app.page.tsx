@@ -78,7 +78,7 @@ function MyApp(props: MyAppProps) {
             sx={{
               display: 'flex',
               flexFlow: 'column',
-              maxHeight: '100vh',
+              maxHeight: '100vh'
             }}
           >
             <SfAppBar />

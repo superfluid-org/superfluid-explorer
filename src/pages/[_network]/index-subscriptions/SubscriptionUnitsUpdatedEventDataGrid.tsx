@@ -4,7 +4,7 @@ import {
   PagedResult,
   SkipPaging,
   SubscriptionUnitsUpdatedEvent,
-  SubscriptionUnitsUpdatedEvent_OrderBy,
+  SubscriptionUnitsUpdatedEvent_OrderBy
 } from '@superfluid-finance/sdk-core'
 import { FC, useMemo } from 'react'
 
@@ -27,7 +27,7 @@ const SubscriptionUnitsUpdatedEventDataGrid: FC<Props> = ({
   queryResult,
   setPaging,
   ordering,
-  setOrdering,
+  setOrdering
 }) => {
   const rows: SubscriptionUnitsUpdatedEvent[] = queryResult.data
     ? queryResult.data.data
@@ -41,7 +41,7 @@ const SubscriptionUnitsUpdatedEventDataGrid: FC<Props> = ({
         headerName: 'Date',
         sortable: true,
         flex: 1,
-        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />,
+        renderCell: (params) => <TimeAgo subgraphTime={params.row.timestamp} />
       },
       {
         field: 'units',
@@ -49,8 +49,8 @@ const SubscriptionUnitsUpdatedEventDataGrid: FC<Props> = ({
         flex: 2,
         renderCell: (params) => {
           return <>{params.row.units}</>
-        },
-      },
+        }
+      }
     ],
     []
   )

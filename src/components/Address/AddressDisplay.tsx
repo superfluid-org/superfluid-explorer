@@ -10,7 +10,7 @@ export interface AddressDisplayProps {
 
 export default memo(function AddressDisplay({
   address,
-  length = 'short',
+  length = 'short'
 }: AddressDisplayProps) {
   const addressDisplay = useAddressDisplay(address)
   if (addressDisplay.ensName) {

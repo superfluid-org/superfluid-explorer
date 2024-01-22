@@ -10,7 +10,7 @@ const Footer: FC = () => {
         display: 'flex',
         justifyContent: 'center',
         mt: 1,
-        opacity: 0.6,
+        opacity: 0.6
       }}
     >
       <p>
