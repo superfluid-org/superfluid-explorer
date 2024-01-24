@@ -143,6 +143,18 @@ export const networks: Network[] = [
     getLinkForAddress: (address: string): string =>
       `https://basescan.org/address/${address}`,
   },
+  {
+    isTestnet: false,
+    chainId: 534352,
+    slugName: "scroll-mainnet",
+    displayName: "Scroll",
+    rpcUrl: getRpcUrl(534352),
+    subgraphUrl: getSubgraphUrl(534352),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://scrollscan.com/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://scrollscan.com/address/${address}`,
+  },
   // testnets
   {
     displayName: "Goerli",
