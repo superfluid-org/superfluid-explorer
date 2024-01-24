@@ -252,6 +252,30 @@ export const networks: Network[] = [
     getLinkForAddress: (address: string): string =>
       `https://goerli.basescan.org/address/${address}`,
   },
+  {
+    isTestnet: true,
+    chainId: 11155420,
+    slugName: "optimism-sepolia",
+    displayName: "Optimism Sepolia",
+    rpcUrl: getRpcUrl(11155420),
+    subgraphUrl: getSubgraphUrl(11155420),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://sepolia-optimism.etherscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://sepolia-optimism.etherscan.io/address/${address}`,
+  },
+  {
+    isTestnet: true,
+    chainId: 534351,
+    slugName: "scroll-sepolia",
+    displayName: "Scroll Sepolia",
+    rpcUrl: getRpcUrl(534351),
+    subgraphUrl: getSubgraphUrl(534351),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://sepolia.scrollscan.com/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://sepolia.scrollscan.com/address/${address}`,
+  },
 ];
 
 export const networksByName = new Map(
