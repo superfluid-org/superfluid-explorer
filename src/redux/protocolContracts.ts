@@ -70,6 +70,8 @@ const protocolContracts: NetworkContracts = {
   [getNetwork(84531).slugName]: networkMetadataToChainId[84531],
   [getNetwork(8453).slugName]: networkMetadataToChainId[8453],
   [getNetwork(534352).slugName]: networkMetadataToChainId[534352],
+  [getNetwork(11155420).slugName]: networkMetadataToChainId[11155420],
+  [getNetwork(534351).slugName]: networkMetadataToChainId[534351],
 };
 
 export default protocolContracts;
