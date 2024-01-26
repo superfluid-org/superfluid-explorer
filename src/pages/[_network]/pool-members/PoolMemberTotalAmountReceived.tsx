@@ -52,7 +52,7 @@ export const getTotalAmountReceivedFromPoolMember = (
   const memberUnits = BigNumber.from(member.units)
   const poolUnits = BigNumber.from(pool.totalUnits)
 
-  if (poolUnits.isZero()) {
+  if (memberUnits.isZero()) {
     return {
       memberCurrentTotalAmountReceived: BigNumber.from(member.totalAmountReceivedUntilUpdatedAt),
       memberFlowRate: BigNumber.from(0),
