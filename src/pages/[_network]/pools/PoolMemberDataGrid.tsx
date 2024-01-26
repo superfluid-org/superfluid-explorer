@@ -150,7 +150,7 @@ const PoolMemberDataGrid: FC<Props> = ({
         )
       }
     ],
-    [network]
+    [network, pool]
   )
 
   return (
