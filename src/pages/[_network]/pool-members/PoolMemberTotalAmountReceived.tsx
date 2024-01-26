@@ -69,8 +69,8 @@ export const getTotalAmountReceivedForPoolMember = (
   ).add(poolCurrentTotalAmountDistributedDelta)
 
   const memberCurrentTotalAmountReceivedDelta =
-    poolCurrentTotalAmountDistributed
-      .sub(member.poolTotalAmountDistributedUntilUpdatedAt)
+    (poolCurrentTotalAmountDistributed
+      .sub(member.poolTotalAmountDistributedUntilUpdatedAt))
       .mul(memberUnits)
       .div(poolUnits)
 
