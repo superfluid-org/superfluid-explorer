@@ -18,7 +18,7 @@ export const PoolMemberTotalAmountReceived: FC<{
   member: PoolMemberInput
   pool: PoolInput
   children: (
-    output: ReturnType<typeof getTotalAmountReceivedFromPoolMember>
+    output: ReturnType<typeof getTotalAmountReceivedForPoolMember>
   ) => PropsWithChildren['children']
 }> = ({ member, pool, children }) => {
   const output = useTotalAmountRecivedFromPoolMember(member, pool)
@@ -36,11 +36,11 @@ export const useTotalAmountRecivedFromPoolMember = (
     if (!member || !pool) {
       return undefined
     }
-    return getTotalAmountReceivedFromPoolMember(member, pool)
+    return getTotalAmountReceivedForPoolMember(member, pool)
   }, [member, pool])
 }
 
-export const getTotalAmountReceivedFromPoolMember = (
+export const getTotalAmountReceivedForPoolMember = (
   member: PoolMemberInput,
   pool: PoolInput
 ): {
