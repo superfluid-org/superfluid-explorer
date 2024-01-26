@@ -29,11 +29,12 @@ jobs:
         run: CYPRESS_DOWNLOAD_MIRROR=https://cy-cdn.currents.dev yarn install
 
       - name: Cypress tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v6
         with:
           command: yarn cypress-cloud run --browser ${{ matrix.browser }} --record --parallel --key ${{ secrets.CYPRESS_CONSOLE_RECORD_KEY }} --ci-build-id ui-${{ github.repository }}-${{ github.run_id }}-${{ github.run_attempt}}
           start: yarn dev
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 180
+          install: false
         env:
           GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
