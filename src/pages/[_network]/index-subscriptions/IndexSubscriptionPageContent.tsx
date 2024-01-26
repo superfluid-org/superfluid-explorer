@@ -315,8 +315,8 @@ export const IndexSubscriptionPageContent: FC<{
                   primary={
                     indexSubscription && index ? (
                       <PoolPercentage
-                        totalUnits={indexSubscription.units}
-                        individualUnits={index.totalUnits}
+                        totalUnits={index.totalUnits}
+                        individualUnits={indexSubscription.units}
                       />
                     ) : (
                       <Skeleton sx={{ width: '150px' }} />
