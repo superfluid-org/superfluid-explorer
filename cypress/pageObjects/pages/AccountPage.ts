@@ -1009,7 +1009,7 @@ export class AccountPage extends BasePage {
     cy.fixture('accountData').then((data) => {
       data[network].gdaAdminAccount.pools.forEach(
         (pool: any, index: number) => {
-          cy.get(POOL_IDS).eq(index).should('contain.text', pool.id)
+          cy.get(POOL_IDS).eq(index).should('contain.text', BasePage.getShortenedAddress(pool.id))
           cy.get(POOL_TOKENS)
             .eq(index)
             .should('contain.text', pool.token.symbol)

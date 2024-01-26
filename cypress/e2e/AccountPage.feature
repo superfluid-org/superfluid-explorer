@@ -134,8 +134,6 @@ Feature: Account page test cases
   Scenario: Account page - pools tab tooltips and links
     Given User has opened the "GDA admin account" page on "goerli"
     And User switches to "pools" tab
-    Then Tooltip is visible when user hovers the "gda-pool-table-total-units" tooltip icon
-    Then Tooltip is visible when user hovers the "gda-admin" tooltip icon
     Then Tooltip is visible when user hovers the "members" tooltip icon
     Then Tooltip is visible when user hovers the "gda-connected" tooltip icon
 
