@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, Skeleton } from '@mui/material'
 import {
   GridColDef,
   GridColumnHeaderTitle,
@@ -17,7 +17,7 @@ import { Network } from '../../../redux/networks'
 import { PoolMember_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
-import { PoolMemberTotalAmountReceived } from '../pool-members/PoolMemberTotalAmountReceived'
+import { PoolInput, PoolMemberTotalAmountReceived } from '../pool-members/PoolMemberTotalAmountReceived'
 
 interface Props {
   network: Network
@@ -28,6 +28,7 @@ interface Props {
   setPaging: (paging: SkipPaging) => void
   ordering: Ordering<PoolMember_OrderBy> | undefined
   setOrdering: (ordering?: Ordering<PoolMember_OrderBy>) => void
+  pool: PoolInput | null | undefined
 }
 
 const PoolMemberDataGrid: FC<Props> = ({
@@ -35,7 +36,8 @@ const PoolMemberDataGrid: FC<Props> = ({
   queryResult,
   setPaging,
   ordering,
-  setOrdering
+  setOrdering,
+  pool
 }) => {
   const rows: PoolMember[] = queryResult.data ? queryResult.data.data : []
 
@@ -92,32 +94,28 @@ const PoolMemberDataGrid: FC<Props> = ({
         sortable: false,
         flex: 2,
         renderCell: (params: GridRenderCellParams<string, PoolMember>) => (
-          <PoolMemberTotalAmountReceived
-            member={params.row}
-            pool={{
-              flowRate: params.row.poolFlowRateCurrent,
-              totalAmountDistributedUntilUpdatedAt:
-                params.row.poolTotalAmountDistributedUntilUpdatedAt,
-              totalUnits: params.row.poolTotalUnits,
-              updatedAtTimestamp: params.row.poolUpdatedAtTimestamp
-            }}
-          >
-            {({
-              memberCurrentTotalAmountReceived,
-              memberFlowRate,
-              timestamp
-            }) => (
-              <FlowingBalanceWithToken
-                balance={memberCurrentTotalAmountReceived}
-                balanceTimestamp={timestamp}
-                flowRate={memberFlowRate}
-                TokenChipProps={{
-                  network: network,
-                  tokenAddress: params.row.token
-                }}
-              />
-            )}
-          </PoolMemberTotalAmountReceived>
+          pool ? (
+            <PoolMemberTotalAmountReceived
+              member={params.row}
+              pool={pool}
+            >
+              {({
+                memberCurrentTotalAmountReceived,
+                memberFlowRate,
+                timestamp
+              }) => (
+                <FlowingBalanceWithToken
+                  balance={memberCurrentTotalAmountReceived}
+                  balanceTimestamp={timestamp}
+                  flowRate={memberFlowRate}
+                  TokenChipProps={{
+                    network: network,
+                    tokenAddress: params.row.token
+                  }}
+                />
+              )}
+            </PoolMemberTotalAmountReceived>
+          ) : <Skeleton sx={{ width: '100px' }} />
         )
       },
       {

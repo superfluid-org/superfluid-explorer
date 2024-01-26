@@ -556,6 +556,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
             setPaging={setPoolMemberPaging}
             ordering={poolMemberPagingOrdering}
             setOrdering={setPoolMemberOrdering}
+            pool={pool}
           />
         </Card>
       </Box>

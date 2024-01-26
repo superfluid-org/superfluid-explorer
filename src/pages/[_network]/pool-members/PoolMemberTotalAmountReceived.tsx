@@ -1,13 +1,13 @@
 import { BigNumber, BigNumberish } from 'ethers'
 import { FC, PropsWithChildren, useMemo } from 'react'
 
-type PoolMemberInput = {
+export type PoolMemberInput = {
   units: BigNumberish
   poolTotalAmountDistributedUntilUpdatedAt: BigNumberish
   totalAmountReceivedUntilUpdatedAt: BigNumberish
 }
 
-type PoolInput = {
+export type PoolInput = {
   flowRate: BigNumberish
   totalAmountDistributedUntilUpdatedAt: BigNumberish
   totalUnits: BigNumberish
