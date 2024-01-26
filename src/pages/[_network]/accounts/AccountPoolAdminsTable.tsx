@@ -478,7 +478,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
         <TableBody>
           {tableRows.map((pool: Pool) => (
             <TableRow key={pool.id} hover>
-              <TableCell data-cy={'publications-pool-id'} className="address">
+              <TableCell className="address">
                 <AccountAddressFormatted
                   network={network}
                   address={pool.id}

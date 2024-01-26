@@ -1,8 +1,8 @@
 import { Given, Then } from 'cypress-cucumber-preprocessor/steps'
 
-import { CommonElements } from '../../pageObjects/components/CommonElements'
 import { LandingPage } from '../../pageObjects/pages/LandingPage'
 import { StreamsPage } from '../../pageObjects/pages/StreamsPage'
+import { CommonElements } from '../../pageObjects/components/CommonElements'
 
 Given(`User has opened the {string} page on {string}`, (page, network) => {
   LandingPage.openDataPage(page, network)

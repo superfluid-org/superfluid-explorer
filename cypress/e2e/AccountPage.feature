@@ -5,7 +5,11 @@ Feature: Account page test cases
     And User opens the settings menu
     And User changes the ether decimal places to 18
     And User closes the settings menu
+    And User opens the settings menu
+    And User changes the ether decimal places to 18
+    And User closes the settings menu
     And The account address, type ,balances and network is shown correctly for "matic"
+    And User switches to "streams" tab
     And User switches to "streams" tab
     And The account streams are shown correctly for "matic"
     And User switches to "indexes" tab
@@ -134,6 +138,8 @@ Feature: Account page test cases
   Scenario: Account page - pools tab tooltips and links
     Given User has opened the "GDA admin account" page on "goerli"
     And User switches to "pools" tab
+    Then Tooltip is visible when user hovers the "gda-pool-table-total-units" tooltip icon
+    Then Tooltip is visible when user hovers the "gda-admin" tooltip icon
     Then Tooltip is visible when user hovers the "members" tooltip icon
     Then Tooltip is visible when user hovers the "gda-connected" tooltip icon
 
