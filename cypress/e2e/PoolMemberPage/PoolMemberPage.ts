@@ -1,5 +1,6 @@
-import { Given, When } from 'cypress-cucumber-preprocessor/steps'
+import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps'
 
+import { AccountPage } from '../../pageObjects/pages/AccountPage'
 import { LandingPage } from '../../pageObjects/pages/LandingPage'
 import { PoolMemberPage } from '../../pageObjects/pages/PoolMemberPage'
 
@@ -18,3 +19,9 @@ Given(`Pool member unit update table shows the correct data`, () => {
 Given(`User has opened the {string} page on {string}`, (page, network) => {
   LandingPage.openDataPage(page, network)
 })
+Then(
+  `Tooltip is visible when user hovers the {string} tooltip icon`,
+  (tooltip) => {
+    AccountPage.hoverTooltipAndValidateLink(tooltip)
+  }
+)

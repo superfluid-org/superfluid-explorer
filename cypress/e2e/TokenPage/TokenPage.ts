@@ -137,3 +137,12 @@ Given('The token overall data is shown correctly', () => {
 Given('Token statistics queries are saved for {string}', (network) => {
   TokenPage.saveTokenStatisticsQueriesOn(network)
 })
+Then(`User opens the settings menu`, () => {
+  CommonElements.openSettingsMenu()
+})
+Given(`User changes the stream granularity to {string}`, (granularity) => {
+  CommonElements.changeGranularity(granularity)
+})
+Then(`User closes the settings menu`, () => {
+  CommonElements.closeSettingsMenu()
+})

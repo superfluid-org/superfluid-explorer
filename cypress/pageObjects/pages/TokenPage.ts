@@ -1,5 +1,6 @@
-import { BasePage } from '../BasePage'
 import { ethers } from 'ethers'
+
+import { BasePage } from '../BasePage'
 
 const TOKEN_LISTED_STATUS = '[data-cy=token-listed-status] span'
 const TOKEN_SYMBOL = '[data-cy=token-symbol] span'

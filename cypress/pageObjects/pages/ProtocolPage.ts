@@ -1,6 +1,6 @@
+import { networks } from '../../../src/redux/networks'
 import protocolContracts from '../../../src/redux/protocolContracts'
 import { BasePage } from '../BasePage'
-import { networks } from '../../../src/redux/networks'
 
 const PROTOCOL_BUTTON = '[data-cy="protocol-button"]'
 const NETWORK_RIGHT_ARROW = '[data-testid=KeyboardArrowRightIcon]'

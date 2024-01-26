@@ -1,8 +1,9 @@
-import { ethers } from 'ethers'
-import { BasePage } from '../BasePage'
-import { calculatePoolPercentage } from '../../../src/hooks/usePoolPercentage'
 import Decimal from 'decimal.js'
+import { ethers } from 'ethers'
+
+import { calculatePoolPercentage } from '../../../src/hooks/usePoolPercentage'
 import { timeAgo } from '../../../src/utils/dateTime'
+import { BasePage } from '../BasePage'
 
 const POOL_ADDRESS = '[data-cy=pool-subscribers-short-hash]'
 const POOL_TOKEN = '[data-cy=pool-subscribers-token]'
@@ -49,14 +50,12 @@ export class PoolMemberPage extends BasePage {
       )
       this.containsText(
         POOL_UNITS,
-        `${data[network].poolMembers[0].units} / ${
-          data[network].poolMembers[0].pool.totalUnits
-        } (${calculatePoolPercentage(
+        `${calculatePoolPercentage(
           new Decimal(data[network].poolMembers[0].pool.totalUnits),
           new Decimal(data[network].poolMembers[0].units)
         )
           .toDP(2)
-          .toString()}%)`
+          .toString()}%`
       )
       const createdAtDate = new Date(
         data[network].poolMembers[0].createdAtTimestamp * 1000

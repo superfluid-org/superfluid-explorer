@@ -1,7 +1,12 @@
 import { Given, Then } from 'cypress-cucumber-preprocessor/steps'
 
 import { CommonElements } from '../../pageObjects/components/CommonElements'
+import { LandingPage } from '../../pageObjects/pages/LandingPage'
 import { ProtocolPage } from '../../pageObjects/pages/ProtocolPage'
+
+Given(`User has opened the {string} page`, (page) => {
+  LandingPage.openPage(page)
+})
 
 Then('User switches network for {string}', (network) => {
   ProtocolPage.switchNetwork(network)
