@@ -87,8 +87,8 @@ const PoolMemberDataGrid: FC<Props> = ({
         )
       },
       {
-        field: 'totalAmountClaimed',
-        headerName: 'Amount Claimed',
+        field: 'totalAmountReceivedUntilUpdatedAt',
+        headerName: 'Amount Received',
         sortable: false,
         flex: 2,
         renderCell: (params: GridRenderCellParams<string, PoolMember>) => (

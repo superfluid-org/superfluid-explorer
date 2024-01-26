@@ -4,6 +4,7 @@ import { FC, PropsWithChildren, useMemo } from 'react'
 type PoolMemberInput = {
   units: BigNumberish
   poolTotalAmountDistributedUntilUpdatedAt: BigNumberish
+  totalAmountReceivedUntilUpdatedAt: BigNumberish
 }
 
 type PoolInput = {
@@ -53,7 +54,7 @@ export const getTotalAmountReceivedFromPoolMember = (
 
   if (poolUnits.isZero()) {
     return {
-      memberCurrentTotalAmountReceived: BigNumber.from(0),
+      memberCurrentTotalAmountReceived: BigNumber.from(member.totalAmountReceivedUntilUpdatedAt),
       memberFlowRate: BigNumber.from(0),
       timestamp: currentTimestamp
     }
@@ -74,7 +75,7 @@ export const getTotalAmountReceivedFromPoolMember = (
       .div(poolUnits)
 
   const memberCurrentTotalAmountReceived = BigNumber.from(
-    member.poolTotalAmountDistributedUntilUpdatedAt
+    member.totalAmountReceivedUntilUpdatedAt
   ).add(memberCurrentTotalAmountReceivedDelta)
 
   const memberFlowRate = BigNumber.from(pool.flowRate)
