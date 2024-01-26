@@ -3514,12 +3514,12 @@
   resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.24-dev.f8ac96f.0.tgz#86264441bb4dd370ffa188658b9bc070f2ad50ea"
   integrity sha512-qNOOVfDeb3SlVKH5Doi/M0UfSBgjkLUA1gptSDgIyWPpVQuV1ODw7EjaQOwrcNp1P+6cN+LoFnxpmFS5OENkow==
 
-"@superfluid-finance/metadata@^1.1.26-dev.083b723.0":
-  version "1.1.26-dev.083b723.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.26-dev.083b723.0.tgz#0dd6b63561accf971e9304b7d3c7246b07157d2f"
-  integrity sha512-WAf9vkZwtJQS5yiImQ2vFvkw695QnQinu0zMNdJH46RyrregfNUvBMH4bFXsyMvA7dVp6ueQBWReZQdjXx2nvg==
+"@superfluid-finance/metadata@^1.1.26-dev.c7c06bd.0":
+  version "1.1.26-dev.c7c06bd.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.26-dev.c7c06bd.0.tgz#2d0fd5d2d8b61fe99eb64adfd1df0cee4d4642ed"
+  integrity sha512-0U95jPlhaIbsggduN0P+TAS+p1bNr19FvtAhipxYwwZlPGsnuQPZvVcxojOAyYOYO6anouIIIXt9nDprUVfeIw==
 
-"@superfluid-finance/sdk-core@^0.6.14-dev.083b723.0":
+"@superfluid-finance/sdk-core@^0.6.14-dev.c7c06bd.0":
   version "0.6.14-dev.f8ac96f.0"
   resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.6.14-dev.f8ac96f.0.tgz#8833c4926ade31953e1ef02044e64caf232fec73"
   integrity sha512-znYvtOsqGMrA16jroaI+hyLBogP0wapwXZR88Pz8j3v3kB0srHjMPotwPGvf3+tCjRj+qOA7JkUvBczDuGTt5Q==
