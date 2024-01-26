@@ -351,3 +351,17 @@ Then(`User opens the settings menu`, () => {
 Then(`User closes the settings menu`, () => {
   CommonElements.closeSettingsMenu()
 })
+
+Then(
+  `Tooltip is visible when user hovers the {string} tooltip icon`,
+  (tooltip) => {
+    AccountPage.hoverTooltipAndValidateLink(tooltip)
+  }
+)
+
+Then(
+  `Pools tab is not available to the user`,
+  () => {
+    AccountPage.validatePoolsTabDoesNotExist()
+  }
+)

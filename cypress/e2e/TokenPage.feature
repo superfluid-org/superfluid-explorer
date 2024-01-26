@@ -15,10 +15,10 @@ Feature: Token page test cases
     And The latest token events data is loaded
 
   Scenario: Filtering cases for streams tab
+    Given User has opened the "listed token" page on "matic"
     And User opens the settings menu
     And User changes the ether decimal places to 18
     And User closes the settings menu
-    Given User has opened the "listed token" page on "matic"
     And User filters streams by senders address on "matic"
     Then Streams filtered by senders address are shown correctly for "matic"
     And User filters streams by receivers address on "matic"

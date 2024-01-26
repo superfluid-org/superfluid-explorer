@@ -34,3 +34,7 @@ Given(`User changes the stream granularity to {string}`, (granularity) => {
 Then(`User closes the settings menu`, () => {
   CommonElements.closeSettingsMenu()
 })
+
+Given(`User changes the ether decimal places to {int}`, (num) => {
+  CommonElements.changeDecimalPlaces(num)
+})

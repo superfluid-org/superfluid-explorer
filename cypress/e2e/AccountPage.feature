@@ -24,6 +24,9 @@ Feature: Account page test cases
 
   Scenario: Changing stream granularity
     Given User has opened the "ongoing streams account" page on "matic"
+    And User opens the settings menu
+    And User changes the ether decimal places to 18
+    And User closes the settings menu
     And User switches to "streams" tab
     And User opens the settings menu
     And User changes the stream granularity to "Second"
@@ -143,8 +146,7 @@ Feature: Account page test cases
 
   Scenario: Pools and Members table with no data
     Given User has opened the "static balance account" page on "matic"
-    And User switches to "pools" tab
-    Then Pools and Members tables show no results
+    Then Pools tab is not available to the user
 
   Scenario: Filtering pools table by address
     Given User has opened the "GDA admin account" page on "goerli"
