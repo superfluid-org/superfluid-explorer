@@ -1,5 +1,6 @@
 import { Address } from '@superfluid-finance/sdk-core'
 import { getFramework, RpcEndpointBuilder } from '@superfluid-finance/sdk-redux'
+import { SuperToken__factory } from '@superfluid-finance/sdk-core'
 
 export const adhocRpcEndpoints = {
   endpoints: (builder: RpcEndpointBuilder) => ({
@@ -42,6 +43,29 @@ export const adhocRpcEndpoints = {
         {
           type: 'GENERAL',
           id: arg.chainId // TODO(KK): Could be made more specific.
+        }
+      ]
+    }),
+    totalSupply: builder.query<
+      string,
+      { chainId: number; tokenAddress: string }
+    >({
+      queryFn: async ({ chainId, tokenAddress }) => {
+        const framework = await getFramework(chainId)
+
+        const totalSupply = await SuperToken__factory.connect(
+          tokenAddress,
+          framework.settings.provider
+        ).totalSupply()
+
+        return {
+          data: totalSupply.toString()
+        }
+      },
+      providesTags: (_result, _error, arg) => [
+        {
+          type: 'GENERAL',
+          id: arg.chainId
         }
       ]
     })
