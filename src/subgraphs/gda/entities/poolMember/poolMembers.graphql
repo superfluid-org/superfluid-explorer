@@ -24,6 +24,7 @@ query poolMembers(
       id
       totalUnits
       flowRate
+      totalAmountDistributedUntilUpdatedAt
       token {
         id
         symbol

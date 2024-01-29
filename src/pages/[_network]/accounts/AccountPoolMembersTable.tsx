@@ -156,8 +156,8 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof PoolMember_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter))
+      () =>
+        onFilterChange(omit(fields, queryArg.filter))
 
   const getMemberStatusFilter = (
     status: MemberStatus | null
@@ -448,14 +448,14 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               {(memberStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                <Button
-                  data-cy={'reset-filter'}
-                  onClick={resetFilter}
-                  tabIndex={-1}
-                >
-                  Reset
-                </Button>
-              )}
+                  <Button
+                    data-cy={'reset-filter'}
+                    onClick={resetFilter}
+                    tabIndex={-1}
+                  >
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -574,11 +574,11 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 <PoolMemberTotalAmountReceived
                   member={member}
                   pool={{
-                    flowRate: member.poolFlowRateCurrent,
+                    flowRate: member.pool_flowRate,
                     totalAmountDistributedUntilUpdatedAt:
-                      member.poolTotalAmountDistributedUntilUpdatedAt,
-                    totalUnits: member.poolTotalUnits,
-                    updatedAtTimestamp: member.poolUpdatedAtTimestamp
+                      member.pool_totalAmountDistributedUntilUpdatedAt,
+                    totalUnits: member.pool_totalUnits,
+                    updatedAtTimestamp: member.pool_updatedAtTimestamp
                   }}
                 >
                   {({
@@ -611,7 +611,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               </TableCell> */}
               <TableCell data-cy={'member-units'}>
                 <PoolPercentage
-                  totalUnits={member.poolTotalUnits}
+                  totalUnits={member.pool_totalUnits}
                   individualUnits={member.units}
                 />
               </TableCell>

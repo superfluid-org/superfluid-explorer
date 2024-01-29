@@ -125,7 +125,7 @@ const PoolMemberDataGrid: FC<Props> = ({
         renderCell: (params) => {
           return (
             <PoolPercentage
-              totalUnits={params.row.poolTotalUnits}
+              totalUnits={params.row.pool_totalUnits}
               individualUnits={params.row.units}
             />
           )

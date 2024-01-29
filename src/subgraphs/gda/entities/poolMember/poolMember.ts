@@ -32,12 +32,13 @@ export interface PoolMember {
   totalAmountClaimed: BigNumber
   token: Address
   tokenSymbol: string
-  poolTotalUnits: BigNumber
-  poolFlowRateCurrent: BigNumber
-  pool: SubgraphId
   totalAmountReceivedUntilUpdatedAt: BigNumber
   poolTotalAmountDistributedUntilUpdatedAt: BigNumber
-  poolUpdatedAtTimestamp: Timestamp
+  pool: SubgraphId
+  pool_totalUnits: BigNumber
+  pool_flowRate: BigNumber
+  pool_updatedAtTimestamp: Timestamp
+  pool_totalAmountDistributedUntilUpdatedAt: BigNumber
 }
 
 export type PoolMembersListQuery = SubgraphListQuery<
@@ -95,9 +96,11 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
       updatedAtTimestamp: Number(x.updatedAtTimestamp),
       updatedAtBlockNumber: Number(x.updatedAtBlockNumber),
       pool: x.pool.id,
-      poolFlowRateCurrent: x.pool.flowRate,
-      poolTotalUnits: x.pool.totalUnits,
-      poolUpdatedAtTimestamp: Number(x.pool.updatedAtTimestamp),
+      pool_flowRate: x.pool.flowRate,
+      pool_totalUnits: x.pool.totalUnits,
+      pool_updatedAtTimestamp: Number(x.pool.updatedAtTimestamp),
+      pool_totalAmountDistributedUntilUpdatedAt:
+        x.pool.totalAmountDistributedUntilUpdatedAt,
       token: x.pool.token.id,
       tokenSymbol: x.pool.token.symbol,
       admin: x.pool.admin.id
