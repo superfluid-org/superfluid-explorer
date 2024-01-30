@@ -32,6 +32,11 @@ const getSubgraphUrl = (chainId: number) => {
   return `https://${metadata.name}.subgraph.x.superfluid.dev/`
 }
 
+const getSupportsGDA = (chainId: number) => {
+  const metadata = getMetadata(chainId)
+  return Boolean(metadata.contractsV1.gdaV1)
+}
+
 export const networks = [
   // mainnets
   {
@@ -39,7 +44,7 @@ export const networks = [
     slugName: 'ethereum',
     chainId: 1,
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(1),
     rpcUrl: getRpcUrl(1),
     subgraphUrl: getSubgraphUrl(1),
     getLinkForTransaction: (txHash: string): string =>
@@ -52,7 +57,7 @@ export const networks = [
     slugName: 'xdai',
     chainId: 100,
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(100),
     rpcUrl: getRpcUrl(100),
     subgraphUrl: getSubgraphUrl(100),
     getLinkForTransaction: (txHash: string): string =>
@@ -65,7 +70,7 @@ export const networks = [
     slugName: 'matic',
     chainId: 137,
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(137),
     rpcUrl: getRpcUrl(137),
     subgraphUrl: getSubgraphUrl(137),
     getLinkForTransaction: (txHash: string): string =>
@@ -78,7 +83,7 @@ export const networks = [
     slugName: 'optimism-mainnet',
     chainId: 10,
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(10),
     rpcUrl: getRpcUrl(10),
     subgraphUrl: getSubgraphUrl(10),
     getLinkForTransaction: (txHash: string): string =>
@@ -91,7 +96,7 @@ export const networks = [
     slugName: 'arbitrum-one',
     chainId: 42161,
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(42161),
     rpcUrl: getRpcUrl(42161),
     subgraphUrl: getSubgraphUrl(42161),
     getLinkForTransaction: (txHash: string): string =>
@@ -104,7 +109,7 @@ export const networks = [
     slugName: 'avalanche-c',
     chainId: 43114,
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(43114),
     rpcUrl: getRpcUrl(43114),
     subgraphUrl: getSubgraphUrl(43114),
     getLinkForTransaction: (txHash: string): string =>
@@ -117,7 +122,7 @@ export const networks = [
     slugName: 'bnb-smart-chain',
     chainId: 56,
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(56),
     rpcUrl: getRpcUrl(56),
     subgraphUrl: getSubgraphUrl(56),
     getLinkForTransaction: (txHash: string): string =>
@@ -130,7 +135,7 @@ export const networks = [
     slugName: 'celo',
     chainId: 42220,
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(42220),
     rpcUrl: getRpcUrl(42220),
     subgraphUrl: getSubgraphUrl(42220),
     getLinkForTransaction: (txHash: string): string =>
@@ -140,7 +145,7 @@ export const networks = [
   },
   {
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(8453),
     chainId: 8453,
     slugName: 'base-mainnet',
     displayName: 'Base Mainnet',
@@ -154,7 +159,7 @@ export const networks = [
   {
     displayName: 'Scroll',
     isTestnet: false,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(534352),
     chainId: 534352,
     slugName: 'scroll-mainnet',
     rpcUrl: getRpcUrl(534352),
@@ -170,7 +175,7 @@ export const networks = [
     slugName: 'goerli',
     chainId: 5,
     isTestnet: true,
-    supportsGDA: true,
+    supportsGDA: getSupportsGDA(5),
     rpcUrl: getRpcUrl(5),
     subgraphUrl: getSubgraphUrl(5),
     getLinkForTransaction: (txHash: string): string =>
@@ -183,7 +188,7 @@ export const networks = [
     slugName: 'mumbai',
     chainId: 80001,
     isTestnet: true,
-    supportsGDA: true,
+    supportsGDA: getSupportsGDA(80001),
     rpcUrl: getRpcUrl(80001),
     subgraphUrl: getSubgraphUrl(80001),
     getLinkForTransaction: (txHash: string): string =>
@@ -196,7 +201,7 @@ export const networks = [
     slugName: 'avalanche-fuji',
     chainId: 43113,
     isTestnet: true,
-    supportsGDA: true,
+    supportsGDA: getSupportsGDA(43113),
     rpcUrl: getRpcUrl(43113),
     subgraphUrl: getSubgraphUrl(43113),
     getLinkForTransaction: (txHash: string): string =>
@@ -209,7 +214,7 @@ export const networks = [
     slugName: 'optimism-goerli',
     chainId: 420,
     isTestnet: true,
-    supportsGDA: true,
+    supportsGDA: getSupportsGDA(420),
     rpcUrl: getRpcUrl(420),
     subgraphUrl: getSubgraphUrl(420),
     getLinkForTransaction: (txHash: string): string =>
@@ -222,7 +227,7 @@ export const networks = [
     slugName: 'arbitrum-goerli',
     chainId: 421613,
     isTestnet: true,
-    supportsGDA: true,
+    supportsGDA: getSupportsGDA(421613),
     rpcUrl: getRpcUrl(421613),
     subgraphUrl: getSubgraphUrl(421613),
     getLinkForTransaction: (txHash: string): string =>
@@ -232,7 +237,7 @@ export const networks = [
   },
   {
     isTestnet: true,
-    supportsGDA: true,
+    supportsGDA: getSupportsGDA(11155111),
     chainId: 11155111,
     slugName: 'eth-sepolia',
     displayName: 'Sepolia',
@@ -245,7 +250,7 @@ export const networks = [
   },
   {
     isTestnet: true,
-    supportsGDA: true,
+    supportsGDA: getSupportsGDA(1442),
     chainId: 1442,
     slugName: 'polygon-zkevm-testnet',
     displayName: 'Polygon zkEVM Testnet',
@@ -258,7 +263,7 @@ export const networks = [
   },
   {
     isTestnet: true,
-    supportsGDA: true,
+    supportsGDA: getSupportsGDA(84531),
     chainId: 84531,
     slugName: 'base-goerli',
     displayName: 'Base Goerli',
@@ -271,7 +276,7 @@ export const networks = [
   },
   {
     isTestnet: true,
-    supportsGDA: false,
+    supportsGDA: getSupportsGDA(11155420),
     chainId: 11155420,
     slugName: 'optimism-sepolia',
     displayName: 'Optimism Sepolia',
@@ -284,7 +289,7 @@ export const networks = [
   }
   // {
   //   isTestnet: true,
-  //   supportsGDA: false,
+  //   supportsGDA: getSupportsGDA(534351),
   //   chainId: 534351,
   //   slugName: 'scroll-sepolia',
   //   displayName: 'Scroll Sepolia',
