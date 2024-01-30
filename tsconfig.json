@@ -22,7 +22,9 @@
     "global.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "cypress/**/*.ts"
+    "cypress/**/*.ts",
+    "cypress/e2e/PoolPage",
+    "cypress/e2e/PoolMemberPage"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,70 +1,70 @@
-import { ethers } from "ethers";
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { providers } from "@0xsequence/multicall";
+import { providers } from '@0xsequence/multicall'
+import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
+import { ethers } from 'ethers'
 
 export const ensApi = createApi({
-  reducerPath: "ens",
+  reducerPath: 'ens',
   baseQuery: fakeBaseQuery(),
   endpoints: (builder) => {
     const mainnetProvider = new providers.MulticallProvider(
       new ethers.providers.StaticJsonRpcProvider(
-        "https://rpc-endpoints.superfluid.dev/eth-mainnet",
-        "mainnet"
+        'https://rpc-endpoints.superfluid.dev/eth-mainnet',
+        'mainnet'
       )
-    );
+    )
     return {
       resolveName: builder.query<
         { address: string; name: string } | null,
         string
       >({
         queryFn: async (name) => {
-          if (!name.includes(".")) {
-            return { data: null };
+          if (!name.includes('.')) {
+            return { data: null }
           }
 
-          const address = await mainnetProvider.resolveName(name);
+          const address = await mainnetProvider.resolveName(name)
           return {
             data: address
               ? {
                   name,
-                  address: address,
+                  address: address
                 }
-              : null,
-          };
-        },
+              : null
+          }
+        }
       }),
       lookupAddress: builder.query<
         { address: string; name: string } | null,
         string
       >({
         queryFn: async (address) => {
-          const name = await mainnetProvider.lookupAddress(address);
+          const name = await mainnetProvider.lookupAddress(address)
           return {
             data: name
               ? {
                   name,
-                  address: ethers.utils.getAddress(address),
+                  address: ethers.utils.getAddress(address)
                 }
-              : null,
-          };
-        },
+              : null
+          }
+        }
       }),
       lookupAvatar: builder.query<
         { address: string; avatar: string } | null,
         string
       >({
         queryFn: async (address) => {
-          const avatar = await mainnetProvider.getAvatar(address);
+          const avatar = await mainnetProvider.getAvatar(address)
           return {
             data: avatar
               ? {
                   address,
-                  avatar: avatar,
+                  avatar: avatar
                 }
-              : null,
-          };
-        },
-      }),
-    };
-  },
-});
+              : null
+          }
+        }
+      })
+    }
+  }
+})

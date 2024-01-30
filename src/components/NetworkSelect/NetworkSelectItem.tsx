@@ -1,15 +1,16 @@
-import CheckIcon from "@mui/icons-material/Check";
-import { CircularProgress, ListItemText, MenuItem } from "@mui/material";
-import NextLink from "next/link";
-import { FC } from "react";
-import { Network } from "../../redux/networks";
+import CheckIcon from '@mui/icons-material/Check'
+import { CircularProgress, ListItemText, MenuItem } from '@mui/material'
+import NextLink from 'next/link'
+import { FC } from 'react'
+
+import { Network } from '../../redux/networks'
 
 interface NetworkSelectItemProps {
-  network: Network;
-  address: string;
-  active?: boolean;
-  loading?: boolean;
-  onClick?: () => void;
+  network: Network
+  address: string
+  active?: boolean
+  loading?: boolean
+  onClick?: () => void
 }
 
 const NetworkSelectItem: FC<NetworkSelectItemProps> = ({
@@ -17,7 +18,7 @@ const NetworkSelectItem: FC<NetworkSelectItemProps> = ({
   address,
   active,
   loading,
-  onClick,
+  onClick
 }) => (
   <NextLink href={`/${network.slugName}/accounts/${address}`} passHref>
     <MenuItem
@@ -30,6 +31,6 @@ const NetworkSelectItem: FC<NetworkSelectItemProps> = ({
       {!active && loading && <CircularProgress size={18} sx={{ ml: 2 }} />}
     </MenuItem>
   </NextLink>
-);
+)
 
-export default NetworkSelectItem;
+export default NetworkSelectItem

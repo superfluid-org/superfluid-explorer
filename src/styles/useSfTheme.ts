@@ -1,17 +1,21 @@
-import {Theme} from '@mui/material';
-import useSystemTheme from './useSystemTheme';
-import {useAppSelector} from "../redux/hooks";
-import {createSfTheme} from "./theme";
-import {useEffect, useState} from "react";
-import { isClient } from "../utils/isServer";
-import {getRenderedThemeMode} from "../pages/_app";
+import { Theme } from '@mui/material'
+import { useEffect, useState } from 'react'
+
+import { getRenderedThemeMode } from '../pages/_app.page'
+import { useAppSelector } from '../redux/hooks'
+import { isClient } from '../utils/isServer'
+import { createSfTheme } from './theme'
+import useSystemTheme from './useSystemTheme'
 
 const useSfTheme = (): Theme => {
-  const isSystemDarkTheme = useSystemTheme();
+  const isSystemDarkTheme = useSystemTheme()
 
-  const {themePreference} = useAppSelector((state) => state.appPreferences);
+  const { themePreference } = useAppSelector((state) => state.appPreferences)
 
-  let initialTheme = themePreference === 'system' ? createSfTheme('light') : createSfTheme(themePreference);
+  let initialTheme =
+    themePreference === 'system'
+      ? createSfTheme('light')
+      : createSfTheme(themePreference)
 
   if (isClient()) {
     if (getRenderedThemeMode() !== initialTheme.palette.mode) {
@@ -20,20 +24,24 @@ const useSfTheme = (): Theme => {
     }
   }
 
-  const [muiTheme, setMuiTheme] =
-    useState<Theme>(initialTheme);
+  const [muiTheme, setMuiTheme] = useState<Theme>(initialTheme)
 
   // System theme we'll handle client-side because server has no knowledge of system preferences.
   // NOTE: UseEffect runs only on client-side.
   useEffect(() => {
-    const currentTheme = getRenderedThemeMode();
-    const actualThemePreference = themePreference === 'system' ? ((isSystemDarkTheme) ? 'dark' : 'light') : themePreference;
+    const currentTheme = getRenderedThemeMode()
+    const actualThemePreference =
+      themePreference === 'system'
+        ? isSystemDarkTheme
+          ? 'dark'
+          : 'light'
+        : themePreference
     if (currentTheme !== actualThemePreference) {
-      setMuiTheme(createSfTheme(actualThemePreference));
+      setMuiTheme(createSfTheme(actualThemePreference))
     }
-  }, [themePreference]);
+  }, [themePreference])
 
-  return muiTheme;
-};
+  return muiTheme
+}
 
-export default useSfTheme;
+export default useSfTheme

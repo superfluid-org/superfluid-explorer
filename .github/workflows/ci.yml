@@ -5,7 +5,6 @@ on:
     types: [opened, reopened, ready_for_review, synchronize]
 
 jobs:
-
   test-suites:
     timeout-minutes: 60
     if: ${{ !github.event.pull_request.draft }}
@@ -16,10 +15,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [ chrome , firefox ]
+        browser: [chrome, firefox]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v1
@@ -28,14 +27,14 @@ jobs:
 
       - name: Install dependencies with currents Cypress binary
         run: CYPRESS_DOWNLOAD_MIRROR=https://cy-cdn.currents.dev yarn install
-          
 
       - name: Cypress tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v6
         with:
           command: yarn cypress-cloud run --browser ${{ matrix.browser }} --record --parallel --key ${{ secrets.CYPRESS_CONSOLE_RECORD_KEY }} --ci-build-id ui-${{ github.repository }}-${{ github.run_id }}-${{ github.run_attempt}}
           start: yarn dev
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 180
+          install: false
         env:
           GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}

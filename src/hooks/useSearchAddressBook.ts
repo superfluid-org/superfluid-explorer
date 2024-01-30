@@ -1,20 +1,21 @@
-import { useMemo } from "react";
-import { ethers } from "ethers";
-import { networks } from "../redux/networks";
-import { useAppSelector } from "../redux/hooks";
-import { addressBookSelectors } from "../redux/slices/addressBook.slice";
+import { ethers } from 'ethers'
+import { useMemo } from 'react'
+
+import { useAppSelector } from '../redux/hooks'
+import { networks } from '../redux/networks'
+import { addressBookSelectors } from '../redux/slices/addressBook.slice'
 
 export const useSearchAddressBook = (searchTerm: string) => {
   const isSearchTermAddress = useMemo(
     () => ethers.utils.isAddress(searchTerm),
     [searchTerm]
-  );
+  )
 
   const addressBookEntries = useAppSelector((state) =>
-    searchTerm !== "" && !isSearchTermAddress
+    searchTerm !== '' && !isSearchTermAddress
       ? addressBookSelectors.selectAll(state)
       : []
-  );
+  )
 
   return networks.map((network) => {
     return {
@@ -24,7 +25,7 @@ export const useSearchAddressBook = (searchTerm: string) => {
         .filter((x) =>
           x.nameTag.toLowerCase().includes(searchTerm.toLowerCase())
         )
-        .map((x) => ({ id: x.address })),
-    };
-  });
-};
+        .map((x) => ({ id: x.address }))
+    }
+  })
+}

@@ -2,7 +2,11 @@ Feature: Account page test cases
 
   Scenario: Data displayed in account page
     Given User has opened the "static balance account" page on "matic"
+    And User opens the settings menu
+    And User changes the ether decimal places to 18
+    And User closes the settings menu
     And The account address, type ,balances and network is shown correctly for "matic"
+    And User switches to "streams" tab
     And The account streams are shown correctly for "matic"
     And User switches to "indexes" tab
     And The account publications are shown correctly for "matic"
@@ -21,6 +25,10 @@ Feature: Account page test cases
   Scenario: Changing stream granularity
     Given User has opened the "ongoing streams account" page on "matic"
     And User opens the settings menu
+    And User changes the ether decimal places to 18
+    And User closes the settings menu
+    And User switches to "streams" tab
+    And User opens the settings menu
     And User changes the stream granularity to "Second"
     Then Flow rates on "matic" are shown in "second"
     And User changes the stream granularity to "Minute"
@@ -36,12 +44,14 @@ Feature: Account page test cases
 
   Scenario: Hovering on account page tooltips and help alert links
     Given User has opened the "static balance account" page on "matic"
+    And User switches to "streams" tab
     And The "streams" help alert is shown
     And User switches to "indexes" tab
     Then Tooltip is visible when user hovers the "subscriptions" tooltip icon
 
   Scenario: Filtering incoming stream cases for streams tab
     Given User has opened the "balance account for filtering" page on "goerli"
+    And User switches to "streams" tab
     Then  User filters incoming streams by senders address for "goerli"
     Then Incoming streams filtered by senders address are shown correctly for "goerli"
     And User filters incoming streams by active
@@ -54,6 +64,7 @@ Feature: Account page test cases
 
   Scenario: Filtering outgoing stream cases for streams tab
     Given User has opened the "balance account for filtering" page on "goerli"
+    And User switches to "streams" tab
     And User filters outgoing streams by receivers address for "goerli"
     Then Outgoing streams filtered by receivers address are shown correctly for "goerli"
     And User filters outgoing streams by active
@@ -95,7 +106,6 @@ Feature: Account page test cases
 
   Scenario: Filtering cases for super tokens tab
     Given User has opened the "second balance account for filtering" page on "goerli"
-    And User switches to "super tokens" tab
     And User filters super tokens by active
     Then Super tokens filtered by active are shown correctly
     And User filters super tokens by not active
@@ -121,6 +131,76 @@ Feature: Account page test cases
     And User filters events with no results
     And User resets events filter
 
+  Scenario: Account page - pools tab tooltips and links
+    Given User has opened the "GDA admin account" page on "goerli"
+    And User switches to "pools" tab
+    Then Tooltip is visible when user hovers the "gda-pool-table-total-units" tooltip icon
+    Then Tooltip is visible when user hovers the "gda-admin" tooltip icon
+    Then Tooltip is visible when user hovers the "members" tooltip icon
+    Then Tooltip is visible when user hovers the "gda-connected" tooltip icon
 
+  Scenario: Pools tab showing the admins pools
+    Given User has opened the "GDA admin account" page on "goerli"
+    And User switches to "pools" tab
+    Then User can see the pools they are admin to in the table
+
+  Scenario: Pools and Members table with no data
+    Given User has opened the "static balance account" page on "matic"
+    Then Pools tab is not available to the user
+
+  Scenario: Filtering pools table by address
+    Given User has opened the "GDA admin account" page on "goerli"
+    And User switches to "pools" tab
+    When User filters the pools table by "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8" address
+    Then Only the pools with address "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8" are shown in the table
+
+  Scenario: Filtering pools table by "has distributed"
+    Given User has opened the "GDA admin account" page on "goerli"
+    And User switches to "pools" tab
+    And User sets the "pools" filter to "yes" for "distributed"
+    Then Only pools that have distributed tokens are shown in the table
+
+  Scenario: Filtering pools table by "has issued units" and closing and reseting the filter
+    Given User has opened the "GDA admin account" page on "goerli"
+    And User switches to "pools" tab
+    And User waits for the tables to load
+    And User sets the "pools" filter to "yes" for "issued"
+    Then Only pools that have issued units are shown in the table
+    And User clicks on the reset button on the filter
+    Then User can see the pools they are admin to in the table
+    And User sets the "pools" filter to "yes" for "distributed"
+    And User clicks on the close button on the filter
+    Then The pool table filter is not visible
+    Then Only pools that have distributed tokens are shown in the table
+
+
+  Scenario: Members tab showing members
+    Given User has opened the "GDA member account" page on "goerli"
+    And User switches to "pools" tab
+    Then User can see the pools they are a member of in the table
+
+  Scenario: Filtering members table by "is connected"
+    Given User has opened the "GDA member account" page on "goerli"
+    And User switches to "pools" tab
+    And User sets the "members" filter to "yes" for "approved"
+    Then User sees only the pools they are connected to
+
+  Scenario: Filtering members table by "has received distributions"
+    Given User has opened the "GDA member account" page on "goerli"
+    And User switches to "pools" tab
+    And User sets the "members" filter to "yes" for "received-distributions"
+    Then User sees only the pools they have received distributions from
+    And User clicks on the reset button on the filter
+    Then User can see the pools they are a member of in the table
+    And User sets the "members" filter to "yes" for "approved"
+    And User clicks on the close button on the filter
+    Then The member table filter is not visible
+    Then User sees only the pools they are connected to
+
+  Scenario: Filtering members table by "has member units"
+    Given User has opened the "GDA member account" page on "goerli"
+    And User switches to "pools" tab
+    And User sets the "members" filter to "yes" for "units"
+    Then User sees only the pools they have units in
 
 

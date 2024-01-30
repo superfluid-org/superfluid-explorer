@@ -1,3 +1,20 @@
 {
-  "extends": [ "next/core-web-vitals" ]
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["simple-import-sort", "unused-imports"],
+  "rules": {
+    "react-hooks/exhaustive-deps": "off",
+    "react/display-name": "off",
+    "unused-imports/no-unused-imports": "warn",
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn",
+    "import/first": "warn",
+    "import/newline-after-import": "warn",
+    "import/no-duplicates": "warn",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["@mui/*/*/*"]
+      }
+    ]
+  }
 }

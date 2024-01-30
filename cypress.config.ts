@@ -2,7 +2,7 @@ import { defineConfig } from 'cypress'
 
 export default defineConfig({
   env: {
-    TAGS: 'not @ignore',
+    TAGS: 'not @ignore'
   },
   viewportHeight: 1080,
   viewportWidth: 1920,
@@ -14,6 +14,6 @@ export default defineConfig({
     },
     specPattern: 'cypress/e2e/**/*.feature',
     baseUrl: 'http://localhost:3000',
-    excludeSpecPattern: '*.js',
-  },
+    excludeSpecPattern: '*.js'
+  }
 })

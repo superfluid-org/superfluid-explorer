@@ -4,3 +4,7 @@
   white-space: nowrap;
 }
 
+.tooltip-underline {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}

@@ -1,5 +1,127 @@
 {
   "goerli": {
+    "gdaMemberAccount": {
+      "address": "0xC19bE11B5f9eAC59758f4dbaAaD465Abb9103A95",
+      "pools": [
+        {
+          "id": "poolMember-0x66cbb466d797c5d657269f1aaee4c2f83b854ac1-0xc19be11b5f9eac59758f4dbaaad465abb9103a95",
+          "createdAtTimestamp": "1699525464",
+          "createdAtBlockNumber": "10012828",
+          "updatedAtTimestamp": "1699525464",
+          "updatedAtBlockNumber": "10012828",
+          "units": "1000000000000",
+          "pool": {
+            "id": "0x66cbb466d797c5d657269f1aaee4c2f83b854ac1",
+            "totalUnits": "1000000000000",
+            "flowRate": "0",
+            "token": {
+              "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
+              "symbol": "fDAIx"
+            },
+            "admin": {
+              "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
+            }
+          },
+          "account": {
+            "id": "0xc19be11b5f9eac59758f4dbaaad465abb9103a95"
+          },
+          "isConnected": true,
+          "totalAmountClaimed": "0"
+        }
+      ]
+    },
+    "gdaAdminAccount": {
+      "address": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
+      "pools": [
+        {
+          "id": "0x66cbb466d797c5d657269f1aaee4c2f83b854ac1",
+          "createdAtTimestamp": "1699525452",
+          "createdAtBlockNumber": "10012827",
+          "updatedAtTimestamp": "1699579080",
+          "updatedAtBlockNumber": "10016349",
+          "flowRate": "0",
+          "totalMembers": 1,
+          "totalUnits": "1000000000000",
+          "totalAmountDistributedUntilUpdatedAt": "17134080000000000000",
+          "adjustmentFlowRate": "0",
+          "totalAmountFlowedDistributedUntilUpdatedAt": "17134080000000000000",
+          "totalAmountInstantlyDistributedUntilUpdatedAt": "0",
+          "totalBuffer": "0",
+          "totalConnectedMembers": 1,
+          "totalConnectedUnits": "1000000000000",
+          "totalDisconnectedMembers": 0,
+          "totalDisconnectedUnits": "0",
+          "admin": {
+            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
+          },
+          "token": {
+            "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
+            "symbol": "fDAIx"
+          },
+          "poolCreatedEvent": {
+            "id": "PoolCreated-0x2c35dd9db72644df043577626ecd2c4bff191a10b1b034785c213c746701e97a-14"
+          }
+        },
+        {
+          "id": "0x8f9f03b92a0f22e115482bec5498f151bc313a76",
+          "createdAtTimestamp": "1699317468",
+          "createdAtBlockNumber": "9999069",
+          "updatedAtTimestamp": "1699318092",
+          "updatedAtBlockNumber": "9999110",
+          "flowRate": "0",
+          "totalMembers": 0,
+          "totalUnits": "0",
+          "totalAmountDistributedUntilUpdatedAt": "0",
+          "adjustmentFlowRate": "0",
+          "totalAmountFlowedDistributedUntilUpdatedAt": "0",
+          "totalAmountInstantlyDistributedUntilUpdatedAt": "0",
+          "totalBuffer": "0",
+          "totalConnectedMembers": 0,
+          "totalConnectedUnits": "0",
+          "totalDisconnectedMembers": 0,
+          "totalDisconnectedUnits": "0",
+          "admin": {
+            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
+          },
+          "token": {
+            "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
+            "symbol": "fDAIx"
+          },
+          "poolCreatedEvent": {
+            "id": "PoolCreated-0x105309c75d50053690ee6f8a4e909ee5d05f1c6ad3342e95b18aee043efe16ed-18"
+          }
+        },
+        {
+          "id": "0x864f9b0725ac8bd5788e0d7c6d0b420187fac328",
+          "createdAtTimestamp": "1699312560",
+          "createdAtBlockNumber": "9998726",
+          "updatedAtTimestamp": "1699312560",
+          "updatedAtBlockNumber": "9998726",
+          "flowRate": "0",
+          "totalMembers": 0,
+          "totalUnits": "0",
+          "totalAmountDistributedUntilUpdatedAt": "0",
+          "adjustmentFlowRate": "0",
+          "totalAmountFlowedDistributedUntilUpdatedAt": "0",
+          "totalAmountInstantlyDistributedUntilUpdatedAt": "0",
+          "totalBuffer": "0",
+          "totalConnectedMembers": 0,
+          "totalConnectedUnits": "0",
+          "totalDisconnectedMembers": 0,
+          "totalDisconnectedUnits": "0",
+          "admin": {
+            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
+          },
+          "token": {
+            "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
+            "symbol": "fDAIx"
+          },
+          "poolCreatedEvent": {
+            "id": "PoolCreated-0xd5fa1ab6a21e27659b9d5ab62877c6422671d257ab9f7f5e7efd37047077cf9e-163"
+          }
+        }
+      ]
+    },
     "superApp": {
       "address": "0x39aA80Fc05eD0b3549be279589Fc67f06b7e35EE",
       "indexes": {

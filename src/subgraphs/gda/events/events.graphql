@@ -1,0 +1,124 @@
+query instantDistributionUpdatedEvents(
+  $first: Int
+  $skip: Int
+  $where: InstantDistributionUpdatedEvent_filter
+  $orderBy: InstantDistributionUpdatedEvent_orderBy
+  $orderDirection: OrderDirection
+  $block: Block_height
+) {
+  instantDistributionUpdatedEvents(
+    first: $first
+    skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    ...instantDistributionUpdatedEvent
+  }
+}
+
+query flowDistributionUpdatedEvents(
+  $first: Int
+  $skip: Int
+  $where: FlowDistributionUpdatedEvent_filter
+  $orderBy: FlowDistributionUpdatedEvent_orderBy
+  $orderDirection: OrderDirection
+  $block: Block_height
+) {
+  flowDistributionUpdatedEvents(
+    first: $first
+    skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    ...flowDistributionUpdatedEvent
+  }
+}
+
+query poolMemberUnitsUpdatedEvents(
+  $first: Int
+  $skip: Int
+  $where: MemberUnitsUpdatedEvent_filter
+  $orderBy: MemberUnitsUpdatedEvent_orderBy
+  $orderDirection: OrderDirection
+  $block: Block_height
+) {
+  memberUnitsUpdatedEvents(
+    first: $first
+    skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    ...memberUnitsUpdatedEvent
+  }
+}
+
+fragment instantDistributionUpdatedEvent on InstantDistributionUpdatedEvent {
+  ...eventFields
+  id
+  actualAmount
+  operator
+  pool {
+    id
+    totalConnectedUnits
+    totalDisconnectedUnits
+  }
+  poolDistributor {
+    account {
+      id
+    }
+  }
+  requestedAmount
+  token
+}
+
+fragment flowDistributionUpdatedEvent on FlowDistributionUpdatedEvent {
+  ...eventFields
+  id
+  adjustmentFlowRate
+  adjustmentFlowRecipient
+  newDistributorToPoolFlowRate
+  oldFlowRate
+  newTotalDistributionFlowRate
+  operator
+  pool {
+    id
+  }
+  token
+  poolDistributor {
+    account {
+      id
+    }
+  }
+}
+
+fragment memberUnitsUpdatedEvent on MemberUnitsUpdatedEvent {
+  ...eventFields
+  id
+  units
+  totalUnits
+  token
+  timestamp
+  poolMember {
+    id
+  }
+  pool {
+    id
+  }
+}
+
+fragment eventFields on Event {
+  __typename
+  id
+  blockNumber
+  transactionHash
+  gasPrice
+  order
+  timestamp
+  logIndex
+}

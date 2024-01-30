@@ -1,0 +1,516 @@
+{
+  "avalanche-fuji": {
+    "poolWithData": {
+      "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+      "createdAtTimestamp": "1698260485",
+      "createdAtBlockNumber": "27108222",
+      "updatedAtTimestamp": "1700460029",
+      "updatedAtBlockNumber": "27929619",
+      "flowRate": "0",
+      "totalMembers": 1,
+      "totalUnits": "500000000000",
+      "totalAmountDistributedUntilUpdatedAt": "2383903507000000000000",
+      "adjustmentFlowRate": "0",
+      "totalAmountFlowedDistributedUntilUpdatedAt": "2164670768000000000000",
+      "totalAmountInstantlyDistributedUntilUpdatedAt": "219232739000000000000",
+      "totalBuffer": "0",
+      "totalConnectedMembers": 1,
+      "totalConnectedUnits": "500000000000",
+      "totalDisconnectedMembers": 0,
+      "totalDisconnectedUnits": "0",
+      "admin": {
+        "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
+      },
+      "token": {
+        "id": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "symbol": "fDAIx"
+      },
+      "poolCreatedEvent": {
+        "id": "PoolCreated-0x124bcccd280be5057fa203165a5ba2e5be037c702719b70abddcbae2c7b3d33a-4"
+      }
+    },
+    "instantDistributionTable": {
+      "instantDistributionUpdatedEvents": [
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0x81c33e2fe2cabde22b568273c6dd02a2888dfb02a82a20db2dc85a1fe0f21130-1",
+          "blockNumber": "27486511",
+          "transactionHash": "0x81c33e2fe2cabde22b568273c6dd02a2888dfb02a82a20db2dc85a1fe0f21130",
+          "gasPrice": "26500000000",
+          "order": "274865110001",
+          "timestamp": "1699334100",
+          "logIndex": "1",
+          "actualAmount": "7613686500000000000",
+          "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          },
+          "requestedAmount": "7613686786558285000",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        },
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0x608eedb7a4a01a67945ab8dfab74ee1c801d5e5077290cdb3e831bcee41b7f06-1",
+          "blockNumber": "27484096",
+          "transactionHash": "0x608eedb7a4a01a67945ab8dfab74ee1c801d5e5077290cdb3e831bcee41b7f06",
+          "gasPrice": "26500000000",
+          "order": "274840960001",
+          "timestamp": "1699328700",
+          "logIndex": "1",
+          "actualAmount": "9540741000000000000",
+          "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          },
+          "requestedAmount": "9540741010798539000",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        },
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0x74b049fcf23df7cefdd5a17cc28a7ec811c8d86740f504497da6f896d3b2483a-1",
+          "blockNumber": "27482577",
+          "transactionHash": "0x74b049fcf23df7cefdd5a17cc28a7ec811c8d86740f504497da6f896d3b2483a",
+          "gasPrice": "26500000000",
+          "order": "274825770001",
+          "timestamp": "1699325101",
+          "logIndex": "1",
+          "actualAmount": "6619387000000000000",
+          "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          },
+          "requestedAmount": "6619387497033695000",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        },
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0x42ffb5d39d8b5ce9e0a28e7d3a25f915206e08827d43dac692c3146a6924e2da-7",
+          "blockNumber": "27481677",
+          "transactionHash": "0x42ffb5d39d8b5ce9e0a28e7d3a25f915206e08827d43dac692c3146a6924e2da",
+          "gasPrice": "26500000000",
+          "order": "274816770007",
+          "timestamp": "1699323301",
+          "logIndex": "7",
+          "actualAmount": "2930660500000000000",
+          "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          },
+          "requestedAmount": "2930660692517639000",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        },
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0x6e4d0332b4e14180fc7f2b6762c3f9bd4c676922b271f1c304ecafed5e7fd2f7-1",
+          "blockNumber": "27481303",
+          "transactionHash": "0x6e4d0332b4e14180fc7f2b6762c3f9bd4c676922b271f1c304ecafed5e7fd2f7",
+          "gasPrice": "26500000000",
+          "order": "274813030001",
+          "timestamp": "1699322400",
+          "logIndex": "1",
+          "actualAmount": "6079251500000000000",
+          "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          },
+          "requestedAmount": "6079251966591731000",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        },
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0xa3bdd04dcb6b0fab5aed2f2b33ccc9a0180ccf18de46cecdac1e7f62b8770d0c-1",
+          "blockNumber": "27480978",
+          "transactionHash": "0xa3bdd04dcb6b0fab5aed2f2b33ccc9a0180ccf18de46cecdac1e7f62b8770d0c",
+          "gasPrice": "26500000000",
+          "order": "274809780001",
+          "timestamp": "1699321500",
+          "logIndex": "1",
+          "actualAmount": "651603000000000000",
+          "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          },
+          "requestedAmount": "651603103183435800",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        },
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0x9a1ecd33cd73dfa86ecf8ae082f1ca4bc89cbca8834549ea26e2daee32894617-1",
+          "blockNumber": "27480705",
+          "transactionHash": "0x9a1ecd33cd73dfa86ecf8ae082f1ca4bc89cbca8834549ea26e2daee32894617",
+          "gasPrice": "26500000000",
+          "order": "274807050001",
+          "timestamp": "1699320600",
+          "logIndex": "1",
+          "actualAmount": "8561959000000000000",
+          "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          },
+          "requestedAmount": "8561959332627262000",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        },
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0xeaa6ef98e5e6976b1a52bb608402cc5214ad0bda8a9c3410406ca879e3a8d2d3-1",
+          "blockNumber": "27480400",
+          "transactionHash": "0xeaa6ef98e5e6976b1a52bb608402cc5214ad0bda8a9c3410406ca879e3a8d2d3",
+          "gasPrice": "26500000000",
+          "order": "274804000001",
+          "timestamp": "1699319700",
+          "logIndex": "1",
+          "actualAmount": "4413797500000000000",
+          "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          },
+          "requestedAmount": "4413797818628387000",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        },
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0x1b0a100e26fdea791b4f9ef50d25b59ad68bece3d97f9bb219b210fd515001b2-1",
+          "blockNumber": "27478610",
+          "transactionHash": "0x1b0a100e26fdea791b4f9ef50d25b59ad68bece3d97f9bb219b210fd515001b2",
+          "gasPrice": "26500000000",
+          "order": "274786100001",
+          "timestamp": "1699316101",
+          "logIndex": "1",
+          "actualAmount": "8240377000000000000",
+          "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          },
+          "requestedAmount": "8240377381703370000",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        },
+        {
+          "__typename": "InstantDistributionUpdatedEvent",
+          "id": "InstantDistributionUpdated-0xf362ffd7882bd13ae2d1e3b929ed6a5170e50561187cdf46b8dc5990756a9c63-1",
+          "blockNumber": "27301323",
+          "transactionHash": "0xf362ffd7882bd13ae2d1e3b929ed6a5170e50561187cdf46b8dc5990756a9c63",
+          "gasPrice": "26500000000",
+          "order": "273013230001",
+          "timestamp": "1698789225",
+          "logIndex": "1",
+          "actualAmount": "71878000000000000",
+          "operator": "0xf1e049014ad213264697de6c1ce153dc921ab562",
+          "pool": {
+            "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+            "totalConnectedUnits": "500000000000",
+            "totalDisconnectedUnits": "0"
+          },
+          "poolDistributor": {
+            "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+          },
+          "requestedAmount": "71878008062200570",
+          "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
+        }
+      ]
+    },
+    "poolMembers": [
+      {
+        "id": "poolMember-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xc19be11b5f9eac59758f4dbaaad465abb9103a95",
+        "createdAtTimestamp": "1698260491",
+        "createdAtBlockNumber": "27108225",
+        "updatedAtTimestamp": "1698260491",
+        "updatedAtBlockNumber": "27108225",
+        "units": "500000000000",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
+          "totalUnits": "500000000000",
+          "flowRate": "0",
+          "token": {
+            "id": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+            "symbol": "fDAIx"
+          },
+          "admin": {
+            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
+          }
+        },
+        "account": {
+          "id": "0xc19be11b5f9eac59758f4dbaaad465abb9103a95"
+        },
+        "isConnected": true,
+        "totalAmountClaimed": "37996895000000000000"
+      }
+    ],
+    "flowDistributionTable": [
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0x6e92c341c7a208c0279ccba32056bc2ceaa2e6199460bb57e54b82745a5d34aa-16",
+        "blockNumber": "27929619",
+        "transactionHash": "0x6e92c341c7a208c0279ccba32056bc2ceaa2e6199460bb57e54b82745a5d34aa",
+        "gasPrice": "25000000000",
+        "order": "279296190016",
+        "timestamp": "1700460029",
+        "logIndex": "16",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "0",
+        "oldFlowRate": "1682000000000000",
+        "newTotalDistributionFlowRate": "0",
+        "operator": "0x2597c6abba5724fb99f343abddd4569ee4223179",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+        }
+      },
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0xc85f1e3ab22dc461fe68cc2d15bdee2233a485c5892067b7d300bc2899b144e5-11",
+        "blockNumber": "27483865",
+        "transactionHash": "0xc85f1e3ab22dc461fe68cc2d15bdee2233a485c5892067b7d300bc2899b144e5",
+        "gasPrice": "26500000000",
+        "order": "274838650011",
+        "timestamp": "1699327800",
+        "logIndex": "11",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "1682000000000000",
+        "oldFlowRate": "2584500000000000",
+        "newTotalDistributionFlowRate": "1682000000000000",
+        "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+        }
+      },
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0xe953d15481df8beee0508173c718496988e06e7b1959b70fc576f378a68f3551-11",
+        "blockNumber": "27479950",
+        "transactionHash": "0xe953d15481df8beee0508173c718496988e06e7b1959b70fc576f378a68f3551",
+        "gasPrice": "26500000000",
+        "order": "274799500011",
+        "timestamp": "1699318800",
+        "logIndex": "11",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "2584500000000000",
+        "oldFlowRate": "2536500000000000",
+        "newTotalDistributionFlowRate": "2584500000000000",
+        "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+        }
+      },
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0xf1ca749fe6b9953b926d43bf6bd92dea1b2e21752fe4e1a4295a97ea9d698183-11",
+        "blockNumber": "27478216",
+        "transactionHash": "0xf1ca749fe6b9953b926d43bf6bd92dea1b2e21752fe4e1a4295a97ea9d698183",
+        "gasPrice": "26500000000",
+        "order": "274782160011",
+        "timestamp": "1699315201",
+        "logIndex": "11",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "2536500000000000",
+        "oldFlowRate": "2094500000000000",
+        "newTotalDistributionFlowRate": "2536500000000000",
+        "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+        }
+      },
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0x602575bf77745d2bb91b9b414c53a49ccaa483767f9574b30886a48f63f974ea-11",
+        "blockNumber": "27477918",
+        "transactionHash": "0x602575bf77745d2bb91b9b414c53a49ccaa483767f9574b30886a48f63f974ea",
+        "gasPrice": "26500000000",
+        "order": "274779180011",
+        "timestamp": "1699314300",
+        "logIndex": "11",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "2094500000000000",
+        "oldFlowRate": "0",
+        "newTotalDistributionFlowRate": "2094500000000000",
+        "operator": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+        }
+      },
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0x2fa2bba73ec5605ec9d27cea4114c3726b87dca942ac425e96cd420fe3836c99-12",
+        "blockNumber": "27315290",
+        "transactionHash": "0x2fa2bba73ec5605ec9d27cea4114c3726b87dca942ac425e96cd420fe3836c99",
+        "gasPrice": "25000000000",
+        "order": "273152900012",
+        "timestamp": "1698842871",
+        "logIndex": "12",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "0",
+        "oldFlowRate": "0",
+        "newTotalDistributionFlowRate": "0",
+        "operator": "0x8e7b174719d987652eb844e354a47ca722ff1d42",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+        }
+      },
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0x9bda286736dc114bb3d3bc3e6c0a773af176e256113e29db81c1a4c733e3cdbf-12",
+        "blockNumber": "27315289",
+        "transactionHash": "0x9bda286736dc114bb3d3bc3e6c0a773af176e256113e29db81c1a4c733e3cdbf",
+        "gasPrice": "25000000000",
+        "order": "273152890012",
+        "timestamp": "1698842869",
+        "logIndex": "12",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "0",
+        "oldFlowRate": "0",
+        "newTotalDistributionFlowRate": "0",
+        "operator": "0xe2e20eeba67ca71f67206b79d659a38c5a9a9074",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+        }
+      },
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0x540999d647d5882963660afeef9f7bf0922f9e1a12c0f9490b88ff719a2c958e-12",
+        "blockNumber": "27315288",
+        "transactionHash": "0x540999d647d5882963660afeef9f7bf0922f9e1a12c0f9490b88ff719a2c958e",
+        "gasPrice": "25000000000",
+        "order": "273152880012",
+        "timestamp": "1698842867",
+        "logIndex": "12",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "0",
+        "oldFlowRate": "0",
+        "newTotalDistributionFlowRate": "0",
+        "operator": "0xce818c67197e8748471f3b83f84b5224183947a3",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+        }
+      },
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0x339c7be20a2f7630b5e996e327b1b4a4e8b7380df0a739a9ebcef0df970c9923-12",
+        "blockNumber": "27315279",
+        "transactionHash": "0x339c7be20a2f7630b5e996e327b1b4a4e8b7380df0a739a9ebcef0df970c9923",
+        "gasPrice": "25000000000",
+        "order": "273152790012",
+        "timestamp": "1698842837",
+        "logIndex": "12",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "0",
+        "oldFlowRate": "0",
+        "newTotalDistributionFlowRate": "0",
+        "operator": "0x2597c6abba5724fb99f343abddd4569ee4223179",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+        }
+      },
+      {
+        "__typename": "FlowDistributionUpdatedEvent",
+        "id": "FlowDistributionUpdated-0x10da1f0121db944914ece6979d3b1af56d7e6e9dff9776cbab8a71b18553de3e-15",
+        "blockNumber": "27315071",
+        "transactionHash": "0x10da1f0121db944914ece6979d3b1af56d7e6e9dff9776cbab8a71b18553de3e",
+        "gasPrice": "25000000000",
+        "order": "273150710015",
+        "timestamp": "1698842131",
+        "logIndex": "15",
+        "adjustmentFlowRate": "0",
+        "adjustmentFlowRecipient": "0xd461647c2adb277799c313e6973dcc5f42b95b47",
+        "newDistributorToPoolFlowRate": "0",
+        "oldFlowRate": "0",
+        "newTotalDistributionFlowRate": "0",
+        "operator": "0x2597c6abba5724fb99f343abddd4569ee4223179",
+        "pool": {
+          "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8"
+        },
+        "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
+        "poolDistributor": {
+          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+        }
+      }
+    ]
+  }
+}

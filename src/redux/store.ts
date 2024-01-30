@@ -1,20 +1,20 @@
-import { providers } from "@0xsequence/multicall";
-import { configureStore } from "@reduxjs/toolkit";
-import { Framework } from "@superfluid-finance/sdk-core";
+import { providers } from '@0xsequence/multicall'
+import { configureStore } from '@reduxjs/toolkit'
+import { Framework } from '@superfluid-finance/sdk-core'
 import {
   allSubgraphEndpoints,
   createApiWithReactHooks,
   initializeRpcApiSlice,
   initializeSubgraphApiSlice,
-  setFrameworkForSdkRedux,
-} from "@superfluid-finance/sdk-redux";
-import { ethers } from "ethers";
+  setFrameworkForSdkRedux
+} from '@superfluid-finance/sdk-redux'
+import { ethers } from 'ethers'
 import {
   nextReduxCookieMiddleware,
   SERVE_COOKIES,
-  wrapMakeStore,
-} from "next-redux-cookie-wrapper";
-import { createWrapper } from "next-redux-wrapper";
+  wrapMakeStore
+} from 'next-redux-cookie-wrapper'
+import { createWrapper } from 'next-redux-wrapper'
 import {
   FLUSH,
   PAUSE,
@@ -23,25 +23,32 @@ import {
   persistStore,
   PURGE,
   REGISTER,
-  REHYDRATE,
-} from "redux-persist";
-import storageLocal from "redux-persist/lib/storage";
-import { addDays } from "../utils/dateTime";
-import { isServer } from "../utils/isServer";
-import { balanceRpcApiEndpoints } from "./balanceRpcApiEndpoints";
-import { networks } from "./networks";
-import { addressBookSlice } from "./slices/addressBook.slice";
-import { themePreferenceSlice } from "./slices/appPreferences.slice";
-import { ensApi } from "./slices/ensResolver.slice";
-import { adhocRpcEndpoints } from "./adhocRpcEndpoints";
+  REHYDRATE
+} from 'redux-persist'
+import storageLocal from 'redux-persist/lib/storage'
+
+import { allSubgraphEndpoints as allGdaSubgraphEndpoints } from '../subgraphs/gda/endpoints/allSubgraphEndpoints'
+import { createSubgraphGdaApiSlice } from '../subgraphs/gda/subgraphGdaApiSlice'
+import { addDays } from '../utils/dateTime'
+import { isServer } from '../utils/isServer'
+import { adhocRpcEndpoints } from './adhocRpcEndpoints'
+import { balanceRpcApiEndpoints } from './balanceRpcApiEndpoints'
+import { networks } from './networks'
+import { addressBookSlice } from './slices/addressBook.slice'
+import { themePreferenceSlice } from './slices/appPreferences.slice'
+import { ensApi } from './slices/ensResolver.slice'
 
 export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks)
   .injectEndpoints(balanceRpcApiEndpoints)
-  .injectEndpoints(adhocRpcEndpoints);
+  .injectEndpoints(adhocRpcEndpoints)
 
 export const sfSubgraph = initializeSubgraphApiSlice(
   createApiWithReactHooks
-).injectEndpoints(allSubgraphEndpoints);
+).injectEndpoints(allSubgraphEndpoints)
+
+export const sfGdaSubgraph = createSubgraphGdaApiSlice(
+  createApiWithReactHooks
+).injectEndpoints(allGdaSubgraphEndpoints)
 
 const infuraProviders = networks.map((network) => ({
   chainId: network.chainId,
@@ -51,19 +58,19 @@ const infuraProviders = networks.map((network) => ({
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
-      customSubgraphQueriesEndpoint: network.subgraphUrl,
-    }),
-}));
+      customSubgraphQueriesEndpoint: network.subgraphUrl
+    })
+}))
 
 export const makeStore = wrapMakeStore(() => {
   infuraProviders.map((x) =>
     setFrameworkForSdkRedux(x.chainId, x.frameworkGetter)
-  );
+  )
 
   const addressBookReducer = persistReducer(
-    { key: "address-book", version: 1, storage: storageLocal },
+    { key: 'address-book', version: 1, storage: storageLocal },
     addressBookSlice.reducer
-  );
+  )
 
   const store = configureStore({
     reducer: {
@@ -72,6 +79,7 @@ export const makeStore = wrapMakeStore(() => {
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
       [ensApi.reducerPath]: ensApi.reducer,
+      [sfGdaSubgraph.reducerPath]: sfGdaSubgraph.reducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -83,35 +91,36 @@ export const makeStore = wrapMakeStore(() => {
             PERSIST,
             PURGE,
             REGISTER,
-            SERVE_COOKIES,
-          ], // Ignore redux-persist actions: https://stackoverflow.com/a/62610422
-        },
+            SERVE_COOKIES
+          ] // Ignore redux-persist actions: https://stackoverflow.com/a/62610422
+        }
       })
         .prepend(
           nextReduxCookieMiddleware({
             compress: true,
-            subtrees: ["appPreferences"],
-            expires: addDays(new Date(), 14),
+            subtrees: ['appPreferences'],
+            expires: addDays(new Date(), 14)
           })
         )
         .concat(rpcApi.middleware)
         .concat(sfSubgraph.middleware)
-        .concat(ensApi.middleware),
-  });
+        .concat(ensApi.middleware)
+        .concat(sfGdaSubgraph.middleware)
+  })
 
   if (!isServer()) {
-    persistStore(store);
+    persistStore(store)
   }
 
-  return store;
-});
+  return store
+})
 
-export type AppStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+export type AppStore = ReturnType<typeof makeStore>
+export type RootState = ReturnType<AppStore['getState']>
+export type AppDispatch = AppStore['dispatch']
 
 export const wrapper = createWrapper<AppStore>(makeStore, {
   debug: true,
   serializeState: (state) => JSON.stringify(state),
-  deserializeState: (state) => JSON.parse(state),
-});
+  deserializeState: (state) => JSON.parse(state)
+})

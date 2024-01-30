@@ -1,42 +1,43 @@
-import { SerializedError } from "@reduxjs/toolkit";
-import { ethers } from "ethers";
-import _ from "lodash";
-import { Network, networks, networksByChainId } from "../redux/networks";
-import { useAddressDisplay } from "./useAddressDisplay";
-import { useSearchAddressBook } from "./useSearchAddressBook";
+import { SerializedError } from '@reduxjs/toolkit'
+import { ethers } from 'ethers'
+import _ from 'lodash'
+
+import { Network, networks, networksByChainId } from '../redux/networks'
+import { useAddressDisplay } from './useAddressDisplay'
+import { useSearchAddressBook } from './useSearchAddressBook'
 import {
   SubgraphSearchByAddressResult,
-  useSearchSubgraphByAddress,
-} from "./useSearchSubgraphByAddress";
+  useSearchSubgraphByAddress
+} from './useSearchSubgraphByAddress'
 import {
   SubgraphSearchByTokenSymbolResult,
-  useSearchSubgraphByTokenSymbol,
-} from "./useSearchSubgraphByTokenSymbol";
+  useSearchSubgraphByTokenSymbol
+} from './useSearchSubgraphByTokenSymbol'
 
 export type NetworkSearchResult = {
-  network: Network;
-  isFetching: boolean;
-  error?: SerializedError;
+  network: Network
+  isFetching: boolean
+  error?: SerializedError
   tokens: {
-    id: string;
-    symbol: string;
-    name: string;
-    isListed: boolean;
-  }[];
+    id: string
+    symbol: string
+    name: string
+    isListed: boolean
+  }[]
   accounts: {
-    id: string;
-  }[];
-};
+    id: string
+  }[]
+}
 
 export const useSearch = (searchTerm: string) => {
-  const addressDisplay = useAddressDisplay(searchTerm);
+  const addressDisplay = useAddressDisplay(searchTerm)
 
   const subgraphSearchByAddressResults = useSearchSubgraphByAddress(
-    addressDisplay.addressChecksummed ?? "skip"
-  );
+    addressDisplay.addressChecksummed ?? 'skip'
+  )
   const subgraphSearchByTokenSymbolResults =
-    useSearchSubgraphByTokenSymbol(searchTerm);
-  const addressBookResults = useSearchAddressBook(searchTerm);
+    useSearchSubgraphByTokenSymbol(searchTerm)
+  const addressBookResults = useSearchAddressBook(searchTerm)
 
   const subgraphSearchByAddressMappedResults: NetworkSearchResult[] =
     subgraphSearchByAddressResults
@@ -46,8 +47,8 @@ export const useSearch = (searchTerm: string) => {
           (searchQuery.data as SubgraphSearchByAddressResult) ?? {
             accounts: [],
             tokensByAddress: [],
-            tokensByUnderlyingAddress: [],
-          };
+            tokensByUnderlyingAddress: []
+          }
 
         return {
           network: networksByChainId.get(searchQuery.originalArgs!.chainId)!,
@@ -56,9 +57,9 @@ export const useSearch = (searchTerm: string) => {
           tokens: searchResult.tokensByAddress.concat(
             searchResult.tokensByUnderlyingAddress
           ),
-          accounts: searchResult.accounts,
-        };
-      });
+          accounts: searchResult.accounts
+        }
+      })
 
   const subgraphSearchByTokenSymbolMappedResults: NetworkSearchResult[] =
     subgraphSearchByTokenSymbolResults
@@ -66,48 +67,48 @@ export const useSearch = (searchTerm: string) => {
       .map((searchQuery) => {
         const searchResult: SubgraphSearchByTokenSymbolResult =
           (searchQuery.currentData as SubgraphSearchByTokenSymbolResult) ?? {
-            tokensBySymbol: [],
-          };
+            tokensBySymbol: []
+          }
 
         return {
           network: networksByChainId.get(searchQuery.originalArgs!.chainId)!,
           isFetching: searchQuery.isFetching,
           error: searchQuery.error,
           tokens: searchResult.tokensBySymbol,
-          accounts: [],
-        };
-      });
+          accounts: []
+        }
+      })
 
   const subgraphSearchByAddressResultsMappedDictionary = Object.fromEntries(
     subgraphSearchByAddressMappedResults.map((x) => [x.network.slugName, x])
-  );
+  )
   const subgraphSearchByTokenSymbolResultsMappedDictionary = Object.fromEntries(
     subgraphSearchByTokenSymbolMappedResults.map((x) => [x.network.slugName, x])
-  );
+  )
   const addressBookMappedResultsDictionary = Object.fromEntries(
     addressBookResults.map((x) => [x.network.slugName, x])
-  );
+  )
 
-  return _.orderBy(networks, (x) => x.isTestnet, "asc").map((network) => {
+  return _.orderBy(networks, (x) => x.isTestnet, 'asc').map((network) => {
     const searchByAddressMappedResult =
       subgraphSearchByAddressResultsMappedDictionary[network.slugName] ?? {
         isFetching: false,
         accounts: [],
-        tokens: [],
-      };
+        tokens: []
+      }
 
     const searchByTokenSymbolMappedResult =
       subgraphSearchByTokenSymbolResultsMappedDictionary[network.slugName] ?? {
         isFetching: false,
         accounts: [],
-        tokens: [],
-      };
+        tokens: []
+      }
 
     const addressBookResult = addressBookMappedResultsDictionary[
       network.slugName
     ] ?? {
-      accounts: [],
-    };
+      accounts: []
+    }
 
     return {
       network: network,
@@ -122,11 +123,14 @@ export const useSearch = (searchTerm: string) => {
         _.uniqBy(
           searchByAddressMappedResult.tokens
             .concat(searchByTokenSymbolMappedResult.tokens)
-            .map((x) => ({ ...x, id: ethers.utils.getAddress(x.id) })),
+            .map((x) => ({
+              ...x,
+              id: ethers.utils.getAddress(x.id)
+            })),
           (x) => x.id
         ),
         (x) => x.isListed,
-        "desc"
+        'desc'
       ),
       accounts: _.uniqBy(
         searchByAddressMappedResult.accounts
@@ -134,10 +138,10 @@ export const useSearch = (searchTerm: string) => {
           .map((x) => ({
             ...x,
             id: ethers.utils.getAddress(x.id),
-            ENS: addressDisplay.ensName,
+            ENS: addressDisplay.ensName
           })),
         (x) => x.id
-      ),
-    };
-  });
-};
+      )
+    }
+  })
+}

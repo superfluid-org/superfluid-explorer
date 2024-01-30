@@ -1,0 +1,15 @@
+sources:
+  - name: gda
+    handler:
+      graphql:
+        endpoint: '{context.url:https://polygon-mumbai.subgraph.x.superfluid.dev}'
+        retry: 5
+documents:
+  - './**/*.graphql'
+codegen:
+  namingConvention: change-case-all#pascalCase
+  scalars:
+    BigInt: string
+    Bytes: string
+    BigDecimal: string
+  maybeValue: T | undefined

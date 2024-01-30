@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
-const IdContext = React.createContext<string>(null!);
+const IdContext = React.createContext<string>(null!)
 
-export default IdContext;
+export default IdContext

@@ -16,18 +16,17 @@
  * @type {Cypress.PluginConfig}
  */
 // eslint-disable-next-line no-unused-vars
-const browserify = require('@cypress/browserify-preprocessor');
-const cucumber = require('cypress-cucumber-preprocessor').default;
-const resolve = require('resolve');
-const { cloudPlugin } = require("cypress-cloud/plugin");
+const browserify = require('@cypress/browserify-preprocessor')
+const cucumber = require('cypress-cucumber-preprocessor').default
+const resolve = require('resolve')
+const { cloudPlugin } = require('cypress-cloud/plugin')
 
 module.exports = (on, config) => {
   const options = {
     ...browserify.defaultOptions,
-    typescript: resolve.sync('typescript', {baseDir: config.projectRoot}),
-  };
+    typescript: resolve.sync('typescript', { baseDir: config.projectRoot })
+  }
 
-  on('file:preprocessor', cucumber(options));
-  return cloudPlugin(on, config);
-};
-
+  on('file:preprocessor', cucumber(options))
+  return cloudPlugin(on, config)
+}
