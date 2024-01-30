@@ -7,7 +7,7 @@ import { Network } from '../redux/networks'
  * Tries to find a network by parsing the value as slug/chain-id/canonical-name/etc.
  */
 export const tryFindNetwork = (
-  networks: Network[],
+  networks: ReadonlyArray<Network>,
   value: unknown
 ): Network | undefined => {
   const asNumber = Number(value)
@@ -35,7 +35,7 @@ export const tryFindNetwork = (
 }
 
 export const findNetworkOrThrow = (
-  networks: Network[],
+  networks: ReadonlyArray<Network>,
   value: unknown
 ): Network => {
   const network = tryFindNetwork(networks, value)

@@ -1,6 +1,6 @@
 import metadata from '@superfluid-finance/metadata'
 
-import { networksByChainId } from './networks'
+import { ChainId, networks, SlugName } from './networks'
 
 interface ContractAddresses {
   resolver: string
@@ -19,8 +19,8 @@ interface ContractAddresses {
   existentialNFTCloneFactory?: string
 }
 
-interface NetworkContracts {
-  [any: string]: ContractAddresses
+type NetworkContracts = {
+  [key: string]: ContractAddresses
 }
 
 const networkMetadataToChainId = metadata.networks.reduce(
@@ -43,38 +43,12 @@ const networkMetadataToChainId = metadata.networks.reduce(
     }
     return acc
   },
-  {} as { [key: string]: ContractAddresses }
+  {} as { [key: number]: ContractAddresses }
 )
 
-const getNetwork = (chainId: number) => {
-  const network = networksByChainId.get(chainId)
-  if (!network) {
-    throw new Error(`No network found for chainId ${chainId}`)
-  }
-  return network
-}
-
-const protocolContracts: NetworkContracts = {
-  [getNetwork(1).slugName]: networkMetadataToChainId[1],
-  [getNetwork(137).slugName]: networkMetadataToChainId[137],
-  [getNetwork(100).slugName]: networkMetadataToChainId[100],
-  [getNetwork(10).slugName]: networkMetadataToChainId[10],
-  [getNetwork(42161).slugName]: networkMetadataToChainId[42161],
-  [getNetwork(5).slugName]: networkMetadataToChainId[5],
-  [getNetwork(80001).slugName]: networkMetadataToChainId[80001],
-  [getNetwork(43113).slugName]: networkMetadataToChainId[43113],
-  [getNetwork(43114).slugName]: networkMetadataToChainId[43114],
-  [getNetwork(56).slugName]: networkMetadataToChainId[56],
-  [getNetwork(42220).slugName]: networkMetadataToChainId[42220],
-  [getNetwork(421613).slugName]: networkMetadataToChainId[421613],
-  [getNetwork(420).slugName]: networkMetadataToChainId[420],
-  [getNetwork(11155111).slugName]: networkMetadataToChainId[11155111],
-  [getNetwork(1442).slugName]: networkMetadataToChainId[1442],
-  [getNetwork(84531).slugName]: networkMetadataToChainId[84531],
-  [getNetwork(8453).slugName]: networkMetadataToChainId[8453],
-  [getNetwork(534352).slugName]: networkMetadataToChainId[534352],
-  [getNetwork(11155420).slugName]: networkMetadataToChainId[11155420],
-  [getNetwork(534351).slugName]: networkMetadataToChainId[534351],
-};
+const protocolContracts = networks.reduce((acc, network) => {
+  acc[network.slugName] = networkMetadataToChainId[network.chainId]
+  return acc
+}, {} as NetworkContracts)
 
 export default protocolContracts

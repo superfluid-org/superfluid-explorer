@@ -1,4 +1,4 @@
-import { networks } from '../../../src/redux/networks'
+import { SlugName, networks } from '../../../src/redux/networks'
 import protocolContracts from '../../../src/redux/protocolContracts'
 import { BasePage } from '../BasePage'
 
@@ -47,7 +47,7 @@ export class ProtocolPage extends BasePage {
     })
   }
 
-  static validateContractAddresses(network: string) {
+  static validateContractAddresses(network: SlugName) {
     this.hasText(RESOLVER, protocolContracts[network].resolver)
     this.hasText(CFA_V1, protocolContracts[network].CFAv1)
     this.hasText(

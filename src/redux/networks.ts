@@ -1,6 +1,6 @@
-import sortBy from 'lodash/fp/sortBy'
 import sfMeta from '@superfluid-finance/metadata'
 import { memoize } from 'lodash'
+import sortBy from 'lodash/fp/sortBy'
 
 export type Network = {
   displayName: string
@@ -32,7 +32,7 @@ const getSubgraphUrl = (chainId: number) => {
   return `https://${metadata.name}.subgraph.x.superfluid.dev/`
 }
 
-export const networks: Network[] = [
+export const networks = [
   // mainnets
   {
     displayName: 'Ethereum',
@@ -295,16 +295,19 @@ export const networks: Network[] = [
     getLinkForAddress: (address: string): string =>
       `https://sepolia.scrollscan.com/address/${address}`
   }
-]
+] as const
 
-export const networksByName = new Map(
+export type ChainId = (typeof networks)[number]['chainId']
+export type SlugName = (typeof networks)[number]['slugName']
+
+export const networksByName = new Map<string, Network>(
   networks.map((x) => [x.slugName.toLowerCase(), x])
 )
 
-export const networksByChainId = new Map(networks.map((x) => [x.chainId, x]))
-
+export const networksByChainId = new Map<number, Network>(
+  networks.map((x) => [x.chainId, x])
+)
 export const polygon = networksByChainId.get(137)!
-
 export const networksByTestAndName = sortBy(
   [(x) => x.isTestnet, (x) => x.slugName],
   networks

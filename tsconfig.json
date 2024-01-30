@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2020",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,7 +19,9 @@
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "incremental": true,
-    "types": ["cypress"]
+    "types": [
+      "cypress"
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -23,8 +29,8 @@
     "**/*.ts",
     "**/*.tsx",
     "cypress/**/*.ts",
-    "cypress/e2e/PoolPage",
-    "cypress/e2e/PoolMemberPage"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,6 +1,5 @@
-import { Address } from '@superfluid-finance/sdk-core'
+import { Address , SuperToken__factory } from '@superfluid-finance/sdk-core'
 import { getFramework, RpcEndpointBuilder } from '@superfluid-finance/sdk-redux'
-import { SuperToken__factory } from '@superfluid-finance/sdk-core'
 
 export const adhocRpcEndpoints = {
   endpoints: (builder: RpcEndpointBuilder) => ({

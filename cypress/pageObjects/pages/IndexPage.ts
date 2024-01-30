@@ -60,7 +60,7 @@ export class IndexPage extends BasePage {
         (distribution: { distributionAmount: string }, index: number) => {
           this.replaceSpacesAndAssertText(
             DISTRIBUTION_AMOUNTS,
-            distribution.distributionAmount.replaceAll("~",""),
+            distribution.distributionAmount.replaceAll('~', ''),
             index
           )
         }

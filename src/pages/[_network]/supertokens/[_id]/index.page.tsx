@@ -77,10 +77,9 @@ const SuperTokenPage: NextPage = () => {
 
   const flowRateConverted = flowRateBigNumber
     ? flowRateBigNumber
-      .mul(streamGranularityInSeconds[streamGranularity])
-      .toString()
+        .mul(streamGranularityInSeconds[streamGranularity])
+        .toString()
     : undefined
-
 
   const { data: totalSupply } = rpcApi.useTotalSupplyQuery({
     chainId: network.chainId,
@@ -285,7 +284,7 @@ const SuperTokenPage: NextPage = () => {
                     superToken ? (
                       superToken.underlyingAddress ===
                         '0x0000000000000000000000000000000000000000' ||
-                        superToken.underlyingAddress === '0x' ? (
+                      superToken.underlyingAddress === '0x' ? (
                         <>None</>
                       ) : (
                         <Tooltip title="View on blockchain explorer">

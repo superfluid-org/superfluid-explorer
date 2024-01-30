@@ -359,9 +359,6 @@ Then(
   }
 )
 
-Then(
-  `Pools tab is not available to the user`,
-  () => {
-    AccountPage.validatePoolsTabDoesNotExist()
-  }
-)
+Then(`Pools tab is not available to the user`, () => {
+  AccountPage.validatePoolsTabDoesNotExist()
+})

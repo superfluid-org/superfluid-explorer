@@ -20,7 +20,7 @@ import sortBy from 'lodash/sortBy'
 import { FC } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { networksByChainId } from '../../redux/networks'
+import { ChainId, networksByChainId } from '../../redux/networks'
 import {
   changeEtherDecimalPlaces,
   changeStreamGranularity,
@@ -68,7 +68,8 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
     (state) =>
       sortBy(
         Object.entries(state.appPreferences.displayedTestNets),
-        ([chainId]) => networksByChainId.get(Number(chainId))?.displayName
+        ([chainId]) =>
+          networksByChainId.get(Number(chainId) as ChainId)?.displayName
       ),
     isEqual
   )
@@ -195,7 +196,7 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
         </Heading>
         <FormGroup>
           {currentDisplayedTestNets.map(([chainId, isDisplayed]) => {
-            const numericChainId = Number(chainId)
+            const numericChainId = Number(chainId) as ChainId
             const network = networksByChainId.get(numericChainId)!
             return (
               <FormControlLabel

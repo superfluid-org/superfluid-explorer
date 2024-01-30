@@ -9,7 +9,7 @@ import {
 import { Network, networks } from '../redux/networks'
 
 interface AvailableNetworksContextValue {
-  availableNetworks: Network[]
+  availableNetworks: ReadonlyArray<Network>
 }
 
 const AvailableNetworksContext = createContext<AvailableNetworksContextValue>(

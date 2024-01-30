@@ -1057,8 +1057,8 @@ export class AccountPage extends BasePage {
       )
     })
   }
-  
-  static validatePoolsTabDoesNotExist(){
-    this.doesNotExist("[data-cy=pools-tab]")
+
+  static validatePoolsTabDoesNotExist() {
+    this.doesNotExist('[data-cy=pools-tab]')
   }
 }

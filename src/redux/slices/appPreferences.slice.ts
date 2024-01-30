@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { HYDRATE } from 'next-redux-wrapper'
 
-import { Network, networks } from '../networks'
+import { ChainId, Network, networks } from '../networks'
 
 export interface IAppPreferences {
   themePreference: 'system' | 'light' | 'dark'
   streamGranularity: keyof typeof streamGranularityInSeconds
   etherDecimalPlaces: etherDecimalPlaces
-  displayedTestNets: Record<Network['chainId'], boolean>
+  displayedTestNets: Record<number, boolean>
 }
 
 export const streamGranularityInSeconds = {
@@ -32,7 +32,7 @@ const initialState: IAppPreferences = {
         ...acc,
         [n.chainId]: true
       }),
-      {}
+      {} as Record<ChainId, boolean>
     )
 }
 

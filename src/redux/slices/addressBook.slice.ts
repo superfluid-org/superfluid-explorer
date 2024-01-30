@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
 import { REHYDRATE } from 'redux-persist'
 
-import { Network } from '../networks'
+import { ChainId, Network } from '../networks'
 import { RootState } from '../store'
 
 export interface AddressBookEntry {

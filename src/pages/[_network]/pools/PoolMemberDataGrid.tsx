@@ -17,7 +17,10 @@ import { Network } from '../../../redux/networks'
 import { PoolMember_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
-import { PoolInput, PoolMemberTotalAmountReceived } from '../pool-members/PoolMemberTotalAmountReceived'
+import {
+  PoolInput,
+  PoolMemberTotalAmountReceived
+} from '../pool-members/PoolMemberTotalAmountReceived'
 
 interface Props {
   network: Network
@@ -93,12 +96,9 @@ const PoolMemberDataGrid: FC<Props> = ({
         headerName: 'Amount Received',
         sortable: false,
         flex: 2,
-        renderCell: (params: GridRenderCellParams<string, PoolMember>) => (
+        renderCell: (params: GridRenderCellParams<string, PoolMember>) =>
           pool ? (
-            <PoolMemberTotalAmountReceived
-              member={params.row}
-              pool={pool}
-            >
+            <PoolMemberTotalAmountReceived member={params.row} pool={pool}>
               {({
                 memberCurrentTotalAmountReceived,
                 memberFlowRate,
@@ -115,8 +115,9 @@ const PoolMemberDataGrid: FC<Props> = ({
                 />
               )}
             </PoolMemberTotalAmountReceived>
-          ) : <Skeleton sx={{ width: '100px' }} />
-        )
+          ) : (
+            <Skeleton sx={{ width: '100px' }} />
+          )
       },
       {
         field: 'units',

@@ -54,7 +54,9 @@ export const getTotalAmountReceivedForPoolMember = (
 
   if (memberUnits.isZero()) {
     return {
-      memberCurrentTotalAmountReceived: BigNumber.from(member.totalAmountReceivedUntilUpdatedAt),
+      memberCurrentTotalAmountReceived: BigNumber.from(
+        member.totalAmountReceivedUntilUpdatedAt
+      ),
       memberFlowRate: BigNumber.from(0),
       timestamp: currentTimestamp
     }
@@ -69,8 +71,8 @@ export const getTotalAmountReceivedForPoolMember = (
   ).add(poolCurrentTotalAmountDistributedDelta)
 
   const memberCurrentTotalAmountReceivedDelta =
-    (poolCurrentTotalAmountDistributed
-      .sub(member.poolTotalAmountDistributedUntilUpdatedAt))
+    poolCurrentTotalAmountDistributed
+      .sub(member.poolTotalAmountDistributedUntilUpdatedAt)
       .mul(memberUnits)
       .div(poolUnits)
 

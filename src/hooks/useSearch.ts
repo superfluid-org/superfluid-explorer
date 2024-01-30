@@ -2,7 +2,12 @@ import { SerializedError } from '@reduxjs/toolkit'
 import { ethers } from 'ethers'
 import _ from 'lodash'
 
-import { Network, networks, networksByChainId } from '../redux/networks'
+import {
+  ChainId,
+  Network,
+  networks,
+  networksByChainId
+} from '../redux/networks'
 import { useAddressDisplay } from './useAddressDisplay'
 import { useSearchAddressBook } from './useSearchAddressBook'
 import {
@@ -51,7 +56,9 @@ export const useSearch = (searchTerm: string) => {
           }
 
         return {
-          network: networksByChainId.get(searchQuery.originalArgs!.chainId)!,
+          network: networksByChainId.get(
+            searchQuery.originalArgs!.chainId as ChainId
+          )!,
           isFetching: searchQuery.isFetching,
           error: searchQuery.error,
           tokens: searchResult.tokensByAddress.concat(
@@ -71,7 +78,9 @@ export const useSearch = (searchTerm: string) => {
           }
 
         return {
-          network: networksByChainId.get(searchQuery.originalArgs!.chainId)!,
+          network: networksByChainId.get(
+            searchQuery.originalArgs!.chainId as ChainId
+          )!,
           isFetching: searchQuery.isFetching,
           error: searchQuery.error,
           tokens: searchResult.tokensBySymbol,
