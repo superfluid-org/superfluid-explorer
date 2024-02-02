@@ -286,20 +286,20 @@ export const networks = [
       `https://sepolia-optimism.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
       `https://sepolia-optimism.etherscan.io/address/${address}`
+  },
+  {
+    isTestnet: true,
+    supportsGDA: getSupportsGDA(534351),
+    chainId: 534351,
+    slugName: 'scroll-sepolia',
+    displayName: 'Scroll Sepolia',
+    rpcUrl: getRpcUrl(534351),
+    subgraphUrl: getSubgraphUrl(534351),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://sepolia.scrollscan.com/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://sepolia.scrollscan.com/address/${address}`
   }
-  // {
-  //   isTestnet: true,
-  //   supportsGDA: getSupportsGDA(534351),
-  //   chainId: 534351,
-  //   slugName: 'scroll-sepolia',
-  //   displayName: 'Scroll Sepolia',
-  //   rpcUrl: getRpcUrl(534351),
-  //   subgraphUrl: getSubgraphUrl(534351),
-  //   getLinkForTransaction: (txHash: string): string =>
-  //     `https://sepolia.scrollscan.com/tx/${txHash}`,
-  //   getLinkForAddress: (address: string): string =>
-  //     `https://sepolia.scrollscan.com/address/${address}`
-  // }
 ] as const
 
 export type ChainId = (typeof networks)[number]['chainId']
