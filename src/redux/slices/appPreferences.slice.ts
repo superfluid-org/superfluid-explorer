@@ -16,7 +16,7 @@ export const streamGranularityInSeconds = {
   hour: 3600,
   day: 86400,
   week: 86400 * 7,
-  month: 86400 * 30
+  month: 2628000
 }
 
 type etherDecimalPlaces = 18 | 9 | 5 | 0
