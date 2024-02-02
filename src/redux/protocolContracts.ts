@@ -1,6 +1,6 @@
 import metadata from '@superfluid-finance/metadata'
 
-import { ChainId, networks, SlugName } from './networks'
+import { networks } from './networks'
 
 interface ContractAddresses {
   resolver: string
