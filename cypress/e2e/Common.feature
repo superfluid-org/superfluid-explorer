@@ -19,8 +19,6 @@ Feature: Test cases for common elements and functionalities
       | goerli           |
       | mumbai           |
       | celo             |
-      | optimism-goerli  |
-      | arbitrum-goerli  |
 
   Scenario: Searching for a listed token
     Given User has opened the "landing" page

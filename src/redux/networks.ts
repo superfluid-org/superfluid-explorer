@@ -210,32 +210,6 @@ export const networks = [
       `https://testnet.snowtrace.io/address/${address}`
   },
   {
-    displayName: 'Optimism Goerli',
-    slugName: 'optimism-goerli',
-    chainId: 420,
-    isTestnet: true,
-    supportsGDA: getSupportsGDA(420),
-    rpcUrl: getRpcUrl(420),
-    subgraphUrl: getSubgraphUrl(420),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://goerli-optimism.etherscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://goerli-optimism.etherscan.io/address/${address}`
-  },
-  {
-    displayName: 'Arbitrum Goerli',
-    slugName: 'arbitrum-goerli',
-    chainId: 421613,
-    isTestnet: true,
-    supportsGDA: getSupportsGDA(421613),
-    rpcUrl: getRpcUrl(421613),
-    subgraphUrl: getSubgraphUrl(421613),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://goerli.arbiscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://goerli.arbiscan.io/address/${address}`
-  },
-  {
     isTestnet: true,
     supportsGDA: getSupportsGDA(11155111),
     chainId: 11155111,
@@ -247,32 +221,6 @@ export const networks = [
       `https://sepolia.etherscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
       `https://sepolia.etherscan.io/address/${address}`
-  },
-  {
-    isTestnet: true,
-    supportsGDA: getSupportsGDA(1442),
-    chainId: 1442,
-    slugName: 'polygon-zkevm-testnet',
-    displayName: 'Polygon zkEVM Testnet',
-    rpcUrl: getRpcUrl(1442),
-    subgraphUrl: getSubgraphUrl(1442),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://testnet-zkevm.polygonscan.com/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://testnet-zkevm.polygonscan.com/address/${address}`
-  },
-  {
-    isTestnet: true,
-    supportsGDA: getSupportsGDA(84531),
-    chainId: 84531,
-    slugName: 'base-goerli',
-    displayName: 'Base Goerli',
-    rpcUrl: getRpcUrl(84531),
-    subgraphUrl: getSubgraphUrl(84531),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://goerli.basescan.org/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://goerli.basescan.org/address/${address}`
   },
   {
     isTestnet: true,
