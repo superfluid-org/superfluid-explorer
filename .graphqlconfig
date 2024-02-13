@@ -4,7 +4,7 @@
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {
-        "url": "https://eth-goerli.subgraph.x.superfluid.dev",
+        "url": "https://polygon-mumbai.subgraph.x.superfluid.dev",
         "headers": {
           "user-agent": "JS GraphQL"
         },
