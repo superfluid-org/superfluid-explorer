@@ -15,17 +15,17 @@ const POOL_TOTAL_DISCONNECTED_UNITS = '[data-cy=total-disconnected-units]'
 const POOL_TOTAL_AMOUNT_DISTRIBUTED = '[data-cy=total-amount-distributed]'
 const POOL_TOTAL_INSTANT_DISTRIBUTED = '[data-cy=total-instantly-distributed]'
 const MEMBERS_TABLE_CREATED_AT =
-  '[data-cy=members-grid] .MuiDataGrid-cell[data-field=createdAtTimestamp]'
+  '[data-cy=members-grid] .MuiDataGrid-cell[data-field=updatedAtTimestamp]'
 const MEMBERS_TABLE_APPROVED =
   '[data-cy=members-grid] .MuiDataGrid-cell[data-field=approved]'
 const MEMBERS_TABLE_TOTAL_AMOUNT_CLAIMED =
-  '[data-cy=members-grid] .MuiDataGrid-cell[data-field=totalAmountClaimed]'
+  '[data-cy=members-grid] [data-cy=total-streamed]'
 const MEMBERS_TABLE_MEMBER_UNITS =
   '[data-cy=members-grid] .MuiDataGrid-cell[data-field=units]'
 const MEMBERS_TABLE_DETAILS_BUTTONS =
   '[data-cy=members-grid] .MuiDataGrid-cell[data-field=details]'
 const FLOW_DISTRIBUTION_TABLE_OPERATOR =
-  '[data-cy=flow-distributions-grid] .MuiDataGrid-cell[data-field=operator]'
+  '[data-cy=flow-distributions-grid] [data-cy=distributor-address]'
 const FLOW_DISTRIBUTION_TABLE_FLOW_RECIPIENT =
   '[data-cy=flow-distributions-grid] .MuiDataGrid-cell[data-field=adjustmentFlowRecipient]'
 const FLOW_DISTRIBUTION_TABLE_DISTRIBUTION_DATE =
@@ -47,7 +47,10 @@ export class PoolPage extends BasePage {
         POOL_ADMIN,
         ethers.utils.getAddress(data[network].poolWithData.admin.id)
       )
-      this.containsText(POOL_ADDRESS, data[network].poolWithData.id)
+      this.containsText(
+        POOL_ADDRESS,
+        ethers.utils.getAddress(data[network].poolWithData.id)
+      )
       this.containsText(POOL_TOTAL_UNITS, data[network].poolWithData.totalUnits)
       this.containsText(
         POOL_TOTAL_CONNECTED_UNITS,
@@ -63,10 +66,8 @@ export class PoolPage extends BasePage {
       )
       this.containsText(
         POOL_TOTAL_INSTANT_DISTRIBUTED,
-        (
-          data[network].poolWithData
-            .totalAmountInstantlyDistributedUntilUpdatedAt / 1e18
-        ).toFixed(6)
+        data[network].poolWithData
+          .totalAmountInstantlyDistributedUntilUpdatedAt / 1e18
       )
       const createdAtDate = new Date(
         data[network].poolWithData.createdAtTimestamp * 1000
@@ -114,27 +115,27 @@ export class PoolPage extends BasePage {
           .should('have.text', entry.isConnected ? 'Yes' : 'No')
         cy.get(MEMBERS_TABLE_TOTAL_AMOUNT_CLAIMED)
           .eq(index)
-          .should('have.text', (entry.totalAmountClaimed / 1e18).toFixed(6))
+          .should('have.text', entry.totalAmountClaimed / 1e18)
         this.replaceSpacesAndAssertText(
           MEMBERS_TABLE_MEMBER_UNITS,
-          `${entry.units} (${calculatePoolPercentage(
+          `${calculatePoolPercentage(
             new Decimal(entry.pool.totalUnits),
             new Decimal(entry.units)
           )
             .toDP(2)
-            .toString()}%)`,
+            .toString()}%`,
           index
         )
         cy.get(MEMBERS_TABLE_MEMBER_UNITS)
           .eq(index)
           .should(
             'have.text',
-            `${entry.units} (${calculatePoolPercentage(
+            `${calculatePoolPercentage(
               new Decimal(entry.pool.totalUnits),
               new Decimal(entry.units)
             )
               .toDP(2)
-              .toString()}%)`
+              .toString()}%`
           )
       })
     })

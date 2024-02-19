@@ -345,7 +345,7 @@ export class TokenPage extends BasePage {
   }
 
   static saveTokenStatisticsQueriesOn(network: string) {
-    cy.intercept('POST', '**protocol-**-' + network, (req) => {
+    cy.intercept('POST', `${network}.subgraph.x.superfluid.dev`, (req) => {
       if (req.body.operationName === 'tokenStatistics') {
         req.alias = 'tokenStatistics'
       }

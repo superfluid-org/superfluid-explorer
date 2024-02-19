@@ -8,6 +8,11 @@
     "matic",
     "avalanche-fuji",
     "arbitrum-one",
-    "optimism-mainnet"
+    "optimism-mainnet",
+    "avalanche-c",
+    "bnb-smart-chain",
+    "celo",
+    "base",
+    "scroll"
   ]
 }

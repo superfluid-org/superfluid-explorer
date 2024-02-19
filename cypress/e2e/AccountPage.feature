@@ -15,10 +15,11 @@ Feature: Account page test cases
     And User switches to "events" tab
     Then The account events are shown correctly for "matic"
 
+  #Failing because of ~ mr Kaspar
   Scenario: Account with published indexes and the data shown in the index tab publications section
-    Given User has opened the "super app" page on "goerli"
+    Given User has opened the "super app" page on "polygon-mumbai"
     And User switches to "indexes" tab
-    And The super app publications are shown correctly for "goerli"
+    And The super app publications are shown correctly for "polygon-mumbai"
     And User opens the publication details
     Then The index details container is visible
 
@@ -50,10 +51,10 @@ Feature: Account page test cases
     Then Tooltip is visible when user hovers the "subscriptions" tooltip icon
 
   Scenario: Filtering incoming stream cases for streams tab
-    Given User has opened the "balance account for filtering" page on "goerli"
+    Given User has opened the "balance account for filtering" page on "mumbai"
     And User switches to "streams" tab
-    Then  User filters incoming streams by senders address for "goerli"
-    Then Incoming streams filtered by senders address are shown correctly for "goerli"
+    Then  User filters incoming streams by senders address for "mumbai"
+    Then Incoming streams filtered by senders address are shown correctly for "mumbai"
     And User filters incoming streams by active
     Then Incoming streams filtered by active are shown correctly
     And User filters incoming streams by not active
@@ -63,10 +64,10 @@ Feature: Account page test cases
     Then Table contains the same streams as before filtering
 
   Scenario: Filtering outgoing stream cases for streams tab
-    Given User has opened the "balance account for filtering" page on "goerli"
+    Given User has opened the "balance account for filtering" page on "mumbai"
     And User switches to "streams" tab
-    And User filters outgoing streams by receivers address for "goerli"
-    Then Outgoing streams filtered by receivers address are shown correctly for "goerli"
+    And User filters outgoing streams by receivers address for "mumbai"
+    Then Outgoing streams filtered by receivers address are shown correctly for "mumbai"
     And User filters outgoing streams by active
     Then Outgoing streams filtered by active are shown correctly
     And User filters outgoing streams by not active
@@ -75,7 +76,7 @@ Feature: Account page test cases
     And User resets outgoing streams filter
 
   Scenario: Filtering publication cases for indexes tab
-    Given User has opened the "super app" page on "goerli"
+    Given User has opened the "super app" page on "mumbai"
     And User switches to "indexes" tab
     And User filters publications by index id
     Then Publications filtered by index id are shown correctly
@@ -105,7 +106,7 @@ Feature: Account page test cases
     And User resets subscriptions filter
 
   Scenario: Filtering cases for super tokens tab
-    Given User has opened the "second balance account for filtering" page on "goerli"
+    Given User has opened the "second balance account for filtering" page on "mumbai"
     And User filters super tokens by active
     Then Super tokens filtered by active are shown correctly
     And User filters super tokens by not active
@@ -132,15 +133,14 @@ Feature: Account page test cases
     And User resets events filter
 
   Scenario: Account page - pools tab tooltips and links
-    Given User has opened the "GDA admin account" page on "goerli"
+    Given User has opened the "GDA admin account" page on "mumbai"
     And User switches to "pools" tab
-    Then Tooltip is visible when user hovers the "gda-pool-table-total-units" tooltip icon
-    Then Tooltip is visible when user hovers the "gda-admin" tooltip icon
+    Then Tooltip is visible when user hovers the "account-type" tooltip icon
     Then Tooltip is visible when user hovers the "members" tooltip icon
     Then Tooltip is visible when user hovers the "gda-connected" tooltip icon
 
   Scenario: Pools tab showing the admins pools
-    Given User has opened the "GDA admin account" page on "goerli"
+    Given User has opened the "GDA admin account" page on "mumbai"
     And User switches to "pools" tab
     Then User can see the pools they are admin to in the table
 
@@ -148,20 +148,21 @@ Feature: Account page test cases
     Given User has opened the "static balance account" page on "matic"
     Then Pools tab is not available to the user
 
+  #Failing due to https://github.com/superfluid-finance/superfluid-console/issues/209
   Scenario: Filtering pools table by address
-    Given User has opened the "GDA admin account" page on "goerli"
+    Given User has opened the "GDA admin account" page on "mumbai"
     And User switches to "pools" tab
     When User filters the pools table by "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8" address
     Then Only the pools with address "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8" are shown in the table
 
   Scenario: Filtering pools table by "has distributed"
-    Given User has opened the "GDA admin account" page on "goerli"
+    Given User has opened the "GDA admin account" page on "mumbai"
     And User switches to "pools" tab
     And User sets the "pools" filter to "yes" for "distributed"
     Then Only pools that have distributed tokens are shown in the table
 
   Scenario: Filtering pools table by "has issued units" and closing and reseting the filter
-    Given User has opened the "GDA admin account" page on "goerli"
+    Given User has opened the "GDA admin account" page on "mumbai"
     And User switches to "pools" tab
     And User waits for the tables to load
     And User sets the "pools" filter to "yes" for "issued"
@@ -175,18 +176,19 @@ Feature: Account page test cases
 
 
   Scenario: Members tab showing members
-    Given User has opened the "GDA member account" page on "goerli"
+    Given User has opened the "GDA member account" page on "mumbai"
     And User switches to "pools" tab
     Then User can see the pools they are a member of in the table
 
   Scenario: Filtering members table by "is connected"
-    Given User has opened the "GDA member account" page on "goerli"
+    Given User has opened the "GDA member account" page on "mumbai"
     And User switches to "pools" tab
     And User sets the "members" filter to "yes" for "approved"
     Then User sees only the pools they are connected to
 
+  #Failing due to https://github.com/superfluid-finance/superfluid-console/issues/207
   Scenario: Filtering members table by "has received distributions"
-    Given User has opened the "GDA member account" page on "goerli"
+    Given User has opened the "GDA member account" page on "mumbai"
     And User switches to "pools" tab
     And User sets the "members" filter to "yes" for "received-distributions"
     Then User sees only the pools they have received distributions from
@@ -198,7 +200,7 @@ Feature: Account page test cases
     Then User sees only the pools they are connected to
 
   Scenario: Filtering members table by "has member units"
-    Given User has opened the "GDA member account" page on "goerli"
+    Given User has opened the "GDA member account" page on "mumbai"
     And User switches to "pools" tab
     And User sets the "members" filter to "yes" for "units"
     Then User sees only the pools they have units in

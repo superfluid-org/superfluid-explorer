@@ -1,7 +1,7 @@
 Feature: Token page test cases
 
   Scenario: Data displayed in token pages
-    Given Token statistics queries are saved for "matic"
+    Given Token statistics queries are saved for "polygon-mainnet"
     And User has opened the "listed token" page on "matic"
     And User opens the settings menu
     And User changes the ether decimal places to 18
@@ -30,6 +30,7 @@ Feature: Token page test cases
     And User filters streams by no results
     And User resets streams filter
 
+  #Will fail because of ~ mr Kaspar
   Scenario: Filtering cases for indexes tab
     Given User has opened the "listed token" page on "matic"
     And User switches to "indexes" tab
