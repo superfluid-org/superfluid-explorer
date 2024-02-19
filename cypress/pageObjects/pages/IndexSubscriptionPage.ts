@@ -15,7 +15,7 @@ export class IndexSubscriptionPage extends BasePage {
   static validateSubscriptionGeneralInfo(network: string) {
     cy.fixture('accountData').then((fixture) => {
       cy.wrap(
-        fixture[network].superApp.indexes.publications[0].details
+        fixture[network].idaAccount.indexes.publications[0].details
           .subscriptions[0].details
       ).then((subscription: any) => {
         this.hasText(INDEX_SHORT_HASH, subscription.shortIndex)
@@ -29,7 +29,7 @@ export class IndexSubscriptionPage extends BasePage {
   static validateSubscriptionUnitsInfo(network: string) {
     cy.fixture('accountData').then((fixture) => {
       cy.wrap(
-        fixture[network].superApp.indexes.publications[0].details
+        fixture[network].idaAccount.indexes.publications[0].details
           .subscriptions[0].details
       ).then((subscription: any) => {
         this.containsText(POOL_UNITS, subscription.units)
@@ -46,7 +46,7 @@ export class IndexSubscriptionPage extends BasePage {
     cy.fixture('accountData').then((fixture) => {
       fixture[
         network
-      ].superApp.indexes.publications[0].details.subscriptions[0].details.distributions.forEach(
+      ].idaAccount.indexes.publications[0].details.subscriptions[0].details.distributions.forEach(
         (distribution: any, index: number) => {
           cy.get(DISTRIBUTIONS_AMOUNT_RECEIVED)
             .eq(index)
@@ -61,7 +61,7 @@ export class IndexSubscriptionPage extends BasePage {
     cy.fixture('accountData').then((fixture) => {
       fixture[
         network
-      ].superApp.indexes.publications[0].details.subscriptions[0].details.unitsUpdated.forEach(
+      ].idaAccount.indexes.publications[0].details.subscriptions[0].details.unitsUpdated.forEach(
         (unitsUpdate: any, index: number) => {
           cy.get(UNITS_UPDATED)
             .eq(index)

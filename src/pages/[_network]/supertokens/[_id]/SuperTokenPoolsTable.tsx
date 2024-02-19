@@ -289,8 +289,6 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               <OutlinedInput
                 fullWidth
                 size="small"
-                type="number"
-                inputProps={{ min: 0 }}
                 value={filter.id || ''}
                 onChange={onStringFilterChange('id')}
                 data-cy={'id-input'}

@@ -128,10 +128,10 @@ export class LandingPage extends BasePage {
         })
         break
       }
-      case 'super app': {
+      case 'ida account': {
         cy.fixture('accountData').then((fixture) => {
           cy.visit(
-            '/' + network + '/accounts/' + fixture[network].superApp.address
+            '/' + network + '/accounts/' + fixture[network].idaAccount.address
           )
         })
         break
@@ -142,7 +142,7 @@ export class LandingPage extends BasePage {
             '/' +
               network +
               '/indexes/' +
-              fixture[network].superApp.indexes.publications[0].hash
+              fixture[network].idaAccount.indexes.publications[0].hash
           )
         })
         break
@@ -153,7 +153,7 @@ export class LandingPage extends BasePage {
             '/' +
               network +
               '/index-subscriptions/' +
-              fixture[network].superApp.indexes.publications[0].details
+              fixture[network].idaAccount.indexes.publications[0].details
                 .subscriptions[0].details.hash
           )
         })

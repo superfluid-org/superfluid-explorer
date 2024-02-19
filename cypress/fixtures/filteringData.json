@@ -1,11 +1,9 @@
 {
-  "goerli": {
-    "address": "0x618ada3f9f7BC1B2f2765Ba1728BEc5057B3DE40",
-    "secondAddress": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
-    "sender": "0xebB28622a31B847fD3539B32b6353b7Bd48426da",
-    "receiver": "0x342C5eeD61173E8A675d7A243530CAA8B625AbfF",
-    "eventName": "Transfer",
-    "transactionHash": "0x315b5e952ac2f3ffce1639e332589e16b80e8982206e1848b0dae978abc6df3c"
+  "mumbai": {
+    "address": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
+    "secondAddress": "0x618ada3f9f7BC1B2f2765Ba1728BEc5057B3DE40",
+    "sender": "0x09b160230fef06A713d8Afe7a2e402F8d2F1afFB",
+    "receiver": "0x49da518678D1363de74c889B0d7fB59344753Df0"
   },
   "matic": {
     "address": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",

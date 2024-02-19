@@ -18,7 +18,7 @@ const SUBSCRIPTION_DETAILS_BUTTONS = '[data-field=details][role=cell] button'
 export class IndexPage extends BasePage {
   static validateIndexGeneralInformation(network: string) {
     cy.fixture('accountData').then((fixture) => {
-      cy.wrap(fixture[network].superApp.indexes.publications[0]).then(
+      cy.wrap(fixture[network].idaAccount.indexes.publications[0]).then(
         (index: any) => {
           this.containsText(INDEX_TOKEN, index.token)
           this.hasText(PUBLISHER_ADDRESS, index.details.publisher)
@@ -30,7 +30,7 @@ export class IndexPage extends BasePage {
 
   static validateIndexUnitsOverview(network: string) {
     cy.fixture('accountData').then((fixture) => {
-      cy.wrap(fixture[network].superApp.indexes.publications[0]).then(
+      cy.wrap(fixture[network].idaAccount.indexes.publications[0]).then(
         (index: any) => {
           this.hasText(TOTAL_UNITS, index.totalUnits)
           cy.get(TOTAL_UNITS_APPROVED).then((el) => {
@@ -56,7 +56,7 @@ export class IndexPage extends BasePage {
     cy.fixture('accountData').then((fixture) => {
       fixture[
         network
-      ].superApp.indexes.publications[0].details.distributions.forEach(
+      ].idaAccount.indexes.publications[0].details.distributions.forEach(
         (distribution: { distributionAmount: string }, index: number) => {
           this.replaceSpacesAndAssertText(
             DISTRIBUTION_AMOUNTS,
@@ -72,7 +72,7 @@ export class IndexPage extends BasePage {
     cy.fixture('accountData').then((fixture) => {
       fixture[
         network
-      ].superApp.indexes.publications[0].details.subscriptions.forEach(
+      ].idaAccount.indexes.publications[0].details.subscriptions.forEach(
         (subscription: any, index: number) => {
           cy.get(SUBSCRIPTIONS_APPROVED)
             .eq(index)

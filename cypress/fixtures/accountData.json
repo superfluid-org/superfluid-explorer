@@ -1,32 +1,36 @@
 {
-  "goerli": {
+  "mumbai": {
     "gdaMemberAccount": {
-      "address": "0xC19bE11B5f9eAC59758f4dbaAaD465Abb9103A95",
+      "address": "0x38691225C23f05507B56760275b53FDD2d2bDA37",
       "pools": [
         {
-          "id": "poolMember-0x66cbb466d797c5d657269f1aaee4c2f83b854ac1-0xc19be11b5f9eac59758f4dbaaad465abb9103a95",
-          "createdAtTimestamp": "1699525464",
-          "createdAtBlockNumber": "10012828",
-          "updatedAtTimestamp": "1699525464",
-          "updatedAtBlockNumber": "10012828",
+          "id": "poolMember-0x6c10bd07d2a8890fef26d800be4209ae37aaabeb-0x38691225c23f05507b56760275b53fdd2d2bda37",
+          "createdAtTimestamp": "1699525687",
+          "createdAtBlockNumber": "42188486",
+          "updatedAtTimestamp": "1699525687",
+          "updatedAtBlockNumber": "42188486",
           "units": "1000000000000",
           "pool": {
-            "id": "0x66cbb466d797c5d657269f1aaee4c2f83b854ac1",
+            "id": "0x6c10bd07d2a8890fef26d800be4209ae37aaabeb",
             "totalUnits": "1000000000000",
             "flowRate": "0",
+            "totalAmountDistributedUntilUpdatedAt": "105349271000000000000",
             "token": {
-              "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
+              "id": "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
               "symbol": "fDAIx"
             },
             "admin": {
               "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
-            }
+            },
+            "updatedAtTimestamp": "1699577706"
           },
           "account": {
-            "id": "0xc19be11b5f9eac59758f4dbaaad465abb9103a95"
+            "id": "0x38691225c23f05507b56760275b53fdd2d2bda37"
           },
           "isConnected": true,
-          "totalAmountClaimed": "0"
+          "totalAmountClaimed": "0",
+          "totalAmountReceivedUntilUpdatedAt": "0",
+          "poolTotalAmountDistributedUntilUpdatedAt": "0"
         }
       ]
     },
@@ -34,17 +38,17 @@
       "address": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
       "pools": [
         {
-          "id": "0x66cbb466d797c5d657269f1aaee4c2f83b854ac1",
-          "createdAtTimestamp": "1699525452",
-          "createdAtBlockNumber": "10012827",
-          "updatedAtTimestamp": "1699579080",
-          "updatedAtBlockNumber": "10016349",
+          "id": "0x6c10bd07d2a8890fef26d800be4209ae37aaabeb",
+          "createdAtTimestamp": "1699525671",
+          "createdAtBlockNumber": "42188479",
+          "updatedAtTimestamp": "1699577706",
+          "updatedAtBlockNumber": "42212099",
           "flowRate": "0",
           "totalMembers": 1,
           "totalUnits": "1000000000000",
-          "totalAmountDistributedUntilUpdatedAt": "17134080000000000000",
+          "totalAmountDistributedUntilUpdatedAt": "105349271000000000000",
           "adjustmentFlowRate": "0",
-          "totalAmountFlowedDistributedUntilUpdatedAt": "17134080000000000000",
+          "totalAmountFlowedDistributedUntilUpdatedAt": "105349271000000000000",
           "totalAmountInstantlyDistributedUntilUpdatedAt": "0",
           "totalBuffer": "0",
           "totalConnectedMembers": 1,
@@ -55,19 +59,19 @@
             "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
           },
           "token": {
-            "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
+            "id": "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
             "symbol": "fDAIx"
           },
           "poolCreatedEvent": {
-            "id": "PoolCreated-0x2c35dd9db72644df043577626ecd2c4bff191a10b1b034785c213c746701e97a-14"
+            "id": "PoolCreated-0xdea225b7c2cab06a957f68e4dc6c8fdd299bf737fa6d7ae85b1df90f2992ed21-25"
           }
         },
         {
-          "id": "0x8f9f03b92a0f22e115482bec5498f151bc313a76",
-          "createdAtTimestamp": "1699317468",
-          "createdAtBlockNumber": "9999069",
-          "updatedAtTimestamp": "1699318092",
-          "updatedAtBlockNumber": "9999110",
+          "id": "0x5d8882a0f28158e0fa4afbd2f5ab05949191f08e",
+          "createdAtTimestamp": "1699317526",
+          "createdAtBlockNumber": "42093337",
+          "updatedAtTimestamp": "1699318440",
+          "updatedAtBlockNumber": "42093767",
           "flowRate": "0",
           "totalMembers": 0,
           "totalUnits": "0",
@@ -84,19 +88,19 @@
             "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
           },
           "token": {
-            "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
+            "id": "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
             "symbol": "fDAIx"
           },
           "poolCreatedEvent": {
-            "id": "PoolCreated-0x105309c75d50053690ee6f8a4e909ee5d05f1c6ad3342e95b18aee043efe16ed-18"
+            "id": "PoolCreated-0x293237e14505ed11c6aba6eb958048780ba2b2cc4ccf6e1d84a3ffa8c50387c5-4"
           }
         },
         {
-          "id": "0x864f9b0725ac8bd5788e0d7c6d0b420187fac328",
-          "createdAtTimestamp": "1699312560",
-          "createdAtBlockNumber": "9998726",
-          "updatedAtTimestamp": "1699312560",
-          "updatedAtBlockNumber": "9998726",
+          "id": "0x88a1217122609ca21f5d3f320681a9b7186c0bc1",
+          "createdAtTimestamp": "1699312653",
+          "createdAtBlockNumber": "42091541",
+          "updatedAtTimestamp": "1699312653",
+          "updatedAtBlockNumber": "42091541",
           "flowRate": "0",
           "totalMembers": 0,
           "totalUnits": "0",
@@ -113,48 +117,30 @@
             "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
           },
           "token": {
-            "id": "0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00",
+            "id": "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
             "symbol": "fDAIx"
           },
           "poolCreatedEvent": {
-            "id": "PoolCreated-0xd5fa1ab6a21e27659b9d5ab62877c6422671d257ab9f7f5e7efd37047077cf9e-163"
+            "id": "PoolCreated-0x61b5f3facf594d962de5bf233def7213ff1e9d9687c896a8ea5a639742c198cd-46"
           }
         }
       ]
     },
-    "superApp": {
-      "address": "0x39aA80Fc05eD0b3549be279589Fc67f06b7e35EE",
+    "idaAccount": {
+      "address": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
       "indexes": {
         "publications": [
           {
             "token": "fDAIx",
-            "totalDistributed": "2400",
-            "totalUnits": "1000000",
-            "hash": "0x39aa80fc05ed0b3549be279589fc67f06b7e35ee-0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00-0",
+            "totalDistributed": "400",
+            "totalUnits": "300000",
+            "hash": "0xd461647c2adb277799c313e6973dcc5f42b95b47-0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f-0",
             "details": {
-              "publisher": "0x39aA80Fc05eD0b3549be279589Fc67f06b7e35EE",
-              "totalUnitsApproved": "899999",
-              "totalUnitsPending": "100001",
+              "publisher": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
+              "totalUnitsApproved": "100000",
+              "totalUnitsPending": "200000",
               "indexId": "0",
               "distributions": [
-                {
-                  "distributionAmount": "100 fDAIx"
-                },
-                {
-                  "distributionAmount": "100 fDAIx"
-                },
-                {
-                  "distributionAmount": "100 fDAIx"
-                },
-                {
-                  "distributionAmount": "100 fDAIx"
-                },
-                {
-                  "distributionAmount": "500 fDAIx"
-                },
-                {
-                  "distributionAmount": "1000 fDAIx"
-                },
                 {
                   "distributionAmount": "100 fDAIx"
                 },
@@ -171,46 +157,31 @@
               "subscriptions": [
                 {
                   "approved": "Yes",
-                  "totalAmountReceived": "945",
-                  "subscriptionUnits": "450000 (45%)",
+                  "totalAmountReceived": "133",
+                  "subscriptionUnits": "300000 (33.33%)",
                   "details": {
-                    "hash": "0x02d950bd246a3152e47615a16b34630d41565c29-0x39aa80fc05ed0b3549be279589fc67f06b7e35ee-0xf2d68898557ccb2cf4c10c3ef2b034b2a69dad00-0",
-                    "shortIndex": "0x39aa... (0)",
+                    "hash": "0xd461647c2adb277799c313e6973dcc5f42b95b47-0xd461647c2adb277799c313e6973dcc5f42b95b47-0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f-0",
+                    "shortIndex": "0xd461... (0)",
                     "token": "Super fDAI Fake Token (fDAIx)",
-                    "publisher": "0x39aA80Fc05eD0b3549be279589Fc67f06b7e35EE",
-                    "subscriber": "0x02d950bd246A3152E47615a16B34630D41565c29",
-                    "units": "450000 / 1000000 (45 %)",
+                    "publisher": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
+                    "subscriber": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
+                    "units": "100000 / 300000 (33.33 %)",
                     "approved": "Yes",
-                    "totalAmountReceived": "945",
+                    "totalAmountReceived": "133",
                     "distributions": [
                       {
-                        "amountReceived": "45"
+                        "amountReceived": "33"
                       },
                       {
-                        "amountReceived": "45"
+                        "amountReceived": "33"
                       },
                       {
-                        "amountReceived": "45"
-                      },
-                      {
-                        "amountReceived": "45"
-                      },
-                      {
-                        "amountReceived": "225"
-                      },
-                      {
-                        "amountReceived": "450"
-                      },
-                      {
-                        "amountReceived": "45"
-                      },
-                      {
-                        "amountReceived": "45"
+                        "amountReceived": "33"
                       }
                     ],
                     "unitsUpdated": [
                       {
-                        "units": "450000"
+                        "units": "100000"
                       }
                     ]
                   }

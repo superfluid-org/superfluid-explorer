@@ -7,7 +7,7 @@ export default defineConfig({
   viewportHeight: 1080,
   viewportWidth: 1920,
   defaultCommandTimeout: 15000,
-  retries: 2,
+  retries: 0,
   e2e: {
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.js')(on, config)

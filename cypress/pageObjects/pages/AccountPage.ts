@@ -250,12 +250,12 @@ export class AccountPage extends BasePage {
     })
   }
 
-  static validateSuperAppPublicationEntries(network: string) {
+  static validateIdaAccountPublicationEntries(network: string) {
     cy.fixture('accountData').then((account) => {
-      if (account[network].superApp.indexes.publications.length === 0) {
+      if (account[network].idaAccount.indexes.publications.length === 0) {
         this.validateNoPublications()
       } else {
-        account[network].superApp.indexes.publications.forEach(
+        account[network].idaAccount.indexes.publications.forEach(
           (publication: any, index: number) => {
             cy.get(PUBLICATION_TOKEN_NAMES)
               .eq(index)
@@ -1022,11 +1022,12 @@ export class AccountPage extends BasePage {
           cy.get(POOL_TOKENS)
             .eq(index)
             .should('contain.text', pool.token.symbol)
+            let totalDistributedAssertionString = pool.totalAmountDistributedUntilUpdatedAt === "0" ? "0" : (pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(1)
           cy.get(POOLS_TOTAL_DISTRIBUTED)
             .eq(index)
             .should(
               'contain.text',
-              `${pool.token.symbol}${pool.totalAmountDistributedUntilUpdatedAt / 1e18}`
+              `${pool.token.symbol}${totalDistributedAssertionString}`
             )
           cy.get(POOLS_UNITS)
             .eq(index)

@@ -330,8 +330,6 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
               <OutlinedInput
                 fullWidth
                 size="small"
-                type="number"
-                inputProps={{ min: 0 }}
                 value={filter.id || ''}
                 onChange={onPoolIdChange}
                 data-cy={'id-input'}
@@ -478,7 +476,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
         <TableBody>
           {tableRows.map((pool: Pool) => (
             <TableRow key={pool.id} hover>
-              <TableCell className="address">
+              <TableCell className="address" data-cy={'publications-pool-id'}>
                 <AccountAddressFormatted
                   network={network}
                   address={pool.id}

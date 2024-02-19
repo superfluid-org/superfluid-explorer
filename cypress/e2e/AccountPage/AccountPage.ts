@@ -42,9 +42,9 @@ Then(`The account events are shown correctly for {string}`, (network) => {
 })
 
 Then(
-  `The super app publications are shown correctly for {string}`,
+  `The ida account publications are shown correctly for {string}`,
   (network) => {
-    AccountPage.validateSuperAppPublicationEntries(network)
+    AccountPage.validateIdaAccountPublicationEntries(network)
   }
 )
 Given(`User opens the publication details`, () => {

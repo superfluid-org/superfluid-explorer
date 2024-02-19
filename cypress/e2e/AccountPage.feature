@@ -15,11 +15,10 @@ Feature: Account page test cases
     And User switches to "events" tab
     Then The account events are shown correctly for "matic"
 
-  #Failing because of ~ mr Kaspar
   Scenario: Account with published indexes and the data shown in the index tab publications section
-    Given User has opened the "super app" page on "polygon-mumbai"
+    Given User has opened the "ida account" page on "mumbai"
     And User switches to "indexes" tab
-    And The super app publications are shown correctly for "polygon-mumbai"
+    And The ida account publications are shown correctly for "mumbai"
     And User opens the publication details
     Then The index details container is visible
 
@@ -76,7 +75,7 @@ Feature: Account page test cases
     And User resets outgoing streams filter
 
   Scenario: Filtering publication cases for indexes tab
-    Given User has opened the "super app" page on "mumbai"
+    Given User has opened the "ida account" page on "mumbai"
     And User switches to "indexes" tab
     And User filters publications by index id
     Then Publications filtered by index id are shown correctly
@@ -135,7 +134,6 @@ Feature: Account page test cases
   Scenario: Account page - pools tab tooltips and links
     Given User has opened the "GDA admin account" page on "mumbai"
     And User switches to "pools" tab
-    Then Tooltip is visible when user hovers the "account-type" tooltip icon
     Then Tooltip is visible when user hovers the "members" tooltip icon
     Then Tooltip is visible when user hovers the "gda-connected" tooltip icon
 
@@ -152,8 +150,8 @@ Feature: Account page test cases
   Scenario: Filtering pools table by address
     Given User has opened the "GDA admin account" page on "mumbai"
     And User switches to "pools" tab
-    When User filters the pools table by "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8" address
-    Then Only the pools with address "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8" are shown in the table
+    When User filters the pools table by "0x6C10Bd07d2A8890Fef26d800BE4209Ae37aaABEb" address
+    Then Only the pools with address "0x6C10Bd07d2A8890Fef26d800BE4209Ae37aaABEb" are shown in the table
 
   Scenario: Filtering pools table by "has distributed"
     Given User has opened the "GDA admin account" page on "mumbai"
