@@ -4,7 +4,7 @@ const INDEX_SHORT_HASH = '[data-cy=index-subscription-short-hash] a'
 const SUBSCRIPTION_TOKEN = '[data-cy=index-subscription-token] a'
 const INDEX_PUBLISHER = '[data-cy=subscription-publisher] a'
 const INDEX_SUBSCRIBER = '[data-cy=subscription-subscriber] a'
-const POOL_UNITS = '[data-cy=subscription-units] span'
+const POOL_UNITS = '[data-cy=subscription-units]'
 const APPROVAL = '[data-cy=subscription-approval] span'
 const TOTAL_AMOUNT_RECEIVED =
   '[data-cy=subscription-total-amount-received] span'
@@ -32,7 +32,7 @@ export class IndexSubscriptionPage extends BasePage {
         fixture[network].superApp.indexes.publications[0].details
           .subscriptions[0].details
       ).then((subscription: any) => {
-        this.hasText(POOL_UNITS, subscription.units)
+        this.containsText(POOL_UNITS, subscription.units)
         this.hasText(APPROVAL, subscription.approved)
         this.containsText(
           TOTAL_AMOUNT_RECEIVED,

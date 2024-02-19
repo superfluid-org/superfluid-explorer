@@ -171,19 +171,6 @@ export const networks = [
   },
   // testnets
   {
-    displayName: 'Goerli',
-    slugName: 'goerli',
-    chainId: 5,
-    isTestnet: true,
-    supportsGDA: getSupportsGDA(5),
-    rpcUrl: getRpcUrl(5),
-    subgraphUrl: getSubgraphUrl(5),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://goerli.etherscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://goerli.etherscan.io/address/${address}`
-  },
-  {
     displayName: 'Mumbai',
     slugName: 'mumbai',
     chainId: 80001,

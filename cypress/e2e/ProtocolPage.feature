@@ -14,8 +14,8 @@ Feature: Protocol page test cases
       | avalanche-c      |
       | avalanche-fuji   |
       | bnb-smart-chain  |
-      | goerli           |
       | mumbai           |
       | celo             |
-      | optimism-goerli  |
-      | arbitrum-goerli  |
+      | base             |
+      | scroll           |
+

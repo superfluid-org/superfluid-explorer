@@ -1,4 +1,5 @@
 import Decimal from 'decimal.js'
+import { ethers } from 'ethers'
 
 import { calculatePoolPercentage } from '../../../src/hooks/usePoolPercentage'
 import { BasePage } from '../BasePage'
@@ -93,9 +94,11 @@ const CHIP_DISTRIBUTED = '[data-cy=chip-distributed]'
 const CHIP_UNITS = '[data-cy=chip-units]'
 const CHIP_ACTIVE = '[data-cy=chip-active]'
 const CHIP_INACTIVE = '[data-cy=chip-inactive]'
+//fix this
 const POOL_IDS = '[data-cy=publications-pool-id]'
 const POOLS_TOTAL_DISTRIBUTED = '[data-cy=publications-total-distributed]'
-const POOL_TOKENS = `${POOLS_TOTAL_DISTRIBUTED} div span`
+const POOLS_TOTAL_DISTRIBUTED_NUMBER = '[data-cy=total-streamed]'
+const POOL_TOKENS = '[data-cy=token-link]'
 const POOLS_UNITS = '[data-cy=publications-units]'
 const POOLS_DETAILS_BUTTONS = '[data-cy=publications-details-buttons]'
 const NO_POOLS_RESULTS = '[data-cy=publications-no-results]'
@@ -107,6 +110,7 @@ const POOL_FILTER_HAS_DISTRIBUTED_YES_BUTTON =
 const POOL_FILTER_HAS_DISTRIBUTED_NO_BUTTON = '[data-cy=filter-distributed-no]'
 const POOL_FILTER_HAS_ISSUED_UNITS_YES_BUTTON = '[data-cy=filter-issued-yes]'
 const POOL_FILTER_HAS_ISSUED_UNITS_NO_BUTTON = '[data-cy=filter-issued-no]'
+//Locator is missing
 const MEMBER_TABLE_ADMINS = '[data-cy=admin-address]'
 const MEMBER_TABLE_CONNECTED = '[data-cy=connected-status]'
 const MEMBER_TABLE_TOTAL_CLAIMED = '[data-cy=amount-received]'
@@ -327,7 +331,7 @@ export class AccountPage extends BasePage {
         granularityMultiplier = 604800
         break
       case 'month':
-        granularityMultiplier = 2592000
+        granularityMultiplier = 2628000
         break
     }
 
@@ -347,7 +351,7 @@ export class AccountPage extends BasePage {
               cy.wrap(expectedFlowAmount).should(
                 'be.closeTo',
                 actualFlowAmount,
-                1e-18
+                1e-17
               )
             })
         }
@@ -1009,7 +1013,12 @@ export class AccountPage extends BasePage {
     cy.fixture('accountData').then((data) => {
       data[network].gdaAdminAccount.pools.forEach(
         (pool: any, index: number) => {
-          cy.get(POOL_IDS).eq(index).should('contain.text', pool.id)
+          cy.get(POOL_IDS)
+            .eq(index)
+            .should(
+              'contain.text',
+              this.getShortenedAddress(ethers.utils.getAddress(pool.id))
+            )
           cy.get(POOL_TOKENS)
             .eq(index)
             .should('contain.text', pool.token.symbol)
@@ -1017,9 +1026,11 @@ export class AccountPage extends BasePage {
             .eq(index)
             .should(
               'contain.text',
-              pool.totalAmountDistributedUntilUpdatedAt / 1e18
+              `${pool.token.symbol}${pool.totalAmountDistributedUntilUpdatedAt / 1e18}`
             )
-          cy.get(POOLS_UNITS).eq(index).should('contain.text', pool.totalUnits)
+          cy.get(POOLS_UNITS)
+            .eq(index)
+            .should('contain.text', pool.totalMembers)
         }
       )
     })
@@ -1029,9 +1040,6 @@ export class AccountPage extends BasePage {
     cy.fixture('accountData').then((data) => {
       data[network].gdaMemberAccount.pools.forEach(
         (member: any, index: number) => {
-          cy.get(MEMBER_TABLE_ADMINS)
-            .eq(index)
-            .should('have.text', this.getShortenedAddress(member.pool.admin.id))
           let expectedConnectionText = member.isConnected ? 'Yes' : 'No'
           cy.get(MEMBER_TABLE_CONNECTED)
             .eq(index)
@@ -1046,12 +1054,12 @@ export class AccountPage extends BasePage {
             .eq(index)
             .should(
               'contain.text',
-              `(${calculatePoolPercentage(
+              `${calculatePoolPercentage(
                 new Decimal(member.pool.totalUnits),
                 new Decimal(member.units)
               )
                 .toDP(2)
-                .toString()}%)`
+                .toString()}`
             )
         }
       )

@@ -13,15 +13,15 @@ Feature: Pool member page test cases
                 Then Information about the pool member is showing up correctly
 
 
-        # Scenario: Pool member flow distributions table showing correct data
-        #         Given User has opened the "pool member" page on "avalanche-fuji"
-        #         Then Pool member flow distributions table shows the correct data
+        Scenario: Pool member flow distributions table showing correct data
+                Given User has opened the "pool member" page on "avalanche-fuji"
+                Then Pool member flow distributions table shows the correct data
 
+        Scenario: Pool member units update table showing correct data
+                Given User has opened the "pool member" page on "avalanche-fuji"
+                Then Pool member unit update table shows the correct data
 
+        # Maybe one day , but not today , shall we see instant distributions per pool member
         # Scenario: Pool member instant distributions table showing correct data
         #         Given User has opened the "pool member" page on "avalanche-fuji"
         #         Then Pool member instant distributions table shows the correct data
-
-        # Scenario: Pool member units update table showing correct data
-        #         Given User has opened the "pool member" page on "avalanche-fuji"
-        #         Then Pool member unit update table shows the correct data

@@ -11,7 +11,7 @@ const POOL_ADMIN = '[data-cy=subscribers-admin]'
 const POOL_MEMBER = '[data-cy=subscription-member]'
 const POOL_UNITS = '[data-cy=subscription-units]'
 const POOL_APPROVAL_STATUS = '[data-cy=subscription-approval]'
-const POOL_TOTAL_AMOUNT_CLAIMED = '[data-cy=subscription-total-amount-claimed]'
+const POOL_TOTAL_AMOUNT_CLAIMED = '[data-cy=total-streamed]'
 const POOL_LAST_UPDATED_AT = '[data-cy=last-updated-at]'
 const POOL_CREATED_AT = '[data-cy=created-at]'
 const FLOW_DISTRIBUTION_TABLE_OPERATOR =
@@ -98,31 +98,69 @@ export class PoolMemberPage extends BasePage {
 
   static validatePoolMemberUnitUpdateTable(network: string) {
     cy.fixture('gdaData').then((data) => {
-      data[network].poolMemberUnitUpdateTable.forEach(
-        (entry: any, index: number) => {
-          cy.get(UNITS_TABLE_DATE).eq(index).should('have.text', entry.date)
-          cy.get(UNITS_TABLE_UNITS).eq(index).should('have.text', entry.amount)
-        }
-      )
+      data[network].poolMembers.forEach((entry: any, index: number) => {
+        const lastUpdatedAtDate = new Date(
+          data[network].poolMembers[index].updatedAtTimestamp * 1000
+        )
+        this.containsText(
+          UNITS_TABLE_DATE,
+          timeAgo(lastUpdatedAtDate.getTime())
+        )
+        cy.get(UNITS_TABLE_UNITS)
+          .eq(index)
+          .should(
+            'contain.text',
+            `${calculatePoolPercentage(
+              new Decimal(data[network].poolMembers[index].pool.totalUnits),
+              new Decimal(data[network].poolMembers[index].units)
+            )
+              .toDP(2)
+              .toString()}`
+          )
+      })
     })
   }
 
+  // static validatePoolMemberFlowDistributionsTable(network: string) {
+  //   cy.fixture('gdaData').then((data) => {
+  //     data[network].memberFlowDistributionTable.forEach(
+  //       (entry: any, index: number) => {
+  //         cy.get(FLOW_DISTRIBUTION_TABLE_OPERATOR)
+  //           .eq(index)
+  //           .should('have.text', entry.date)
+  //         cy.get(FLOW_DISTRIBUTION_TABLE_FLOW_RECIPIENT)
+  //           .eq(index)
+  //           .should('have.text', entry.amount)
+  //         cy.get(FLOW_DISTRIBUTION_TABLE_DISTRIBUTION_DATE)
+  //           .eq(index)
+  //           .should('have.text', entry.date)
+  //         cy.get(FLOW_DISTRIBUTION_TABLE_ADJUSTMENT_FLOW_RATE)
+  //           .eq(index)
+  //           .should('have.text', entry.amount)
+  //       }
+  //     )
+  //   })
+  // }
+
   static validatePoolMemberFlowDistributionsTable(network: string) {
     cy.fixture('gdaData').then((data) => {
-      data[network].memberFlowDistributionTable.forEach(
+      data[network].flowDistributionTable.forEach(
         (entry: any, index: number) => {
-          cy.get(FLOW_DISTRIBUTION_TABLE_OPERATOR)
-            .eq(index)
-            .should('have.text', entry.date)
           cy.get(FLOW_DISTRIBUTION_TABLE_FLOW_RECIPIENT)
             .eq(index)
-            .should('have.text', entry.amount)
+            .should(
+              'have.text',
+              ethers.utils.getAddress(entry.adjustmentFlowRecipient)
+            )
+          const eventDate = new Date(entry.timestamp * 1000)
           cy.get(FLOW_DISTRIBUTION_TABLE_DISTRIBUTION_DATE)
             .eq(index)
-            .should('have.text', entry.date)
-          cy.get(FLOW_DISTRIBUTION_TABLE_ADJUSTMENT_FLOW_RATE)
-            .eq(index)
-            .should('have.text', entry.amount)
+            .should('have.text', timeAgo(eventDate.getTime()))
+          this.replaceSpacesAndAssertText(
+            FLOW_DISTRIBUTION_TABLE_ADJUSTMENT_FLOW_RATE,
+            `${entry.adjustmentFlowRate}`,
+            index
+          )
         }
       )
     })

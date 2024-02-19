@@ -1,7 +1,7 @@
 {
-  "goerli": {
-    "TokenName": "Super Usable Token",
-    "TokenSymbol": "SUP",
-    "TokenAddress": "0x00d90bfd2ac9c73e285712c2c845580a7e445b41"
+  "mumbai": {
+    "TokenName": "Super EcoSeeds Token",
+    "TokenSymbol": "SEST",
+    "TokenAddress": "0xfff9896727b078b43d9809894721d0cac82fee57"
   }
 }
