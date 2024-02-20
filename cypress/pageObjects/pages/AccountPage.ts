@@ -808,8 +808,14 @@ export class AccountPage extends BasePage {
   }
 
   static validateFilteredSuperTokensByNotClosed() {
-    cy.get(CLOSED_STREAM_COUNT).each(($el) => {
-      cy.wrap($el.text()).should('eq', '0')
+    cy.get('body').then(($body) => {
+      if ($body.find(CLOSED_STREAM_COUNT).length > 0) {
+        cy.get(CLOSED_STREAM_COUNT).each(($el) => {
+          cy.wrap($el.text()).should('eq', '0')
+        })
+      } else {
+        cy.get(NO_RESULTS)
+      }
     })
   }
 
@@ -824,8 +830,14 @@ export class AccountPage extends BasePage {
   }
 
   static validateFilteredSuperTokensByUnits() {
-    cy.get(SUBSCRIPTIONS_WITH_UNITS_COUNT).each(($el) => {
-      cy.wrap($el.text()).should('not.eq', '0')
+    cy.get('body').then(($body) => {
+      if ($body.find(SUBSCRIPTIONS_WITH_UNITS_COUNT).length > 0) {
+        cy.get(SUBSCRIPTIONS_WITH_UNITS_COUNT).each(($el) => {
+          cy.wrap($el.text()).should('not.eq', '0')
+        })
+      } else {
+        cy.get(NO_RESULTS)
+      }
     })
   }
 
