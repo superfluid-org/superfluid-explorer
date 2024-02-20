@@ -1,6 +1,5 @@
 Feature: Index Page test cases
 
-  #Will fail because of ~ mr Kaspar
   Scenario: Data displayed in the index page
     Given User has opened the "index" page on "mumbai"
     Then Index general information is showing correct data for "mumbai"

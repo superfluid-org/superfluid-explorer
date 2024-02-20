@@ -94,8 +94,9 @@ const CHIP_DISTRIBUTED = '[data-cy=chip-distributed]'
 const CHIP_UNITS = '[data-cy=chip-units]'
 const CHIP_ACTIVE = '[data-cy=chip-active]'
 const CHIP_INACTIVE = '[data-cy=chip-inactive]'
-//fix this
 const POOL_IDS = '[data-cy=publications-pool-id]'
+const POOL_MEMBERS_TABLE = "[data-cy=pool-members-table]"
+const POOL_ADMINS_TABLE = "[data-cy=pool-admins-table]"
 const POOLS_TOTAL_DISTRIBUTED = '[data-cy=publications-total-distributed]'
 const POOLS_TOTAL_DISTRIBUTED_NUMBER = '[data-cy=total-streamed]'
 const POOL_TOKENS = '[data-cy=token-link]'
@@ -110,7 +111,6 @@ const POOL_FILTER_HAS_DISTRIBUTED_YES_BUTTON =
 const POOL_FILTER_HAS_DISTRIBUTED_NO_BUTTON = '[data-cy=filter-distributed-no]'
 const POOL_FILTER_HAS_ISSUED_UNITS_YES_BUTTON = '[data-cy=filter-issued-yes]'
 const POOL_FILTER_HAS_ISSUED_UNITS_NO_BUTTON = '[data-cy=filter-issued-no]'
-//Locator is missing
 const MEMBER_TABLE_ADMINS = '[data-cy=admin-address]'
 const MEMBER_TABLE_CONNECTED = '[data-cy=connected-status]'
 const MEMBER_TABLE_TOTAL_CLAIMED = '[data-cy=amount-received]'
@@ -964,8 +964,8 @@ export class AccountPage extends BasePage {
   static validateOnlyPoolsWithIssuedUnitsAreVisible() {
     cy.get('body').then(($body) => {
       if ($body.find(MEMBER_TABLE_CONNECTED).length > 0) {
-        cy.get(MEMBER_TABLE_CONNECTED).each((el) => {
-          cy.wrap(parseFloat(el.text().split(' ')[0])).should(
+        cy.get(MEMBER_TABLE_POOL_UNITS).each((el) => {
+          cy.wrap(parseFloat(el.text().replace("%",""))).should(
             'be.greaterThan',
             0
           )
@@ -1019,7 +1019,7 @@ export class AccountPage extends BasePage {
               'contain.text',
               this.getShortenedAddress(ethers.utils.getAddress(pool.id))
             )
-          cy.get(POOL_TOKENS)
+          cy.get(`${POOL_ADMINS_TABLE} ${POOL_TOKENS}`)
             .eq(index)
             .should('contain.text', pool.token.symbol)
             let totalDistributedAssertionString = pool.totalAmountDistributedUntilUpdatedAt === "0" ? "0" : (pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(1)
@@ -1049,7 +1049,7 @@ export class AccountPage extends BasePage {
             .eq(index)
             .should(
               'have.text',
-              `${member.pool.token.symbol}${member.totalAmountClaimed / 1e18}`
+              `${member.pool.token.symbol}${(member.pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(1)}`
             )
           cy.get(MEMBER_TABLE_POOL_UNITS)
             .eq(index)

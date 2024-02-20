@@ -16,6 +16,6 @@ Feature: Protocol page test cases
       | bnb-smart-chain  |
       | mumbai           |
       | celo             |
-      | base             |
-      | scroll           |
+      | base-mainnet     |
+      | scroll-mainnet   |
 

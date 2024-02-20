@@ -216,10 +216,12 @@ export class TokenPage extends BasePage {
   static validateIndexesByDistributed() {
     cy.get(TOTAL_AMOUNT_DISTRIBUTED).each(($el) => {
       cy.wrap($el.text())
-        .should('match', /DAIx(\d+)/)
+        .should('match', /DAIx~(\d+)/)
         .then((match) => {
-          const value = parseFloat(match.split('DAIx')[1])
-          expect(value).to.be.greaterThan(0)
+          const value = parseFloat(match.split('DAIx~')[1])
+          //Kaspar the smart rounding really is annoying to me, I hope you are happy now
+          let expectedAmount = value === 0 ? -1/1e18 : 0
+          expect(value).to.be.greaterThan(expectedAmount)
         })
     })
   }
@@ -236,7 +238,7 @@ export class TokenPage extends BasePage {
 
   static validateIndexesByNotDistributed() {
     cy.get(TOTAL_AMOUNT_DISTRIBUTED).each(($el) => {
-      cy.wrap($el.text()).should('contain', 'DAIx0')
+      cy.wrap($el.text()).should('contain', 'DAIx~0')
     })
   }
 

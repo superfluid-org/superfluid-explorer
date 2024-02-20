@@ -35,7 +35,7 @@ export class CommonElements extends BasePage {
 
   static searchForTransactionAccount() {
     cy.fixture('commonData').then((fixture) => {
-      this.type(MODAL_SEARCH_INPUT, fixture.transactionAccount)
+      this.type(MODAL_SEARCH_INPUT, fixture.lotsOfDataAccount)
     })
   }
 
@@ -95,7 +95,7 @@ export class CommonElements extends BasePage {
   }
 
   static subgraphContainerIsVisible() {
-    this.isVisible(SUBGRAPH_CONTAINER)
+    cy.get(SUBGRAPH_CONTAINER , {timeout: 30000}).should('be.visible')
   }
 
   static switchToTab(tab: string) {

@@ -158,14 +158,14 @@
                 {
                   "approved": "Yes",
                   "totalAmountReceived": "133",
-                  "subscriptionUnits": "300000 (33.33%)",
+                  "subscriptionUnits": "33.33%",
                   "details": {
                     "hash": "0xd461647c2adb277799c313e6973dcc5f42b95b47-0xd461647c2adb277799c313e6973dcc5f42b95b47-0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f-0",
                     "shortIndex": "0xd461... (0)",
                     "token": "Super fDAI Fake Token (fDAIx)",
                     "publisher": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
                     "subscriber": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
-                    "units": "100000 / 300000 (33.33 %)",
+                    "units": "33.33%",
                     "approved": "Yes",
                     "totalAmountReceived": "133",
                     "distributions": [

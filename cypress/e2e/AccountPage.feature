@@ -146,12 +146,11 @@ Feature: Account page test cases
     Given User has opened the "static balance account" page on "matic"
     Then Pools tab is not available to the user
 
-  #Failing due to https://github.com/superfluid-finance/superfluid-console/issues/209
   Scenario: Filtering pools table by address
     Given User has opened the "GDA admin account" page on "mumbai"
     And User switches to "pools" tab
     When User filters the pools table by "0x6C10Bd07d2A8890Fef26d800BE4209Ae37aaABEb" address
-    Then Only the pools with address "0x6C10Bd07d2A8890Fef26d800BE4209Ae37aaABEb" are shown in the table
+    Then Only the pools with address "0x6C10Bd...aaABEb" are shown in the table
 
   Scenario: Filtering pools table by "has distributed"
     Given User has opened the "GDA admin account" page on "mumbai"
@@ -184,7 +183,6 @@ Feature: Account page test cases
     And User sets the "members" filter to "yes" for "approved"
     Then User sees only the pools they are connected to
 
-  #Failing due to https://github.com/superfluid-finance/superfluid-console/issues/207
   Scenario: Filtering members table by "has received distributions"
     Given User has opened the "GDA member account" page on "mumbai"
     And User switches to "pools" tab

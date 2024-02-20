@@ -30,7 +30,6 @@ Feature: Token page test cases
     And User filters streams by no results
     And User resets streams filter
 
-  #Will fail because of ~ mr Kaspar
   Scenario: Filtering cases for indexes tab
     Given User has opened the "listed token" page on "matic"
     And User switches to "indexes" tab

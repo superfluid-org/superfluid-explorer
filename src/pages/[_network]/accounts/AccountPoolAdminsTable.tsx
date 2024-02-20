@@ -473,7 +473,7 @@ const AccountPoolAdminsTable: FC<AccountPoolAdminsTableProps> = ({
             <TableCell width="68px" />
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody data-cy="pool-admins-table">
           {tableRows.map((pool: Pool) => (
             <TableRow key={pool.id} hover>
               <TableCell className="address" data-cy={'publications-pool-id'}>

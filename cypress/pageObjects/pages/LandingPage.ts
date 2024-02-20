@@ -16,7 +16,7 @@ const TERMS_OF_USE_LINK = 'https://www.superfluid.finance/termsofuse/'
 const PRIVACY_POLICY_LINK =
   'https://www.iubenda.com/privacy-policy/34415583/legal'
 const SUPERFLUID_PROTOCOL_LINK =
-  'https://docs.superfluid.finance/docs/protocol/quickstart'
+  'https://docs.superfluid.finance/superfluid/protocol-overview/what-is-superfluid'
 
 export class LandingPage extends BasePage {
   static latestStreamsAreVisible(network: string) {

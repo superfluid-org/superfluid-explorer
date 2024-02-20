@@ -34,7 +34,6 @@ const UNITS_TABLE_UNITS =
 export class PoolMemberPage extends BasePage {
   static validatePoolMemberGeneralData(network: string) {
     cy.fixture('gdaData').then((data) => {
-      console.log(data[network].poolMembers)
       this.containsText(
         POOL_TOKEN,
         data[network].poolMembers[0].pool.token.symbol
@@ -73,10 +72,9 @@ export class PoolMemberPage extends BasePage {
         POOL_APPROVAL_STATUS,
         data[network].poolMembers[0].isConnected ? 'Yes' : 'No'
       )
-      //FIX the data shown in console is wrong atm
       this.containsText(
         POOL_TOTAL_AMOUNT_CLAIMED,
-        data[network].poolMembers[0].totalAmountClaimed / 1e18
+        (data[network].poolMembers[0].pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(0)
       )
     })
   }

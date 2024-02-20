@@ -559,7 +559,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
             <TableCell width="68px" />
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody data-cy="pool-members-table">
           {tableRows.map((member) => (
             <TableRow key={member.id} hover>
               <TableCell data-cy={'pool-id'} className="address">

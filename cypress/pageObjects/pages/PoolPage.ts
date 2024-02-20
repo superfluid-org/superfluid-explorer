@@ -24,7 +24,7 @@ const MEMBERS_TABLE_MEMBER_UNITS =
   '[data-cy=members-grid] .MuiDataGrid-cell[data-field=units]'
 const MEMBERS_TABLE_DETAILS_BUTTONS =
   '[data-cy=members-grid] .MuiDataGrid-cell[data-field=details]'
-const FLOW_DISTRIBUTION_TABLE_OPERATOR =
+const FLOW_DISTRIBUTION_TABLE_DISTRIBUTOR =
   '[data-cy=flow-distributions-grid] [data-cy=distributor-address]'
 const FLOW_DISTRIBUTION_TABLE_FLOW_RECIPIENT =
   '[data-cy=flow-distributions-grid] .MuiDataGrid-cell[data-field=adjustmentFlowRecipient]'
@@ -35,7 +35,11 @@ const FLOW_DISTRIBUTION_TABLE_ADJUSTMENT_FLOW_RATE =
 const INSTANT_DISTRIBUTION_TABLE_DATE =
   '[data-cy=instant-distributions-grid] .MuiDataGrid-cell[data-field=timestamp]'
 const INSTANT_DISTRIBUTION_TABLE_AMOUNT =
-  '[data-cy=instant-distributions-grid] .MuiDataGrid-cell[data-field=distributionAmount]'
+  '[data-cy=instant-distributions-grid] .MuiDataGrid-cell[data-field=actualAmount]'
+  const INSTANT_DISTRIBUTION_TABLE_DISTRIBUTOR =
+  '[data-cy=instant-distributions-grid] .MuiDataGrid-cell[data-field=distributor]'
+  const INSTANT_DISTRIBUTION_TABLE_REQUESTED_AMOUNT =
+  '[data-cy=instant-distributions-grid] .MuiDataGrid-cell[data-field=requestedAmount]'
 const POOL_LAST_UPDATED_AT = '[data-cy=last-updated-at]'
 const POOL_CREATED_AT = '[data-cy=created-at]'
 
@@ -62,12 +66,12 @@ export class PoolPage extends BasePage {
       )
       this.containsText(
         POOL_TOTAL_AMOUNT_DISTRIBUTED,
-        data[network].poolWithData.totalAmountDistributedUntilUpdatedAt / 1e18
+        (data[network].poolWithData.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(0)
       )
       this.containsText(
         POOL_TOTAL_INSTANT_DISTRIBUTED,
-        data[network].poolWithData
-          .totalAmountInstantlyDistributedUntilUpdatedAt / 1e18
+        (data[network].poolWithData
+          .totalAmountInstantlyDistributedUntilUpdatedAt / 1e18).toFixed(0)
       )
       const createdAtDate = new Date(
         data[network].poolWithData.createdAtTimestamp * 1000
@@ -94,10 +98,21 @@ export class PoolPage extends BasePage {
           cy.get(INSTANT_DISTRIBUTION_TABLE_DATE)
             .eq(index)
             .should('have.text', timeAgo(eventDate.getTime()))
-          //FIX Once distribution amounts calculation makes sense
-          //   cy.get(INSTANT_DISTRIBUTION_TABLE_AMOUNT)
-          //     .eq(index)
-          //     .should("have.text", `fDAIx${entry.amount}`);
+            cy.get(INSTANT_DISTRIBUTION_TABLE_DATE)
+            .eq(index)
+            .should('have.text', timeAgo(eventDate.getTime()))
+
+            cy.get(INSTANT_DISTRIBUTION_TABLE_DISTRIBUTOR)
+            .eq(index)
+            .should('have.text', this.getShortenedAddress(ethers.utils.getAddress(entry.poolDistributor.id.split("-")[2])))
+
+            cy.get(INSTANT_DISTRIBUTION_TABLE_AMOUNT)
+            .eq(index)
+            .should('contain.text', (entry.actualAmount / 1e18).toFixed(0))
+
+            cy.get(INSTANT_DISTRIBUTION_TABLE_REQUESTED_AMOUNT)
+            .eq(index)
+            .should('contain.text', (entry.requestedAmount / 1e18).toFixed(0))
         }
       )
     })
@@ -115,7 +130,7 @@ export class PoolPage extends BasePage {
           .should('have.text', entry.isConnected ? 'Yes' : 'No')
         cy.get(MEMBERS_TABLE_TOTAL_AMOUNT_CLAIMED)
           .eq(index)
-          .should('have.text', entry.totalAmountClaimed / 1e18)
+          .should('have.text', (entry.pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(0))
         this.replaceSpacesAndAssertText(
           MEMBERS_TABLE_MEMBER_UNITS,
           `${calculatePoolPercentage(
@@ -145,9 +160,9 @@ export class PoolPage extends BasePage {
     cy.fixture('gdaData').then((data) => {
       data[network].flowDistributionTable.forEach(
         (entry: any, index: number) => {
-          cy.get(FLOW_DISTRIBUTION_TABLE_OPERATOR)
+          cy.get(FLOW_DISTRIBUTION_TABLE_DISTRIBUTOR)
             .eq(index)
-            .should('have.text', ethers.utils.getAddress(entry.operator))
+            .should('have.text', ethers.utils.getAddress(entry.poolDistributor.account.id))
           cy.get(FLOW_DISTRIBUTION_TABLE_FLOW_RECIPIENT)
             .eq(index)
             .should(
@@ -160,7 +175,7 @@ export class PoolPage extends BasePage {
             .should('have.text', timeAgo(eventDate.getTime()))
           this.replaceSpacesAndAssertText(
             FLOW_DISTRIBUTION_TABLE_ADJUSTMENT_FLOW_RATE,
-            `${entry.adjustmentFlowRate} fDAIx`,
+            `${entry.adjustmentFlowRate}`,
             index
           )
         }

@@ -18,8 +18,8 @@ Feature: Test cases for common elements and functionalities
       | bnb-smart-chain  |
       | mumbai           |
       | celo             |
-      | base             |
-      | scroll           |
+      | base-mainnet     |
+      | scroll-mainnet   |
 
   Scenario: Searching for a listed token
     Given User has opened the "landing" page

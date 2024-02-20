@@ -265,19 +265,23 @@
           "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
           "totalUnits": "500000000000",
           "flowRate": "0",
+          "totalAmountDistributedUntilUpdatedAt": "2383903507000000000000",
           "token": {
             "id": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
             "symbol": "fDAIx"
           },
           "admin": {
             "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
-          }
+          },
+          "updatedAtTimestamp": "1700460029"
         },
         "account": {
           "id": "0xc19be11b5f9eac59758f4dbaaad465abb9103a95"
         },
         "isConnected": true,
-        "totalAmountClaimed": "37996895000000000000"
+        "totalAmountClaimed": "37996895000000000000",
+        "totalAmountReceivedUntilUpdatedAt": "359436663000000000000",
+        "poolTotalAmountDistributedUntilUpdatedAt": "359436663000000000000"
       }
     ],
     "flowDistributionTable": [
@@ -301,7 +305,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          "account": {
+            "id": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          }
         }
       },
       {
@@ -324,7 +330,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          "account": {
+            "id": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          }
         }
       },
       {
@@ -347,7 +355,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          "account": {
+            "id": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          }
         }
       },
       {
@@ -370,7 +380,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          "account": {
+            "id": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          }
         }
       },
       {
@@ -393,7 +405,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          "account": {
+            "id": "0xf8c92831bcc0b5e245e109caad7bb94ac4bbefb0"
+          }
         }
       },
       {
@@ -416,7 +430,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+          "account": {
+            "id": "0xf1e049014ad213264697de6c1ce153dc921ab562"
+          }
         }
       },
       {
@@ -439,7 +455,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+          "account": {
+            "id": "0xf1e049014ad213264697de6c1ce153dc921ab562"
+          }
         }
       },
       {
@@ -462,7 +480,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+          "account": {
+            "id": "0xf1e049014ad213264697de6c1ce153dc921ab562"
+          }
         }
       },
       {
@@ -485,7 +505,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+          "account": {
+            "id": "0xf1e049014ad213264697de6c1ce153dc921ab562"
+          }
         }
       },
       {
@@ -508,7 +530,9 @@
         },
         "token": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "poolDistributor": {
-          "id": "poolDistributor-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xf1e049014ad213264697de6c1ce153dc921ab562"
+          "account": {
+            "id": "0xf1e049014ad213264697de6c1ce153dc921ab562"
+          }
         }
       }
     ]
