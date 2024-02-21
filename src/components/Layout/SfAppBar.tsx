@@ -12,13 +12,13 @@ import {
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
 
 import { polygon } from '../../redux/networks'
 import AppLink from '../AppLink/AppLink'
 import SearchBar from '../Search/SearchBar'
 import SearchDialog from '../Search/SearchDialog'
 import SettingsDrawer from './SettingsDrawer'
+import { ErrorBoundary } from '@sentry/nextjs'
 
 export const SfAppBar = () => {
   const [searchOpen, setSearchOpen] = useState(false)
@@ -139,7 +139,7 @@ export const SfAppBar = () => {
           </Stack>
         </Toolbar>
       </AppBar>
-      <ErrorBoundary FallbackComponent={() => <span />} onError={(e) => { console.error(e); alert("The settings drawer crashed. :( The error is in the browser's developer console. Reloading the page or clearing your local storage could resolve the issue. Don't hesitate to let us know of the issue!") }}>
+      <ErrorBoundary fallback={() => <span />} onError={() => { alert("The settings drawer crashed. :( The error is in the browser's developer console. Reloading the page or clearing your local storage could resolve the issue. Don't hesitate to let us know of this situation!") }}>
         <SettingsDrawer
           onClose={() => setSettingsOpen(false)}
           open={settingsOpen}

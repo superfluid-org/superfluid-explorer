@@ -24,6 +24,7 @@ import useSfTheme from '../styles/useSfTheme'
 import createEmotionCache from '../utils/createEmotionCache'
 import { tryFindNetwork } from '../utils/findNetwork'
 import { isDynamicRoute } from '../utils/isDynamicRoute'
+import { ErrorBoundary } from '@sentry/nextjs'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -88,7 +89,9 @@ function MyApp(props: MyAppProps) {
               sx={{ height: '100vh', overflow: 'auto' }}
             >
               <Layout>
-                <Component {...pageProps} />
+                <ErrorBoundary fallback={() => <span />} onError={(e) => { alert("The page crashed. :( The error is in the browser's developer console. Reloading the page or clearing your local storage could resolve the issue. Don't hesitate to let us know of this situation!") }}>
+                  <Component {...pageProps} />
+                </ErrorBoundary>
               </Layout>
               <Footer />
             </Box>
