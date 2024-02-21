@@ -1,6 +1,5 @@
 import { TabList } from '@mui/lab'
 import { NoSsr, Tab } from '@mui/material'
-import isEqual from 'lodash/isEqual'
 
 import { useAvailableNetworks } from '../../contexts/AvailableNetworksContext'
 import { track } from '../../hooks/useMatomo'
@@ -8,7 +7,6 @@ import {
   defaultStreamQueryOrdering,
   defaultStreamQueryPaging
 } from '../../pages/NetworkStreams'
-import { useAppSelector } from '../../redux/hooks'
 import { sfSubgraph } from '../../redux/store'
 import NetworkDisplay from '../NetworkDisplay/NetworkDisplay'
 
@@ -22,19 +20,11 @@ const NetworkTabs: React.FC<NetworkTabsProps> = ({
   setActiveTab,
   prefetch
 }) => {
-  const { availableNetworks } = useAvailableNetworks()
+  const { visibleNetworks } = useAvailableNetworks()
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams', {
     ifOlderThan: 45
   })
-
-  const displayedTestnetChainIds = useAppSelector(
-    (state) =>
-      Object.entries(state.appPreferences.displayedTestNets)
-        .filter(([_, isDisplayed]) => isDisplayed)
-        .map(([chainId]) => Number(chainId)),
-    isEqual
-  )
 
   return (
     <NoSsr>
@@ -46,12 +36,7 @@ const NetworkTabs: React.FC<NetworkTabsProps> = ({
           setActiveTab(newValue)
         )}
       >
-        {availableNetworks
-          .filter(
-            (network) =>
-              !network.isTestnet ||
-              displayedTestnetChainIds.includes(network.chainId)
-          )
+        {visibleNetworks
           .map((network) => (
             <Tab
               data-cy={`${network.slugName}-landing-button`}

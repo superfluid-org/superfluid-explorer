@@ -89,7 +89,7 @@ function MyApp(props: MyAppProps) {
               sx={{ height: '100vh', overflow: 'auto' }}
             >
               <Layout>
-                <ErrorBoundary fallback={() => <span />} onError={(e) => { alert("The page crashed. :( The error is in the browser's developer console. Reloading the page or clearing your local storage could resolve the issue. Don't hesitate to let us know of this situation!") }}>
+                <ErrorBoundary fallback={() => <span />} onError={() => { alert("The page crashed. :( The error is in the browser's developer console. Reloading the page or clearing your local storage could resolve the issue. Don't hesitate to let us know of this situation!") }}>
                   <Component {...pageProps} />
                 </ErrorBoundary>
               </Layout>

@@ -15,13 +15,10 @@ import {
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
 import Switch from '@mui/material/Switch'
-import isEqual from 'lodash/isEqual'
-import sortBy from 'lodash/sortBy'
-import { FC, useEffect } from 'react'
+import { FC, useMemo } from 'react'
 
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { ChainId, networksByChainId } from '../../redux/networks'
 import {
   changeEtherDecimalPlaces,
   changeStreamGranularity,
@@ -30,6 +27,7 @@ import {
 } from '../../redux/slices/appPreferences.slice'
 import InfoTooltipBtn from '../Info/InfoTooltipBtn'
 import NetworkDisplay from '../NetworkDisplay/NetworkDisplay'
+import { useAvailableNetworks } from '../../contexts/AvailableNetworksContext'
 
 const Heading = styled(Typography)(({ theme }) => ({
   margin: '20px 0 10px',
@@ -55,6 +53,7 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
   onClose
 }) => {
   const dispatch = useAppDispatch()
+
   const currentThemePreference = useAppSelector(
     (state) => state.appPreferences.themePreference
   )
@@ -65,15 +64,11 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
     (state) => state.appPreferences.etherDecimalPlaces
   )
 
-  const currentDisplayedTestNets = useAppSelector(
-    (state) =>
-      sortBy(
-        Object.entries(state.appPreferences.displayedTestNets),
-        ([chainId]) =>
-          networksByChainId.get(Number(chainId) as ChainId)?.displayName
-      ),
-    isEqual
-  )
+  const { availableNetworks, isNetworkVisible } = useAvailableNetworks();
+
+  const availableTestnets = useMemo(() => {
+    return availableNetworks.filter((network) => network.isTestnet);
+  }, [availableNetworks])
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
@@ -196,19 +191,18 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
           Display Testnets
         </Heading>
         <FormGroup>
-          {currentDisplayedTestNets.map(([chainId, isDisplayed]) => {
-            const numericChainId = Number(chainId) as ChainId
-            const network = networksByChainId.get(numericChainId)!
+          {availableTestnets.map((testnet) => {
+            const isDisplayed = isNetworkVisible(testnet.chainId);
             return (
               <FormControlLabel
-                data-cy={`testnet-switch-${network.slugName}`}
+                data-cy={`testnet-switch-${testnet.slugName}`}
                 data-cy-state={isDisplayed ? 'on' : 'off'}
-                key={chainId}
+                key={testnet.chainId}
                 control={<Switch checked={isDisplayed} />}
                 onChange={() =>
-                  dispatch(toggleDisplayedTestnets(numericChainId))
+                  dispatch(toggleDisplayedTestnets(testnet.chainId))
                 }
-                label={<NetworkDisplay network={network} />}
+                label={<NetworkDisplay network={testnet} />}
               />
             )
           })}
