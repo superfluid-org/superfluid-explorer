@@ -17,7 +17,8 @@ import FormGroup from '@mui/material/FormGroup'
 import Switch from '@mui/material/Switch'
 import isEqual from 'lodash/isEqual'
 import sortBy from 'lodash/sortBy'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
+
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { ChainId, networksByChainId } from '../../redux/networks'
