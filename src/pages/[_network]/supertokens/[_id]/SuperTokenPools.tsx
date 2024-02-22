@@ -22,7 +22,7 @@ const SuperTokenPools: FC<Props> = ({
         distribute funds to the pool using the General Distribution Agreement
         (GDA).{' '}
         <AppLink
-          href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+          href="https://docs.superfluid.finance/docs/category/distributions"
           target="_blank"
         >
           Read more

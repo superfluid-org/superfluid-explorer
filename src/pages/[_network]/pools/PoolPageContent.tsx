@@ -45,6 +45,7 @@ import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import FlowDistributionUpdatedEventDataGrid from './FlowDistributionUpdatedEventDataGrid'
 import InstantDistributionUpdatedEventDataGrid from './InstantDistributionUpdatedEventDataGrid'
 import PoolMemberDataGrid from './PoolMemberDataGrid'
+import { PoolDistributorsDataGridManager } from '../accounts/PoolDistributorsDataGridManager'
 
 export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   id: id,
@@ -226,7 +227,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                             members.{' '}
                             <AppLink
                               data-cy="admin-tooltip-link"
-                              href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+                              href="https://docs.superfluid.finance/docs/category/distributions"
                               target="_blank"
                             >
                               Read more
@@ -263,7 +264,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                             created when a admin creates an pool.{' '}
                             <AppLink
                               data-cy="pool-id-tooltip-link"
-                              href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+                              href="https://docs.superfluid.finance/docs/category/distributions"
                               target="_blank"
                             >
                               Read more
@@ -473,7 +474,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 members for a given pool using the Superfluid GDA.{' '}
                 <AppLink
                   data-cy={'flows-tooltip-link'}
-                  href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon#gda-examples-by-illustration"
+                  href="https://docs.superfluid.finance/docs/category/distributions"
                   target="_blank"
                 >
                   Read more
@@ -506,7 +507,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 pool of members for a given pool using the Superfluid GDA.{' '}
                 <AppLink
                   data-cy={'distributions-tooltip-link'}
-                  href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon#gda-examples-by-illustration"
+                  href="https://docs.superfluid.finance/docs/category/distributions"
                   target="_blank"
                 >
                   Read more
@@ -540,7 +541,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                 they own in and pool.{' '}
                 <AppLink
                   data-cy={'pool-members-tooltip-link'}
-                  href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+                  href="https://docs.superfluid.finance/docs/category/distributions"
                   target="_blank"
                 >
                   Read more
@@ -558,6 +559,38 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
             setOrdering={setPoolMemberOrdering}
             pool={pool}
           />
+        </Card>
+      </Box>
+
+      <Box data-cy="distributors-grid" sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Pool Distributors
+          <InfoTooltipBtn
+            dataCy={'pool-distributors-tooltip'}
+            size={22}
+            title={
+              <>
+                Pool distributors are accounts that have sent funds to the GDA pool which got distributed between the pool members.{' '}
+                <AppLink
+                  data-cy={'pool-members-tooltip-link'}
+                  href="https://docs.superfluid.finance/docs/category/distributions"
+                  target="_blank"
+                >
+                  Read more
+                </AppLink>
+              </>
+            }
+          />
+        </Typography>
+        <Card elevation={2}>
+          {
+            pool && (
+              <PoolDistributorsDataGridManager
+                network={network}
+                poolAddress={pool.id}
+              />
+            )
+          }
         </Card>
       </Box>
     </Container>

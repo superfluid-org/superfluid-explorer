@@ -190,7 +190,7 @@ export const PoolMemberPageContent: FC<{
                             members.{' '}
                             <AppLink
                               data-cy={'admin-tooltip-link'}
-                              href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+                              href="https://docs.superfluid.finance/docs/category/distributions"
                               target="_blank"
                             >
                               Read more
@@ -389,7 +389,7 @@ export const PoolMemberPageContent: FC<{
                 members for a given pool using the Superfluid GDA.{' '}
                 <AppLink
                   data-cy={'flow-distributions-tooltip-link'}
-                  href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+                  href="https://docs.superfluid.finance/docs/category/distributions"
                   target="_blank"
                 >
                   Read more
@@ -419,7 +419,7 @@ export const PoolMemberPageContent: FC<{
                       pool of members for a given pool using the Superfluid GDA.{" "}
                       <AppLink
                         data-cy={"distributions-tooltip-link"}
-                        href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon#gda-examples-by-illustration"
+                        href="https://docs.superfluid.finance/docs/category/distributions"
                         target="_blank"
                       >
                         Read more

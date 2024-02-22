@@ -288,7 +288,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 they own in and pool.{' '}
                 <AppLink
                   data-cy={'members-tooltip-link'}
-                  href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+                  href="https://docs.superfluid.finance/docs/category/distributions"
                   target="_blank"
                 >
                   Read more
@@ -477,7 +477,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                     pool of members and flow/distribute funds to members.{' '}
                     <AppLink
                       data-cy="gda-admin-tooltip-link"
-                      href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+                      href="https://docs.superfluid.finance/docs/category/distributions"
                       target="_blank"
                     >
                       Read more

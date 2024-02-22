@@ -19,7 +19,7 @@ const AccountPools: FC<{
         recurring funds to a limitless set of recipients in web3. (GDA).{' '}
         <AppLink
           data-cy="gda-read-more-link"
-          href="https://docs.superfluid.finance/superfluid/protocol-overview/in-depth-overview/super-agreements/streaming-distributions-coming-soon"
+          href="https://docs.superfluid.finance/docs/category/distributions"
           target="_blank"
         >
           Read more
