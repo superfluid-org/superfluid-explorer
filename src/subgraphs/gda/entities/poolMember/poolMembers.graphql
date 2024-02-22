@@ -22,10 +22,6 @@ query poolMembers(
     units
     pool {
       id
-      totalUnits
-      flowRate
-      totalAmountDistributedUntilUpdatedAt
-      updatedAtTimestamp
       token {
         id
       }

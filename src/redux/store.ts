@@ -28,7 +28,6 @@ import {
 import storageLocal from 'redux-persist/lib/storage'
 
 import { allSubgraphEndpoints as allGdaSubgraphEndpoints } from '../subgraphs/gda/endpoints/allSubgraphEndpoints'
-import { createSubgraphGdaApiSlice } from '../subgraphs/gda/subgraphGdaApiSlice'
 import { addDays } from '../utils/dateTime'
 import { isServer } from '../utils/isServer'
 import { adhocRpcEndpoints } from './adhocRpcEndpoints'
@@ -42,13 +41,11 @@ export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks)
   .injectEndpoints(balanceRpcApiEndpoints)
   .injectEndpoints(adhocRpcEndpoints)
 
-export const sfSubgraph = initializeSubgraphApiSlice(
-  createApiWithReactHooks
-).injectEndpoints(allSubgraphEndpoints)
+export const sfSubgraph = initializeSubgraphApiSlice(createApiWithReactHooks)
+  .injectEndpoints(allSubgraphEndpoints)
+  .injectEndpoints(allGdaSubgraphEndpoints)
 
-export const sfGdaSubgraph = createSubgraphGdaApiSlice(
-  createApiWithReactHooks
-).injectEndpoints(allGdaSubgraphEndpoints)
+export const sfGdaSubgraph = sfSubgraph
 
 const infuraProviders = networks.map((network) => ({
   chainId: network.chainId,
@@ -78,8 +75,7 @@ export const makeStore = wrapMakeStore(() => {
       [sfSubgraph.reducerPath]: sfSubgraph.reducer,
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
-      [ensApi.reducerPath]: ensApi.reducer,
-      [sfGdaSubgraph.reducerPath]: sfGdaSubgraph.reducer
+      [ensApi.reducerPath]: ensApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -105,7 +101,6 @@ export const makeStore = wrapMakeStore(() => {
         .concat(rpcApi.middleware)
         .concat(sfSubgraph.middleware)
         .concat(ensApi.middleware)
-        .concat(sfGdaSubgraph.middleware)
   })
 
   if (!isServer()) {

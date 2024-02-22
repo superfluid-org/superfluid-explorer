@@ -32,7 +32,7 @@ export interface PoolMember {
   token: Address
   totalAmountReceivedUntilUpdatedAt: BigNumber
   poolTotalAmountDistributedUntilUpdatedAt: BigNumber
-  pool: SubgraphId
+  pool: Address
 }
 
 export type PoolMembersListQuery = SubgraphListQuery<
@@ -50,29 +50,9 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
     accountKeys: (keyof PoolMember_Filter)[]
     tokenKeys: (keyof PoolMember_Filter)[]
   } => ({
-    accountKeys: ['account'],
+    accountKeys: ['account', 'pool'],
     tokenKeys: []
   })
-
-  async get(
-    subgraphClient: SubgraphClient,
-    query: SubgraphGetQuery
-  ): Promise<PoolMember | null> {
-    if (!query.id) {
-      return null
-    }
-
-    const response = await this.querySubgraph(subgraphClient, {
-      where: {
-        id: query.id
-      },
-      skip: 0,
-      take: 1,
-      block: query.block
-    } as unknown as PoolMembersQueryVariables)
-
-    return this.mapFromSubgraphResponse(response)[0] ?? null
-  }
 
   getRelevantAddressesFromResultCore = (
     result: PoolMember

@@ -529,7 +529,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
 
       <Box data-cy="members-grid" sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-          Pool Member
+          Pool Members
           <InfoTooltipBtn
             dataCy={'pool-members-tooltip'}
             size={22}

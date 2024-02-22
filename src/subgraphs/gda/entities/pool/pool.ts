@@ -70,7 +70,7 @@ export const mapSubgraphGDAPool = (x: SubgraphPool): Pool => {
     totalAmountDistributedUntilUpdatedAt:
       x.totalAmountDistributedUntilUpdatedAt,
     admin: x.admin.id,
-    token: x.token.id,
+    token: x.token.id
   }
 
   return mappedPool
@@ -86,7 +86,7 @@ export class PoolQueryHandler extends SubgraphQueryHandler<
     accountKeys: (keyof Pool_Filter)[]
     tokenKeys: (keyof Pool_Filter)[]
   } => ({
-    accountKeys: ['admin'],
+    accountKeys: ['admin', 'id'],
     tokenKeys: ['token']
   })
 
@@ -111,7 +111,7 @@ export class PoolQueryHandler extends SubgraphQueryHandler<
       totalAmountDistributedUntilUpdatedAt:
         pool_.totalAmountDistributedUntilUpdatedAt,
       admin: pool_.admin.id,
-      token: pool_.token.id,
+      token: pool_.token.id
     }))
 
   requestDocument = PoolsDocument

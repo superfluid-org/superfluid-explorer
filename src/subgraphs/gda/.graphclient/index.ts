@@ -22060,6 +22060,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'PoolsDocument.graphql'
       },{
+        document: PoolDistributorsDocument,
+        get rawSDL() {
+          return printWithCache(PoolDistributorsDocument);
+        },
+        location: 'PoolDistributorsDocument.graphql'
+      },{
         document: PoolMembersDocument,
         get rawSDL() {
           return printWithCache(PoolMembersDocument);
@@ -22151,6 +22157,24 @@ export type PoolPartFragment = (
   & { admin: Pick<Account, 'id'>, token: Pick<Token, 'id'> }
 );
 
+export type PoolDistributorsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PoolDistributor_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<PoolDistributor_Filter>;
+  block?: InputMaybe<Block_Height>;
+}>;
+
+
+export type PoolDistributorsQuery = { poolDistributors: Array<(
+    Pick<PoolDistributor, 'createdAtTimestamp' | 'createdAtBlockNumber' | 'updatedAtTimestamp' | 'updatedAtBlockNumber' | 'totalBuffer' | 'totalAmountInstantlyDistributedUntilUpdatedAt' | 'totalAmountFlowedDistributedUntilUpdatedAt' | 'totalAmountDistributedUntilUpdatedAt' | 'id' | 'flowRate'>
+    & { account: Pick<Account, 'id'>, pool: (
+      Pick<Pool, 'id'>
+      & { token: Pick<Token, 'id'> }
+    ) }
+  )> };
+
 export type PoolMembersQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -22164,7 +22188,7 @@ export type PoolMembersQueryVariables = Exact<{
 export type PoolMembersQuery = { poolMembers: Array<(
     Pick<PoolMember, 'id' | 'createdAtTimestamp' | 'createdAtBlockNumber' | 'updatedAtTimestamp' | 'updatedAtBlockNumber' | 'units' | 'isConnected' | 'totalAmountClaimed' | 'totalAmountReceivedUntilUpdatedAt' | 'poolTotalAmountDistributedUntilUpdatedAt'>
     & { pool: (
-      Pick<Pool, 'id' | 'totalUnits' | 'flowRate' | 'totalAmountDistributedUntilUpdatedAt' | 'updatedAtTimestamp'>
+      Pick<Pool, 'id'>
       & { token: Pick<Token, 'id'> }
     ), account: Pick<Account, 'id'> }
   )> };
@@ -22619,6 +22643,31 @@ export const PoolsDocument = gql`
   }
 }
     ${PoolPartFragmentDoc}` as unknown as DocumentNode<PoolsQuery, PoolsQueryVariables>;
+export const PoolDistributorsDocument = gql`
+    query poolDistributors($first: Int = 10, $skip: Int = 0, $orderBy: PoolDistributor_orderBy = id, $orderDirection: OrderDirection = asc, $where: PoolDistributor_filter = {}, $block: Block_height) {
+  poolDistributors {
+    createdAtTimestamp
+    createdAtBlockNumber
+    updatedAtTimestamp
+    updatedAtBlockNumber
+    totalBuffer
+    totalAmountInstantlyDistributedUntilUpdatedAt
+    totalAmountFlowedDistributedUntilUpdatedAt
+    totalAmountDistributedUntilUpdatedAt
+    id
+    flowRate
+    account {
+      id
+    }
+    pool {
+      id
+      token {
+        id
+      }
+    }
+  }
+}
+    ` as unknown as DocumentNode<PoolDistributorsQuery, PoolDistributorsQueryVariables>;
 export const PoolMembersDocument = gql`
     query poolMembers($first: Int = 10, $skip: Int = 0, $orderBy: PoolMember_orderBy = id, $orderDirection: OrderDirection = asc, $where: PoolMember_filter = {}, $block: Block_height) {
   poolMembers(
@@ -22637,10 +22686,6 @@ export const PoolMembersDocument = gql`
     units
     pool {
       id
-      totalUnits
-      flowRate
-      totalAmountDistributedUntilUpdatedAt
-      updatedAtTimestamp
       token {
         id
       }
@@ -22704,6 +22749,7 @@ export const PoolMemberUnitsUpdatedEventsDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -22712,6 +22758,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     pools(variables?: PoolsQueryVariables, options?: C): Promise<PoolsQuery> {
       return requester<PoolsQuery, PoolsQueryVariables>(PoolsDocument, variables, options) as Promise<PoolsQuery>;
+    },
+    poolDistributors(variables?: PoolDistributorsQueryVariables, options?: C): Promise<PoolDistributorsQuery> {
+      return requester<PoolDistributorsQuery, PoolDistributorsQueryVariables>(PoolDistributorsDocument, variables, options) as Promise<PoolDistributorsQuery>;
     },
     poolMembers(variables?: PoolMembersQueryVariables, options?: C): Promise<PoolMembersQuery> {
       return requester<PoolMembersQuery, PoolMembersQueryVariables>(PoolMembersDocument, variables, options) as Promise<PoolMembersQuery>;

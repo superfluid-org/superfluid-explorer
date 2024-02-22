@@ -9,6 +9,7 @@ import {
   SubgraphListQueryHandler
 } from '@superfluid-finance/sdk-core'
 import {
+  SubgraphEndpointBuilder,
   createGeneralTags,
   getSubgraphClient,
   provideSpecificCacheTagsFromRelevantAddresses
@@ -23,7 +24,6 @@ import {
 import { FlowDistributionUpdatedEventQueryHandler } from '../events/flowDistributionUpdatedEvents'
 import { InstantDistributionUpdatedEventQueryHandler } from '../events/instantDistributionUpdatedEvents'
 import { PoolMemberUnitsUpdatedEventQueryHandler } from '../events/poolMemberUnitsUpdatedEvents'
-import { GdaSubgraphEndpointBuilder } from '../gdaSubgraphEndpointBuilder'
 import {
   FlowDistributionUpdatedEventQuery,
   FlowDistributionUpdatedEventsQuery,
@@ -33,9 +33,7 @@ import {
   PoolMemberUnitsUpdatedEventsQuery
 } from './entityArgs'
 
-export const createEventQueryEndpoints = (
-  builder: GdaSubgraphEndpointBuilder
-) => {
+export const createEventQueryEndpoints = (builder: SubgraphEndpointBuilder) => {
   // NOTE: Ignoring prettier because longer lines are more readable here.
   // prettier-ignore
   return {
@@ -55,7 +53,7 @@ function get<
   TReturn extends ILightEntity,
   TQuery extends { chainId: number } & SubgraphGetQuery
 >(
-  builder: GdaSubgraphEndpointBuilder,
+  builder: SubgraphEndpointBuilder,
   queryHandler: SubgraphGetQueryHandler<TReturn> &
     RelevantAddressProviderFromResult<TReturn>
 ) {
@@ -79,7 +77,7 @@ function list<
   TFilter extends { [key: string]: unknown } = NonNullable<TQuery['filter']>,
   TOrderBy extends string = NonNullable<TQuery['order']>['orderBy']
 >(
-  builder: GdaSubgraphEndpointBuilder,
+  builder: SubgraphEndpointBuilder,
   queryHandler: SubgraphListQueryHandler<TReturn, TQuery, TFilter> &
     RelevantAddressProviderFromFilter<TFilter>
 ) {
