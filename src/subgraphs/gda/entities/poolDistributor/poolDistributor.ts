@@ -2,13 +2,11 @@ import {
   Address,
   BigNumber,
   RelevantAddressesIntermediate,
-  SubgraphGetQuery,
   SubgraphId,
   SubgraphListQuery,
   SubgraphQueryHandler,
   Timestamp
 } from '@superfluid-finance/sdk-core'
-import { SubgraphClient } from '@superfluid-finance/sdk-core/dist/module/subgraph/SubgraphClient'
 
 import {
   PoolDistributor_Filter,

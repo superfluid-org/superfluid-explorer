@@ -1,11 +1,11 @@
 import { SubgraphGetQuery } from '@superfluid-finance/sdk-core'
 
 import { PoolListQuery } from '../entities/pool/pool'
+import { PoolDistributorsListQuery } from '../entities/poolDistributor/poolDistributor'
 import { PoolMembersListQuery } from '../entities/poolMember/poolMember'
 import { FlowDistributionUpdatedEventListQuery } from '../events/flowDistributionUpdatedEvents'
 import { InstantDistributionUpdatedEventListQuery } from '../events/instantDistributionUpdatedEvents'
 import { PoolMemberUnitsUpdatedEventListQuery } from '../events/poolMemberUnitsUpdatedEvents'
-import { PoolDistributorsListQuery } from '../entities/poolDistributor/poolDistributor'
 
 export interface PoolQuery extends SubgraphGetQuery {
   chainId: number

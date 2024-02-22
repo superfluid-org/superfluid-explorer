@@ -20,10 +20,10 @@ export default memo<AccountNetworkSelectProps>(function AccountNetworkSelect({
 }) {
   const { availableNetworks, isNetworkVisible } = useAvailableNetworks()
 
-  const availableNetworksOrdered = useMemo(() => sortBy(
-    [(x) => x.isTestnet, (x) => x.slugName],
-    networks
-  ), [availableNetworks]);
+  const availableNetworksOrdered = useMemo(
+    () => sortBy([(x) => x.isTestnet, (x) => x.slugName], networks),
+    [availableNetworks]
+  )
 
   const ref = useRef(null)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -37,16 +37,13 @@ export default memo<AccountNetworkSelectProps>(function AccountNetworkSelect({
       account: sfSubgraph.useAccountQuery(
         isNetworkVisible(n.chainId)
           ? {
-            chainId: n.chainId,
-            id: address
-          }
+              chainId: n.chainId,
+              id: address
+            }
           : skipToken
       )
     }))
-    .filter(
-      ({ account, network }) =>
-        (account.isLoading || !!account.data)
-    )
+    .filter(({ account, network }) => account.isLoading || !!account.data)
 
   return (
     <>

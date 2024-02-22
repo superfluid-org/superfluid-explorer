@@ -1,3 +1,4 @@
+import { memoize } from 'lodash'
 import {
   createContext,
   FC,
@@ -7,9 +8,8 @@ import {
   useMemo
 } from 'react'
 
-import { Network, networks } from '../redux/networks'
 import { useAppSelector } from '../redux/hooks'
-import { memoize } from 'lodash'
+import { Network, networks } from '../redux/networks'
 
 interface AvailableNetworksContextValue {
   availableNetworks: ReadonlyArray<Network>
@@ -27,23 +27,24 @@ export const AvailableNetworksProvider: FC<PropsWithChildren<{}>> = ({
   const displayedTestnetChainIds = useAppSelector(
     (state) => state.appPreferences.displayedTestNets
   )
-  const availableNetworks = networks;
+  const availableNetworks = networks
 
   const visibleNetworks = useMemo(() => {
     return availableNetworks.filter((network) => {
       if (network.isTestnet) {
         // Check explicitly for false, as undefined means it's a new network added to the app, and we want to show it then.
         if (displayedTestnetChainIds[network.chainId] === false) {
-          return false;
+          return false
         }
       }
       return true
     })
-  }, [displayedTestnetChainIds]);
+  }, [displayedTestnetChainIds])
 
   const isNetworkVisible = useCallback(
     memoize((chainId: number) =>
-      visibleNetworks.some((network) => network.chainId === chainId)),
+      visibleNetworks.some((network) => network.chainId === chainId)
+    ),
     [visibleNetworks]
   )
 
@@ -57,7 +58,10 @@ export const AvailableNetworksProvider: FC<PropsWithChildren<{}>> = ({
   )
 
   return (
-    <AvailableNetworksContext.Provider value={contextValue} key={availableNetworks.length}>
+    <AvailableNetworksContext.Provider
+      value={contextValue}
+      key={availableNetworks.length}
+    >
       {children}
     </AvailableNetworksContext.Provider>
   )

@@ -220,7 +220,7 @@ export class TokenPage extends BasePage {
         .then((match) => {
           const value = parseFloat(match.split('DAIx~')[1])
           //Kaspar the smart rounding really is annoying to me, I hope you are happy now
-          let expectedAmount = value === 0 ? -1/1e18 : 0
+          let expectedAmount = value === 0 ? -1 / 1e18 : 0
           expect(value).to.be.greaterThan(expectedAmount)
         })
     })

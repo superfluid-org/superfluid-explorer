@@ -74,7 +74,10 @@ export class PoolMemberPage extends BasePage {
       )
       this.containsText(
         POOL_TOTAL_AMOUNT_CLAIMED,
-        (data[network].poolMembers[0].pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(0)
+        (
+          data[network].poolMembers[0].pool
+            .totalAmountDistributedUntilUpdatedAt / 1e18
+        ).toFixed(0)
       )
     })
   }

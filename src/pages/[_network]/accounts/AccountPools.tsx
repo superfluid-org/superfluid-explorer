@@ -4,8 +4,8 @@ import AppLink from '../../../components/AppLink/AppLink'
 import HelpAlert from '../../../components/Info/HelpAlert'
 import { Network } from '../../../redux/networks'
 import AccountPoolAdminsTable from './AccountPoolAdminsTable'
-import AccountPoolMembersTable from './AccountPoolMembersTable'
 import { AccountPoolDistributorsDataGrid } from './AccountPoolDistributorsDataGrid'
+import AccountPoolMembersTable from './AccountPoolMembersTable'
 
 const AccountPools: FC<{
   network: Network

@@ -1,4 +1,4 @@
-import { networks,SlugName } from '../../../src/redux/networks'
+import { networks, SlugName } from '../../../src/redux/networks'
 import protocolContracts from '../../../src/redux/protocolContracts'
 import { BasePage } from '../BasePage'
 

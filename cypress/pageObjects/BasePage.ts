@@ -1,5 +1,5 @@
-import Decimal from "decimal.js"
-import { ethers } from "ethers"
+import Decimal from 'decimal.js'
+import { ethers } from 'ethers'
 
 export class BasePage {
   static click(selector: string) {
@@ -99,7 +99,7 @@ export class BasePage {
       .eq(index)
       .invoke('text')
       .invoke('replace', /\u00a0/g, ' ')
-      .invoke('replace', "~", '')
+      .invoke('replace', '~', '')
       .should('eq', text)
   }
 
@@ -123,7 +123,10 @@ export class BasePage {
     cy.get(selector).contains(text, { matchCase: false })
   }
 
-  static formatEtherAmount(weiAmount: string, etherDecimalPlaces: number = 18): string {
+  static formatEtherAmount(
+    weiAmount: string,
+    etherDecimalPlaces: number = 18
+  ): string {
     const ether = ethers.utils.formatEther(weiAmount)
     const isRounded = ether.split('.')[1]?.length > etherDecimalPlaces
     return `${isRounded ? '~' : ''}${new Decimal(ether).toDP(etherDecimalPlaces).toFixed()}`

@@ -127,12 +127,16 @@ const PoolMemberDataGrid: FC<Props> = ({
         renderCell: (params) => {
           return (
             <PoolQuery chainId={network.chainId} id={params.row.pool}>
-              {({ currentData: pool }) => (
-                pool ? <PoolPercentage
-                  totalUnits={pool?.totalUnits}
-                  individualUnits={params.row.units}
-                /> : <Skeleton sx={{ width: '50px' }} />
-              )}
+              {({ currentData: pool }) =>
+                pool ? (
+                  <PoolPercentage
+                    totalUnits={pool?.totalUnits}
+                    individualUnits={params.row.units}
+                  />
+                ) : (
+                  <Skeleton sx={{ width: '50px' }} />
+                )
+              }
             </PoolQuery>
           )
         }

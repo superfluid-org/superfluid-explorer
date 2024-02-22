@@ -9,14 +9,17 @@ import {
   SubgraphListQueryHandler
 } from '@superfluid-finance/sdk-core'
 import {
-  SubgraphEndpointBuilder,
   createGeneralTags,
   getSubgraphClient,
-  provideSpecificCacheTagsFromRelevantAddresses
-} from '@superfluid-finance/sdk-redux'
+  provideSpecificCacheTagsFromRelevantAddresses,
+  SubgraphEndpointBuilder} from '@superfluid-finance/sdk-redux'
 
 import { CacheTime } from '../cacheTime'
 import { Pool, PoolQueryHandler } from '../entities/pool/pool'
+import {
+  PoolDistributor,
+  PoolDistributorQueryHandler
+} from '../entities/poolDistributor/poolDistributor'
 import {
   PoolMember,
   PoolMemberQueryHandler
@@ -29,10 +32,6 @@ import {
   PoolQuery,
   PoolsQuery
 } from './entityArgs'
-import {
-  PoolDistributor,
-  PoolDistributorQueryHandler
-} from '../entities/poolDistributor/poolDistributor'
 
 export const createEntityEndpoints = (builder: SubgraphEndpointBuilder) => {
   // NOTE: Ignoring prettier because longer lines are more readable here.

@@ -95,8 +95,8 @@ const CHIP_UNITS = '[data-cy=chip-units]'
 const CHIP_ACTIVE = '[data-cy=chip-active]'
 const CHIP_INACTIVE = '[data-cy=chip-inactive]'
 const POOL_IDS = '[data-cy=publications-pool-id]'
-const POOL_MEMBERS_TABLE = "[data-cy=pool-members-table]"
-const POOL_ADMINS_TABLE = "[data-cy=pool-admins-table]"
+const POOL_MEMBERS_TABLE = '[data-cy=pool-members-table]'
+const POOL_ADMINS_TABLE = '[data-cy=pool-admins-table]'
 const POOLS_TOTAL_DISTRIBUTED = '[data-cy=publications-total-distributed]'
 const POOLS_TOTAL_DISTRIBUTED_NUMBER = '[data-cy=total-streamed]'
 const POOL_TOKENS = '[data-cy=token-link]'
@@ -977,7 +977,7 @@ export class AccountPage extends BasePage {
     cy.get('body').then(($body) => {
       if ($body.find(MEMBER_TABLE_CONNECTED).length > 0) {
         cy.get(MEMBER_TABLE_POOL_UNITS).each((el) => {
-          cy.wrap(parseFloat(el.text().replace("%",""))).should(
+          cy.wrap(parseFloat(el.text().replace('%', ''))).should(
             'be.greaterThan',
             0
           )
@@ -1034,7 +1034,10 @@ export class AccountPage extends BasePage {
           cy.get(`${POOL_ADMINS_TABLE} ${POOL_TOKENS}`)
             .eq(index)
             .should('contain.text', pool.token.symbol)
-            let totalDistributedAssertionString = pool.totalAmountDistributedUntilUpdatedAt === "0" ? "0" : (pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(1)
+          let totalDistributedAssertionString =
+            pool.totalAmountDistributedUntilUpdatedAt === '0'
+              ? '0'
+              : (pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(1)
           cy.get(POOLS_TOTAL_DISTRIBUTED)
             .eq(index)
             .should(

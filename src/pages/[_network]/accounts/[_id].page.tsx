@@ -429,11 +429,7 @@ const AccountPage: NextPage = () => {
                 }}
               />
               {network.supportsGDA && (
-                <Tab
-                  data-cy={'pools-tab'}
-                  label="Pools (GDA)"
-                  value="pools"
-                />
+                <Tab data-cy={'pools-tab'} label="Pools (GDA)" value="pools" />
               )}
               <Tab data-cy={'events-tab'} label="Events" value="events" />
               <Tab data-cy={'map-tab'} label="Map" value="map" />

@@ -1,4 +1,5 @@
 import { SubgraphEndpointBuilder } from '@superfluid-finance/sdk-redux'
+
 import { createEntityEndpoints } from './entityEndpoints'
 import { createEventQueryEndpoints } from './eventEndpoints'
 

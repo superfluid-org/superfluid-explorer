@@ -1,4 +1,9 @@
-import { Tooltip, TooltipProps, Typography, TypographyProps } from '@mui/material'
+import {
+  Tooltip,
+  TooltipProps,
+  Typography,
+  TypographyProps
+} from '@mui/material'
 import React, { FC, useMemo } from 'react'
 
 import { timeAgo } from '../../utils/dateTime'

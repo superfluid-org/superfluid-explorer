@@ -25,15 +25,10 @@ import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
 import { FC, FormEvent, useEffect, useRef, useState } from 'react'
 
-import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
-import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
-import DetailsButton from '../../../components/Details/DetailsButton'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
-import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 import InfinitePagination from '../../../components/Table/InfinitePagination'
 import TableLoader from '../../../components/Table/TableLoader'
-import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import useDebounce from '../../../hooks/useDebounce'
 import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
@@ -42,8 +37,6 @@ import {
   PoolMember_OrderBy
 } from '../../../subgraphs/gda/.graphclient'
 import { PoolMembersQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
-import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
-import { PoolMemberTotalAmountReceived } from '../pool-members/PoolMemberTotalAmountReceived'
 import { UnitsStatus } from './AccountPoolAdminsTable'
 import { AccountPoolMemberRow } from './AccountPoolMemberRow'
 
@@ -157,8 +150,8 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof PoolMember_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter))
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const getMemberStatusFilter = (
     status: MemberStatus | null
@@ -449,14 +442,14 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               {(memberStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -549,7 +542,11 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
         </TableHead>
         <TableBody data-cy="pool-members-table">
           {tableRows.map((member) => (
-            <AccountPoolMemberRow network={network} member={member} key={member.id} />
+            <AccountPoolMemberRow
+              network={network}
+              member={member}
+              key={member.id}
+            />
           ))}
 
           {queryResult.isSuccess && tableRows.length === 0 && (

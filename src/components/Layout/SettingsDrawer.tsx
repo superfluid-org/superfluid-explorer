@@ -17,7 +17,7 @@ import FormGroup from '@mui/material/FormGroup'
 import Switch from '@mui/material/Switch'
 import { FC, useMemo } from 'react'
 
-
+import { useAvailableNetworks } from '../../contexts/AvailableNetworksContext'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {
   changeEtherDecimalPlaces,
@@ -27,7 +27,6 @@ import {
 } from '../../redux/slices/appPreferences.slice'
 import InfoTooltipBtn from '../Info/InfoTooltipBtn'
 import NetworkDisplay from '../NetworkDisplay/NetworkDisplay'
-import { useAvailableNetworks } from '../../contexts/AvailableNetworksContext'
 
 const Heading = styled(Typography)(({ theme }) => ({
   margin: '20px 0 10px',
@@ -64,10 +63,10 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
     (state) => state.appPreferences.etherDecimalPlaces
   )
 
-  const { availableNetworks, isNetworkVisible } = useAvailableNetworks();
+  const { availableNetworks, isNetworkVisible } = useAvailableNetworks()
 
   const availableTestnets = useMemo(() => {
-    return availableNetworks.filter((network) => network.isTestnet);
+    return availableNetworks.filter((network) => network.isTestnet)
   }, [availableNetworks])
 
   return (
@@ -192,7 +191,7 @@ const SettingsDrawer: FC<{ open: boolean; onClose: () => void }> = ({
         </Heading>
         <FormGroup>
           {availableTestnets.map((testnet) => {
-            const isDisplayed = isNetworkVisible(testnet.chainId);
+            const isDisplayed = isNetworkVisible(testnet.chainId)
             return (
               <FormControlLabel
                 data-cy={`testnet-switch-${testnet.slugName}`}

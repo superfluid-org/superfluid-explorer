@@ -9,11 +9,10 @@ import {
   SubgraphListQueryHandler
 } from '@superfluid-finance/sdk-core'
 import {
-  SubgraphEndpointBuilder,
   createGeneralTags,
   getSubgraphClient,
-  provideSpecificCacheTagsFromRelevantAddresses
-} from '@superfluid-finance/sdk-redux'
+  provideSpecificCacheTagsFromRelevantAddresses,
+  SubgraphEndpointBuilder} from '@superfluid-finance/sdk-redux'
 
 import { CacheTime } from '../cacheTime'
 import {

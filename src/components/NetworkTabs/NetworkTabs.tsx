@@ -36,24 +36,23 @@ const NetworkTabs: React.FC<NetworkTabsProps> = ({
           setActiveTab(newValue)
         )}
       >
-        {visibleNetworks
-          .map((network) => (
-            <Tab
-              data-cy={`${network.slugName}-landing-button`}
-              key={`Tab_${network.slugName}`}
-              label={<NetworkDisplay network={network} />}
-              value={network.slugName}
-              onMouseEnter={() => {
-                if (prefetch) {
-                  prefetchStreamsQuery({
-                    chainId: network.chainId,
-                    order: defaultStreamQueryOrdering,
-                    pagination: defaultStreamQueryPaging
-                  })
-                }
-              }}
-            />
-          ))}
+        {visibleNetworks.map((network) => (
+          <Tab
+            data-cy={`${network.slugName}-landing-button`}
+            key={`Tab_${network.slugName}`}
+            label={<NetworkDisplay network={network} />}
+            value={network.slugName}
+            onMouseEnter={() => {
+              if (prefetch) {
+                prefetchStreamsQuery({
+                  chainId: network.chainId,
+                  order: defaultStreamQueryOrdering,
+                  pagination: defaultStreamQueryPaging
+                })
+              }
+            }}
+          />
+        ))}
       </TabList>
     </NoSsr>
   )

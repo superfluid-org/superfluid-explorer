@@ -95,7 +95,7 @@ export class CommonElements extends BasePage {
   }
 
   static subgraphContainerIsVisible() {
-    cy.get(SUBGRAPH_CONTAINER , {timeout: 30000}).should('be.visible')
+    cy.get(SUBGRAPH_CONTAINER, { timeout: 30000 }).should('be.visible')
   }
 
   static switchToTab(tab: string) {

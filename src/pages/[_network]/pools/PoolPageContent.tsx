@@ -42,10 +42,10 @@ import {
 } from '../../../subgraphs/gda/.graphclient'
 import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
+import { PoolDistributorsDataGridManager } from '../accounts/PoolDistributorsDataGridManager'
 import FlowDistributionUpdatedEventDataGrid from './FlowDistributionUpdatedEventDataGrid'
 import InstantDistributionUpdatedEventDataGrid from './InstantDistributionUpdatedEventDataGrid'
 import PoolMemberDataGrid from './PoolMemberDataGrid'
-import { PoolDistributorsDataGridManager } from '../accounts/PoolDistributorsDataGridManager'
 
 export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   id: id,
@@ -570,7 +570,8 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
             size={22}
             title={
               <>
-                Pool distributors are accounts that have sent funds to the GDA pool which got distributed between the pool members.{' '}
+                Pool distributors are accounts that have sent funds to the GDA
+                pool which got distributed between the pool members.{' '}
                 <AppLink
                   data-cy={'pool-members-tooltip-link'}
                   href="https://docs.superfluid.finance/docs/category/distributions"
@@ -583,14 +584,12 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
           />
         </Typography>
         <Card elevation={2}>
-          {
-            pool && (
-              <PoolDistributorsDataGridManager
-                network={network}
-                poolAddress={pool.id}
-              />
-            )
-          }
+          {pool && (
+            <PoolDistributorsDataGridManager
+              network={network}
+              poolAddress={pool.id}
+            />
+          )}
         </Card>
       </Box>
     </Container>

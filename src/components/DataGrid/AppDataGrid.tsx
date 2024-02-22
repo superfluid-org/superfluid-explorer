@@ -2,10 +2,9 @@ import { Pagination } from '@mui/material'
 import {
   DataGrid,
   DataGridProps,
+  gridClasses,
   GridColumns,
-  GridRowsProp,
-  gridClasses
-} from '@mui/x-data-grid'
+  GridRowsProp} from '@mui/x-data-grid'
 import {
   ILightEntity,
   Ordering,
@@ -57,29 +56,29 @@ export const AppDataGrid: FC<Props> = ({
     sortingMode: 'server',
     sortModel: ordering
       ? [
-        {
-          field: ordering.orderBy,
-          sort: ordering.orderDirection
-        }
-      ]
+          {
+            field: ordering.orderBy,
+            sort: ordering.orderDirection
+          }
+        ]
       : [],
     onSortModelChange: (sortModel) =>
       setOrdering(
         sortModel[0]
           ? {
-            orderBy: sortModel[0].field,
-            orderDirection: sortModel[0].sort! // TODO(KK): Forbidden
-          }
+              orderBy: sortModel[0].field,
+              orderDirection: sortModel[0].sort! // TODO(KK): Forbidden
+            }
           : undefined
       ),
     sx: {
       [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
-        outline: 'none',
+        outline: 'none'
       },
       [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]:
-      {
-        outline: 'none',
-      },
+        {
+          outline: 'none'
+        }
     }
   }
 
