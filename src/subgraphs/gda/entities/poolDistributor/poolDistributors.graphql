@@ -6,7 +6,14 @@ query poolDistributors(
   $where: PoolDistributor_filter = {}
   $block: Block_height
 ) {
-  poolDistributors {
+  poolDistributors(
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    skip: $skip
+    where: $where
+    block: $block
+  ) {
     createdAtTimestamp
     createdAtBlockNumber
     updatedAtTimestamp

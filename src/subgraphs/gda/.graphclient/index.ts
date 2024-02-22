@@ -22645,7 +22645,14 @@ export const PoolsDocument = gql`
     ${PoolPartFragmentDoc}` as unknown as DocumentNode<PoolsQuery, PoolsQueryVariables>;
 export const PoolDistributorsDocument = gql`
     query poolDistributors($first: Int = 10, $skip: Int = 0, $orderBy: PoolDistributor_orderBy = id, $orderDirection: OrderDirection = asc, $where: PoolDistributor_filter = {}, $block: Block_height) {
-  poolDistributors {
+  poolDistributors(
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    skip: $skip
+    where: $where
+    block: $block
+  ) {
     createdAtTimestamp
     createdAtBlockNumber
     updatedAtTimestamp

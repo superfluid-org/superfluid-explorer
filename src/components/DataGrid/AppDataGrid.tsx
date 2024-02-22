@@ -3,7 +3,8 @@ import {
   DataGrid,
   DataGridProps,
   GridColumns,
-  GridRowsProp
+  GridRowsProp,
+  gridClasses
 } from '@mui/x-data-grid'
 import {
   ILightEntity,
@@ -56,21 +57,30 @@ export const AppDataGrid: FC<Props> = ({
     sortingMode: 'server',
     sortModel: ordering
       ? [
-          {
-            field: ordering.orderBy,
-            sort: ordering.orderDirection
-          }
-        ]
+        {
+          field: ordering.orderBy,
+          sort: ordering.orderDirection
+        }
+      ]
       : [],
     onSortModelChange: (sortModel) =>
       setOrdering(
         sortModel[0]
           ? {
-              orderBy: sortModel[0].field,
-              orderDirection: sortModel[0].sort! // TODO(KK): Forbidden
-            }
+            orderBy: sortModel[0].field,
+            orderDirection: sortModel[0].sort! // TODO(KK): Forbidden
+          }
           : undefined
-      )
+      ),
+    sx: {
+      [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
+        outline: 'none',
+      },
+      [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]:
+      {
+        outline: 'none',
+      },
+    }
   }
 
   const finalDataGridProps = _.merge(defaultDataGridProps, dataGridProps)

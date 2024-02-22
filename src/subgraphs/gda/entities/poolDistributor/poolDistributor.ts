@@ -19,6 +19,7 @@ import {
 } from '../../.graphclient'
 
 export interface PoolDistributor {
+  id: SubgraphId
   createdAtTimestamp: Timestamp
   createdAtBlockNumber: Timestamp
   updatedAtTimestamp: Timestamp
@@ -27,7 +28,6 @@ export interface PoolDistributor {
   totalAmountInstantlyDistributedUntilUpdatedAt: BigNumber
   totalAmountFlowedDistributedUntilUpdatedAt: BigNumber
   totalAmountDistributedUntilUpdatedAt: BigNumber
-  id: SubgraphId
   flowRate: BigNumber
   account: Address
   pool: Address

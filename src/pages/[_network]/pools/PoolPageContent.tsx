@@ -123,7 +123,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
     orderDirection: 'desc'
   })
 
-  const poolMemberEventQuery = sfGdaSubgraph.usePoolMembersQuery({
+  const poolMembersQuery = sfGdaSubgraph.usePoolMembersQuery({
     chainId: network.chainId,
     filter: {
       pool: id
@@ -552,7 +552,7 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         <Card elevation={2}>
           <PoolMemberDataGrid
             network={network}
-            queryResult={poolMemberEventQuery}
+            queryResult={poolMembersQuery}
             setPaging={setPoolMemberPaging}
             ordering={poolMemberPagingOrdering}
             setOrdering={setPoolMemberOrdering}

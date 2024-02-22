@@ -5,6 +5,7 @@ import HelpAlert from '../../../components/Info/HelpAlert'
 import { Network } from '../../../redux/networks'
 import AccountPoolAdminsTable from './AccountPoolAdminsTable'
 import AccountPoolMembersTable from './AccountPoolMembersTable'
+import { AccountPoolDistributorsDataGrid } from './AccountPoolDistributorsDataGrid'
 
 const AccountPools: FC<{
   network: Network
@@ -25,12 +26,17 @@ const AccountPools: FC<{
         </AppLink>
       </HelpAlert>
 
+      <AccountPoolMembersTable
+        network={network}
+        accountAddress={accountAddress}
+      />
+
       <AccountPoolAdminsTable
         network={network}
         accountAddress={accountAddress}
       />
 
-      <AccountPoolMembersTable
+      <AccountPoolDistributorsDataGrid
         network={network}
         accountAddress={accountAddress}
       />

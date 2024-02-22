@@ -37,12 +37,12 @@ export const createEventQueryEndpoints = (builder: SubgraphEndpointBuilder) => {
   // NOTE: Ignoring prettier because longer lines are more readable here.
   // prettier-ignore
   return {
-    instantDistributionUpdatedEvent: get<InstantDistributionUpdatedEvent, InstantDistributionUpdatedEventQuery>(builder, new InstantDistributionUpdatedEventQueryHandler()),
-    instantDistributionUpdatedEvents: list<InstantDistributionUpdatedEvent, InstantDistributionUpdatedEventsQuery>(builder, new InstantDistributionUpdatedEventQueryHandler()),
-        flowDistributionUpdatedEvent: get<FlowDistributionUpdatedEvent, FlowDistributionUpdatedEventQuery>(builder, new FlowDistributionUpdatedEventQueryHandler()),
-        flowDistributionUpdatedEvents: list<FlowDistributionUpdatedEvent, FlowDistributionUpdatedEventsQuery>(builder, new FlowDistributionUpdatedEventQueryHandler()),
-        poolMemberUnitsUpdatedEvent: get<PoolMemberUnitsUpdatedEvent, PoolMemberUnitsUpdatedEventQuery>(builder, new PoolMemberUnitsUpdatedEventQueryHandler()),
-        poolMemberUnitsUpdatedEvents: list<PoolMemberUnitsUpdatedEvent, PoolMemberUnitsUpdatedEventsQuery>(builder, new PoolMemberUnitsUpdatedEventQueryHandler()),
+      instantDistributionUpdatedEvent: get<InstantDistributionUpdatedEvent, InstantDistributionUpdatedEventQuery>(builder, new InstantDistributionUpdatedEventQueryHandler()),
+      instantDistributionUpdatedEvents: list<InstantDistributionUpdatedEvent, InstantDistributionUpdatedEventsQuery>(builder, new InstantDistributionUpdatedEventQueryHandler()),
+      flowDistributionUpdatedEvent: get<FlowDistributionUpdatedEvent, FlowDistributionUpdatedEventQuery>(builder, new FlowDistributionUpdatedEventQueryHandler()),
+      flowDistributionUpdatedEvents: list<FlowDistributionUpdatedEvent, FlowDistributionUpdatedEventsQuery>(builder, new FlowDistributionUpdatedEventQueryHandler()),
+      poolMemberUnitsUpdatedEvent: get<PoolMemberUnitsUpdatedEvent, PoolMemberUnitsUpdatedEventQuery>(builder, new PoolMemberUnitsUpdatedEventQueryHandler()),
+      poolMemberUnitsUpdatedEvents: list<PoolMemberUnitsUpdatedEvent, PoolMemberUnitsUpdatedEventsQuery>(builder, new PoolMemberUnitsUpdatedEventQueryHandler()),
     };
 }
 
