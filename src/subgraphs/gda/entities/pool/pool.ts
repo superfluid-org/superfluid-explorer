@@ -51,9 +51,7 @@ export interface Pool {
   flowRate: BigNumber
   totalBuffer: BigNumber
   token: Address
-  tokenSymbol: string
   admin: Address
-  poolCreatedEvent: SubgraphId
 }
 
 export type SubgraphPool = NonNullable<Required<GetPoolQuery>['pool']>
@@ -71,10 +69,8 @@ export const mapSubgraphGDAPool = (x: SubgraphPool): Pool => {
       x.totalAmountFlowedDistributedUntilUpdatedAt,
     totalAmountDistributedUntilUpdatedAt:
       x.totalAmountDistributedUntilUpdatedAt,
-    poolCreatedEvent: x.poolCreatedEvent.id,
     admin: x.admin.id,
     token: x.token.id,
-    tokenSymbol: x.token.symbol
   }
 
   return mappedPool
@@ -114,10 +110,8 @@ export class PoolQueryHandler extends SubgraphQueryHandler<
         pool_.totalAmountFlowedDistributedUntilUpdatedAt,
       totalAmountDistributedUntilUpdatedAt:
         pool_.totalAmountDistributedUntilUpdatedAt,
-      poolCreatedEvent: pool_.poolCreatedEvent.id,
       admin: pool_.admin.id,
       token: pool_.token.id,
-      tokenSymbol: pool_.token.symbol
     }))
 
   requestDocument = PoolsDocument

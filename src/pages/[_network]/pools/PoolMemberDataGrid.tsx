@@ -21,6 +21,7 @@ import {
   PoolInput,
   PoolMemberTotalAmountReceived
 } from '../pool-members/PoolMemberTotalAmountReceived'
+import { PoolQuery } from './PoolQuery'
 
 interface Props {
   network: Network
@@ -125,10 +126,14 @@ const PoolMemberDataGrid: FC<Props> = ({
         flex: 2,
         renderCell: (params) => {
           return (
-            <PoolPercentage
-              totalUnits={params.row.pool_totalUnits}
-              individualUnits={params.row.units}
-            />
+            <PoolQuery chainId={network.chainId} id={params.row.pool}>
+              {({ currentData: pool }) => (
+                pool ? <PoolPercentage
+                  totalUnits={pool?.totalUnits}
+                  individualUnits={params.row.units}
+                /> : <Skeleton sx={{ width: '50px' }} />
+              )}
+            </PoolQuery>
           )
         }
       },

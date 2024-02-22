@@ -27,18 +27,12 @@ export interface PoolMember {
   updatedAtBlockNumber: BlockNumber
   units: BigNumber
   account: Address
-  admin: Address
   isConnected: Boolean
   totalAmountClaimed: BigNumber
   token: Address
-  tokenSymbol: string
   totalAmountReceivedUntilUpdatedAt: BigNumber
   poolTotalAmountDistributedUntilUpdatedAt: BigNumber
   pool: SubgraphId
-  pool_totalUnits: BigNumber
-  pool_flowRate: BigNumber
-  pool_updatedAtTimestamp: Timestamp
-  pool_totalAmountDistributedUntilUpdatedAt: BigNumber
 }
 
 export type PoolMembersListQuery = SubgraphListQuery<
@@ -84,7 +78,7 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
     result: PoolMember
   ): RelevantAddressesIntermediate => ({
     tokens: [result.token],
-    accounts: [result.admin, result.account]
+    accounts: [result.account]
   })
 
   mapFromSubgraphResponse = (response: PoolMembersQuery): PoolMember[] =>
@@ -96,14 +90,7 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
       updatedAtTimestamp: Number(x.updatedAtTimestamp),
       updatedAtBlockNumber: Number(x.updatedAtBlockNumber),
       pool: x.pool.id,
-      pool_flowRate: x.pool.flowRate,
-      pool_totalUnits: x.pool.totalUnits,
-      pool_updatedAtTimestamp: Number(x.pool.updatedAtTimestamp),
-      pool_totalAmountDistributedUntilUpdatedAt:
-        x.pool.totalAmountDistributedUntilUpdatedAt,
-      token: x.pool.token.id,
-      tokenSymbol: x.pool.token.symbol,
-      admin: x.pool.admin.id
+      token: x.pool.token.id
     }))
 
   requestDocument = PoolMembersDocument

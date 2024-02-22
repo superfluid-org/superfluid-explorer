@@ -54,9 +54,9 @@ export const PoolMemberPageContent: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool
-        }
+        chainId: network.chainId,
+        id: poolMember.pool
+      }
       : skipToken
   )
 
@@ -201,10 +201,10 @@ export const PoolMemberPageContent: FC<{
                     </>
                   }
                   primary={
-                    poolMember ? (
+                    pool ? (
                       <AccountAddress
                         network={network}
-                        address={poolMember.admin}
+                        address={pool.admin}
                       />
                     ) : (
                       <SkeletonAddress />

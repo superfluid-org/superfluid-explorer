@@ -47,9 +47,5 @@ fragment PoolPart on Pool {
   }
   token {
     id
-    symbol
-  }
-  poolCreatedEvent {
-    id
   }
 }
