@@ -191,8 +191,8 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter))
+      () =>
+        onFilterChange(omit(fields, queryArg.filter))
 
   const openFilter = () => setShowFilterMenu(true)
   const closeFilter = () => setShowFilterMenu(false)
@@ -352,14 +352,14 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               {(filter.id ||
                 filter.admin_contains ||
                 distributionStatus !== null) && (
-                <Button
-                  data-cy={'reset-filter'}
-                  onClick={resetFilter}
-                  tabIndex={-1}
-                >
-                  Reset
-                </Button>
-              )}
+                  <Button
+                    data-cy={'reset-filter'}
+                    onClick={resetFilter}
+                    tabIndex={-1}
+                  >
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>

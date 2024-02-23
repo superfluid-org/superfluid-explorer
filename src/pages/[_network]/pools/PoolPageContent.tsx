@@ -462,72 +462,6 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         </Grid>
       </Grid>
 
-      <Box data-cy={'flow-distributions-grid'} sx={{ mt: 3 }}>
-        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-          Flow Distributions
-          <InfoTooltipBtn
-            dataCy={'flows-tooltip'}
-            size={22}
-            title={
-              <>
-                An event in which super tokens are flow to the entire pool of
-                members for a given pool using the Superfluid GDA.{' '}
-                <AppLink
-                  data-cy={'flows-tooltip-link'}
-                  href="https://docs.superfluid.finance/docs/category/distributions"
-                  target="_blank"
-                >
-                  Read more
-                </AppLink>
-              </>
-            }
-          />
-        </Typography>
-
-        <Card elevation={2}>
-          <FlowDistributionUpdatedEventDataGrid
-            pool={pool}
-            queryResult={flowDistributionUpdatedEventQuery}
-            setPaging={setFlowDistributionUpdatedEventPaging}
-            ordering={flowDistributionUpdatedEventOrdering}
-            setOrdering={setFlowDistributionUpdatedEventOrdering}
-          />
-        </Card>
-      </Box>
-
-      <Box data-cy={'instant-distributions-grid'} sx={{ mt: 3 }}>
-        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
-          Instant Distributions
-          <InfoTooltipBtn
-            dataCy={'distributions-tooltip'}
-            size={22}
-            title={
-              <>
-                An event in which super tokens are distributed to the entire
-                pool of members for a given pool using the Superfluid GDA.{' '}
-                <AppLink
-                  data-cy={'distributions-tooltip-link'}
-                  href="https://docs.superfluid.finance/docs/category/distributions"
-                  target="_blank"
-                >
-                  Read more
-                </AppLink>
-              </>
-            }
-          />
-        </Typography>
-
-        <Card elevation={2}>
-          <InstantDistributionUpdatedEventDataGrid
-            pool={pool}
-            queryResult={instantDistributionUpdatedEventQuery}
-            setPaging={setInstantDistributionUpdatedEventPaging}
-            ordering={instantDistributionUpdatedEventOrdering}
-            setOrdering={setInstantDistributionUpdatedEventOrdering}
-          />
-        </Card>
-      </Box>
-
       <Box data-cy="members-grid" sx={{ mt: 3 }}>
         <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
           Pool Members
@@ -590,6 +524,72 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
               poolAddress={pool.id}
             />
           )}
+        </Card>
+      </Box>
+
+      <Box data-cy={'instant-distributions-grid'} sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Instant Distributions
+          <InfoTooltipBtn
+            dataCy={'distributions-tooltip'}
+            size={22}
+            title={
+              <>
+                An event in which super tokens are distributed to the entire
+                pool of members for a given pool using the Superfluid GDA.{' '}
+                <AppLink
+                  data-cy={'distributions-tooltip-link'}
+                  href="https://docs.superfluid.finance/docs/category/distributions"
+                  target="_blank"
+                >
+                  Read more
+                </AppLink>
+              </>
+            }
+          />
+        </Typography>
+
+        <Card elevation={2}>
+          <InstantDistributionUpdatedEventDataGrid
+            pool={pool}
+            queryResult={instantDistributionUpdatedEventQuery}
+            setPaging={setInstantDistributionUpdatedEventPaging}
+            ordering={instantDistributionUpdatedEventOrdering}
+            setOrdering={setInstantDistributionUpdatedEventOrdering}
+          />
+        </Card>
+      </Box>
+
+      <Box data-cy={'flow-distributions-grid'} sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Flow Distributions
+          <InfoTooltipBtn
+            dataCy={'flows-tooltip'}
+            size={22}
+            title={
+              <>
+                An event in which super tokens are flow to the entire pool of
+                members for a given pool using the Superfluid GDA.{' '}
+                <AppLink
+                  data-cy={'flows-tooltip-link'}
+                  href="https://docs.superfluid.finance/docs/category/distributions"
+                  target="_blank"
+                >
+                  Read more
+                </AppLink>
+              </>
+            }
+          />
+        </Typography>
+
+        <Card elevation={2}>
+          <FlowDistributionUpdatedEventDataGrid
+            pool={pool}
+            queryResult={flowDistributionUpdatedEventQuery}
+            setPaging={setFlowDistributionUpdatedEventPaging}
+            ordering={flowDistributionUpdatedEventOrdering}
+            setOrdering={setFlowDistributionUpdatedEventOrdering}
+          />
         </Card>
       </Box>
     </Container>

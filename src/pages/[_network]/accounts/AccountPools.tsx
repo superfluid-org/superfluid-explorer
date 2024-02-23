@@ -31,12 +31,12 @@ const AccountPools: FC<{
         accountAddress={accountAddress}
       />
 
-      <AccountPoolAdminsTable
+      <AccountPoolDistributorsDataGrid
         network={network}
         accountAddress={accountAddress}
       />
 
-      <AccountPoolDistributorsDataGrid
+      <AccountPoolAdminsTable
         network={network}
         accountAddress={accountAddress}
       />
