@@ -54,9 +54,9 @@ export const PoolMemberPageContent: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool
-        }
+        chainId: network.chainId,
+        id: poolMember.pool
+      }
       : skipToken
   )
 
@@ -69,6 +69,15 @@ export const PoolMemberPageContent: FC<{
       take: 10
     })
   )
+
+  console.log({
+    poolMemberId,
+    poolMember,
+    pool,
+    network
+    // poolId: poolMember.pool
+  })
+
   const [
     poolMemberUnitsUpdatedEventPagingOrdering,
     setPoolMemberUnitsUpdatedEventOrdering

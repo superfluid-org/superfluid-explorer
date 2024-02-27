@@ -3,6 +3,7 @@ import {
   BigNumber,
   BlockNumber,
   RelevantAddressesIntermediate,
+  SubgraphGetQuery,
   SubgraphId,
   SubgraphListQuery,
   SubgraphQueryHandler,
@@ -16,6 +17,7 @@ import {
   PoolMembersQuery,
   PoolMembersQueryVariables
 } from '../../.graphclient'
+import { SubgraphClient } from '@superfluid-finance/sdk-core/dist/module/subgraph/SubgraphClient'
 
 export interface PoolMember {
   id: SubgraphId
@@ -72,4 +74,25 @@ export class PoolMemberQueryHandler extends SubgraphQueryHandler<
     }))
 
   requestDocument = PoolMembersDocument
+
+  // Remove when toLowerCase on the ID is fixed in the SDK
+  async get(
+    subgraphClient: SubgraphClient,
+    query: SubgraphGetQuery
+  ): Promise<PoolMember | null> {
+    if (!query.id) {
+      return null
+    }
+
+    const response = await this.querySubgraph(subgraphClient, {
+      where: {
+        id: query.id
+      },
+      skip: 0,
+      take: 1,
+      block: query.block
+    } as unknown as PoolMembersQueryVariables)
+
+    return this.mapFromSubgraphResponse(response)[0] ?? null
+  }
 }

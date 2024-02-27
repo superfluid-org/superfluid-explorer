@@ -2,6 +2,7 @@ import {
   Address,
   BigNumber,
   RelevantAddressesIntermediate,
+  SubgraphGetQuery,
   SubgraphId,
   SubgraphListQuery,
   SubgraphQueryHandler,
@@ -15,6 +16,7 @@ import {
   PoolDistributorsQuery,
   PoolDistributorsQueryVariables
 } from '../../.graphclient'
+import { SubgraphClient } from '@superfluid-finance/sdk-core/dist/module/subgraph/SubgraphClient'
 
 export interface PoolDistributor {
   id: SubgraphId
@@ -73,4 +75,25 @@ export class PoolDistributorQueryHandler extends SubgraphQueryHandler<
     }))
 
   requestDocument = PoolDistributorsDocument
+
+  // Remove when toLowerCase on the ID is fixed in the SDK
+  async get(
+    subgraphClient: SubgraphClient,
+    query: SubgraphGetQuery
+  ): Promise<PoolDistributor | null> {
+    if (!query.id) {
+      return null
+    }
+
+    const response = await this.querySubgraph(subgraphClient, {
+      where: {
+        id: query.id
+      },
+      skip: 0,
+      take: 1,
+      block: query.block
+    } as unknown as PoolDistributorsQueryVariables)
+
+    return this.mapFromSubgraphResponse(response)[0] ?? null
+  }
 }
