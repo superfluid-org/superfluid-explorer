@@ -994,6 +994,11 @@ export class AccountPage extends BasePage {
     })
   }
   static filterGDAPoolsTableBy(filter: string, value: string, field: string) {
+    //This specific filter shows a loading spinner before
+    if(filter === "members" && value === "yes" && field === "units"){
+      this.isVisible(LOADING_SPINNER)
+      this.isNotVisible(LOADING_SPINNER)
+    }
     let selectorPrefixForFilterButtons =
       filter === 'pools' ? 'filter' : 'filter-members'
     let filterButtonToClick =
