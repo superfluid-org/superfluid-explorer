@@ -953,8 +953,8 @@ export class AccountPage extends BasePage {
   static validateOnlyPoolsWithMemberUnitsAreVisible() {
     cy.get('body').then(($body) => {
       if ($body.find(MEMBER_TABLE_POOL_UNITS).length > 0) {
-        cy.get(MEMBER_TABLE_POOL_UNITS).each((el) => {
-          cy.wrap(parseFloat(el.text().split(' ')[0])).should(
+        cy.get(MEMBER_TABLE_POOL_UNITS).each((el: any) => {
+          cy.wrap(parseFloat(el.text().replace("%",""))).should(
             'be.greaterThan',
             0
           )
