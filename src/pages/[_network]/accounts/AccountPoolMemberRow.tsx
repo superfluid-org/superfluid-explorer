@@ -22,7 +22,7 @@ export const AccountPoolMemberRow: FC<AccountPoolMemberRow> = ({
   member
 }) => {
   return (
-    <PoolQuery chainId={network.chainId} id={member.id}>
+    <PoolQuery chainId={network.chainId} id={member.pool}>
       {({ currentData: pool }) => (
         <TableRow hover>
           <TableCell data-cy={'pool-id'} className="address">
