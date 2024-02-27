@@ -102,9 +102,8 @@ const Map: FC<{
               data: {
                 label: <UserBlock network={network} address={stream.receiver} />
               },
-              flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${
-                stream.tokenSymbol
-              }`,
+              flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${stream.tokenSymbol
+                }`,
               sourcePosition: Position.Top
             }
             return node
@@ -164,9 +163,8 @@ const Map: FC<{
               data: {
                 label: <UserBlock network={network} address={stream.sender} />
               },
-              flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${
-                stream.tokenSymbol
-              }`,
+              flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${stream.tokenSymbol
+                }`,
               sourcePosition: Position.Bottom
             }
             return node

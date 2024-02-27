@@ -23,51 +23,51 @@ import Error from 'next/error'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 
-import { AddressBookButton } from '../../../components/AddressBook/AddressBook'
-import FlowingBalance from '../../../components/Amount/FlowingBalance'
-import FlowRate from '../../../components/Amount/FlowRate'
-import CopyIconBtn from '../../../components/Copy/CopyIconBtn'
-import CopyLink from '../../../components/Copy/CopyLink'
-import DepletionDate from '../../../components/Date/DepletionDate'
-import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'
-import AccountNetworkSelect from '../../../components/NetworkSelect/AccountNetworkSelect'
-import SkeletonAddress from '../../../components/Skeleton/SkeletonAddress'
-import SkeletonNetwork from '../../../components/Skeleton/SkeletonNetwork'
-import EventTableWithInfo from '../../../components/Table/EventTableWithInfo'
-import TokenChip from '../../../components/TokenChip/TokenChip'
-import IdContext from '../../../contexts/IdContext'
-import { useNetworkContext } from '../../../contexts/NetworkContext'
-import { useAppSelector } from '../../../redux/hooks'
+import { AddressBookButton } from '../../../../components/AddressBook/AddressBook'
+import FlowingBalance from '../../../../components/Amount/FlowingBalance'
+import FlowRate from '../../../../components/Amount/FlowRate'
+import CopyIconBtn from '../../../../components/Copy/CopyIconBtn'
+import CopyLink from '../../../../components/Copy/CopyLink'
+import DepletionDate from '../../../../components/Date/DepletionDate'
+import InfoTooltipBtn from '../../../../components/Info/InfoTooltipBtn'
+import AccountNetworkSelect from '../../../../components/NetworkSelect/AccountNetworkSelect'
+import SkeletonAddress from '../../../../components/Skeleton/SkeletonAddress'
+import SkeletonNetwork from '../../../../components/Skeleton/SkeletonNetwork'
+import EventTableWithInfo from '../../../../components/Table/EventTableWithInfo'
+import TokenChip from '../../../../components/TokenChip/TokenChip'
+import IdContext from '../../../../contexts/IdContext'
+import { useNetworkContext } from '../../../../contexts/NetworkContext'
+import { useAppSelector } from '../../../../redux/hooks'
 import {
   addressBookSelectors,
   createEntryId
-} from '../../../redux/slices/addressBook.slice'
-import { ensApi } from '../../../redux/slices/ensResolver.slice'
-import { sfSubgraph } from '../../../redux/store'
-import ellipsisAddress from '../../../utils/ellipsisAddress'
-import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
+} from '../../../../redux/slices/addressBook.slice'
+import { ensApi } from '../../../../redux/slices/ensResolver.slice'
+import { sfSubgraph } from '../../../../redux/store'
+import ellipsisAddress from '../../../../utils/ellipsisAddress'
+import SubgraphQueryLink from '../../../subgraph/SubgraphQueryLink'
 import {
   incomingStreamOrderingDefault,
   incomingStreamPagingDefault
-} from './AccountIncomingStreamsTable'
-import AccountIndexes from './AccountIndexes'
+} from '../AccountIncomingStreamsTable'
+import AccountIndexes from '../AccountIndexes'
 import {
   publishedIndexOrderingDefault,
   publishedIndexPagingDefault
-} from './AccountIndexPublicationsTable'
+} from '../AccountIndexPublicationsTable'
 import {
   indexSubscriptionOrderingDefault,
   indexSubscriptionPagingDefault
-} from './AccountIndexSubscriptionsTable'
-import AccountMap from './AccountMap'
+} from '../AccountIndexSubscriptionsTable'
+import AccountMap from '../AccountMap'
 import {
   outgoingStreamOrderingDefault,
   outgoingStreamPagingDefault
-} from './AccountOutgoingStreamsTable'
-import AccountPools from './AccountPools'
-import AccountStreams from './AccountStreams'
-import AccountTokenBalance from './AccountTokenBalance'
-import AccountTokens from './AccountTokens'
+} from '../AccountOutgoingStreamsTable'
+import AccountPools from '../AccountPools'
+import AccountStreams from '../AccountStreams'
+import AccountTokenBalance from '../AccountTokenBalance'
+import AccountTokens from '../AccountTokens'
 
 const AccountPage: NextPage = () => {
   const network = useNetworkContext()
