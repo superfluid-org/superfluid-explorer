@@ -49,14 +49,18 @@ export const sfGdaSubgraph = sfSubgraph
 
 const infuraProviders = networks.map((network) => ({
   chainId: network.chainId,
-  frameworkGetter: () =>
-    Framework.create({
+  frameworkGetter: () => {
+    return Framework.create({
       chainId: network.chainId,
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
-      customSubgraphQueriesEndpoint: network.subgraphUrl
+      customSubgraphQueriesEndpoint:
+        network.chainId === 80001
+          ? 'https://api.thegraph.com/subgraphs/name/superfluid-finance/feature-v1-mumbai'
+          : network.subgraphUrl
     })
+  }
 }))
 
 export const makeStore = wrapMakeStore(() => {
