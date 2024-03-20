@@ -1,5 +1,8 @@
 import { BigNumber, BigNumberish } from 'ethers'
 import { FC, PropsWithChildren, useMemo } from 'react'
+import { useReadContract, useReadContracts } from 'wagmi'
+import { superfluidPoolABI } from './superfluidPoolABI'
+import { Address } from 'viem'
 
 export type PoolMemberInput = {
   units: BigNumberish
@@ -14,79 +17,131 @@ export type PoolInput = {
   updatedAtTimestamp: number
 }
 
+type Output = {
+  memberCurrentTotalAmountReceived: BigNumber,
+  memberFlowRate: BigNumber,
+  timestamp: number
+}
+
 export const PoolMemberTotalAmountReceived: FC<{
-  member: PoolMemberInput
-  pool: PoolInput
+  memberAddress: string | Address | undefined,
+  poolAddress: string | Address | undefined
   children: (
-    output: ReturnType<typeof getTotalAmountReceivedForPoolMember>
+    output: Output
   ) => PropsWithChildren['children']
-}> = ({ member, pool, children }) => {
-  const output = useTotalAmountRecivedFromPoolMember(member, pool)
-  if (!output) {
+}> = ({ memberAddress, poolAddress, children }) => {
+  const output = useTotalAmountReceivedFromPoolMember(memberAddress, poolAddress);
+  if (output) {
+    return (
+      <>
+        {children(output)}
+      </>
+    )
+  } else {
     return null
   }
-  return <>{children(output)}</>
 }
 
-export const useTotalAmountRecivedFromPoolMember = (
-  member: PoolMemberInput | null | undefined,
-  pool: PoolInput | null | undefined
+
+// export const PoolMemberTotalAmountReceived: FC<{
+//   member: PoolMemberInput
+//   pool: PoolInput
+//   children: (
+//     output: ReturnType<typeof getTotalAmountReceivedForPoolMember>
+//   ) => PropsWithChildren['children']
+// }> = ({ member, pool, children }) => {
+//   const output = useTotalAmountRecivedFromPoolMember(member, pool)
+//   if (!output) {
+//     return null
+//   }
+//   return <>{children(output)}</>
+// }
+
+export const useTotalAmountReceivedFromPoolMember = (
+  memberAddress?: string | Address,
+  poolAddress?: string | Address
 ) => {
+  const { data, dataUpdatedAt } = useReadContracts({
+    contracts: [{
+      address: poolAddress as Address,
+      abi: superfluidPoolABI,
+      functionName: 'getTotalAmountReceivedByMember',
+      args: [memberAddress as Address],
+    },
+    {
+      address: poolAddress as Address,
+      abi: superfluidPoolABI,
+      functionName: 'getMemberFlowRate',
+      args: [memberAddress as Address],
+    }],
+    query: {
+      enabled: Boolean(memberAddress && poolAddress)
+    }
+  });
+
+  const [getTotalAmountReceivedByMember, getMemberFlowRate] = data ?? [];
+
   return useMemo(() => {
-    if (!member || !pool) {
-      return undefined
+    // const output = useTotalAmountRecivedFromPoolMember(member, pool)
+    if (getTotalAmountReceivedByMember?.status === "success" && getMemberFlowRate?.status === "success") {
+      return {
+        timestamp: Math.round(dataUpdatedAt / 1000),
+        memberCurrentTotalAmountReceived: BigNumber.from(getTotalAmountReceivedByMember.result.toString()),
+        memberFlowRate: BigNumber.from(getMemberFlowRate.result.toString())
+      }
+    } else {
+      return null
     }
-    return getTotalAmountReceivedForPoolMember(member, pool)
-  }, [member, pool])
+  }, [getTotalAmountReceivedByMember, getMemberFlowRate]);
 }
 
-export const getTotalAmountReceivedForPoolMember = (
-  member: PoolMemberInput,
-  pool: PoolInput
-): {
-  memberCurrentTotalAmountReceived: BigNumber
-  memberFlowRate: BigNumber
-  timestamp: number
-} => {
-  const currentTimestamp = Math.round(Date.now() / 1000)
-  const memberUnits = BigNumber.from(member.units)
-  const poolUnits = BigNumber.from(pool.totalUnits)
+// export const getTotalAmountReceivedForPoolMember = (
+//   member: PoolMemberInput,
+//   pool: PoolInput
+// ): {
+//   memberCurrentTotalAmountReceived: BigNumber
+//   memberFlowRate: BigNumber
+//   timestamp: number
+// } => {
+//   const currentTimestamp = Math.round(Date.now() / 1000)
+//   const memberUnits = BigNumber.from(member.units)
+//   const poolUnits = BigNumber.from(pool.totalUnits)
 
-  if (memberUnits.isZero()) {
-    return {
-      memberCurrentTotalAmountReceived: BigNumber.from(
-        member.totalAmountReceivedUntilUpdatedAt
-      ),
-      memberFlowRate: BigNumber.from(0),
-      timestamp: currentTimestamp
-    }
-  }
+//   if (memberUnits.isZero()) {
+//     return {
+//       memberCurrentTotalAmountReceived: BigNumber.from(
+//         member.totalAmountReceivedUntilUpdatedAt
+//       ),
+//       memberFlowRate: BigNumber.from(0),
+//       timestamp: currentTimestamp
+//     }
+//   }
 
-  const poolCurrentTotalAmountDistributedDelta = BigNumber.from(
-    pool.flowRate
-  ).mul(currentTimestamp - pool.updatedAtTimestamp)
+//   const poolCurrentTotalAmountDistributedDelta = BigNumber.from(
+//     pool.flowRate
+//   ).mul(currentTimestamp - pool.updatedAtTimestamp)
 
-  const poolCurrentTotalAmountDistributed = BigNumber.from(
-    pool.totalAmountDistributedUntilUpdatedAt
-  ).add(poolCurrentTotalAmountDistributedDelta)
+//   const poolCurrentTotalAmountDistributed = BigNumber.from(
+//     pool.totalAmountDistributedUntilUpdatedAt
+//   ).add(poolCurrentTotalAmountDistributedDelta)
 
-  const memberCurrentTotalAmountReceivedDelta =
-    poolCurrentTotalAmountDistributed
-      .sub(member.poolTotalAmountDistributedUntilUpdatedAt)
-      .mul(memberUnits)
-      .div(poolUnits)
+//   const memberCurrentTotalAmountReceivedDelta =
+//     poolCurrentTotalAmountDistributed
+//       .sub(member.poolTotalAmountDistributedUntilUpdatedAt)
+//       .mul(memberUnits)
+//       .div(poolUnits)
 
-  const memberCurrentTotalAmountReceived = BigNumber.from(
-    member.totalAmountReceivedUntilUpdatedAt
-  ).add(memberCurrentTotalAmountReceivedDelta)
+//   const memberCurrentTotalAmountReceived = BigNumber.from(
+//     member.totalAmountReceivedUntilUpdatedAt
+//   ).add(memberCurrentTotalAmountReceivedDelta)
 
-  const memberFlowRate = BigNumber.from(pool.flowRate)
-    .mul(memberUnits)
-    .div(poolUnits)
+//   const memberFlowRate = BigNumber.from(pool.flowRate)
+//     .mul(memberUnits)
+//     .div(poolUnits)
 
-  return {
-    memberCurrentTotalAmountReceived,
-    memberFlowRate: memberFlowRate,
-    timestamp: currentTimestamp
-  }
-}
+//   return {
+//     memberCurrentTotalAmountReceived,
+//     memberFlowRate: memberFlowRate,
+//     timestamp: currentTimestamp
+//   }
+// }

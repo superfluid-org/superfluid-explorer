@@ -32,6 +32,7 @@
     "@superfluid-finance/metadata": "^1.1.26",
     "@superfluid-finance/sdk-core": "^0.6.14-dev.40e7b55.0",
     "@superfluid-finance/sdk-redux": "^0.5.1",
+    "@tanstack/react-query": "^5.28.4",
     "decimal.js": "^10.3.1",
     "ethereum-multicall": "^2.12.0",
     "ethers": "^5.7.1",
@@ -51,7 +52,9 @@
     "react-redux": "^7.2.8",
     "reactflow": "^11.4.2",
     "redux": "^4.2.0",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "viem": "2.x",
+    "wagmi": "^2.5.11"
   },
   "devDependencies": {
     "@graphprotocol/client-cli": "^2.2.22",

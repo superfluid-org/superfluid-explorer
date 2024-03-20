@@ -25,6 +25,8 @@ import useSfTheme from '../styles/useSfTheme'
 import createEmotionCache from '../utils/createEmotionCache'
 import { tryFindNetwork } from '../utils/findNetwork'
 import { isDynamicRoute } from '../utils/isDynamicRoute'
+import { WagmiProvider } from 'wagmi'
+import { wagmiConfig } from './wagmi'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -75,34 +77,36 @@ function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <AvailableNetworksProvider>
-          <Box
-            sx={{
-              display: 'flex',
-              flexFlow: 'column',
-              maxHeight: '100vh'
-            }}
-          >
-            <SfAppBar />
+          <WagmiProvider config={wagmiConfig}>
             <Box
-              ref={scrollableContentRef}
-              component="main"
-              sx={{ height: '100vh', overflow: 'auto' }}
+              sx={{
+                display: 'flex',
+                flexFlow: 'column',
+                maxHeight: '100vh'
+              }}
             >
-              <Layout>
-                <ErrorBoundary
-                  fallback={() => <span />}
-                  onError={() => {
-                    alert(
-                      "The page crashed. :( The error is in the browser's developer console. Reloading the page or clearing your local storage could resolve the issue. Don't hesitate to let us know of this situation!"
-                    )
-                  }}
-                >
-                  <Component {...pageProps} />
-                </ErrorBoundary>
-              </Layout>
-              <Footer />
+              <SfAppBar />
+              <Box
+                ref={scrollableContentRef}
+                component="main"
+                sx={{ height: '100vh', overflow: 'auto' }}
+              >
+                <Layout>
+                  <ErrorBoundary
+                    fallback={() => <span />}
+                    onError={() => {
+                      alert(
+                        "The page crashed. :( The error is in the browser's developer console. Reloading the page or clearing your local storage could resolve the issue. Don't hesitate to let us know of this situation!"
+                      )
+                    }}
+                  >
+                    <Component {...pageProps} />
+                  </ErrorBoundary>
+                </Layout>
+                <Footer />
+              </Box>
             </Box>
-          </Box>
+          </WagmiProvider>
         </AvailableNetworksProvider>
       </ThemeProvider>
     </CacheProvider>

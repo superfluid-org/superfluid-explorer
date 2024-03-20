@@ -36,14 +36,8 @@ export const AccountPoolMemberRow: FC<AccountPoolMemberRow> = ({
           <TableCell data-cy={'amount-received'}>
             {pool ? (
               <PoolMemberTotalAmountReceived
-                member={member}
-                pool={{
-                  flowRate: pool.flowRate,
-                  totalAmountDistributedUntilUpdatedAt:
-                    pool.totalAmountDistributedUntilUpdatedAt,
-                  totalUnits: pool.totalUnits,
-                  updatedAtTimestamp: pool.updatedAtTimestamp
-                }}
+                memberAddress={member.account}
+                poolAddress={pool.id}
               >
                 {({
                   memberCurrentTotalAmountReceived,

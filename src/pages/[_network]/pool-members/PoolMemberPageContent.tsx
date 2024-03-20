@@ -37,7 +37,7 @@ import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import { PoolMemberFlowDistributions } from './PoolMemberFlowDistributions'
-import { useTotalAmountRecivedFromPoolMember } from './PoolMemberTotalAmountReceived'
+import { useTotalAmountReceivedFromPoolMember } from './PoolMemberTotalAmountReceived'
 import PoolMemberUnitsUpdatedEventDataGrid from './PoolMemberUnitsUpdatedEventDataGrid'
 
 export const PoolMemberPageContent: FC<{
@@ -70,14 +70,6 @@ export const PoolMemberPageContent: FC<{
     })
   )
 
-  console.log({
-    poolMemberId,
-    poolMember,
-    pool,
-    network
-    // poolId: poolMember.pool
-  })
-
   const [
     poolMemberUnitsUpdatedEventPagingOrdering,
     setPoolMemberUnitsUpdatedEventOrdering
@@ -95,9 +87,9 @@ export const PoolMemberPageContent: FC<{
       order: poolMemberUnitsUpdatedEventPagingOrdering
     })
 
-  const totalAmountReceivedForPoolMember = useTotalAmountRecivedFromPoolMember(
-    poolMember,
-    pool
+  const totalAmountReceivedForPoolMember = useTotalAmountReceivedFromPoolMember(
+    poolMember?.account,
+    pool?.id
   )
 
   if (!poolQuery.isUninitialized && !poolQuery.isLoading && !poolQuery.data) {
