@@ -57,7 +57,7 @@ const infuraProviders = networks.map((network) => ({
       ),
       customSubgraphQueriesEndpoint:
         network.chainId === 80001
-          ? 'https://api.thegraph.com/subgraphs/name/superfluid-finance/feature-v1-mumbai'
+          ? 'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-feature-mumbai/'
           : network.subgraphUrl
     })
   }
