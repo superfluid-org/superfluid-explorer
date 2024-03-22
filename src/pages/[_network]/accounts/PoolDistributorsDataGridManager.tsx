@@ -1,7 +1,8 @@
 import {
   createSkipPaging,
   Ordering,
-  SkipPaging} from '@superfluid-finance/sdk-core'
+  SkipPaging
+} from '@superfluid-finance/sdk-core'
 import { FC, useState } from 'react'
 
 import { Network } from '../../../redux/networks'

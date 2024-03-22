@@ -4,7 +4,8 @@ import {
   DataGridProps,
   gridClasses,
   GridColumns,
-  GridRowsProp} from '@mui/x-data-grid'
+  GridRowsProp
+} from '@mui/x-data-grid'
 import {
   ILightEntity,
   Ordering,

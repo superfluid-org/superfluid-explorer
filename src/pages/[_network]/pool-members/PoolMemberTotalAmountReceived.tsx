@@ -18,31 +18,28 @@ export type PoolInput = {
 }
 
 type Output = {
-  memberCurrentTotalAmountReceived: BigNumber,
-  memberFlowRate: BigNumber,
+  memberCurrentTotalAmountReceived: BigNumber
+  memberFlowRate: BigNumber
   timestamp: number
 }
 
 export const PoolMemberTotalAmountReceived: FC<{
-  chainId: number,
-  memberAddress: string | Address | undefined,
+  chainId: number
+  memberAddress: string | Address | undefined
   poolAddress: string | Address | undefined
-  children: (
-    output: Output
-  ) => PropsWithChildren['children']
+  children: (output: Output) => PropsWithChildren['children']
 }> = ({ chainId, memberAddress, poolAddress, children }) => {
-  const output = useTotalAmountReceivedFromPoolMember(chainId, memberAddress, poolAddress);
+  const output = useTotalAmountReceivedFromPoolMember(
+    chainId,
+    memberAddress,
+    poolAddress
+  )
   if (output) {
-    return (
-      <>
-        {children(output)}
-      </>
-    )
+    return <>{children(output)}</>
   } else {
     return null
   }
 }
-
 
 // export const PoolMemberTotalAmountReceived: FC<{
 //   member: PoolMemberInput
@@ -64,39 +61,46 @@ export const useTotalAmountReceivedFromPoolMember = (
   poolAddress?: string | Address
 ) => {
   const { data, dataUpdatedAt } = useReadContracts({
-    contracts: [{
-      chainId: chainId,
-      address: poolAddress as Address,
-      abi: superfluidPoolABI,
-      functionName: 'getTotalAmountReceivedByMember',
-      args: [memberAddress as Address],
-    },
-    {
-      chainId: chainId,
-      address: poolAddress as Address,
-      abi: superfluidPoolABI,
-      functionName: 'getMemberFlowRate',
-      args: [memberAddress as Address],
-    }],
+    contracts: [
+      {
+        chainId: chainId,
+        address: poolAddress as Address,
+        abi: superfluidPoolABI,
+        functionName: 'getTotalAmountReceivedByMember',
+        args: [memberAddress as Address]
+      },
+      {
+        chainId: chainId,
+        address: poolAddress as Address,
+        abi: superfluidPoolABI,
+        functionName: 'getMemberFlowRate',
+        args: [memberAddress as Address]
+      }
+    ],
     query: {
       enabled: Boolean(memberAddress && poolAddress)
     }
-  });
+  })
 
-  const [getTotalAmountReceivedByMember, getMemberFlowRate] = data ?? [];
+  const [getTotalAmountReceivedByMember, getMemberFlowRate] = data ?? []
 
   return useMemo(() => {
     // const output = useTotalAmountRecivedFromPoolMember(member, pool)
-    if (getTotalAmountReceivedByMember?.status === "success" && getMemberFlowRate?.status === "success") {
+    if (
+      getTotalAmountReceivedByMember?.status === 'success' &&
+      getMemberFlowRate?.status === 'success'
+    ) {
       return {
         timestamp: Math.round(dataUpdatedAt / 1000),
-        memberCurrentTotalAmountReceived: BigNumber.from(getTotalAmountReceivedByMember.result.toString()),
+        memberCurrentTotalAmountReceived: BigNumber.from(
+          getTotalAmountReceivedByMember.result.toString()
+        ),
         memberFlowRate: BigNumber.from(getMemberFlowRate.result.toString())
       }
     } else {
       return null
     }
-  }, [getTotalAmountReceivedByMember, getMemberFlowRate]);
+  }, [getTotalAmountReceivedByMember, getMemberFlowRate])
 }
 
 // export const getTotalAmountReceivedForPoolMember = (

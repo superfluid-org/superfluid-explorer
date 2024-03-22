@@ -12,7 +12,8 @@ import {
   createGeneralTags,
   getSubgraphClient,
   provideSpecificCacheTagsFromRelevantAddresses,
-  SubgraphEndpointBuilder} from '@superfluid-finance/sdk-redux'
+  SubgraphEndpointBuilder
+} from '@superfluid-finance/sdk-redux'
 
 import { CacheTime } from '../cacheTime'
 import {

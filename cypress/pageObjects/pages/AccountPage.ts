@@ -954,7 +954,7 @@ export class AccountPage extends BasePage {
     cy.get('body').then(($body) => {
       if ($body.find(MEMBER_TABLE_POOL_UNITS).length > 0) {
         cy.get(MEMBER_TABLE_POOL_UNITS).each((el: any) => {
-          cy.wrap(parseFloat(el.text().replace("%",""))).should(
+          cy.wrap(parseFloat(el.text().replace('%', ''))).should(
             'be.greaterThan',
             0
           )
@@ -995,7 +995,7 @@ export class AccountPage extends BasePage {
   }
   static filterGDAPoolsTableBy(filter: string, value: string, field: string) {
     //This specific filter shows a loading spinner before
-    if(filter === "members" && value === "yes" && field === "units"){
+    if (filter === 'members' && value === 'yes' && field === 'units') {
       this.isVisible(LOADING_SPINNER)
       this.isNotVisible(LOADING_SPINNER)
     }
