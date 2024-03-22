@@ -88,6 +88,7 @@ export const PoolMemberPageContent: FC<{
     })
 
   const totalAmountReceivedForPoolMember = useTotalAmountReceivedFromPoolMember(
+    network.chainId,
     poolMember?.account,
     pool?.id
   )

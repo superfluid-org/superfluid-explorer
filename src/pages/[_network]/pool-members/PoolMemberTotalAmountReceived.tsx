@@ -24,13 +24,14 @@ type Output = {
 }
 
 export const PoolMemberTotalAmountReceived: FC<{
+  chainId: number,
   memberAddress: string | Address | undefined,
   poolAddress: string | Address | undefined
   children: (
     output: Output
   ) => PropsWithChildren['children']
-}> = ({ memberAddress, poolAddress, children }) => {
-  const output = useTotalAmountReceivedFromPoolMember(memberAddress, poolAddress);
+}> = ({ chainId, memberAddress, poolAddress, children }) => {
+  const output = useTotalAmountReceivedFromPoolMember(chainId, memberAddress, poolAddress);
   if (output) {
     return (
       <>
@@ -58,17 +59,20 @@ export const PoolMemberTotalAmountReceived: FC<{
 // }
 
 export const useTotalAmountReceivedFromPoolMember = (
+  chainId: number,
   memberAddress?: string | Address,
   poolAddress?: string | Address
 ) => {
   const { data, dataUpdatedAt } = useReadContracts({
     contracts: [{
+      chainId: chainId,
       address: poolAddress as Address,
       abi: superfluidPoolABI,
       functionName: 'getTotalAmountReceivedByMember',
       args: [memberAddress as Address],
     },
     {
+      chainId: chainId,
       address: poolAddress as Address,
       abi: superfluidPoolABI,
       functionName: 'getMemberFlowRate',

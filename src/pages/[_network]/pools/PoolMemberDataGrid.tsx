@@ -99,7 +99,7 @@ const PoolMemberDataGrid: FC<Props> = ({
         flex: 2,
         renderCell: (params: GridRenderCellParams<string, PoolMember>) =>
           pool ? (
-            <PoolMemberTotalAmountReceived memberAddress={params.row.account} poolAddress={pool.id}>
+            <PoolMemberTotalAmountReceived chainId={network.chainId} memberAddress={params.row.account} poolAddress={pool.id}>
               {({
                 memberCurrentTotalAmountReceived,
                 memberFlowRate,

@@ -36,6 +36,7 @@ export const AccountPoolMemberRow: FC<AccountPoolMemberRow> = ({
           <TableCell data-cy={'amount-received'}>
             {pool ? (
               <PoolMemberTotalAmountReceived
+                chainId={network.chainId}
                 memberAddress={member.account}
                 poolAddress={pool.id}
               >
