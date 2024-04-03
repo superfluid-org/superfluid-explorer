@@ -1,7 +1,7 @@
 {
-  "mumbai": {
-    "TokenName": "Super EcoSeeds Token",
-    "TokenSymbol": "SEST",
-    "TokenAddress": "0xfff9896727b078b43d9809894721d0cac82fee57"
+  "avalanche-fuji": {
+    "TokenName": "Super fDAI Fake Token",
+    "TokenSymbol": "fDAIx",
+    "TokenAddress": "0x24f3631dbbf6880c684c5e59578c21194e285baf"
   }
 }

@@ -4,7 +4,6 @@
   "transactionAccount": "0x9Be85A79D847dFa90584F3FD40cC1f6D4026E2B9",
   "lotsOfDataAccount": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
   "allNetworks": [
-    "mumbai",
     "xdai",
     "matic",
     "avalanche-fuji",

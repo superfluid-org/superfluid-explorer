@@ -25464,7 +25464,7 @@ export async function getMeshOptions(): Promise<GetMeshOptions> {
     name: 'gda',
     config: {
       endpoint:
-        '{context.url:https://polygon-mumbai.subgraph.x.superfluid.dev}',
+        '{context.url:https://avalanche-fuji.subgraph.x.superfluid.dev}',
       retry: 5
     },
     baseDir,

@@ -291,7 +291,7 @@ Then(`User clicks on the close button on the filter`, () => {
   CommonElements.clickFilterCloseButton()
 })
 Given(`User can see the pools they are admin to in the table`, () => {
-  AccountPage.validateAdminAccountPoolsTableEntries('mumbai')
+  AccountPage.validateAdminAccountPoolsTableEntries('avalanche-fuji')
 })
 Given(`Pools and Members tables show no results`, () => {
   AccountPage.validateNoResultsForPoolsTable()
@@ -316,7 +316,7 @@ Then(`The pool table filter is not visible`, () => {
   AccountPage.validatePoolTableFilterNotVisible()
 })
 Then(`User can see the pools they are a member of in the table`, () => {
-  AccountPage.validateMemberAccountMembersTableEntries('mumbai')
+  AccountPage.validateMemberAccountMembersTableEntries('avalanche-fuji')
 })
 Then(`User sees only the pools they are connected to`, () => {
   AccountPage.validateOnlyConnectedPoolsAreVisible()

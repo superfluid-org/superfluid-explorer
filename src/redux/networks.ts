@@ -171,19 +171,6 @@ export const networks = [
   },
   // testnets
   {
-    displayName: 'Mumbai',
-    slugName: 'mumbai',
-    chainId: 80001,
-    isTestnet: true,
-    supportsGDA: getSupportsGDA(80001),
-    rpcUrl: getRpcUrl(80001),
-    subgraphUrl: getSubgraphUrl(80001),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://mumbai.polygonscan.com/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://mumbai.polygonscan.com/address/${address}`
-  },
-  {
     displayName: 'Avalanche Fuji',
     slugName: 'avalanche-fuji',
     chainId: 43113,
