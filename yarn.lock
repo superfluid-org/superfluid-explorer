@@ -3996,10 +3996,10 @@
     "@stablelib/random" "^1.0.2"
     "@stablelib/wipe" "^1.0.1"
 
-"@superfluid-finance/ethereum-contracts@^1.9.1-dev.fa5a75d.0":
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/ethereum-contracts/-/ethereum-contracts-1.9.1.tgz#1b19ec8776cad2e73c89f188a64d007716207abe"
-  integrity sha512-o+2CZbxtSQfBC0QMDBykSTnR3rW+gRex75DaYIu17a5s5e5cUwIEf+7gA0EI6FKzMKd8zb//OTIAaCggwtw47Q==
+"@superfluid-finance/ethereum-contracts@^1.9.2-dev.d58178f.0":
+  version "1.9.2-dev.e56f02a.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/ethereum-contracts/-/ethereum-contracts-1.9.2-dev.e56f02a.0.tgz#70f833e2a926cdcd6d2c6b4c56b07de5bdeffbd3"
+  integrity sha512-RzL7UKgEQ0YxY5auDjfxdQk3DfoWcsX56NEKMcQe6/5fl728yLaqG+K0BxuiHSAzkZkQmzV3wciU1KST5iMS7A==
   dependencies:
     "@decentral.ee/web3-helpers" "0.5.3"
     "@nomiclabs/hardhat-ethers" "^2.2.3"
@@ -4014,29 +4014,29 @@
   resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.27.tgz#24df39277e6eb27201765693bbc47ce4c93befb6"
   integrity sha512-61Dj7zcncPLSyqhWowj6Xmb6xeeT9b5Yjg4lAhnFIk1XCiycxrgsWc7aokbm4On3dLRg3xBiacy6qoG2rSaM5A==
 
-"@superfluid-finance/metadata@^1.1.29-dev.fa5a75d.0":
+"@superfluid-finance/metadata@^1.1.29-dev.d58178f.0":
   version "1.1.29"
   resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.1.29.tgz#1a0d799c6e4455ca21ff746e1735f52895fa0dcd"
   integrity sha512-xLezU9OzT6lTp7yZutPdw01meCEwfbbzre5nSTvK6lIRfrEUei9MXcX1/4DCynq+qGKmAbu5Erjf+JLuT8TRWQ==
 
-"@superfluid-finance/sdk-core@^0.6.14-dev.2dbb63e.0":
-  version "0.6.14-dev.fa5a75d.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.6.14-dev.fa5a75d.0.tgz#218c241e1274923c009e6320421a8a8ebdc934d1"
-  integrity sha512-+SRE0HBtlMGlq9LApLhbpdOukMjGRPWVatmba/E+6g0o7Smy15QiMg8XrCCKXmjBFf34SMwtSLXK6aJ2MADrXA==
+"@superfluid-finance/sdk-core@0.6.14-dev.d58178f.0":
+  version "0.6.14-dev.d58178f.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.6.14-dev.d58178f.0.tgz#6f4fdc188df7dd890db0fee9e26eee57c063477c"
+  integrity sha512-+nJ/tcG/zc+pKNnwOAVofsJGrECXyLFK5XQ3UnZfnopLWW1LivO4dtBKcMI0ZkfAbXi3KDVEL8zB4fM2O9FHEA==
   dependencies:
-    "@superfluid-finance/ethereum-contracts" "^1.9.1-dev.fa5a75d.0"
-    "@superfluid-finance/metadata" "^1.1.29-dev.fa5a75d.0"
+    "@superfluid-finance/ethereum-contracts" "^1.9.2-dev.d58178f.0"
+    "@superfluid-finance/metadata" "^1.1.29-dev.d58178f.0"
     browserify "^17.0.0"
     graphql-request "^6.1.0"
     lodash "^4.17.21"
     tsify "^5.0.4"
 
-"@superfluid-finance/sdk-redux@^0.5.2-dev.2dbb63e.0":
-  version "0.5.2-dev.fffa179.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.5.2-dev.fffa179.0.tgz#810aab30755853c25acc8b86a0e79e4d4bfa3c95"
-  integrity sha512-rVfGUEthytJtpv983nMM3QBUG7n4hHGcbJvk+7+NyLmj8IF++p2v+lRpV2xopj3DcJXtqZqoq182QXF7GDJz+A==
+"@superfluid-finance/sdk-redux@0.5.2-dev.d58178f.0":
+  version "0.5.2-dev.d58178f.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.5.2-dev.d58178f.0.tgz#ea9f94585924d2b62f7b0a4c0a778de2d2562c1a"
+  integrity sha512-LODE02kZWXsaR4ubnuiZq1zInWxlWVgxLRCgCM/E6za539A63fk6JwvKxqPXSp6GPPJuX/pHYqxP5YIf1ZXJdw==
   dependencies:
-    graphql-request "^5.0.0"
+    graphql-request "^5.2.0"
     lodash "^4.17.21"
     promise-retry "^2.0.1"
 
@@ -9203,10 +9203,10 @@ graphql-language-service@^5.0.4, graphql-language-service@^5.0.6:
     nullthrows "^1.0.0"
     vscode-languageserver-types "^3.17.1"
 
-graphql-request@^5.0.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-5.1.0.tgz#dbc8feee27d21b993cd5da2d3af67821827b240a"
-  integrity sha512-0OeRVYigVwIiXhNmqnPDt+JhMzsjinxHE7TVy3Lm6jUzav0guVcL0lfSbi6jVTRAxcbwgyr6yrZioSHxf9gHzw==
+graphql-request@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-5.2.0.tgz#a05fb54a517d91bb2d7aefa17ade4523dc5ebdca"
+  integrity sha512-pLhKIvnMyBERL0dtFI3medKqWOz/RhHdcgbZ+hMMIb32mEPa5MJSzS4AuXxfI4sRAu6JVVk5tvXuGfCWl9JYWQ==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     cross-fetch "^3.1.5"
@@ -14292,10 +14292,15 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@^5.0.4, typescript@^5.3.3:
+typescript@^5.0.4:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
   integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
+
+typescript@^5.3.3:
+  version "5.4.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.4.tgz#eb2471e7b0a5f1377523700a21669dce30c2d952"
+  integrity sha512-dGE2Vv8cpVvw28v8HCPqyb08EzbBURxDpuhJvTrusShUfGnhHBafDsLdS1EhhxyL6BJQE+2cT3dDPAv+MQ6oLw==
 
 ua-parser-js@^1.0.35:
   version "1.0.37"

@@ -4,6 +4,8 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 import {
   createSkipPaging,
   Ordering,
+  Pool,
+  PoolMember,
   SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
@@ -16,8 +18,6 @@ import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
 import { InstantDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
-import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
-import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import {
   InstantDistributionUpdatedEvent,
   PoolMemberUnitsUpdatedEvent
@@ -37,9 +37,9 @@ export const PoolMemberDistributions: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool
-        }
+        chainId: network.chainId,
+        id: poolMember.pool
+      }
       : skipToken
   )
 
@@ -98,25 +98,25 @@ export const PoolMemberDistributions: FC<{
   const subscribersUnitsUpdatedEvents:
     | PoolMemberUnitsUpdatedEvent[]
     | undefined = useMemo(
-    () => memberUnitsUpdatedEventsQuery.data?.items ?? [],
-    [memberUnitsUpdatedEventsQuery.data]
-  )
+      () => memberUnitsUpdatedEventsQuery.data?.items ?? [],
+      [memberUnitsUpdatedEventsQuery.data]
+    )
 
   const instantDistributionUpdatedEventsQuery =
     sfGdaSubgraph.useInstantDistributionUpdatedEventsQuery(
       pool && subscribersStartTime
         ? {
-            chainId: network.chainId,
-            filter: {
-              pool: pool.id,
-              timestamp_gte: subscribersStartTime.toString(),
-              ...(subscribersEndTime
-                ? { timestamp_lte: subscribersEndTime.toString() }
-                : {})
-            },
-            order: instantDistributionUpdatedEventOrdering,
-            pagination: instantDistributionUpdatedEventPaging
-          }
+          chainId: network.chainId,
+          filter: {
+            pool: pool.id,
+            timestamp_gte: subscribersStartTime.toString(),
+            ...(subscribersEndTime
+              ? { timestamp_lte: subscribersEndTime.toString() }
+              : {})
+          },
+          order: instantDistributionUpdatedEventOrdering,
+          pagination: instantDistributionUpdatedEventPaging
+        }
         : skipToken
     )
 

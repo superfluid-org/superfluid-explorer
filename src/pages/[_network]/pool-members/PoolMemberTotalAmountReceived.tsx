@@ -1,8 +1,9 @@
 import { BigNumber, BigNumberish } from 'ethers'
 import { FC, PropsWithChildren, useMemo } from 'react'
-import { useReadContracts } from 'wagmi'
-import { superfluidPoolABI } from './superfluidPoolABI'
 import { Address } from 'viem'
+import { useReadContracts } from 'wagmi'
+
+import { superfluidPoolABI } from './superfluidPoolABI'
 
 export type PoolMemberInput = {
   units: BigNumberish

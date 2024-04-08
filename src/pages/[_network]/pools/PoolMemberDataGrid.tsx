@@ -4,7 +4,7 @@ import {
   GridColumnHeaderTitle,
   GridRenderCellParams
 } from '@mui/x-data-grid'
-import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
+import { Ordering, PagedResult, Pool, PoolMember, SkipPaging } from '@superfluid-finance/sdk-core'
 import { FC, useMemo } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
@@ -15,11 +15,9 @@ import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentag
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { PoolMember_OrderBy } from '../../../subgraphs/gda/.graphclient'
-import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
 import { PoolMemberTotalAmountReceived } from '../pool-members/PoolMemberTotalAmountReceived'
 import { PoolQuery } from './PoolQuery'
-import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 
 interface Props {
   network: Network

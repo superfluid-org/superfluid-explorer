@@ -27,7 +27,7 @@ import {
 } from 'redux-persist'
 import storageLocal from 'redux-persist/lib/storage'
 
-import { allSubgraphEndpoints as allGdaSubgraphEndpoints } from '../subgraphs/gda/endpoints/allSubgraphEndpoints'
+import { allGdaSubgraphEndpoints } from '../subgraphs/gda/endpoints/allSubgraphEndpoints'
 import { addDays } from '../utils/dateTime'
 import { isServer } from '../utils/isServer'
 import { adhocRpcEndpoints } from './adhocRpcEndpoints'
@@ -54,11 +54,8 @@ const infuraProviders = networks.map((network) => ({
       chainId: network.chainId,
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
-      ),
-      customSubgraphQueriesEndpoint:
-        network.chainId === 80001
-          ? 'https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-feature-mumbai/'
-          : network.subgraphUrl
+      )
+      // customSubgraphQueriesEndpoint: network.subgraphUrl
     })
   }
 }))

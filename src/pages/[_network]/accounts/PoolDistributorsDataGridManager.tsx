@@ -1,13 +1,13 @@
 import {
   createSkipPaging,
   Ordering,
+  PoolDistributor_OrderBy,
   SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { FC, useState } from 'react'
 
 import { Network } from '../../../redux/networks'
 import { sfSubgraph } from '../../../redux/store'
-import { PoolDistributor_OrderBy } from '../../../subgraphs/gda/.graphclient'
 import { PoolDistributorsDataGrid } from './PoolDistributorsDataGrid'
 
 type Props = {

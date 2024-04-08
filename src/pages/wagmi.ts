@@ -1,24 +1,23 @@
-import { createConfig, http } from 'wagmi'
+import { Transport } from 'viem'
 import {
-  mainnet,
-  gnosis,
-  polygon,
-  optimism,
   arbitrum,
   avalanche,
+  avalancheFuji,
+  base,
   bsc,
   celo,
-  base,
-  scroll,
-  polygonMumbai,
-  avalancheFuji,
-  sepolia,
+  gnosis,
+  mainnet,
+  optimism,
   optimismSepolia,
-  scrollSepolia
-} from 'viem/chains' // prolly not a fantastic approach for bundle size
+  polygon,
+  polygonMumbai,
+  scroll,
+  scrollSepolia,
+  sepolia} from 'viem/chains' // prolly not a fantastic approach for bundle size
+import { createConfig, http } from 'wagmi'
 
 import { networks } from '../redux/networks'
-import { Transport } from 'viem'
 
 const allWagmiChains = [
   mainnet,

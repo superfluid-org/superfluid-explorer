@@ -1,7 +1,7 @@
+import { PoolQuery as PoolQueryArg } from '@superfluid-finance/sdk-redux'
 import { FC, PropsWithChildren } from 'react'
 
 import { sfGdaSubgraph } from '../../../redux/store'
-import { PoolQuery as PoolQueryArg } from '../../../subgraphs/gda/endpoints/entityArgs'
 
 type Props = PoolQueryArg & {
   children: (
