@@ -71,7 +71,6 @@ export const useTotalAmountReceivedFromPoolMember = (
   const [getTotalAmountReceivedByMember, getMemberFlowRate] = data ?? []
 
   return useMemo(() => {
-    // const output = useTotalAmountRecivedFromPoolMember(member, pool)
     if (
       getTotalAmountReceivedByMember?.status === 'success' &&
       getMemberFlowRate?.status === 'success'
