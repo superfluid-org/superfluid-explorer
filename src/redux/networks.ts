@@ -24,7 +24,12 @@ const getMetadata = memoize((chainId: number) => {
 
 const getRpcUrl = (chainId: number) => {
   const metadata = getMetadata(chainId)
-  return `https://rpc-endpoints.superfluid.dev/${metadata.name}`
+  //A sunday evening workaround, RPC currently not working
+  if(chainId === 666666666) {
+    return "https://rpc.degen.tips"
+  } else {
+    return `https://rpc-endpoints.superfluid.dev/${metadata.name}`
+  }
 }
 
 const getSubgraphUrl = (chainId: number) => {
