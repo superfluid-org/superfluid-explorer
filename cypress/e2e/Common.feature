@@ -16,7 +16,6 @@ Feature: Test cases for common elements and functionalities
       | avalanche-c      |
       | avalanche-fuji   |
       | bnb-smart-chain  |
-      | mumbai           |
       | celo             |
       | base-mainnet     |
       | scroll-mainnet   |

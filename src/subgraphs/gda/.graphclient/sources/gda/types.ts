@@ -204,6 +204,8 @@ export type AccountTokenSnapshot = {
    *
    */
   id: Scalars['ID'];
+  createdAtTimestamp: Scalars['BigInt'];
+  createdAtBlockNumber: Scalars['BigInt'];
   updatedAtTimestamp: Scalars['BigInt'];
   updatedAtBlockNumber: Scalars['BigInt'];
   /**
@@ -1101,6 +1103,8 @@ export type AccountTokenSnapshotLog_orderBy =
   | 'token__underlyingAddress'
   | 'accountTokenSnapshot'
   | 'accountTokenSnapshot__id'
+  | 'accountTokenSnapshot__createdAtTimestamp'
+  | 'accountTokenSnapshot__createdAtBlockNumber'
   | 'accountTokenSnapshot__updatedAtTimestamp'
   | 'accountTokenSnapshot__updatedAtBlockNumber'
   | 'accountTokenSnapshot__isLiquidationEstimateOptimistic'
@@ -1149,6 +1153,22 @@ export type AccountTokenSnapshot_filter = {
   id_lte?: InputMaybe<Scalars['ID']>;
   id_in?: InputMaybe<Array<Scalars['ID']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  createdAtTimestamp?: InputMaybe<Scalars['BigInt']>;
+  createdAtTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  createdAtTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  createdAtTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  createdAtTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  createdAtTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  createdAtTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  createdAtTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  createdAtBlockNumber?: InputMaybe<Scalars['BigInt']>;
+  createdAtBlockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  createdAtBlockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  createdAtBlockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  createdAtBlockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  createdAtBlockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  createdAtBlockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  createdAtBlockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   updatedAtTimestamp?: InputMaybe<Scalars['BigInt']>;
   updatedAtTimestamp_not?: InputMaybe<Scalars['BigInt']>;
   updatedAtTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1501,6 +1521,8 @@ export type AccountTokenSnapshot_filter = {
 
 export type AccountTokenSnapshot_orderBy =
   | 'id'
+  | 'createdAtTimestamp'
+  | 'createdAtBlockNumber'
   | 'updatedAtTimestamp'
   | 'updatedAtBlockNumber'
   | 'isLiquidationEstimateOptimistic'
@@ -1653,7 +1675,8 @@ export type AgreementClassRegisteredEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `code`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -1805,7 +1828,8 @@ export type AgreementClassUpdatedEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `code`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -2504,7 +2528,8 @@ export type AppRegisteredEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `app`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -2644,20 +2669,39 @@ export type ApprovalEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `isNFTApproval` ? `nft address` : `token` (superToken)
+   * addresses[1] = `owner`
+   * addresses[2] = `to`
    *
    */
   addresses: Array<Scalars['Bytes']>;
   blockNumber: Scalars['BigInt'];
   logIndex: Scalars['BigInt'];
   order: Scalars['BigInt'];
+  /**
+   * The address that will be granting allowance to transfer ERC20/NFT.
+   *
+   */
   owner: Account;
   /**
-   * The address that will be granted allowance to transfer the NFT.
+   * The address that will be granted allowance to transfer ERC20/NFT.
    *
    */
   to: Account;
   /**
+   * Indicates whether the event was emitted for the approval of an NFT.
+   *
+   */
+  isNFTApproval: Scalars['Boolean'];
+  /**
+   * If `amount` is non-zero, this event was emitted for the approval of an ERC20.
+   * Tne amount of ERC20 tokens that will be granted allowance to transfer.
+   *
+   */
+  amount: Scalars['BigInt'];
+  /**
+   * If `tokenId` is non-zero, this event was emitted for the approval of an NFT.
    * The id of the NFT that will be granted allowance to transfer.
    * The id is: uint256(keccak256(abi.encode(block.chainid, superToken, sender, receiver)))
    *
@@ -2800,6 +2844,18 @@ export type ApprovalEvent_filter = {
   to_not_ends_with?: InputMaybe<Scalars['String']>;
   to_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   to_?: InputMaybe<Account_filter>;
+  isNFTApproval?: InputMaybe<Scalars['Boolean']>;
+  isNFTApproval_not?: InputMaybe<Scalars['Boolean']>;
+  isNFTApproval_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isNFTApproval_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  amount?: InputMaybe<Scalars['BigInt']>;
+  amount_not?: InputMaybe<Scalars['BigInt']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']>;
+  amount_lt?: InputMaybe<Scalars['BigInt']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   tokenId?: InputMaybe<Scalars['BigInt']>;
   tokenId_not?: InputMaybe<Scalars['BigInt']>;
   tokenId_gt?: InputMaybe<Scalars['BigInt']>;
@@ -2839,6 +2895,8 @@ export type ApprovalEvent_orderBy =
   | 'to__updatedAtTimestamp'
   | 'to__updatedAtBlockNumber'
   | 'to__isSuperApp'
+  | 'isNFTApproval'
+  | 'amount'
   | 'tokenId';
 
 export type ApprovalForAllEvent = Event & {
@@ -2849,7 +2907,10 @@ export type ApprovalForAllEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = NFT address
+   * addresses[1] = `owner`
+   * addresses[2] = `operator`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -3439,6 +3500,9 @@ export type BufferAdjustedEvent_orderBy =
   | 'pool__totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'pool__totalAmountFlowedDistributedUntilUpdatedAt'
   | 'pool__totalAmountDistributedUntilUpdatedAt'
+  | 'pool__totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'pool__perUnitSettledValue'
+  | 'pool__perUnitFlowRate'
   | 'pool__totalMembers'
   | 'pool__totalConnectedMembers'
   | 'pool__totalDisconnectedMembers'
@@ -3670,7 +3734,10 @@ export type CFAv1LiquidationPeriodChangedEvent = Event & {
    */
   governanceAddress: Scalars['Bytes'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `governanceAddress`
+   * addresses[1] = `host`
+   * addresses[2] = `superToken`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -3854,7 +3921,10 @@ export type ConfigChangedEvent = Event & {
    */
   governanceAddress: Scalars['Bytes'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `governanceAddress`
+   * addresses[1] = `host`
+   * addresses[2] = `superToken`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -4396,6 +4466,9 @@ export type DistributionClaimedEvent_orderBy =
   | 'pool__totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'pool__totalAmountFlowedDistributedUntilUpdatedAt'
   | 'pool__totalAmountDistributedUntilUpdatedAt'
+  | 'pool__totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'pool__perUnitSettledValue'
+  | 'pool__perUnitFlowRate'
   | 'pool__totalMembers'
   | 'pool__totalConnectedMembers'
   | 'pool__totalDisconnectedMembers'
@@ -4412,7 +4485,9 @@ export type DistributionClaimedEvent_orderBy =
   | 'poolMember__isConnected'
   | 'poolMember__totalAmountClaimed'
   | 'poolMember__poolTotalAmountDistributedUntilUpdatedAt'
-  | 'poolMember__totalAmountReceivedUntilUpdatedAt';
+  | 'poolMember__totalAmountReceivedUntilUpdatedAt'
+  | 'poolMember__syncedPerUnitSettledValue'
+  | 'poolMember__syncedPerUnitFlowRate';
 
 /**
  * Event: An interface which is shared by all event entities and contains basic transaction data.
@@ -5029,6 +5104,9 @@ export type FlowDistributionUpdatedEvent_orderBy =
   | 'pool__totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'pool__totalAmountFlowedDistributedUntilUpdatedAt'
   | 'pool__totalAmountDistributedUntilUpdatedAt'
+  | 'pool__totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'pool__perUnitSettledValue'
+  | 'pool__perUnitFlowRate'
   | 'pool__totalMembers'
   | 'pool__totalConnectedMembers'
   | 'pool__totalDisconnectedMembers'
@@ -5509,6 +5587,8 @@ export type FlowOperator_orderBy =
   | 'token__underlyingAddress'
   | 'accountTokenSnapshot'
   | 'accountTokenSnapshot__id'
+  | 'accountTokenSnapshot__createdAtTimestamp'
+  | 'accountTokenSnapshot__createdAtBlockNumber'
   | 'accountTokenSnapshot__updatedAtTimestamp'
   | 'accountTokenSnapshot__updatedAtBlockNumber'
   | 'accountTokenSnapshot__isLiquidationEstimateOptimistic'
@@ -5915,7 +5995,9 @@ export type GovernanceReplacedEvent = Event & {
   logIndex: Scalars['BigInt'];
   order: Scalars['BigInt'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `oldGovernance`
+   * addresses[1] = `newGovernance`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -8381,6 +8463,9 @@ export type InstantDistributionUpdatedEvent_orderBy =
   | 'pool__totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'pool__totalAmountFlowedDistributedUntilUpdatedAt'
   | 'pool__totalAmountDistributedUntilUpdatedAt'
+  | 'pool__totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'pool__perUnitSettledValue'
+  | 'pool__perUnitFlowRate'
   | 'pool__totalMembers'
   | 'pool__totalConnectedMembers'
   | 'pool__totalDisconnectedMembers'
@@ -8407,7 +8492,8 @@ export type JailEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `app`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -8777,6 +8863,9 @@ export type MemberUnitsUpdatedEvent_orderBy =
   | 'pool__totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'pool__totalAmountFlowedDistributedUntilUpdatedAt'
   | 'pool__totalAmountDistributedUntilUpdatedAt'
+  | 'pool__totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'pool__perUnitSettledValue'
+  | 'pool__perUnitFlowRate'
   | 'pool__totalMembers'
   | 'pool__totalConnectedMembers'
   | 'pool__totalDisconnectedMembers'
@@ -8793,7 +8882,9 @@ export type MemberUnitsUpdatedEvent_orderBy =
   | 'poolMember__isConnected'
   | 'poolMember__totalAmountClaimed'
   | 'poolMember__poolTotalAmountDistributedUntilUpdatedAt'
-  | 'poolMember__totalAmountReceivedUntilUpdatedAt';
+  | 'poolMember__totalAmountReceivedUntilUpdatedAt'
+  | 'poolMember__syncedPerUnitSettledValue'
+  | 'poolMember__syncedPerUnitFlowRate';
 
 export type MetadataUpdateEvent = Event & {
   id: Scalars['ID'];
@@ -9347,7 +9438,10 @@ export type PPPConfigurationChangedEvent = Event & {
    */
   governanceAddress: Scalars['Bytes'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `governanceAddress`
+   * addresses[1] = `host`
+   * addresses[2] = `superToken`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -9544,6 +9638,9 @@ export type Pool = {
   totalAmountInstantlyDistributedUntilUpdatedAt: Scalars['BigInt'];
   totalAmountFlowedDistributedUntilUpdatedAt: Scalars['BigInt'];
   totalAmountDistributedUntilUpdatedAt: Scalars['BigInt'];
+  totalFlowAdjustmentAmountDistributedUntilUpdatedAt: Scalars['BigInt'];
+  perUnitSettledValue: Scalars['BigInt'];
+  perUnitFlowRate: Scalars['BigInt'];
   /**
    * A member is any account which has more than 0 units in the pool.
    *
@@ -9863,6 +9960,9 @@ export type PoolConnectionUpdatedEvent_orderBy =
   | 'pool__totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'pool__totalAmountFlowedDistributedUntilUpdatedAt'
   | 'pool__totalAmountDistributedUntilUpdatedAt'
+  | 'pool__totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'pool__perUnitSettledValue'
+  | 'pool__perUnitFlowRate'
   | 'pool__totalMembers'
   | 'pool__totalConnectedMembers'
   | 'pool__totalDisconnectedMembers'
@@ -9879,7 +9979,9 @@ export type PoolConnectionUpdatedEvent_orderBy =
   | 'poolMember__isConnected'
   | 'poolMember__totalAmountClaimed'
   | 'poolMember__poolTotalAmountDistributedUntilUpdatedAt'
-  | 'poolMember__totalAmountReceivedUntilUpdatedAt';
+  | 'poolMember__totalAmountReceivedUntilUpdatedAt'
+  | 'poolMember__syncedPerUnitSettledValue'
+  | 'poolMember__syncedPerUnitFlowRate';
 
 export type PoolCreatedEvent = Event & {
   id: Scalars['ID'];
@@ -10082,6 +10184,9 @@ export type PoolCreatedEvent_orderBy =
   | 'pool__totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'pool__totalAmountFlowedDistributedUntilUpdatedAt'
   | 'pool__totalAmountDistributedUntilUpdatedAt'
+  | 'pool__totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'pool__perUnitSettledValue'
+  | 'pool__perUnitFlowRate'
   | 'pool__totalMembers'
   | 'pool__totalConnectedMembers'
   | 'pool__totalDisconnectedMembers'
@@ -10300,6 +10405,9 @@ export type PoolDistributor_orderBy =
   | 'pool__totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'pool__totalAmountFlowedDistributedUntilUpdatedAt'
   | 'pool__totalAmountDistributedUntilUpdatedAt'
+  | 'pool__totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'pool__perUnitSettledValue'
+  | 'pool__perUnitFlowRate'
   | 'pool__totalMembers'
   | 'pool__totalConnectedMembers'
   | 'pool__totalDisconnectedMembers'
@@ -10325,6 +10433,8 @@ export type PoolMember = {
   totalAmountClaimed: Scalars['BigInt'];
   poolTotalAmountDistributedUntilUpdatedAt: Scalars['BigInt'];
   totalAmountReceivedUntilUpdatedAt: Scalars['BigInt'];
+  syncedPerUnitSettledValue: Scalars['BigInt'];
+  syncedPerUnitFlowRate: Scalars['BigInt'];
   account: Account;
   pool: Pool;
   poolConnectionUpdatedEvents: Array<PoolConnectionUpdatedEvent>;
@@ -10436,6 +10546,22 @@ export type PoolMember_filter = {
   totalAmountReceivedUntilUpdatedAt_lte?: InputMaybe<Scalars['BigInt']>;
   totalAmountReceivedUntilUpdatedAt_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAmountReceivedUntilUpdatedAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  syncedPerUnitSettledValue?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitSettledValue_not?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitSettledValue_gt?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitSettledValue_lt?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitSettledValue_gte?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitSettledValue_lte?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitSettledValue_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  syncedPerUnitSettledValue_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  syncedPerUnitFlowRate?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitFlowRate_not?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitFlowRate_gt?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitFlowRate_lt?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitFlowRate_gte?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitFlowRate_lte?: InputMaybe<Scalars['BigInt']>;
+  syncedPerUnitFlowRate_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  syncedPerUnitFlowRate_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   account?: InputMaybe<Scalars['String']>;
   account_not?: InputMaybe<Scalars['String']>;
   account_gt?: InputMaybe<Scalars['String']>;
@@ -10498,6 +10624,8 @@ export type PoolMember_orderBy =
   | 'totalAmountClaimed'
   | 'poolTotalAmountDistributedUntilUpdatedAt'
   | 'totalAmountReceivedUntilUpdatedAt'
+  | 'syncedPerUnitSettledValue'
+  | 'syncedPerUnitFlowRate'
   | 'account'
   | 'account__id'
   | 'account__createdAtTimestamp'
@@ -10517,6 +10645,9 @@ export type PoolMember_orderBy =
   | 'pool__totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'pool__totalAmountFlowedDistributedUntilUpdatedAt'
   | 'pool__totalAmountDistributedUntilUpdatedAt'
+  | 'pool__totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'pool__perUnitSettledValue'
+  | 'pool__perUnitFlowRate'
   | 'pool__totalMembers'
   | 'pool__totalConnectedMembers'
   | 'pool__totalDisconnectedMembers'
@@ -10616,6 +10747,30 @@ export type Pool_filter = {
   totalAmountDistributedUntilUpdatedAt_lte?: InputMaybe<Scalars['BigInt']>;
   totalAmountDistributedUntilUpdatedAt_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAmountDistributedUntilUpdatedAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalFlowAdjustmentAmountDistributedUntilUpdatedAt?: InputMaybe<Scalars['BigInt']>;
+  totalFlowAdjustmentAmountDistributedUntilUpdatedAt_not?: InputMaybe<Scalars['BigInt']>;
+  totalFlowAdjustmentAmountDistributedUntilUpdatedAt_gt?: InputMaybe<Scalars['BigInt']>;
+  totalFlowAdjustmentAmountDistributedUntilUpdatedAt_lt?: InputMaybe<Scalars['BigInt']>;
+  totalFlowAdjustmentAmountDistributedUntilUpdatedAt_gte?: InputMaybe<Scalars['BigInt']>;
+  totalFlowAdjustmentAmountDistributedUntilUpdatedAt_lte?: InputMaybe<Scalars['BigInt']>;
+  totalFlowAdjustmentAmountDistributedUntilUpdatedAt_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalFlowAdjustmentAmountDistributedUntilUpdatedAt_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perUnitSettledValue?: InputMaybe<Scalars['BigInt']>;
+  perUnitSettledValue_not?: InputMaybe<Scalars['BigInt']>;
+  perUnitSettledValue_gt?: InputMaybe<Scalars['BigInt']>;
+  perUnitSettledValue_lt?: InputMaybe<Scalars['BigInt']>;
+  perUnitSettledValue_gte?: InputMaybe<Scalars['BigInt']>;
+  perUnitSettledValue_lte?: InputMaybe<Scalars['BigInt']>;
+  perUnitSettledValue_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perUnitSettledValue_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perUnitFlowRate?: InputMaybe<Scalars['BigInt']>;
+  perUnitFlowRate_not?: InputMaybe<Scalars['BigInt']>;
+  perUnitFlowRate_gt?: InputMaybe<Scalars['BigInt']>;
+  perUnitFlowRate_lt?: InputMaybe<Scalars['BigInt']>;
+  perUnitFlowRate_gte?: InputMaybe<Scalars['BigInt']>;
+  perUnitFlowRate_lte?: InputMaybe<Scalars['BigInt']>;
+  perUnitFlowRate_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  perUnitFlowRate_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalMembers?: InputMaybe<Scalars['Int']>;
   totalMembers_not?: InputMaybe<Scalars['Int']>;
   totalMembers_gt?: InputMaybe<Scalars['Int']>;
@@ -10733,6 +10888,9 @@ export type Pool_orderBy =
   | 'totalAmountInstantlyDistributedUntilUpdatedAt'
   | 'totalAmountFlowedDistributedUntilUpdatedAt'
   | 'totalAmountDistributedUntilUpdatedAt'
+  | 'totalFlowAdjustmentAmountDistributedUntilUpdatedAt'
+  | 'perUnitSettledValue'
+  | 'perUnitFlowRate'
   | 'totalMembers'
   | 'totalConnectedMembers'
   | 'totalDisconnectedMembers'
@@ -12344,7 +12502,11 @@ export type RewardAddressChangedEvent = Event & {
    */
   governanceAddress: Scalars['Bytes'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `governanceAddress`
+   * addresses[1] = `host`
+   * addresses[2] = `superToken`
+   * addresses[3] = `rewardAddress`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -12525,7 +12687,9 @@ export type RoleAdminChangedEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `previousAdminRole`
+   * addresses[1] = `newAdminRole`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -12689,7 +12853,9 @@ export type RoleGrantedEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `account`
+   * addresses[1] = `sender`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -12853,7 +13019,9 @@ export type RoleRevokedEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `account`
+   * addresses[1] = `sender`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -16741,7 +16909,8 @@ export type SuperTokenFactoryUpdatedEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `newFactory`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -16881,7 +17050,8 @@ export type SuperTokenLogicCreatedEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `tokenLogic`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -17021,7 +17191,9 @@ export type SuperTokenLogicUpdatedEvent = Event & {
   timestamp: Scalars['BigInt'];
   name: Scalars['String'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `token`
+   * addresses[1] = `code`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -17178,7 +17350,10 @@ export type SuperTokenMinimumDepositChangedEvent = Event & {
    */
   governanceAddress: Scalars['Bytes'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `governanceAddress`
+   * addresses[1] = `host`
+   * addresses[2] = `superToken`
    *
    */
   addresses: Array<Scalars['Bytes']>;
@@ -17385,6 +17560,10 @@ export type Token = {
    *
    */
   underlyingToken?: Maybe<Token>;
+  /**
+   * If `governanceConfig.id` is the zero address, the token uses the default governance config.
+   *
+   */
   governanceConfig?: Maybe<TokenGovernanceConfig>;
 };
 
@@ -19385,7 +19564,11 @@ export type TrustedForwarderChangedEvent = Event & {
    */
   governanceAddress: Scalars['Bytes'];
   /**
-   * Empty addresses array.
+   * Contains the addresses that were impacted by this event:
+   * addresses[0] = `governanceAddress`
+   * addresses[1] = `host`
+   * addresses[2] = `superToken`
+   * addresses[3] = `forwarder`
    *
    */
   addresses: Array<Scalars['Bytes']>;

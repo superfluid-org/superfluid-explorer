@@ -11,7 +11,6 @@ import {
   optimism,
   optimismSepolia,
   polygon,
-  polygonMumbai,
   scroll,
   scrollSepolia,
   sepolia} from 'viem/chains' // prolly not a fantastic approach for bundle size
@@ -30,7 +29,6 @@ const allWagmiChains = [
   celo,
   base,
   scroll,
-  polygonMumbai,
   avalancheFuji,
   sepolia,
   optimismSepolia,

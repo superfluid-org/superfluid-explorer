@@ -14,7 +14,6 @@ Feature: Protocol page test cases
       | avalanche-c      |
       | avalanche-fuji   |
       | bnb-smart-chain  |
-      | mumbai           |
       | celo             |
       | base-mainnet     |
       | scroll-mainnet   |
