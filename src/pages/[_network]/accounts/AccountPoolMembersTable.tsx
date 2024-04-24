@@ -19,7 +19,12 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
-import { createSkipPaging, Ordering, PoolMember_Filter, PoolMember_OrderBy } from '@superfluid-finance/sdk-core'
+import {
+  createSkipPaging,
+  Ordering,
+  PoolMember_Filter,
+  PoolMember_OrderBy
+} from '@superfluid-finance/sdk-core'
 import { PoolMembersQuery } from '@superfluid-finance/sdk-redux'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
@@ -146,8 +151,8 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof PoolMember_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter))
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const getMemberStatusFilter = (
     status: MemberStatus | null
@@ -438,14 +443,14 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
               {(memberStatus !== null ||
                 distributionStatus !== null ||
                 unitsStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>

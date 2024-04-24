@@ -4,7 +4,13 @@ import {
   GridColumnHeaderTitle,
   GridRenderCellParams
 } from '@mui/x-data-grid'
-import { Ordering, PagedResult, Pool, PoolMember, SkipPaging } from '@superfluid-finance/sdk-core'
+import {
+  Ordering,
+  PagedResult,
+  Pool,
+  PoolMember,
+  SkipPaging
+} from '@superfluid-finance/sdk-core'
 import { FC, useMemo } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'

@@ -1,5 +1,11 @@
 import { GridColDef } from '@mui/x-data-grid'
-import { Ordering, PagedResult, PoolDistributor, PoolDistributor_OrderBy, SkipPaging } from '@superfluid-finance/sdk-core'
+import {
+  Ordering,
+  PagedResult,
+  PoolDistributor,
+  PoolDistributor_OrderBy,
+  SkipPaging
+} from '@superfluid-finance/sdk-core'
 import { FC, useMemo } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'

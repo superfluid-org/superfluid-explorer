@@ -49,14 +49,19 @@ export const sfGdaSubgraph = sfSubgraph
 
 const infuraProviders = networks.map((network) => ({
   chainId: network.chainId,
-  frameworkGetter: () => {
-    return Framework.create({
+  frameworkGetter: async () => {
+    const framework = await Framework.create({
       chainId: network.chainId,
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
-      )
-      // customSubgraphQueriesEndpoint: network.subgraphUrl
+      ),
+      customSubgraphQueriesEndpoint: network.subgraphUrl
     })
+    if (!framework.settings.customSubgraphQueriesEndpoint) {
+      // Ugly hack
+      framework.settings.customSubgraphQueriesEndpoint = network.subgraphUrl
+    }
+    return framework
   }
 }))
 

@@ -13,7 +13,8 @@ import {
   polygon,
   scroll,
   scrollSepolia,
-  sepolia} from 'viem/chains' // prolly not a fantastic approach for bundle size
+  sepolia
+} from 'viem/chains' // prolly not a fantastic approach for bundle size
 import { createConfig, http } from 'wagmi'
 
 import { networks } from '../redux/networks'

@@ -19,21 +19,21 @@ const SuperTokenAddress: FC<{
   format = (token) => `${token.name} (${token.symbol})`,
   formatLoading = () => ethers.utils.getAddress(address)
 }) => {
-    const tokenQuery = sfSubgraph.useTokenQuery({
-      chainId: network.chainId,
-      id: address
-    })
+  const tokenQuery = sfSubgraph.useTokenQuery({
+    chainId: network.chainId,
+    id: address
+  })
 
-    return (
-      <AppLink
-        data-cy={'token-address'}
-        className="address"
-        href={`/${network.slugName}/supertokens/${address}`}
-      >
-        {tokenQuery.data ? format(tokenQuery.data) : formatLoading()}
-      </AppLink>
-    )
-  }
+  return (
+    <AppLink
+      data-cy={'token-address'}
+      className="address"
+      href={`/${network.slugName}/supertokens/${address}`}
+    >
+      {tokenQuery.data ? format(tokenQuery.data) : formatLoading()}
+    </AppLink>
+  )
+}
 
 export const SuperTokenFormatted: FC<{
   address: string
