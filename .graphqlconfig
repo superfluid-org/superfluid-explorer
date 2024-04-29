@@ -4,7 +4,7 @@
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {
-        "url": "https://polygon-mumbai.subgraph.x.superfluid.dev",
+        "url": "https://avalanche-fuji.subgraph.x.superfluid.dev",
         "headers": {
           "user-agent": "JS GraphQL"
         },
