@@ -8,6 +8,7 @@ import {
   SubgraphQueryHandler,
   Timestamp
 } from '@superfluid-finance/sdk-core'
+import { SubgraphClient } from '@superfluid-finance/sdk-core/dist/module/subgraph/SubgraphClient'
 
 import {
   PoolDistributor_Filter,
@@ -16,7 +17,6 @@ import {
   PoolDistributorsQuery,
   PoolDistributorsQueryVariables
 } from '../../.graphclient'
-import { SubgraphClient } from '@superfluid-finance/sdk-core/dist/module/subgraph/SubgraphClient'
 
 export interface PoolDistributor {
   id: SubgraphId

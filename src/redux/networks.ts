@@ -161,7 +161,7 @@ export const networks = [
     supportsGDA: getSupportsGDA(666666666),
     chainId: 666666666,
     slugName: 'degen',
-    displayName: 'DEGEN chain',
+    displayName: 'Degen Chain',
     rpcUrl: getRpcUrl(666666666),
     subgraphUrl: getSubgraphUrl(666666666),
     getLinkForTransaction: (txHash: string): string =>
