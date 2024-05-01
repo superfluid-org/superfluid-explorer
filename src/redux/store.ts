@@ -27,7 +27,7 @@ import {
 } from 'redux-persist'
 import storageLocal from 'redux-persist/lib/storage'
 
-import { allSubgraphEndpoints as allGdaSubgraphEndpoints } from '../subgraphs/gda/endpoints/allSubgraphEndpoints'
+import { allGdaSubgraphEndpoints } from '../subgraphs/gda/endpoints/allSubgraphEndpoints'
 import { addDays } from '../utils/dateTime'
 import { isServer } from '../utils/isServer'
 import { adhocRpcEndpoints } from './adhocRpcEndpoints'
@@ -49,14 +49,20 @@ export const sfGdaSubgraph = sfSubgraph
 
 const infuraProviders = networks.map((network) => ({
   chainId: network.chainId,
-  frameworkGetter: () =>
-    Framework.create({
+  frameworkGetter: async () => {
+    const framework = await Framework.create({
       chainId: network.chainId,
       provider: new providers.MulticallProvider(
         new ethers.providers.StaticJsonRpcProvider(network.rpcUrl)
       ),
       customSubgraphQueriesEndpoint: network.subgraphUrl
     })
+    if (!framework.settings.customSubgraphQueriesEndpoint) {
+      // Ugly hack
+      framework.settings.customSubgraphQueriesEndpoint = network.subgraphUrl
+    }
+    return framework
+  }
 }))
 
 export const makeStore = wrapMakeStore(() => {

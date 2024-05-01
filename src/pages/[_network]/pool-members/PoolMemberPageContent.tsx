@@ -15,6 +15,8 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 import {
   createSkipPaging,
   Ordering,
+  Pool,
+  PoolMember,
   SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { gql } from 'graphql-request'
@@ -33,11 +35,9 @@ import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
 import { MemberUnitsUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
-import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
-import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import { PoolMemberFlowDistributions } from './PoolMemberFlowDistributions'
-import { useTotalAmountRecivedFromPoolMember } from './PoolMemberTotalAmountReceived'
+import { useTotalAmountReceivedFromPoolMember } from './PoolMemberTotalAmountReceived'
 import PoolMemberUnitsUpdatedEventDataGrid from './PoolMemberUnitsUpdatedEventDataGrid'
 
 export const PoolMemberPageContent: FC<{
@@ -54,9 +54,9 @@ export const PoolMemberPageContent: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-        chainId: network.chainId,
-        id: poolMember.pool
-      }
+          chainId: network.chainId,
+          id: poolMember.pool
+        }
       : skipToken
   )
 
@@ -69,14 +69,6 @@ export const PoolMemberPageContent: FC<{
       take: 10
     })
   )
-
-  console.log({
-    poolMemberId,
-    poolMember,
-    pool,
-    network
-    // poolId: poolMember.pool
-  })
 
   const [
     poolMemberUnitsUpdatedEventPagingOrdering,
@@ -95,9 +87,10 @@ export const PoolMemberPageContent: FC<{
       order: poolMemberUnitsUpdatedEventPagingOrdering
     })
 
-  const totalAmountReceivedForPoolMember = useTotalAmountRecivedFromPoolMember(
-    poolMember,
-    pool
+  const totalAmountReceivedForPoolMember = useTotalAmountReceivedFromPoolMember(
+    network.chainId,
+    poolMember?.account,
+    pool?.id
   )
 
   if (!poolQuery.isUninitialized && !poolQuery.isLoading && !poolQuery.data) {

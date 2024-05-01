@@ -13,4 +13,3 @@ const PoolMemberPage: NextPage = () => {
 }
 
 export default PoolMemberPage
-  

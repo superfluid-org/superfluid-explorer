@@ -2,6 +2,8 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 import {
   createSkipPaging,
   Ordering,
+  Pool,
+  PoolMember,
   SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { FC, useMemo, useState } from 'react'
@@ -10,8 +12,6 @@ import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
 import { FlowDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
-import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
-import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import { FlowDistributionUpdatedEvent } from '../../../subgraphs/gda/events'
 import { useFlowDistributionUpdatedColumns } from '../pools/useFlowDistributionUpdatedColumns'
 

@@ -20,7 +20,13 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
-import { createSkipPaging, Ordering } from '@superfluid-finance/sdk-core'
+import {
+  createSkipPaging,
+  Ordering,
+  Pool_Filter,
+  Pool_OrderBy
+} from '@superfluid-finance/sdk-core'
+import { PoolsQuery } from '@superfluid-finance/sdk-redux'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
@@ -37,11 +43,6 @@ import TimeAgo from '../../../../components/TimeAgo/TimeAgo'
 import useDebounce from '../../../../hooks/useDebounce'
 import { Network } from '../../../../redux/networks'
 import { sfGdaSubgraph } from '../../../../redux/store'
-import {
-  Pool_Filter,
-  Pool_OrderBy
-} from '../../../../subgraphs/gda/.graphclient'
-import { PoolsQuery } from '../../../../subgraphs/gda/endpoints/entityArgs'
 import { DistributionStatus } from '../../accounts/AccountIndexPublicationsTable'
 import { PoolPublicationDetailsDialog } from '../../pools/PoolPublicationDetails'
 
@@ -191,8 +192,8 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
 
   const clearFilterField =
     (...fields: Array<keyof Pool_Filter>) =>
-      () =>
-        onFilterChange(omit(fields, queryArg.filter))
+    () =>
+      onFilterChange(omit(fields, queryArg.filter))
 
   const openFilter = () => setShowFilterMenu(true)
   const closeFilter = () => setShowFilterMenu(false)
@@ -352,14 +353,14 @@ const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
               {(filter.id ||
                 filter.admin_contains ||
                 distributionStatus !== null) && (
-                  <Button
-                    data-cy={'reset-filter'}
-                    onClick={resetFilter}
-                    tabIndex={-1}
-                  >
-                    Reset
-                  </Button>
-                )}
+                <Button
+                  data-cy={'reset-filter'}
+                  onClick={resetFilter}
+                  tabIndex={-1}
+                >
+                  Reset
+                </Button>
+              )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>

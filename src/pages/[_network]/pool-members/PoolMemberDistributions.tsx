@@ -4,6 +4,8 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 import {
   createSkipPaging,
   Ordering,
+  Pool,
+  PoolMember,
   SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
@@ -16,8 +18,6 @@ import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
 import { InstantDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
-import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
-import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import {
   InstantDistributionUpdatedEvent,
   PoolMemberUnitsUpdatedEvent

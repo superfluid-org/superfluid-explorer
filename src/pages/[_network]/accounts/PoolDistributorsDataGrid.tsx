@@ -1,5 +1,11 @@
 import { GridColDef } from '@mui/x-data-grid'
-import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
+import {
+  Ordering,
+  PagedResult,
+  PoolDistributor,
+  PoolDistributor_OrderBy,
+  SkipPaging
+} from '@superfluid-finance/sdk-core'
 import { FC, useMemo } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
@@ -11,8 +17,6 @@ import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import TokenChip from '../../../components/TokenChip/TokenChip'
 import { Network } from '../../../redux/networks'
-import { PoolDistributor_OrderBy } from '../../../subgraphs/gda/.graphclient'
-import { PoolDistributor } from '../../../subgraphs/gda/entities/poolDistributor/poolDistributor'
 
 interface Props {
   network: Network

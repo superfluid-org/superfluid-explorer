@@ -17,6 +17,7 @@ import {
 import {
   createSkipPaging,
   Ordering,
+  Pool,
   SkipPaging
 } from '@superfluid-finance/sdk-core'
 import { gql } from 'graphql-request'
@@ -40,7 +41,6 @@ import {
   InstantDistributionUpdatedEvent_OrderBy,
   PoolMember_OrderBy
 } from '../../../subgraphs/gda/.graphclient'
-import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import { PoolDistributorsDataGridManager } from '../accounts/PoolDistributorsDataGridManager'
 import FlowDistributionUpdatedEventDataGrid from './FlowDistributionUpdatedEventDataGrid'

@@ -1,4 +1,5 @@
 import { Skeleton, TableCell, TableRow } from '@mui/material'
+import { PoolMember } from '@superfluid-finance/sdk-core'
 import { FC } from 'react'
 
 import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
@@ -7,7 +8,6 @@ import DetailsButton from '../../../components/Details/DetailsButton'
 import { PoolPercentage } from '../../../components/PoolPercentage/PoolPercentage'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
-import { PoolMember } from '../../../subgraphs/gda/entities/poolMember/poolMember'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
 import { PoolMemberTotalAmountReceived } from '../pool-members/PoolMemberTotalAmountReceived'
 import { PoolQuery } from '../pools/PoolQuery'
@@ -36,14 +36,9 @@ export const AccountPoolMemberRow: FC<AccountPoolMemberRow> = ({
           <TableCell data-cy={'amount-received'}>
             {pool ? (
               <PoolMemberTotalAmountReceived
-                member={member}
-                pool={{
-                  flowRate: pool.flowRate,
-                  totalAmountDistributedUntilUpdatedAt:
-                    pool.totalAmountDistributedUntilUpdatedAt,
-                  totalUnits: pool.totalUnits,
-                  updatedAtTimestamp: pool.updatedAtTimestamp
-                }}
+                chainId={network.chainId}
+                memberAddress={member.account}
+                poolAddress={pool.id}
               >
                 {({
                   memberCurrentTotalAmountReceived,

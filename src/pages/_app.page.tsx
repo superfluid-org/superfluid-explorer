@@ -6,12 +6,14 @@ import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { ErrorBoundary } from '@sentry/nextjs'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProps } from 'next/app'
 import Error from 'next/error'
 import Head from 'next/head'
 import Router, { useRouter } from 'next/router'
 import { FC, PropsWithChildren, useEffect, useRef } from 'react'
 import { hotjar } from 'react-hotjar'
+import { WagmiProvider } from 'wagmi'
 
 import Footer from '../components/Layout/Footer'
 import SfAppBar from '../components/Layout/SfAppBar'
@@ -25,6 +27,7 @@ import useSfTheme from '../styles/useSfTheme'
 import createEmotionCache from '../utils/createEmotionCache'
 import { tryFindNetwork } from '../utils/findNetwork'
 import { isDynamicRoute } from '../utils/isDynamicRoute'
+import { wagmiConfig } from './wagmi'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -32,6 +35,8 @@ const clientSideEmotionCache = createEmotionCache()
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
 }
+
+const queryClient = new QueryClient()
 
 function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
@@ -75,34 +80,38 @@ function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <AvailableNetworksProvider>
-          <Box
-            sx={{
-              display: 'flex',
-              flexFlow: 'column',
-              maxHeight: '100vh'
-            }}
-          >
-            <SfAppBar />
-            <Box
-              ref={scrollableContentRef}
-              component="main"
-              sx={{ height: '100vh', overflow: 'auto' }}
-            >
-              <Layout>
-                <ErrorBoundary
-                  fallback={() => <span />}
-                  onError={() => {
-                    alert(
-                      "The page crashed. :( The error is in the browser's developer console. Reloading the page or clearing your local storage could resolve the issue. Don't hesitate to let us know of this situation!"
-                    )
-                  }}
+          <WagmiProvider config={wagmiConfig}>
+            <QueryClientProvider client={queryClient}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexFlow: 'column',
+                  maxHeight: '100vh'
+                }}
+              >
+                <SfAppBar />
+                <Box
+                  ref={scrollableContentRef}
+                  component="main"
+                  sx={{ height: '100vh', overflow: 'auto' }}
                 >
-                  <Component {...pageProps} />
-                </ErrorBoundary>
-              </Layout>
-              <Footer />
-            </Box>
-          </Box>
+                  <Layout>
+                    <ErrorBoundary
+                      fallback={() => <span />}
+                      onError={() => {
+                        alert(
+                          "The page crashed. :( The error is in the browser's developer console. Reloading the page or clearing your local storage could resolve the issue. Don't hesitate to let us know of this situation!"
+                        )
+                      }}
+                    >
+                      <Component {...pageProps} />
+                    </ErrorBoundary>
+                  </Layout>
+                  <Footer />
+                </Box>
+              </Box>
+            </QueryClientProvider>
+          </WagmiProvider>
         </AvailableNetworksProvider>
       </ThemeProvider>
     </CacheProvider>

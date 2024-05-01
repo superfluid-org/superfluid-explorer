@@ -4,7 +4,7 @@
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {
-        "url": "https://avalanche-fuji.subgraph.x.superfluid.dev",
+        "url": "https://api.thegraph.com/subgraphs/name/superfluid-finance/protocol-dev-optimism-mainnet",
         "headers": {
           "user-agent": "JS GraphQL"
         },

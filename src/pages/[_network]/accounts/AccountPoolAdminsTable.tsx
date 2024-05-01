@@ -20,7 +20,14 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
-import { createSkipPaging, Ordering } from '@superfluid-finance/sdk-core'
+import {
+  createSkipPaging,
+  Ordering,
+  Pool,
+  Pool_Filter,
+  Pool_OrderBy
+} from '@superfluid-finance/sdk-core'
+import { PoolsQuery } from '@superfluid-finance/sdk-redux'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
@@ -37,10 +44,9 @@ import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import useDebounce from '../../../hooks/useDebounce'
 import { Network } from '../../../redux/networks'
 import { sfGdaSubgraph } from '../../../redux/store'
-import { Pool_Filter, Pool_OrderBy } from '../../../subgraphs/gda/.graphclient'
-import { PoolsQuery } from '../../../subgraphs/gda/endpoints/entityArgs'
-import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { PoolPublicationDetailsDialog } from '../pools/PoolPublicationDetails'
+
+type RequiredPoolsQuery = Required<Omit<PoolsQuery, 'block'>>
 
 export enum DistributionStatus {
   Distributed,
@@ -65,8 +71,6 @@ interface AccountPoolAdminsTableProps {
   network: Network
   accountAddress: string
 }
-
-type RequiredPoolsQuery = Required<Omit<PoolsQuery, 'block'>>
 
 const colSpan = 6
 

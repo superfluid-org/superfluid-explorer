@@ -144,11 +144,11 @@ export const networks = [
       `https://celoscan.io/address/${address}`
   },
   {
+    displayName: 'Base Mainnet',
+    slugName: 'base-mainnet',
     isTestnet: false,
     supportsGDA: getSupportsGDA(8453),
     chainId: 8453,
-    slugName: 'base-mainnet',
-    displayName: 'Base Mainnet',
     rpcUrl: getRpcUrl(8453),
     subgraphUrl: getSubgraphUrl(8453),
     getLinkForTransaction: (txHash: string): string =>
@@ -157,11 +157,11 @@ export const networks = [
       `https://basescan.org/address/${address}`
   },
   {
+    displayName: 'Degen Chain',
+    slugName: 'degen',
     isTestnet: false,
     supportsGDA: getSupportsGDA(666666666),
     chainId: 666666666,
-    slugName: 'degen',
-    displayName: 'Degen Chain',
     rpcUrl: getRpcUrl(666666666),
     subgraphUrl: getSubgraphUrl(666666666),
     getLinkForTransaction: (txHash: string): string =>
@@ -210,11 +210,11 @@ export const networks = [
       `https://sepolia.etherscan.io/address/${address}`
   },
   {
+    displayName: 'Optimism Sepolia',
+    slugName: 'optimism-sepolia',
     isTestnet: true,
     supportsGDA: getSupportsGDA(11155420),
     chainId: 11155420,
-    slugName: 'optimism-sepolia',
-    displayName: 'Optimism Sepolia',
     rpcUrl: getRpcUrl(11155420),
     subgraphUrl: getSubgraphUrl(11155420),
     getLinkForTransaction: (txHash: string): string =>
@@ -223,11 +223,11 @@ export const networks = [
       `https://sepolia-optimism.etherscan.io/address/${address}`
   },
   {
+    displayName: 'Scroll Sepolia',
+    slugName: 'scroll-sepolia',
     isTestnet: true,
     supportsGDA: getSupportsGDA(534351),
     chainId: 534351,
-    slugName: 'scroll-sepolia',
-    displayName: 'Scroll Sepolia',
     rpcUrl: getRpcUrl(534351),
     subgraphUrl: getSubgraphUrl(534351),
     getLinkForTransaction: (txHash: string): string =>

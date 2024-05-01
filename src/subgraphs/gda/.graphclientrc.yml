@@ -2,7 +2,7 @@ sources:
   - name: gda
     handler:
       graphql:
-        endpoint: '{context.url:https://avalanche-fuji.subgraph.x.superfluid.dev}'
+        endpoint: '{context.url:https://optimism-mainnet.subgraph.x.superfluid.dev}'
         retry: 5
 documents:
   - './**/*.graphql'

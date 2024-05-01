@@ -1,6 +1,11 @@
 import { Skeleton } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
-import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
+import {
+  Ordering,
+  PagedResult,
+  Pool,
+  SkipPaging
+} from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
 import { FC, useMemo } from 'react'
 
@@ -10,7 +15,6 @@ import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { useNetworkContext } from '../../../contexts/NetworkContext'
 import { InstantDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
-import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { InstantDistributionUpdatedEvent } from '../../../subgraphs/gda/events'
 
 interface Props {

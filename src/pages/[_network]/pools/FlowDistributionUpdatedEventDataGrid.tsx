@@ -1,11 +1,15 @@
-import { Ordering, PagedResult, SkipPaging } from '@superfluid-finance/sdk-core'
+import {
+  Ordering,
+  PagedResult,
+  Pool,
+  SkipPaging
+} from '@superfluid-finance/sdk-core'
 import { BigNumber } from 'ethers'
 import { FC } from 'react'
 
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import { useNetworkContext } from '../../../contexts/NetworkContext'
 import { FlowDistributionUpdatedEvent_OrderBy } from '../../../subgraphs/gda/.graphclient'
-import { Pool } from '../../../subgraphs/gda/entities/pool/pool'
 import { FlowDistributionUpdatedEvent } from '../../../subgraphs/gda/events'
 import { useFlowDistributionUpdatedColumns } from './useFlowDistributionUpdatedColumns'
 
