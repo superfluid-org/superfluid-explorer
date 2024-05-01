@@ -24,7 +24,7 @@ const getMetadata = memoize((chainId: number) => {
 
 const getRpcUrl = (chainId: number) => {
   const metadata = getMetadata(chainId)
-    return `https://rpc-endpoints.superfluid.dev/${metadata.name}`
+  return `https://rpc-endpoints.superfluid.dev/${metadata.name}`
 }
 
 const getSubgraphUrl = (chainId: number) => {
@@ -234,7 +234,7 @@ export const networks = [
       `https://sepolia.scrollscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
       `https://sepolia.scrollscan.com/address/${address}`
-  },
+  }
 ] as const
 
 export type ChainId = (typeof networks)[number]['chainId']
