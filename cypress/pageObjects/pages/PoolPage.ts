@@ -66,9 +66,7 @@ export class PoolPage extends BasePage {
       )
       this.containsText(
         POOL_TOTAL_AMOUNT_DISTRIBUTED,
-        (
-          data[network].poolWithData.totalAmountDistributedUntilUpdatedAt / 1e18
-        ).toFixed(0)
+          data[network].poolWithData.token.symbol
       )
       this.containsText(
         POOL_TOTAL_INSTANT_DISTRIBUTED,
