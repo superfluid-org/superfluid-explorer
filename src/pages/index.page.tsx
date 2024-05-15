@@ -8,11 +8,11 @@ import * as React from 'react'
 
 import AppLink from '../components/AppLink/AppLink'
 import NetworkTabs from '../components/NetworkTabs/NetworkTabs'
-import { networks, polygon } from '../redux/networks'
+import { networks, defaultNetwork } from '../redux/networks'
 import { NetworkStreams } from './NetworkStreams'
 
 const Home: NextPage = () => {
-  const [activeTab, setActiveTab] = React.useState(polygon.slugName)
+  const [activeTab, setActiveTab] = React.useState(defaultNetwork.slugName)
 
   return (
     <>

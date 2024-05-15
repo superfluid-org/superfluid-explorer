@@ -14,7 +14,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import { polygon } from '../../redux/networks'
+import { defaultNetwork } from '../../redux/networks'
 import AppLink from '../AppLink/AppLink'
 import SearchBar from '../Search/SearchBar'
 import SearchDialog from '../Search/SearchDialog'
@@ -24,7 +24,7 @@ export const SfAppBar = () => {
   const [searchOpen, setSearchOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const router = useRouter()
-  const { _network = polygon.slugName } = router.query
+  const { _network = defaultNetwork.slugName } = router.query
 
   return (
     <>

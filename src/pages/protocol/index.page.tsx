@@ -2,11 +2,11 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-import { polygon } from '../../redux/networks'
+import { defaultNetwork } from '../../redux/networks'
 
 const ProtocolRedirect: NextPage = () => {
   const router = useRouter()
-  useEffect(() => void router.replace(`/${polygon.slugName}/protocol`), [])
+  useEffect(() => void router.replace(`/${defaultNetwork.slugName}/protocol`), [])
 
   return null
 }

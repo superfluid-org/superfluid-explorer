@@ -38,32 +38,18 @@ const getSupportsGDA = (chainId: number) => {
 }
 
 export const networks = [
-  // mainnets
   {
-    displayName: 'Ethereum',
-    slugName: 'ethereum',
-    chainId: 1,
+    displayName: 'Base Mainnet',
+    slugName: 'base-mainnet',
     isTestnet: false,
-    supportsGDA: getSupportsGDA(1),
-    rpcUrl: getRpcUrl(1),
-    subgraphUrl: getSubgraphUrl(1),
+    supportsGDA: getSupportsGDA(8453),
+    chainId: 8453,
+    rpcUrl: getRpcUrl(8453),
+    subgraphUrl: getSubgraphUrl(8453),
     getLinkForTransaction: (txHash: string): string =>
-      `https://etherscan.io/tx/${txHash}`,
+      `https://basescan.org/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
-      `https://etherscan.io/address/${address}`
-  },
-  {
-    displayName: 'Gnosis Chain',
-    slugName: 'xdai',
-    chainId: 100,
-    isTestnet: false,
-    supportsGDA: getSupportsGDA(100),
-    rpcUrl: getRpcUrl(100),
-    subgraphUrl: getSubgraphUrl(100),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://gnosisscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://gnosisscan.io/address/${address}`
+      `https://basescan.org/address/${address}`
   },
   {
     displayName: 'Polygon',
@@ -105,6 +91,33 @@ export const networks = [
       `https://arbiscan.io/address/${address}`
   },
   {
+    displayName: 'Ethereum',
+    slugName: 'ethereum',
+    chainId: 1,
+    isTestnet: false,
+    supportsGDA: getSupportsGDA(1),
+    rpcUrl: getRpcUrl(1),
+    subgraphUrl: getSubgraphUrl(1),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://etherscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://etherscan.io/address/${address}`
+  },
+  {
+    displayName: 'Gnosis Chain',
+    slugName: 'xdai',
+    chainId: 100,
+    isTestnet: false,
+    supportsGDA: getSupportsGDA(100),
+    rpcUrl: getRpcUrl(100),
+    subgraphUrl: getSubgraphUrl(100),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://gnosisscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://gnosisscan.io/address/${address}`
+  },
+
+  {
     displayName: 'Avalanche C',
     slugName: 'avalanche-c',
     chainId: 43114,
@@ -142,19 +155,6 @@ export const networks = [
       `https://celoscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
       `https://celoscan.io/address/${address}`
-  },
-  {
-    displayName: 'Base Mainnet',
-    slugName: 'base-mainnet',
-    isTestnet: false,
-    supportsGDA: getSupportsGDA(8453),
-    chainId: 8453,
-    rpcUrl: getRpcUrl(8453),
-    subgraphUrl: getSubgraphUrl(8453),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://basescan.org/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://basescan.org/address/${address}`
   },
   {
     displayName: 'Degen Chain',
@@ -247,7 +247,7 @@ export const networksByName = new Map<string, Network>(
 export const networksByChainId = new Map<number, Network>(
   networks.map((x) => [x.chainId, x])
 )
-export const polygon = networksByChainId.get(137)!
+export const defaultNetwork = networksByChainId.get(8453)!
 export const networksByTestAndName = sortBy(
   [(x) => x.isTestnet, (x) => x.slugName],
   networks
