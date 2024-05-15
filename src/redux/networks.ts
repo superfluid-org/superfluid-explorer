@@ -39,6 +39,19 @@ const getSupportsGDA = (chainId: number) => {
 
 export const networks = [
   {
+    displayName: 'Ethereum',
+    slugName: 'ethereum',
+    chainId: 1,
+    isTestnet: false,
+    supportsGDA: getSupportsGDA(1),
+    rpcUrl: getRpcUrl(1),
+    subgraphUrl: getSubgraphUrl(1),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://etherscan.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://etherscan.io/address/${address}`
+  },
+  {
     displayName: 'Base Mainnet',
     slugName: 'base-mainnet',
     isTestnet: false,
@@ -89,19 +102,6 @@ export const networks = [
       `https://arbiscan.io/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
       `https://arbiscan.io/address/${address}`
-  },
-  {
-    displayName: 'Ethereum',
-    slugName: 'ethereum',
-    chainId: 1,
-    isTestnet: false,
-    supportsGDA: getSupportsGDA(1),
-    rpcUrl: getRpcUrl(1),
-    subgraphUrl: getSubgraphUrl(1),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://etherscan.io/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://etherscan.io/address/${address}`
   },
   {
     displayName: 'Gnosis Chain',
