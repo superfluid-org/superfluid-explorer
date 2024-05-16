@@ -62,7 +62,7 @@ interface SuperTokenPoolsTableProps {
 
 type RequiredPoolsQuery = Required<Omit<PoolsQuery, 'block'>>
 
-const colSpan = 5
+const colSpan = 6
 
 const SuperTokenPoolsTable: FC<SuperTokenPoolsTableProps> = ({
   network,
