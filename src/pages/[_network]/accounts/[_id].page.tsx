@@ -301,7 +301,7 @@ const AccountPage: NextPage = () => {
                     data-cy={'af-channel'}
                     secondary={
                       <>
-                      User&apos;s Channel 
+                      User Channel 
                       </>
                     }
                     primary={
