@@ -35,11 +35,14 @@ export type NetworkSearchResult = {
 }
 
 export const useSearch = (searchTerm: string) => {
+  // atm, this only works if you input the exact name 
   const addressDisplay = useAddressDisplay(searchTerm)
 
   const subgraphSearchByAddressResults = useSearchSubgraphByAddress(
     addressDisplay.addressChecksummed ?? 'skip'
   )
+
+
   const subgraphSearchByTokenSymbolResults =
     useSearchSubgraphByTokenSymbol(searchTerm)
   const addressBookResults = useSearchAddressBook(searchTerm)
@@ -147,7 +150,8 @@ export const useSearch = (searchTerm: string) => {
           .map((x) => ({
             ...x,
             id: ethers.utils.getAddress(x.id),
-            ENS: addressDisplay.ensName
+            name: addressDisplay.ensName,
+            avatar: addressDisplay.avatar
           })),
         (x) => x.id
       )

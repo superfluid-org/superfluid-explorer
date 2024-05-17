@@ -14,7 +14,8 @@ import {
   Stack,
   Tab,
   Tooltip,
-  Typography
+  Typography,
+  Avatar
 } from '@mui/material'
 import { ethers } from 'ethers'
 import { gql } from 'graphql-request'
@@ -68,6 +69,8 @@ import AccountPools from './AccountPools'
 import AccountStreams from './AccountStreams'
 import AccountTokenBalance from './AccountTokenBalance'
 import AccountTokens from './AccountTokens'
+import { useAddress, useAfChannel } from '../../../hooks/useAddressDisplay'
+import AccountAddress from "../../../components/Address/AccountAddress"
 
 const AccountPage: NextPage = () => {
   const network = useNetworkContext()
@@ -77,9 +80,10 @@ const AccountPage: NextPage = () => {
     id: address
   })
 
-  const ensAddressQuery = ensApi.useLookupAddressQuery(address)
-
-  const ensName = ensAddressQuery.currentData?.name
+  const user = useAddress(address, false);
+  console.log("user: ", user);
+  const {ensName: name, avatar, isFetching} = user;
+  const afChannel = useAfChannel({name: name?.split("(")[0].trim() || ""});
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams')
   const prefetchIndexesQuery = sfSubgraph.usePrefetch('indexes')
@@ -136,6 +140,20 @@ const AccountPage: NextPage = () => {
   const tokensWithBalance = tokens.filter(
     (snapshot) => Number(snapshot.balanceUntilUpdatedAt) !== 0
   )
+
+  const accountType =
+    name?.includes("AF") ? (
+      name?.includes("channel") 
+      ? 'AlfaFrens channel' 
+      : 'AlfaFrens user'
+    ) : accountQuery.data 
+      ? (
+          accountQuery.data.isSuperApp 
+          ? 'Super App'
+          : 'Regular account'
+        )
+      : null;
+
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
       <Stack direction="row" alignItems="center" gap={1}>
@@ -158,14 +176,18 @@ const AccountPage: NextPage = () => {
               network={network}
               address={accountQuery.data.id}
             />
+            {
+              avatar &&
+                <Avatar src={avatar} />
+            }
             <Typography
-              data-cy={'ensName'}
+              data-cy={'name'}
               variant="h4"
               component="h1"
               sx={{ mx: 1 }}
             >
               {/* TODO(KK): When there's an address book entry then ENS name is not displayed anywhere. Not sure if I like it...  */}
-              {addressBookEntry ? addressBookEntry.nameTag : ensName}
+              {addressBookEntry ? addressBookEntry.nameTag : name}
             </Typography>
             <Typography
               data-cy={'address'}
@@ -217,7 +239,7 @@ const AccountPage: NextPage = () => {
       </Box>
 
       <Card elevation={2} sx={{ mt: 3 }}>
-        <List sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        <List sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr' }}>
           <ListItem>
             <ListItemText
               data-cy={'network-name'}
@@ -247,18 +269,54 @@ const AccountPage: NextPage = () => {
                 </>
               }
               primary={
-                accountQuery.data ? (
-                  accountQuery.data.isSuperApp ? (
-                    'Super App'
-                  ) : (
-                    'Regular account'
-                  )
-                ) : (
+                accountType ? accountType : (
                   <Skeleton sx={{ width: '40px' }} />
                 )
               }
             />
           </ListItem>
+          {
+            accountType?.includes("AlfaFrens") &&
+            <ListItem>
+              {
+                accountType?.includes("channel") && afChannel?.aaAddress
+                ? (
+                  <ListItemText
+                  data-cy={'af-owner'}
+                  secondary={
+                    <>
+                    Channel Owner
+                    </>
+                  }
+                  primary={
+                    <AccountAddress 
+                      network={network}
+                      address={afChannel.aaAddress}
+                      />
+                  }
+                />
+                ) : afChannel?.channelAddress 
+                  ? (
+                    <ListItemText
+                    data-cy={'af-channel'}
+                    secondary={
+                      <>
+                      User's Channel 
+                      </>
+                    }
+                    primary={
+                      <AccountAddress 
+                        network={network}
+                        address={afChannel.channelAddress}
+                        />
+                    }
+                    />
+                  ) : (
+                    <></>
+                  )
+              }
+            </ListItem>
+          }
         </List>
       </Card>
 

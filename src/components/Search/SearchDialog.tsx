@@ -12,7 +12,8 @@ import {
   ListItemButton,
   ListItemText,
   TextField,
-  Typography
+  Typography,
+  Avatar
 } from '@mui/material'
 import _ from 'lodash'
 import NextLink from 'next/link'
@@ -148,20 +149,31 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                             justifyContent: 'flex-start'
                           }}
                         >
-                          {account.ENS ? (
-                            <Grid container>
-                              <Grid item xs={12}>
-                                {account.ENS}
-                              </Grid>
-                              <Grid item xs={12}>
-                                <Typography variant="caption" component="span">
-                                  <AccountAddressFormatted
-                                    network={x.network}
-                                    address={account.id}
-                                    format={'addressPlusName'}
-                                  />
-                                </Typography>
-                              </Grid>
+                          {account.name ? (
+                            <Grid container columnGap={2}>
+                                {
+                                  account.avatar
+                                  && (
+                                    <Grid item>
+                                      <Avatar src={account.avatar || ""} />
+                                    </Grid>
+                                  )
+                                }
+                                <Grid container xs={10}>
+                                  <Grid item xs={12}>
+                                    {account.name}
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                    <Typography variant="caption" component="span">
+                                      <AccountAddressFormatted
+                                        network={x.network}
+                                        address={account.id}
+                                        format={'addressPlusName'}
+                                        />
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                            
                             </Grid>
                           ) : (
                             <AccountAddressFormatted

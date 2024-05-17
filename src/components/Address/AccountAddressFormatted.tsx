@@ -8,6 +8,7 @@ import {
   createEntryId
 } from '../../redux/slices/addressBook.slice'
 import ellipsisAddress from '../../utils/ellipsisAddress'
+import { useAddress } from '../../hooks/useAddressDisplay'
 
 export const AccountAddressFormatted: FC<{
   network: Network
@@ -18,6 +19,8 @@ export const AccountAddressFormatted: FC<{
   const addressBookEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   )
+  const {ensName: name} = useAddress(address, false);
+
   const parsedAddress = ellipsis
     ? ellipsisAddress(ethers.utils.getAddress(address), ellipsis)
     : ethers.utils.getAddress(address)
@@ -26,13 +29,14 @@ export const AccountAddressFormatted: FC<{
     return (
       <>
         {parsedAddress}
+        {!!name && ` (${name})`}
         {!!addressBookEntry?.nameTag && ` (${addressBookEntry.nameTag})`}
       </>
     )
   }
 
   if (format === 'namePlusAddress') {
-    if (!addressBookEntry?.nameTag) {
+    if (!addressBookEntry?.nameTag || !name) {
       return <>{parsedAddress}</>
     } else {
       return (
@@ -44,5 +48,5 @@ export const AccountAddressFormatted: FC<{
   }
 
   // "nameOnly" is default
-  return <>{addressBookEntry?.nameTag || parsedAddress}</>
+  return <>{addressBookEntry?.nameTag || name || parsedAddress}</>
 }
