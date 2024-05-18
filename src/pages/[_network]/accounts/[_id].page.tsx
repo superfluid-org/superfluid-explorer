@@ -17,6 +17,12 @@ import {
   Typography,
   Avatar
 } from '@mui/material'
+import {
+  createSkipPaging,
+  Ordering,
+  Pool,
+  SkipPaging
+} from '@superfluid-finance/sdk-core'
 import { ethers } from 'ethers'
 import { gql } from 'graphql-request'
 import { NextPage } from 'next'
@@ -71,6 +77,7 @@ import AccountTokenBalance from './AccountTokenBalance'
 import AccountTokens from './AccountTokens'
 import { useAddress, useAfChannel } from '../../../hooks/useAddressDisplay'
 import AccountAddress from "../../../components/Address/AccountAddress"
+import { channel } from 'diagnostics_channel'
 
 const AccountPage: NextPage = () => {
   const network = useNetworkContext()
@@ -107,6 +114,23 @@ const AccountPage: NextPage = () => {
       skip: 0
     }
   })
+  console.log(tokenSnapshotQuery);
+  
+  // fetch the user's channel
+  const channelPoolQuery = isChannel ? sfSubgraph.usePoolsQuery({
+    chainId: network.chainId,
+    filter: {
+      admin: address,
+    },
+    pagination: {
+      take: 1
+    }
+  }) : undefined
+
+  console.log("channelpoolquery:", channelPoolQuery);
+  const pool: Pool | null | undefined =(channelPoolQuery && channelPoolQuery?.data?.data?.[0]) || undefined;
+  const precisionLoss = 1/Number(pool?.perUnitFlowRate)*100;
+  const precisionRisk = precisionLoss > 20 ? "red" : precisionLoss > 5 ? "orange" : "green";
 
   const router = useRouter()
   const { tab } = router.query
@@ -393,7 +417,16 @@ const AccountPage: NextPage = () => {
                               {
                                 isChannel && 
                                 (
-                                  <> 
+                                  <>
+                                    <Typography
+                                      variant="subtitle2"
+                                      sx={{
+                                        textAlign: "right"
+                                      }}
+                                    >
+                                      Channel Stats:
+                                    </Typography>
+                                    <Typography></Typography>
                                     <Typography
                                       variant="caption"
                                       sx={{
@@ -415,6 +448,23 @@ const AccountPage: NextPage = () => {
                                     </Typography>
                                     <Typography variant="caption">
                                       <FlowRate flowRate={tokenSnapshot.totalOutflowRate} />
+                                    </Typography>
+                                    <Typography
+                                      variant="caption"
+                                      sx={{
+                                        textAlign: 'right'
+                                      }}
+                                      color={precisionRisk}
+                                    >
+                                      Potential Precision Loss:
+                                      
+                                    </Typography>
+                                    <Typography variant="caption" color={precisionRisk}>
+                                      { precisionLoss } %
+                                      <InfoTooltipBtn
+                                        dataCy={'total-units-tooltip'}
+                                        title="The % of expected outflow potentially lost to the adjustmentFlowrate"
+                                      />
                                     </Typography>
                                   </>
                                 )
