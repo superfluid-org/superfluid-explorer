@@ -92,6 +92,7 @@ const AccountPage: NextPage = () => {
   const {ensName: name, avatar, isFetching} = user;
   const afChannel = useAfChannel({name: name?.split("(")[0].trim() || ""});
   const isChannel = name?.includes("AF channel");
+  const isAFUser = name?.includes("AF user");
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams')
   const prefetchIndexesQuery = sfSubgraph.usePrefetch('indexes')
@@ -129,12 +130,12 @@ const AccountPage: NextPage = () => {
 
   console.log("channelpoolquery:", channelPoolQuery);
   const pool: Pool | null | undefined =(channelPoolQuery && channelPoolQuery?.data?.data?.[0]) || undefined;
-  const precisionLoss = 1/Number(pool?.perUnitFlowRate)*100;
+  const precisionLoss = 1/Number(pool?.perUnitFlowRate)*100 > 100 ? 100 : 1/Number(pool?.perUnitFlowRate)*100;
   const precisionRisk = precisionLoss > 20 ? "red" : precisionLoss > 5 ? "orange" : "green";
 
   const router = useRouter()
   const { tab } = router.query
-  const [tabValue, setTabValue] = useState<string>((tab as string) ?? 'tokens')
+  const [tabValue, setTabValue] = useState<string>('tokens')
 
   useEffect(() => {
     router.replace({
@@ -465,6 +466,34 @@ const AccountPage: NextPage = () => {
                                         dataCy={'total-units-tooltip'}
                                         title="The % of expected outflow potentially lost to the adjustmentFlowrate"
                                       />
+                                    </Typography>
+                                  </>
+                                )
+                              }
+
+                              {
+                                isAFUser && 
+                                (
+                                  <>
+                                    <Typography
+                                      variant="subtitle2"
+                                      sx={{
+                                        textAlign: "right"
+                                      }}
+                                    >
+                                      User Stats:
+                                    </Typography>
+                                    <Typography></Typography>
+                                    <Typography
+                                      variant="caption"
+                                      sx={{
+                                        textAlign: 'right'
+                                      }}
+                                    >
+                                      OutFlow rate:
+                                    </Typography>
+                                    <Typography variant="caption">
+                                      <FlowRate flowRate={tokenSnapshot.totalOutflowRate} />
                                     </Typography>
                                   </>
                                 )
