@@ -115,10 +115,9 @@ const AccountPage: NextPage = () => {
       skip: 0
     }
   })
-  console.log(tokenSnapshotQuery);
   
   // fetch the user's channel
-  const channelPoolQuery = isChannel ? sfGdaSubgraph.usePoolsQuery({
+  const channelPoolQuery = sfGdaSubgraph.usePoolsQuery({
     chainId: network.chainId,
     filter: {
       admin: address,
@@ -126,16 +125,17 @@ const AccountPage: NextPage = () => {
     pagination: {
       take: 1
     }
-  }) : undefined
-
-  console.log("channelpoolquery:", channelPoolQuery);
-  const pool: Pool | null | undefined =(channelPoolQuery && channelPoolQuery?.data?.data?.[0]) || undefined;
-  const precisionLoss = 1/Number(pool?.perUnitFlowRate)*100 > 100 ? 100 : 1/Number(pool?.perUnitFlowRate)*100;
-  const precisionRisk = precisionLoss > 20 ? "red" : precisionLoss > 5 ? "orange" : "green";
+  });
 
   const router = useRouter()
   const { tab } = router.query
   const [tabValue, setTabValue] = useState<string>('tokens')
+  // Effect to update state based on router.query
+  useEffect(() => {
+    if (typeof tab === 'string') {
+      setTabValue(tab);
+    }
+  }, [tab]);
 
   useEffect(() => {
     router.replace({
@@ -181,6 +181,10 @@ const AccountPage: NextPage = () => {
         )
       : null;
 
+  const pool: Pool | null | undefined = (channelPoolQuery && channelPoolQuery?.data?.data?.[0]) || undefined;
+  const precisionLoss = 1/Number(pool?.perUnitFlowRate)*100 > 100 ? 100 : 1/Number(pool?.perUnitFlowRate)*100;
+  const precisionRisk = precisionLoss > 20 ? "red" : precisionLoss > 5 ? "orange" : "green";
+  
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
       <Stack direction="row" alignItems="center" gap={1}>

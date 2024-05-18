@@ -159,7 +159,7 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                                     </Grid>
                                   )
                                 }
-                                <Grid container xs={10}>
+                                <Grid item xs={10}>
                                   <Grid item xs={12}>
                                     {account.name}
                                   </Grid>
