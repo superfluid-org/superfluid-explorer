@@ -46,6 +46,7 @@ import { PoolDistributorsDataGridManager } from '../accounts/PoolDistributorsDat
 import FlowDistributionUpdatedEventDataGrid from './FlowDistributionUpdatedEventDataGrid'
 import InstantDistributionUpdatedEventDataGrid from './InstantDistributionUpdatedEventDataGrid'
 import PoolMemberDataGrid from './PoolMemberDataGrid'
+import { BigNumber } from 'ethers'
 
 export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   id: id,
@@ -57,6 +58,8 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   })
 
   const pool: Pool | null | undefined = poolQuery.data
+
+  const precisionLoss = 1/Number(pool?.perUnitFlowRate)*100;
 
   const [
     instantDistributionUpdatedEventPaging,
@@ -324,22 +327,50 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
         <Grid item md={6} sm={12}>
           <Card elevation={2}>
             <List>
-              <ListItem data-cy={'total-units'} divider>
-                <ListItemText
-                  secondary={
-                    <>
-                      Total Units
-                      <InfoTooltipBtn
-                        dataCy={'total-units-tooltip'}
-                        title="The sum of total pending and approved units issued to subscribers."
-                      />
-                    </>
-                  }
-                  primary={
-                    pool ? pool.totalUnits : <Skeleton sx={{ width: '75px' }} />
-                  }
-                />
-              </ListItem>
+              <Grid container>
+                <Grid item xs={6}>
+                  <ListItem data-cy={'total-units'} divider>
+                    <ListItemText
+                      secondary={
+                        <>
+                          Total Units
+                          <InfoTooltipBtn
+                            dataCy={'total-units-tooltip'}
+                            title="The sum of total pending and approved units issued to subscribers."
+                          />
+                        </>
+                      }
+                      primary={
+                        pool ? pool.totalUnits : <Skeleton sx={{ width: '75px' }} />
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+                <Grid item xs={6}>
+                  <ListItem data-cy={'flowrate-per-unit'} divider>
+                    <ListItemText
+                      secondaryTypographyProps={{
+                        color: precisionLoss > 21 ? "#FF0000" : precisionLoss > 4.9 ? "orange" : "green"
+                      }}
+                      secondary={
+                        <>
+                          Potential Precision Loss
+                          <InfoTooltipBtn
+                            dataCy={'total-units-tooltip'}
+                            title="The % of expected outflow potentially lost to the adjustmentFlowrate"
+                          />
+                        </>
+                      }
+                      primaryTypographyProps={{
+                        color: precisionLoss > 21 ? "#FF0000" : precisionLoss > 4.9 ? "orange" : "green"
+                      }}
+                      primary={
+                        pool ? `${precisionLoss} %` : <Skeleton sx={{ width: '75px' }} />
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+              </Grid>
               <Grid container>
                 <Grid item xs={6}>
                   <ListItem divider>

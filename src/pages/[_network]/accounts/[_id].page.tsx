@@ -84,6 +84,7 @@ const AccountPage: NextPage = () => {
   console.log("user: ", user);
   const {ensName: name, avatar, isFetching} = user;
   const afChannel = useAfChannel({name: name?.split("(")[0].trim() || ""});
+  const isChannel = name?.includes("AF channel");
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams')
   const prefetchIndexesQuery = sfSubgraph.usePrefetch('indexes')
@@ -140,6 +141,7 @@ const AccountPage: NextPage = () => {
   const tokensWithBalance = tokens.filter(
     (snapshot) => Number(snapshot.balanceUntilUpdatedAt) !== 0
   )
+  console.log("tokensWithBalance: ", tokensWithBalance);
 
   const accountType =
     name?.includes("AF") ? (
@@ -348,7 +350,7 @@ const AccountPage: NextPage = () => {
                       placeholder={{
                         balance: tokenSnapshot.balanceUntilUpdatedAt,
                         balanceTimestamp: tokenSnapshot.updatedAtTimestamp,
-                        flowRate: tokenSnapshot.totalNetFlowRate
+                        flowRate: tokenSnapshot.totalNetFlowRate,
                       }}
                     >
                       {({ balance, balanceTimestamp, flowRate }) => (
@@ -383,11 +385,40 @@ const AccountPage: NextPage = () => {
                                   textAlign: 'right'
                                 }}
                               >
-                                Flow rate:
+                                Net Flow rate:
                               </Typography>
                               <Typography variant="caption">
                                 <FlowRate flowRate={flowRate} />
                               </Typography>
+                              {
+                                isChannel && 
+                                (
+                                  <> 
+                                    <Typography
+                                      variant="caption"
+                                      sx={{
+                                        textAlign: 'right'
+                                      }}
+                                    >
+                                      InFlow rate:
+                                    </Typography>
+                                    <Typography variant="caption">
+                                      <FlowRate flowRate={tokenSnapshot.totalInflowRate} />
+                                    </Typography>
+                                    <Typography
+                                      variant="caption"
+                                      sx={{
+                                        textAlign: 'right'
+                                      }}
+                                    >
+                                      OutFlow rate:
+                                    </Typography>
+                                    <Typography variant="caption">
+                                      <FlowRate flowRate={tokenSnapshot.totalOutflowRate} />
+                                    </Typography>
+                                  </>
+                                )
+                              }
                             </>
                           )}
 
