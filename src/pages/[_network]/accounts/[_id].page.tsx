@@ -50,7 +50,7 @@ import {
   createEntryId
 } from '../../../redux/slices/addressBook.slice'
 import { ensApi } from '../../../redux/slices/ensResolver.slice'
-import { sfSubgraph } from '../../../redux/store'
+import { sfSubgraph, sfGdaSubgraph } from '../../../redux/store'
 import ellipsisAddress from '../../../utils/ellipsisAddress'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import {
@@ -117,7 +117,7 @@ const AccountPage: NextPage = () => {
   console.log(tokenSnapshotQuery);
   
   // fetch the user's channel
-  const channelPoolQuery = isChannel ? sfSubgraph.usePoolsQuery({
+  const channelPoolQuery = isChannel ? sfGdaSubgraph.usePoolsQuery({
     chainId: network.chainId,
     filter: {
       admin: address,
