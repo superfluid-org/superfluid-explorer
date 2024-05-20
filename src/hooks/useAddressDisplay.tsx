@@ -15,7 +15,7 @@ interface afEntry {
   handle: string
   avatar: string
   aaAddress: string
-  channelAddress: string
+  channelAddress: string | null;
 }
 
 export const useAddressDisplay = (
@@ -132,7 +132,7 @@ export const useAfChannel = ({address, name}: {address?: string, name?: string})
       const result: afEntry = {
         handle: `${matchingEntry.handle} (AF channel)`,
         avatar: matchingEntry.avatar || '',
-        channelAddress: matchingEntry.channelAddress,
+        channelAddress: matchingEntry.channelAddress || null,
         aaAddress: matchingEntry.aaAddress
       };
       cache.current[key] = result;
