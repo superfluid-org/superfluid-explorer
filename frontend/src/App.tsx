@@ -2,6 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 
 import 'reactflow/dist/style.css'
 import Home from './views/Home/Home'
+import TokenMetrics from './views/TokenMetrics/TokenMetrics'
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
             {/* <Navbar /> */}
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/token-metrics" element={<TokenMetrics />} />
             </Routes>
           </div>
         </Router>

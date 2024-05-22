@@ -1,5 +1,5 @@
 import requests, pandas as pd, os, dotenv
-from queries import supertoken_metrics
+from backend.queries import supertoken_metrics
 dotenv.load_dotenv()
 
 url = 'https://base-mainnet.subgraph.x.superfluid.dev/'

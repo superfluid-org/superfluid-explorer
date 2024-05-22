@@ -5,7 +5,7 @@ import ReactFlow, {
   useEdgesState,
   useNodesState
 } from 'reactflow'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './Home.css'
 
 const StreamsData = [
@@ -73,7 +73,6 @@ const Home = () => {
 
   return (
     <div className="container">
-      <div className="metrics">Here we will show general metrics</div>
       <div className="recent-streams">
         {StreamsData.map((stream, index) => (
           <ReactFlow

@@ -6,14 +6,8 @@
   display: flex;
   flex-direction: row;
 
-  .metrics {
-    width: 25%;
-    height: 100%;
-  }
-
   .recent-streams {
-    /* width: 100vw; */
-    width: 75%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
