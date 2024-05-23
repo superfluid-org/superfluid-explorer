@@ -46,6 +46,6 @@ export const ApiService = {
       })
     })
     const data = await response.json()
-    return data.data.tokenStatistics
+    return data.data.tokenStatistics[0]
   }
 }
