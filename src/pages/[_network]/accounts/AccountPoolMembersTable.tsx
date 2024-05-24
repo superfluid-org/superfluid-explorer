@@ -461,7 +461,8 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
       <Table sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
-            {/* <TableCell>
+            {/* <TableCell>Pool ID</TableCell> */}
+            <TableCell>
               Pool Admin
               <InfoTooltipBtn
                 dataCy="gda-admin-tooltip"
@@ -473,15 +474,14 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                       data-cy="gda-admin-tooltip-link"
                       href="https://docs.superfluid.finance/docs/category/distributions"
                       target="_blank"
-                    >
+                      >
                       Read more
                     </AppLink>
                   </>
                 }
                 iconSx={{ mb: 0, mr: 0.5 }}
-              />
-            </TableCell> */}
-            <TableCell>Pool ID</TableCell>
+                />
+            </TableCell>
             <TableCell>
               <TableSortLabel
                 active={order?.orderBy === 'totalAmountReceivedUntilUpdatedAt'}
@@ -495,7 +495,9 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 Amount Received
               </TableSortLabel>
             </TableCell>
-
+            <TableCell>
+              Flow Rate
+            </TableCell>
             <TableCell width="160px">
               <TableSortLabel
                 active={order.orderBy === 'isConnected'}

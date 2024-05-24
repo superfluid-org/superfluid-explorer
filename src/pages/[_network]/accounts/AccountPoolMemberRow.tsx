@@ -1,6 +1,7 @@
 import { Skeleton, TableCell, TableRow } from '@mui/material'
 import { PoolMember } from '@superfluid-finance/sdk-core'
 import { FC } from 'react'
+import { BigNumber, BigNumberish, ethers, utils } from 'ethers'
 
 import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
 import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
@@ -11,6 +12,8 @@ import { Network } from '../../../redux/networks'
 import { PoolMemberDetailsDialog } from '../pool-members/PoolMemberDetails'
 import { PoolMemberTotalAmountReceived } from '../pool-members/PoolMemberTotalAmountReceived'
 import { PoolQuery } from '../pools/PoolQuery'
+import FlowRate from '../../../components/Amount/FlowRate'
+import AppLink from '../../../components/AppLink/AppLink'
 
 type AccountPoolMemberRow = {
   network: Network
@@ -25,14 +28,26 @@ export const AccountPoolMemberRow: FC<AccountPoolMemberRow> = ({
     <PoolQuery chainId={network.chainId} id={member.pool}>
       {({ currentData: pool }) => (
         <TableRow hover>
-          <TableCell data-cy={'pool-id'} className="address">
+          {/* <TableCell data-cy={'pool-id'} className="address">
             <AccountAddressFormatted
               network={network}
               address={member.pool}
               ellipsis={6}
             />
+          </TableCell> */}
+          <TableCell data-cy={'pool-admin'} className="address">
+            {pool ? (
+              <AppLink href={`/${network.slugName}/pools/${pool.id}`}>
+                <AccountAddressFormatted
+                  network={network}
+                  address={pool.admin}
+                  ellipsis={6}
+                  />
+              </AppLink>
+            ) : (
+              <Skeleton sx={{ width: '100px' }} />
+            )}
           </TableCell>
-
           <TableCell data-cy={'amount-received'}>
             {pool ? (
               <PoolMemberTotalAmountReceived
@@ -56,6 +71,15 @@ export const AccountPoolMemberRow: FC<AccountPoolMemberRow> = ({
                   />
                 )}
               </PoolMemberTotalAmountReceived>
+            ) : (
+              <Skeleton sx={{ width: '100px' }} />
+            )}
+          </TableCell>
+          <TableCell data-cy={'flowrate'}>
+            { pool ? (
+              <FlowRate
+                flowRate={BigNumber.from(pool.flowRate).mul(member.units).div(pool.totalUnits).toString()}
+              />
             ) : (
               <Skeleton sx={{ width: '100px' }} />
             )}

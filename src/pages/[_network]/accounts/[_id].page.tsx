@@ -369,7 +369,7 @@ const AccountPage: NextPage = () => {
           </Typography>
           <Grid container rowSpacing={0} columnSpacing={1} component={List}>
             {tokensWithBalance.map((tokenSnapshot) => (
-              <Grid item sm={4} key={tokenSnapshot.id}>
+              <Grid item sm={3} key={tokenSnapshot.id}>
                 <ListItem>
                   <ListItemText>
                     <AccountTokenBalance
