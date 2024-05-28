@@ -14,7 +14,7 @@ import {
   SkipPaging,
   Stream_OrderBy
 } from '@superfluid-finance/sdk-core'
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 
 import AccountAddress from '../components/Address/AccountAddress'
 import FlowingBalanceWithToken from '../components/Amount/FlowingBalanceWithToken'
@@ -23,6 +23,7 @@ import TableLoader from '../components/Table/TableLoader'
 import TimeAgo from '../components/TimeAgo/TimeAgo'
 import { Network } from '../redux/networks'
 import { sfSubgraph } from '../redux/store'
+import SimpleStream from '../components/SimpleStream/SimpleStream'
 
 export const defaultStreamQueryOrdering: Ordering<Stream_OrderBy> = {
   orderBy: 'createdAtTimestamp',
@@ -58,30 +59,48 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
     <Table sx={{ tableLayout: 'fixed' }}>
       <TableBody>
         {streams.map((stream) => (
-          <TableRow key={stream.id} hover>
-            <TableCell width="60%">
-              <SenderReceiver
-                network={network}
-                fromAddress={stream.sender}
-                toAddress={stream.receiver}
-              />
-            </TableCell>
-            <TableCell width="50%">
-              <TotalStreamed
-                network={network}
-                tokenAddress={stream.token}
-                balance={stream.streamedUntilUpdatedAt}
-                balanceTimestamp={stream.updatedAtTimestamp}
-                flowRate={stream.currentFlowRate}
-              />
-            </TableCell>
-            <TableCell width="20%" align="right">
-              <TimeAgo
-                subgraphTime={stream.createdAtTimestamp}
-                typographyProps={{ typography: 'body2' }}
-              />
-            </TableCell>
-          </TableRow>
+          <React.Fragment key={stream.id}>
+            <TableRow hover sx={{ '& > *': { borderBottom: 'none' } }}>
+              <TableCell width="60%">
+                <SenderReceiver
+                  network={network}
+                  fromAddress={stream.sender}
+                  toAddress={stream.receiver}
+                />
+              </TableCell>
+              <TableCell width="50%">
+                <TotalStreamed
+                  network={network}
+                  tokenAddress={stream.token}
+                  balance={stream.streamedUntilUpdatedAt}
+                  balanceTimestamp={stream.updatedAtTimestamp}
+                  flowRate={stream.currentFlowRate}
+                />
+              </TableCell>
+              <TableCell width="20%" align="right">
+                <TimeAgo
+                  subgraphTime={stream.createdAtTimestamp}
+                  typographyProps={{ typography: 'body2' }}
+                />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell
+                style={{ paddingBottom: 0, paddingTop: 0 }}
+                colSpan={6}
+              >
+                <Box sx={{ margin: 1 }}>
+                  <SimpleStream
+                    id={stream.id}
+                    sender={stream.sender}
+                    receiver={stream.sender}
+                    token={stream.token}
+                    flowRate={stream.currentFlowRate}
+                  />
+                </Box>
+              </TableCell>
+            </TableRow>
+          </React.Fragment>
         ))}
 
         <TableLoader
