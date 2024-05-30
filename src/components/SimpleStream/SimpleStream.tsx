@@ -26,7 +26,7 @@ const SimpleStream: FC<StreamProps> = ({
 }): ReactElement => {
   const initialNodes = [
     {
-      id: `a-${id}`,
+      id: `${sender}`,
       type: 'input',
       position: { x: -200, y: 0 },
       data: { label: sender.slice(0, 6) + '...' + sender.slice(-4) },
@@ -34,7 +34,7 @@ const SimpleStream: FC<StreamProps> = ({
       targetPosition: Position.Left
     },
     {
-      id: `b-${id}`,
+      id: `${receiver}`,
       position: { x: 150, y: 0 },
       data: { label: receiver.slice(0, 6) + '...' + receiver.slice(-4) },
       sourcePosition: Position.Right,
@@ -45,11 +45,11 @@ const SimpleStream: FC<StreamProps> = ({
   const initialEdges = [
     {
       id: `${id}-a->b`,
-      source: `a-${id}`,
-      target: `b-${id}`,
+      source: `${sender}`,
+      target: `${receiver}`,
       animated: true,
-      sourceHandle: 'right',
-      targetHandle: 'left',
+      sourceHandle: 'left',
+      targetHandle: 'right',
       type: 'straight'
     }
   ]
@@ -60,6 +60,11 @@ const SimpleStream: FC<StreamProps> = ({
     (connection) => setEdges((edges) => addEdge(connection, edges)),
     [setEdges]
   )
+
+  console.log('nodes', nodes)
+  console.log('edges', edges)
+  console.log('sender', sender)
+  console.log('receiver', receiver)
 
   return (
     <ReactFlow

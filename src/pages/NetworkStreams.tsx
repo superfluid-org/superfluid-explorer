@@ -93,7 +93,7 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
                   <SimpleStream
                     id={stream.id}
                     sender={stream.sender}
-                    receiver={stream.sender}
+                    receiver={stream.receiver}
                     token={stream.token}
                     flowRate={stream.currentFlowRate}
                   />

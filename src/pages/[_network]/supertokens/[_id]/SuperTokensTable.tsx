@@ -24,9 +24,13 @@ import {
   createSkipPaging,
   Ordering,
   Token_Filter,
-  Token_OrderBy
+  Token_OrderBy,
+  TokenStatistic_OrderBy
 } from '@superfluid-finance/sdk-core'
-import { TokensQuery } from '@superfluid-finance/sdk-redux'
+import {
+  TokenStatisticsQuery,
+  TokensQuery
+} from '@superfluid-finance/sdk-redux'
 import isEqual from 'lodash/fp/isEqual'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
@@ -40,6 +44,9 @@ import TableLoader from '../../../../components/Table/TableLoader'
 import useDebounce from '../../../../hooks/useDebounce'
 import { Network } from '../../../../redux/networks'
 import { sfSubgraph } from '../../../../redux/store'
+import { gql } from 'graphql-request'
+import { id } from 'ethers/lib/utils'
+import { TokenStatistic_Filter } from '../../../../subgraphs/gda/.graphclient'
 
 export enum ListedStatus {
   Listed,
@@ -51,11 +58,19 @@ interface SuperTokensTableProps {
 }
 
 type RequiredTokensQuery = Required<Omit<TokensQuery, 'block'>>
+type RequiredTokenStatisticsQuery = Required<
+  Omit<TokenStatisticsQuery, 'block'>
+>
 
 const defaultOrdering = {
   orderBy: 'isListed',
   orderDirection: 'desc'
 } as Ordering<Token_OrderBy>
+
+const defaultStatisticsOrdering = {
+  orderBy: 'token__isListed',
+  orderDirection: 'desc'
+} as Ordering<TokenStatistic_OrderBy>
 
 const defaultFilter: Token_Filter = {
   isSuperToken: true
@@ -64,6 +79,16 @@ const defaultFilter: Token_Filter = {
 export const defaultPaging = createSkipPaging({
   take: 10
 })
+
+// const metricsQueryDocument = gql`
+//   query Search {
+//     tokenStatistics(where: { token: $address }) {
+//       totalNumberOfActiveStreams
+//       totalNumberOfHolders
+//       totalOutflowRate
+//     }
+//   }
+// `
 
 const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   const filterAnchorRef = useRef(null)
@@ -78,15 +103,36 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     order: defaultOrdering
   })
 
+  const createDefaultStatisticsArg = (): RequiredTokenStatisticsQuery => ({
+    chainId: network.chainId,
+    filter: '' as TokenStatistic_Filter,
+    pagination: defaultPaging,
+    order: defaultStatisticsOrdering
+  })
+
   const [queryArg, setQueryArg] =
     useState<RequiredTokensQuery>(createDefaultArg())
 
   const [queryTrigger, queryResult] = sfSubgraph.useLazyTokensQuery()
 
+  const [queryStatisticsArg, setQueryStatisticsArg] =
+    useState<RequiredTokenStatisticsQuery>(createDefaultStatisticsArg())
+
+  const [queryStatisticsTrigger, queryStatisticsResult] =
+    sfSubgraph.useLazyTokenStatisticsQuery()
+
+  // i dont know how to make the metrics query because it has to be done once for each token in the tokens array and it cant be done in the useLazyTokensQuery nor inside a useEffect
+
   const queryTriggerDebounced = useDebounce(queryTrigger, 250)
 
-  const onQueryArgsChanged = (newArgs: RequiredTokensQuery) => {
+  const onQueryArgsChanged = (
+    newArgs: RequiredTokensQuery
+    // newStatisticsArgs: RequiredTokenStatisticsQuery
+  ) => {
     setQueryArg(newArgs)
+
+    // This and all other statistics filters and orderings are commented for now
+    // setQueryStatisticsArg(newStatisticsArgs)
 
     if (
       queryResult.originalArgs &&
@@ -96,46 +142,83 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     } else {
       queryTrigger(newArgs, true)
     }
+    // queryStatisticsTrigger(newStatisticsArgs, true)
   }
 
   useEffect(() => {
-    onQueryArgsChanged(createDefaultArg())
+    onQueryArgsChanged(createDefaultArg() /*, createDefaultStatisticsArg()*/)
+    queryStatisticsTrigger(createDefaultStatisticsArg(), true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network])
 
   const setPage = (newPage: number) =>
     onQueryArgsChanged(
       set('pagination.skip', (newPage - 1) * queryArg.pagination.take, queryArg)
+      // set(
+      //   'pagination.skip',
+      //   (newPage - 1) * queryStatisticsArg.pagination.take,
+      //   queryStatisticsArg
+      // )
     )
 
   const setPageSize = (newPageSize: number) =>
-    onQueryArgsChanged(set('pagination.take', newPageSize, queryArg))
+    onQueryArgsChanged(
+      set('pagination.take', newPageSize, queryArg)
+      // set('pagination.take', newPageSize, queryStatisticsArg)
+    )
 
-  const onOrderingChanged = (newOrdering: Ordering<Token_OrderBy>) =>
-    onQueryArgsChanged({ ...queryArg, order: newOrdering })
+  const onOrderingChanged = (
+    newOrdering: Ordering<Token_OrderBy>
+    // newStatisticsOrdering: Ordering<TokenStatistic_OrderBy>
+  ) =>
+    onQueryArgsChanged(
+      { ...queryArg, order: newOrdering }
+      // { ...queryStatisticsArg, order: newStatisticsOrdering }
+    )
 
-  const onSortClicked = (field: Token_OrderBy) => () => {
-    if (queryArg.order?.orderBy !== field) {
-      onOrderingChanged({
-        orderBy: field,
-        orderDirection: 'desc'
-      })
-    } else if (queryArg.order.orderDirection === 'desc') {
-      onOrderingChanged({
-        orderBy: field,
-        orderDirection: 'asc'
-      })
-    } else {
-      onOrderingChanged(defaultOrdering)
+  const onSortClicked =
+    (field: Token_OrderBy /*, statisticField: TokenStatistic_OrderBy*/) =>
+    () => {
+      if (queryArg.order?.orderBy !== field) {
+        onOrderingChanged(
+          {
+            orderBy: field,
+            orderDirection: 'desc'
+          }
+          // {
+          //   orderBy: statisticField,
+          //   orderDirection: 'desc'
+          // }
+        )
+      } else if (queryArg.order.orderDirection === 'desc') {
+        onOrderingChanged(
+          {
+            orderBy: field,
+            orderDirection: 'asc'
+          }
+          // {
+          //   orderBy: statisticField,
+          //   orderDirection: 'asc'
+          // }
+        )
+      } else {
+        onOrderingChanged(defaultOrdering /*, defaultStatisticsOrdering*/)
+      }
     }
-  }
 
   const onFilterChange = (newFilter: Token_Filter) => {
-    onQueryArgsChanged({
-      ...queryArg,
-      pagination: { ...queryArg.pagination, skip: 0 },
-      filter: newFilter
-    })
+    onQueryArgsChanged(
+      {
+        ...queryArg,
+        pagination: { ...queryArg.pagination, skip: 0 },
+        filter: newFilter
+      }
+      // {
+      //   ...queryStatisticsArg,
+      //   pagination: { ...queryStatisticsArg.pagination, skip: 0 },
+      //   filter: newFilter
+      // }
+    )
   }
 
   const clearFilterField =
@@ -209,10 +292,18 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const tokens = queryResult.data?.data || []
 
+  const tokenStatistics = queryStatisticsResult.data?.data || []
+
   const { filter, order, pagination } = queryArg
 
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
     queryResult.data?.paging || {}
+
+  // for each token in tokens, i need to fetch the metrics with the token address using the metricsQueryDocument and useCustomQuery
+  // then i need to merge the token with the metrics
+  // then i need to display the token with the metrics in the table
+
+  console.log('queryStatisticsResult', queryStatisticsResult)
 
   return (
     <>
@@ -413,6 +504,9 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 />
               </TableSortLabel>
             </TableCell>
+            <TableCell width="20%">Active Streams</TableCell>
+            {/* <TableCell width="20%">Holders</TableCell> */}
+            <TableCell width="20%">Outflow Rate</TableCell>
             <TableCell width="40%">Address</TableCell>
           </TableRow>
         </TableHead>
@@ -446,6 +540,20 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
               <TableCell data-cy={'token-listed-status'}>
                 {token.isListed ? 'Yes' : 'No'}
               </TableCell>
+              {/* need to get the token from tokenStatistics that has the same id as token */}
+              <TableCell data-cy={'token-active-streams'}>
+                {
+                  tokenStatistics.find((stat) => stat.id === token.id)
+                    ?.totalNumberOfActiveStreams
+                }
+              </TableCell>
+              {/* <TableCell></TableCell> */}
+              <TableCell data-cy={'token-outflow-rate'}>
+                {
+                  tokenStatistics.find((stat) => stat.id === token.id)
+                    ?.totalOutflowRate
+                }
+              </TableCell>
               <TableCell data-cy={'token-address'}>{token.id}</TableCell>
             </TableRow>
           ))}
@@ -471,7 +579,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
         {tokens.length > 0 && (
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={4} align="right">
+              <TableCell colSpan={6} align="right">
                 <InfinitePagination
                   page={skip / take + 1}
                   pageSize={pagination.take}
