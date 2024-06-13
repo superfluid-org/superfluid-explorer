@@ -121,18 +121,10 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   const [queryStatisticsTrigger, queryStatisticsResult] =
     sfSubgraph.useLazyTokenStatisticsQuery()
 
-  // i dont know how to make the metrics query because it has to be done once for each token in the tokens array and it cant be done in the useLazyTokensQuery nor inside a useEffect
-
   const queryTriggerDebounced = useDebounce(queryTrigger, 250)
 
-  const onQueryArgsChanged = (
-    newArgs: RequiredTokensQuery
-    // newStatisticsArgs: RequiredTokenStatisticsQuery
-  ) => {
+  const onQueryArgsChanged = (newArgs: RequiredTokensQuery) => {
     setQueryArg(newArgs)
-
-    // This and all other statistics filters and orderings are commented for now
-    // setQueryStatisticsArg(newStatisticsArgs)
 
     if (
       queryResult.originalArgs &&
@@ -145,64 +137,89 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     // queryStatisticsTrigger(newStatisticsArgs, true)
   }
 
+  const onQueryStatisticsArgsChanged = (
+    newStatisticsArgs: RequiredTokenStatisticsQuery
+  ) => {
+    setQueryStatisticsArg(newStatisticsArgs)
+    queryStatisticsTrigger(newStatisticsArgs, true)
+  }
+
   useEffect(() => {
-    onQueryArgsChanged(createDefaultArg() /*, createDefaultStatisticsArg()*/)
-    queryStatisticsTrigger(createDefaultStatisticsArg(), true)
+    onQueryArgsChanged(createDefaultArg())
+    onQueryStatisticsArgsChanged(createDefaultStatisticsArg())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network])
 
-  const setPage = (newPage: number) =>
+  const setPage = (newPage: number) => {
     onQueryArgsChanged(
       set('pagination.skip', (newPage - 1) * queryArg.pagination.take, queryArg)
-      // set(
-      //   'pagination.skip',
-      //   (newPage - 1) * queryStatisticsArg.pagination.take,
-      //   queryStatisticsArg
-      // )
     )
-
-  const setPageSize = (newPageSize: number) =>
-    onQueryArgsChanged(
-      set('pagination.take', newPageSize, queryArg)
-      // set('pagination.take', newPageSize, queryStatisticsArg)
+    onQueryStatisticsArgsChanged(
+      set(
+        'pagination.skip',
+        (newPage - 1) * queryStatisticsArg.pagination.take,
+        queryStatisticsArg
+      )
     )
+  }
 
-  const onOrderingChanged = (
-    newOrdering: Ordering<Token_OrderBy>
-    // newStatisticsOrdering: Ordering<TokenStatistic_OrderBy>
+  const setPageSize = (newPageSize: number) => {
+    onQueryArgsChanged(set('pagination.take', newPageSize, queryArg))
+    onQueryStatisticsArgsChanged(
+      set('pagination.take', newPageSize, queryStatisticsArg)
+    )
+  }
+
+  const onOrderingChanged = (newOrdering: Ordering<Token_OrderBy>) =>
+    onQueryArgsChanged({ ...queryArg, order: newOrdering })
+
+  const onStatisticsOrderingChanged = (
+    newStatisticsOrdering: Ordering<TokenStatistic_OrderBy>
   ) =>
-    onQueryArgsChanged(
-      { ...queryArg, order: newOrdering }
-      // { ...queryStatisticsArg, order: newStatisticsOrdering }
-    )
+    onQueryStatisticsArgsChanged({
+      ...queryStatisticsArg,
+      order: newStatisticsOrdering
+    })
 
-  const onSortClicked =
-    (field: Token_OrderBy /*, statisticField: TokenStatistic_OrderBy*/) =>
-    () => {
-      if (queryArg.order?.orderBy !== field) {
-        onOrderingChanged(
-          {
-            orderBy: field,
-            orderDirection: 'desc'
-          }
-          // {
-          //   orderBy: statisticField,
-          //   orderDirection: 'desc'
-          // }
-        )
-      } else if (queryArg.order.orderDirection === 'desc') {
-        onOrderingChanged(
-          {
-            orderBy: field,
-            orderDirection: 'asc'
-          }
-          // {
-          //   orderBy: statisticField,
-          //   orderDirection: 'asc'
-          // }
-        )
-      } else {
-        onOrderingChanged(defaultOrdering /*, defaultStatisticsOrdering*/)
+  const onSortClicked = (field: Token_OrderBy) => () => {
+    if (queryArg.order?.orderBy !== field) {
+      onOrderingChanged({
+        orderBy: field,
+        orderDirection: 'desc'
+      })
+    } else if (queryArg.order.orderDirection === 'desc') {
+      onOrderingChanged({
+        orderBy: field,
+        orderDirection: 'asc'
+      })
+    } else {
+      onOrderingChanged(defaultOrdering)
+    }
+  }
+
+  const onStatisticsSortClicked = (field: TokenStatistic_OrderBy) => () => {
+    if (queryStatisticsArg.order?.orderBy !== field) {
+      onStatisticsOrderingChanged({
+        orderBy: field,
+        orderDirection: 'desc'
+      })
+    } else if (queryStatisticsArg.order.orderDirection === 'desc') {
+      onStatisticsOrderingChanged({
+        orderBy: field,
+        orderDirection: 'asc'
+      })
+    } else {
+      onStatisticsOrderingChanged(defaultStatisticsOrdering)
+    }
+  }
+
+  const handleSorts =
+    (field?: Token_OrderBy, statisticsField?: TokenStatistic_OrderBy) => () => {
+      if (field) {
+        onSortClicked(field)()
+      }
+      if (statisticsField) {
+        onStatisticsSortClicked(statisticsField)()
       }
     }
 
@@ -295,6 +312,9 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   const tokenStatistics = queryStatisticsResult.data?.data || []
 
   const { filter, order, pagination } = queryArg
+
+  const { filter: statisticsFilter, order: statisticsOrder } =
+    queryStatisticsArg
 
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
     queryResult.data?.paging || {}
@@ -471,7 +491,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 direction={
                   order?.orderBy === 'name' ? order?.orderDirection : 'desc'
                 }
-                onClick={onSortClicked('name')}
+                onClick={handleSorts('name', 'token__name')}
               >
                 Token name
               </TableSortLabel>
@@ -483,7 +503,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 direction={
                   order?.orderBy === 'isListed' ? order?.orderDirection : 'desc'
                 }
-                onClick={onSortClicked('isListed')}
+                onClick={handleSorts('isListed', 'token__isListed')}
               >
                 Listed
                 <InfoTooltipBtn
@@ -504,18 +524,46 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 />
               </TableSortLabel>
             </TableCell>
-            <TableCell width="20%">Active Streams</TableCell>
+            <TableCell width="20%">
+              <TableSortLabel
+                active={
+                  statisticsOrder?.orderBy === 'totalNumberOfActiveStreams'
+                }
+                direction={
+                  statisticsOrder?.orderBy === 'totalNumberOfActiveStreams'
+                    ? statisticsOrder?.orderDirection
+                    : 'desc'
+                }
+                onClick={handleSorts(undefined, 'totalNumberOfActiveStreams')}
+              >
+                Active Streams
+              </TableSortLabel>
+            </TableCell>
             {/* <TableCell width="20%">Holders</TableCell> */}
-            <TableCell width="20%">Outflow Rate</TableCell>
+            <TableCell width="20%">
+              <TableSortLabel
+                active={statisticsOrder?.orderBy === 'totalOutflowRate'}
+                direction={
+                  statisticsOrder?.orderBy === 'totalOutflowRate'
+                    ? statisticsOrder?.orderDirection
+                    : 'desc'
+                }
+                onClick={handleSorts(undefined, 'totalOutflowRate')}
+              >
+                Daily Outflow Rate
+              </TableSortLabel>
+            </TableCell>
             <TableCell width="40%">Address</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {tokens.map((token) => (
+          {tokenStatistics.map((token) => (
             <TableRow key={token.id}>
               <TableCell data-cy={'token-name'}>
                 <AppLink href={`/${network.slugName}/supertokens/${token.id}`}>
-                  {token.name || <>&#8212;</>}
+                  {tokens.find((stat) => stat.id === token.id)?.name || (
+                    <>&#8212;</>
+                  )}
                 </AppLink>
               </TableCell>
               <TableCell data-cy={'token-symbol'}>
@@ -529,7 +577,11 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                   <Chip
                     clickable
                     size="small"
-                    label={token.symbol || <>&#8211;</>}
+                    label={
+                      tokens.find((stat) => stat.id === token.id)?.symbol || (
+                        <>&#8211;</>
+                      )
+                    }
                     sx={{
                       cursor: 'pointer',
                       lineHeight: '24px'
@@ -538,21 +590,17 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 </AppLink>
               </TableCell>
               <TableCell data-cy={'token-listed-status'}>
-                {token.isListed ? 'Yes' : 'No'}
+                {tokens.find((stat) => stat.id === token.id)?.isListed
+                  ? 'Yes'
+                  : 'No'}
               </TableCell>
               {/* need to get the token from tokenStatistics that has the same id as token */}
               <TableCell data-cy={'token-active-streams'}>
-                {
-                  tokenStatistics.find((stat) => stat.id === token.id)
-                    ?.totalNumberOfActiveStreams
-                }
+                {token.totalNumberOfActiveStreams}
               </TableCell>
               {/* <TableCell></TableCell> */}
               <TableCell data-cy={'token-outflow-rate'}>
-                {
-                  tokenStatistics.find((stat) => stat.id === token.id)
-                    ?.totalOutflowRate
-                }
+                {(Number(token.totalOutflowRate) * 60 * 60 * 24) / 1e18}
               </TableCell>
               <TableCell data-cy={'token-address'}>{token.id}</TableCell>
             </TableRow>
