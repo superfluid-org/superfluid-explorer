@@ -498,7 +498,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
             <TableCell>
               Flow Rate
             </TableCell>
-            <TableCell width="160px">
+            <TableCell width="100px">
               <TableSortLabel
                 active={order.orderBy === 'isConnected'}
                 direction={
@@ -509,14 +509,9 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 onClick={onSortClicked('isConnected')}
               >
                 Connected
-                <InfoTooltipBtn
-                  dataCy="gda-connected-tooltip"
-                  title="Indicates if account has claimed all past distributions and automatically claims all future distributions."
-                  iconSx={{ mb: 0, mr: 0.5 }}
-                />
               </TableSortLabel>
             </TableCell>
-            <TableCell>
+            <TableCell width="100px">
               <TableSortLabel
                 active={order?.orderBy === 'units'}
                 direction={
@@ -527,7 +522,7 @@ const AccountPoolMembersTable: FC<AccountPoolMembersTableProps> = ({
                 Units
               </TableSortLabel>
             </TableCell>
-            <TableCell>
+            <TableCell width="140px">
               <TableSortLabel
                 active={order?.orderBy === 'updatedAtTimestamp'}
                 direction={

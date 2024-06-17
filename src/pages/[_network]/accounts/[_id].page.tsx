@@ -78,6 +78,7 @@ import AccountTokens from './AccountTokens'
 import { useAddress, useAfChannel } from '../../../hooks/useAddressDisplay'
 import AccountAddress from "../../../components/Address/AccountAddress"
 import { channel } from 'diagnostics_channel'
+import { useReadContract } from 'wagmi'
 
 const AccountPage: NextPage = () => {
   const network = useNetworkContext()
@@ -498,6 +499,17 @@ const AccountPage: NextPage = () => {
                                     </Typography>
                                     <Typography variant="caption">
                                       <FlowRate flowRate={tokenSnapshot.totalOutflowRate} />
+                                    </Typography>
+                                    <Typography
+                                      variant="caption"
+                                      sx={{
+                                        textAlign: 'right'
+                                      }}
+                                    >
+                                      GDA income rate:
+                                    </Typography>
+                                    <Typography variant="caption">
+                                      <FlowRate flowRate={tokenSnapshot.totalInflowRate} />
                                     </Typography>
                                   </>
                                 )
