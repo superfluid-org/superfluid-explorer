@@ -4017,10 +4017,10 @@
     "@stablelib/random" "^1.0.2"
     "@stablelib/wipe" "^1.0.1"
 
-"@superfluid-finance/ethereum-contracts@^1.9.1":
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/ethereum-contracts/-/ethereum-contracts-1.9.1.tgz#1b19ec8776cad2e73c89f188a64d007716207abe"
-  integrity sha512-o+2CZbxtSQfBC0QMDBykSTnR3rW+gRex75DaYIu17a5s5e5cUwIEf+7gA0EI6FKzMKd8zb//OTIAaCggwtw47Q==
+"@superfluid-finance/ethereum-contracts@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/ethereum-contracts/-/ethereum-contracts-1.11.0.tgz#d4aed282c9081e10e8d30be4772bc04f48319e15"
+  integrity sha512-/eeDf66Lu6PE8pw6Gvi0nzt0PxjBrxfsYRTlwy1f/QC2Ghpyz7E/znbkssdr79NefzzHO4MA1zYi38eHcgZXGw==
   dependencies:
     "@decentral.ee/web3-helpers" "0.5.3"
     "@nomiclabs/hardhat-ethers" "^2.2.3"
@@ -4030,27 +4030,27 @@
     ethereumjs-util "7.1.5"
     hardhat "^2.19.5"
 
-"@superfluid-finance/metadata@^1.1.30", "@superfluid-finance/metadata@^1.2.0":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.2.1.tgz#ef313bb38f2c7845a246f594c529b6ee0a53b2dd"
-  integrity sha512-d+f/LgP0SfLi2b95MKrAK3czGMvj9KjxrAIkBmDQjhFll8CN3Vg980Pthgc8Vv9KrEP/R9GGy6/2/DRuatNdfQ==
+"@superfluid-finance/metadata@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.4.0.tgz#0a6839d3e281d11fcfefc745adebee852ca13b43"
+  integrity sha512-SvzYzisFo6T4GGfginjowUpoGn0RXoLS+vbroQhVSDst8zf5f4/noJ/Z2rPboMUnQLbqN13BGk6d1zxsFpv5Zw==
 
-"@superfluid-finance/sdk-core@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.7.0.tgz#39cf85bb86e4eeedc8c449b2d1764eefafd5e57c"
-  integrity sha512-J8ceXl6f0DIMb6o2sSyrU1qewfcyQPlBi2QaIfVykb/EYK5mBI1UozaABOd3ATzrjVcobgeRz8qTVtRJXH9SFg==
+"@superfluid-finance/sdk-core@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-core/-/sdk-core-0.8.0.tgz#c4d6c11e56a4fe328f085b3b88a453ee6be2de07"
+  integrity sha512-fgPg1TGOIWJ1keeIxnKyB/9pwxB+8kIiCXKeVJa0Kqpo8o0S0zFUeDQdt5FuesTZWDE1GNgRbGfKPUlg/SYB2A==
   dependencies:
-    "@superfluid-finance/ethereum-contracts" "^1.9.1"
-    "@superfluid-finance/metadata" "^1.1.30"
+    "@superfluid-finance/ethereum-contracts" "^1.11.0"
+    "@superfluid-finance/metadata" "^1.4.0"
     browserify "^17.0.0"
     graphql-request "^6.1.0"
     lodash "^4.17.21"
     tsify "^5.0.4"
 
-"@superfluid-finance/sdk-redux@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.6.0.tgz#20e7f1b3e9897f405dddea67ecb22e95db8fd49b"
-  integrity sha512-FyPS/YxCxPGYv5VFT4AFC3zeZrML8Y2AO+VRkVls6sHfasHIlUWQY3HH6o3UAENYz466/j5G3f0tQkgGB5cDwA==
+"@superfluid-finance/sdk-redux@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/sdk-redux/-/sdk-redux-0.6.1.tgz#188ddb67f9511e121cb317dc029ed924f8aac9a3"
+  integrity sha512-6bOBbqlVApaoLsGAL769ULH/Gm8VpHoRfLpKznDLygufaRFslVEgHefR1WQjfJQ/6AumfiHLoFc0WKix4hqBCA==
   dependencies:
     graphql-request "^5.2.0"
     lodash "^4.17.21"
