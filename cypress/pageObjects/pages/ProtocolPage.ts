@@ -69,6 +69,6 @@ export class ProtocolPage extends BasePage {
     this.click(PROTOCOL_BUTTON)
     //Make sure page is loaded before doing other actions,
     //Cypress is too fast and it will switch back to matic if changing tabs before doing so
-    this.hasText(RESOLVER, protocolContracts['matic'].resolver)
+    this.hasText(RESOLVER, protocolContracts['base-mainnet'].resolver)
   }
 }

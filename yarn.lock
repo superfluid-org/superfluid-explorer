@@ -4030,10 +4030,15 @@
     ethereumjs-util "7.1.5"
     hardhat "^2.19.5"
 
-"@superfluid-finance/metadata@^1.1.30", "@superfluid-finance/metadata@^1.2.0":
+"@superfluid-finance/metadata@^1.1.30":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.2.1.tgz#ef313bb38f2c7845a246f594c529b6ee0a53b2dd"
   integrity sha512-d+f/LgP0SfLi2b95MKrAK3czGMvj9KjxrAIkBmDQjhFll8CN3Vg980Pthgc8Vv9KrEP/R9GGy6/2/DRuatNdfQ==
+
+"@superfluid-finance/metadata@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@superfluid-finance/metadata/-/metadata-1.4.1.tgz#79c1448ae99ab430996f6e768039b5dc0b005eb2"
+  integrity sha512-5CXnKQfOXj8w/PoK26VpMNgKxc6sRgPtsWfXVEYOYPIdEiTdXVUETqBUTZn8Nkeeeq/U3S2VpUNEnzOK5IDV6Q==
 
 "@superfluid-finance/sdk-core@^0.7.0":
   version "0.7.0"

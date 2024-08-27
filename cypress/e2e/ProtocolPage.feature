@@ -17,4 +17,6 @@ Feature: Protocol page test cases
       | celo             |
       | base-mainnet     |
       | scroll-mainnet   |
+      | optimism-sepolia |
+      | degen            |
 

@@ -19,6 +19,8 @@ Feature: Test cases for common elements and functionalities
       | celo             |
       | base-mainnet     |
       | scroll-mainnet   |
+      | degen-chain      |
+      | optimism-sepolia |
 
   Scenario: Searching for a listed token
     Given User has opened the "landing" page

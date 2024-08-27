@@ -13,6 +13,8 @@
     "bnb-smart-chain",
     "celo",
     "base",
-    "scroll"
+    "scroll",
+    "optimism-sepolia",
+    "degen-chain"
   ]
 }

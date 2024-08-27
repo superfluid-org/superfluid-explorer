@@ -258,8 +258,8 @@
         "id": "poolMember-0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8-0xc19be11b5f9eac59758f4dbaaad465abb9103a95",
         "createdAtTimestamp": "1698260491",
         "createdAtBlockNumber": "27108225",
-        "updatedAtTimestamp": "1698260491",
-        "updatedAtBlockNumber": "27108225",
+        "updatedAtTimestamp": "1698827847",
+        "updatedAtBlockNumber": "27311100",
         "units": "500000000000",
         "pool": {
           "id": "0x9a4a1d83be575f3ec59ff259d65d6fe94f78a3d8",
