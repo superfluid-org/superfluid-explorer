@@ -19,7 +19,7 @@ Feature: Test cases for common elements and functionalities
       | celo             |
       | base-mainnet     |
       | scroll-mainnet   |
-      | degen-chain      |
+      | degen            |
       | optimism-sepolia |
 
   Scenario: Searching for a listed token

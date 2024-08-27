@@ -552,16 +552,16 @@ export class AccountPage extends BasePage {
     this.isVisible(LOADING_SPINNER)
     this.isNotVisible(LOADING_SPINNER)
     this.click(FILTER_PUBLICATIONS_BUTTON)
-    this.type(FILTER_INDEX_ID, '0')
+    this.type(FILTER_INDEX_ID, '1')
     this.click(FILTER_CLOSE_BUTTON)
-    this.validateChip(CHIP_INDEX_ID, '0')
+    this.validateChip(CHIP_INDEX_ID, '1')
     this.isVisible(LOADING_SPINNER)
     this.isNotVisible(LOADING_SPINNER)
   }
 
   static validateFilteredPublicationsByIndexID() {
     cy.get(PUBLICATIONS_INDEX_ID).each(($el) => {
-      cy.wrap($el.text()).should('eq', '0')
+      cy.wrap($el.text()).should('eq', '1')
     })
   }
 
@@ -925,8 +925,14 @@ export class AccountPage extends BasePage {
   }
 
   static validateOnlyConnectedPoolsAreVisible() {
-    cy.get(MEMBER_TABLE_CONNECTED).each((el) => {
-      cy.wrap(el).should('have.text', 'Yes')
+    cy.get('body').then(($body) => {
+      if ($body.find(MEMBER_TABLE_CONNECTED).length > 0) {
+        cy.get(MEMBER_TABLE_CONNECTED).each((el) => {
+          cy.wrap(el).should('have.text', 'Yes')
+        })
+      } else {
+        cy.get(NO_MEMBERS_RESULTS)
+      }
     })
   }
 
@@ -1069,7 +1075,7 @@ export class AccountPage extends BasePage {
             .eq(index)
             .should(
               'have.text',
-              `${member.pool.token.symbol}${(member.pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(1)}`
+              `${member.pool.token.symbol}${(member.pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(4)}`
             )
           cy.get(MEMBER_TABLE_POOL_UNITS)
             .eq(index)

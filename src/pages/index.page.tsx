@@ -8,7 +8,7 @@ import * as React from 'react'
 
 import AppLink from '../components/AppLink/AppLink'
 import NetworkTabs from '../components/NetworkTabs/NetworkTabs'
-import { networks, defaultNetwork } from '../redux/networks'
+import { defaultNetwork,networks } from '../redux/networks'
 import { NetworkStreams } from './NetworkStreams'
 
 const Home: NextPage = () => {

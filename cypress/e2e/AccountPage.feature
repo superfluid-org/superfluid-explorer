@@ -16,7 +16,7 @@ Feature: Account page test cases
     Then The account events are shown correctly for "matic"
 
   Scenario: Account with published indexes and the data shown in the index tab publications section
-    Given User has opened the "ida account" page on "op-sepolia"
+    Given User has opened the "ida account" page on "optimism-sepolia"
     And User switches to "indexes" tab
     And The ida account publications are shown correctly for "optimism-sepolia"
     And User opens the publication details
@@ -105,7 +105,7 @@ Feature: Account page test cases
     And User resets subscriptions filter
 
   Scenario: Filtering cases for super tokens tab
-    Given User has opened the "second balance account for filtering" page on "optimism-sepolia"
+    Given User has opened the "balance account for filtering" page on "optimism-sepolia"
     And User filters super tokens by active
     Then Super tokens filtered by active are shown correctly
     And User filters super tokens by not active
@@ -149,8 +149,8 @@ Feature: Account page test cases
   Scenario: Filtering pools table by address
     Given User has opened the "GDA admin account" page on "optimism-sepolia"
     And User switches to "pools" tab
-    When User filters the pools table by "0x6C10Bd07d2A8890Fef26d800BE4209Ae37aaABEb" address
-    Then Only the pools with address "0x6C10Bd...aaABEb" are shown in the table
+    When User filters the pools table by "0x18608A04471156B2DA378EE1d6FCB76C5499be62" address
+    Then Only the pools with address "0x18608A...99be62" are shown in the table
 
   Scenario: Filtering pools table by "has distributed"
     Given User has opened the "GDA admin account" page on "optimism-sepolia"

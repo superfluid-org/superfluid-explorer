@@ -6,25 +6,29 @@
       "createdAtBlockNumber": "27108222",
       "updatedAtTimestamp": "1700460029",
       "updatedAtBlockNumber": "27929619",
-      "flowRate": "0",
-      "totalMembers": 1,
-      "totalUnits": "500000000000",
-      "totalAmountDistributedUntilUpdatedAt": "2383903507000000000000",
-      "adjustmentFlowRate": "0",
-      "totalAmountFlowedDistributedUntilUpdatedAt": "2164670768000000000000",
-      "totalAmountInstantlyDistributedUntilUpdatedAt": "219232739000000000000",
-      "totalBuffer": "0",
-      "totalConnectedMembers": 1,
-      "totalConnectedUnits": "500000000000",
-      "totalDisconnectedMembers": 0,
-      "totalDisconnectedUnits": "0",
       "admin": {
         "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
       },
       "token": {
         "id": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
-        "symbol": "fDAIx"
+        "name": "Super fDAI Fake Token",
+        "symbol":"fDAIx"
       },
+      "totalMembers": 1,
+      "totalUnits": "500000000000",
+      "totalConnectedMembers": 1,
+      "totalConnectedUnits": "500000000000",
+      "totalDisconnectedMembers": 0,
+      "totalDisconnectedUnits": "0",
+      "totalAmountInstantlyDistributedUntilUpdatedAt": "219232739000000000000",
+      "flowRate": "0",
+      "perUnitSettledValue": "4408387831",
+      "perUnitFlowRate": "0",
+      "totalBuffer": "0",
+      "totalAmountFlowedDistributedUntilUpdatedAt": "4146208203500000000000",
+      "totalAmountDistributedUntilUpdatedAt": "4365440942500000000000",
+      "adjustmentFlowRate": "0",
+      "totalFlowAdjustmentAmountDistributedUntilUpdatedAt": "0",
       "poolCreatedEvent": {
         "id": "PoolCreated-0x124bcccd280be5057fa203165a5ba2e5be037c702719b70abddcbae2c7b3d33a-4"
       }
