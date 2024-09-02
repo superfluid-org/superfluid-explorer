@@ -41,7 +41,7 @@
     "graphiql": "~1.8.10",
     "graphiql-explorer": "^0.9.0",
     "graphql": "^16.9.0",
-    "graphql-request": "6",
+    "graphql-request": "^6.1.0",
     "graphql-ws": "^5.16.0",
     "lodash": "^4.17.21",
     "next": "^12.3.1",
@@ -56,7 +56,7 @@
     "reactflow": "^11.11.4",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "viem": "~2.21.1",
+    "viem": "^2.21.1",
     "wagmi": "^2.12.8"
   },
   "devDependencies": {
