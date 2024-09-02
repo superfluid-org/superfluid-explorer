@@ -234,6 +234,19 @@ export const networks = [
       `https://sepolia.scrollscan.com/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
       `https://sepolia.scrollscan.com/address/${address}`
+  },
+  {
+    displayName: 'Base Sepolia',
+    slugName: 'base-sepolia',
+    isTestnet: true,
+    supportsGDA: getSupportsGDA(84532),
+    chainId: 84532,
+    rpcUrl: getRpcUrl(84532),
+    subgraphUrl: getSubgraphUrl(84532),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://sepolia.basescan.org/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://sepolia.basescan.org/address/${address}`
   }
 ] as const
 
