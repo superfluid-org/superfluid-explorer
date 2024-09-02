@@ -27,8 +27,8 @@ Superfluid Console is an explorer meant for developers and advanced users of the
 To install packages and start development server, run:
 
 ```sh
-yarn install
-yarn run dev
+pnpm install
+pnpm run dev
 ```
 
 ## Technologies
