@@ -20,19 +20,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v1
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 20.x
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Install dependencies with currents Cypress binary
-        run: CYPRESS_DOWNLOAD_MIRROR=https://cy-cdn.currents.dev yarn install
+        run: CYPRESS_DOWNLOAD_MIRROR=https://cy-cdn.currents.dev pnpm install
 
       - name: Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          command: yarn cypress-cloud run --browser ${{ matrix.browser }} --record --parallel --key ${{ secrets.CYPRESS_CONSOLE_RECORD_KEY }} --ci-build-id ui-${{ github.repository }}-${{ github.run_id }}-${{ github.run_attempt}}
-          start: yarn dev
+          command: pnpm cypress-cloud run --browser ${{ matrix.browser }} --record --parallel --key ${{ secrets.CYPRESS_CONSOLE_RECORD_KEY }} --ci-build-id ui-${{ github.repository }}-${{ github.run_id }}-${{ github.run_attempt}}
+          start: pnpm dev
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 180
           install: false
