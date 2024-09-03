@@ -5,8 +5,8 @@ import { ethers } from 'ethers'
 import { FC } from 'react'
 
 import { Network } from '../../redux/networks'
-import { sfSubgraph } from '../../redux/store'
 import AppLink from '../AppLink/AppLink'
+import { useTokenQuery } from '../../hooks/useTokenQuery'
 
 const SuperTokenAddress: FC<{
   network: Network
@@ -19,7 +19,7 @@ const SuperTokenAddress: FC<{
   format = (token) => `${token.name} (${token.symbol})`,
   formatLoading = () => ethers.utils.getAddress(address)
 }) => {
-  const tokenQuery = sfSubgraph.useTokenQuery({
+  const tokenQuery = useTokenQuery({
     chainId: network.chainId,
     id: address
   })

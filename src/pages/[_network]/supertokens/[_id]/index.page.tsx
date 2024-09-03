@@ -43,12 +43,13 @@ import SubgraphQueryLink from '../../../subgraph/SubgraphQueryLink'
 import SuperTokenIndexes from './SuperTokenIndexes'
 import SuperTokenPools from './SuperTokenPools'
 import SuperTokenStreams from './SuperTokenStreams'
+import { useTokenQuery } from '../../../../hooks/useTokenQuery'
 
 const SuperTokenPage: NextPage = () => {
   const network = useNetworkContext()
   const address = useContext(IdContext)
 
-  const tokenQuery = sfSubgraph.useTokenQuery({
+  const tokenQuery = useTokenQuery({
     chainId: network.chainId,
     id: address
   })
