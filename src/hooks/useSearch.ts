@@ -18,6 +18,7 @@ import {
   SubgraphSearchByTokenSymbolResult,
   useSearchSubgraphByTokenSymbol
 } from './useSearchSubgraphByTokenSymbol'
+import { findTokenFromTokenList } from './useTokenQuery'
 
 export type NetworkSearchResult = {
   network: Network
@@ -55,10 +56,12 @@ export const useSearch = (searchTerm: string) => {
             tokensByUnderlyingAddress: []
           }
 
+        const network = networksByChainId.get(
+          searchQuery.originalArgs!.chainId as ChainId
+        )!;
+
         return {
-          network: networksByChainId.get(
-            searchQuery.originalArgs!.chainId as ChainId
-          )!,
+          network,
           isFetching: searchQuery.isFetching,
           error: searchQuery.error,
           tokens: searchResult.tokensByAddress.concat(
@@ -132,10 +135,23 @@ export const useSearch = (searchTerm: string) => {
         _.uniqBy(
           searchByAddressMappedResult.tokens
             .concat(searchByTokenSymbolMappedResult.tokens)
-            .map((x) => ({
-              ...x,
-              id: ethers.utils.getAddress(x.id)
-            })),
+            .map((token) => {
+              const tokenFromTokenList = findTokenFromTokenList({ chainId: network.chainId, address: token.id });
+              if (tokenFromTokenList) {
+                return {
+                  ...token,
+                  id: ethers.utils.getAddress(token.id),
+                  name: tokenFromTokenList.name,
+                  symbol: tokenFromTokenList.symbol,
+                  logoURI: tokenFromTokenList.logoURI
+                }
+              }
+
+              return ({
+                ...token,
+                id: ethers.utils.getAddress(token.id)
+              })
+            }),
           (x) => x.id
         ),
         (x) => x.isListed,

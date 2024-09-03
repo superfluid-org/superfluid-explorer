@@ -66,6 +66,6 @@ export const useSearchSubgraphByAddress = (searchTerm: string) => {
             }
           }
         : skipToken
-    )
+      )
   )
 }
