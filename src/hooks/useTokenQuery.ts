@@ -24,13 +24,15 @@ export function useTokenQuery(arg: Arg, options?: Omit<Options, "selectFromResul
                             ...queryResult.data,
                             name: tokenFromTokenList.name,
                             symbol: tokenFromTokenList.symbol,
-                            logoURI: tokenFromTokenList.logoURI
+                            logoURI: tokenFromTokenList.logoURI,
+                            isListed: true
                         },
                         currentData: {
                             ...queryResult.currentData,
                             name: tokenFromTokenList.name,
                             symbol: tokenFromTokenList.symbol,
-                            logoURI: tokenFromTokenList.logoURI
+                            logoURI: tokenFromTokenList.logoURI,
+                            isListed: true
                         } 
                     };
                 }
