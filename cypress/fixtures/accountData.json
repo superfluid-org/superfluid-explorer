@@ -4,66 +4,66 @@
       "address": "0x836a14Cf0E66f6de331a1fb91Ff0E05BCF771dA2",
       "pools": [
         {
-            "id": "poolMember-0x18608a04471156b2da378ee1d6fcb76c5499be62-0x836a14cf0e66f6de331a1fb91ff0e05bcf771da2",
-            "createdAtTimestamp": "1724760774",
-            "createdAtBlockNumber": "16479117",
-            "updatedAtTimestamp": "1724760774",
-            "updatedAtBlockNumber": "16479117",
-            "units": "100",
-            "pool": {
-                "id": "0x18608a04471156b2da378ee1d6fcb76c5499be62",
-                "totalUnits": "200",
-                "totalAmountDistributedUntilUpdatedAt": "4033333333333333200",
-                "token": {
-                    "id": "0xd6faf98befa647403cc56bdb598690660d5257d2",
-                    "symbol": "fDAIx"
-                }
-            },
-            "account": {
-                "id": "0x836a14cf0e66f6de331a1fb91ff0e05bcf771da2"
-            },
-            "isConnected": false,
-            "totalAmountClaimed": "0",
-            "totalAmountReceivedUntilUpdatedAt": "0",
-            "poolTotalAmountDistributedUntilUpdatedAt": "0",
-            "syncedPerUnitFlowRate": "0",
-            "syncedPerUnitSettledValue": "0"
+          "id": "poolMember-0x18608a04471156b2da378ee1d6fcb76c5499be62-0x836a14cf0e66f6de331a1fb91ff0e05bcf771da2",
+          "createdAtTimestamp": "1724760774",
+          "createdAtBlockNumber": "16479117",
+          "updatedAtTimestamp": "1724760774",
+          "updatedAtBlockNumber": "16479117",
+          "units": "100",
+          "pool": {
+            "id": "0x18608a04471156b2da378ee1d6fcb76c5499be62",
+            "totalUnits": "200",
+            "totalAmountDistributedUntilUpdatedAt": "4033333333333333200",
+            "token": {
+              "id": "0xd6faf98befa647403cc56bdb598690660d5257d2",
+              "symbol": "fDAIx"
+            }
+          },
+          "account": {
+            "id": "0x836a14cf0e66f6de331a1fb91ff0e05bcf771da2"
+          },
+          "isConnected": false,
+          "totalAmountClaimed": "0",
+          "totalAmountReceivedUntilUpdatedAt": "0",
+          "poolTotalAmountDistributedUntilUpdatedAt": "0",
+          "syncedPerUnitFlowRate": "0",
+          "syncedPerUnitSettledValue": "0"
         }
-    ]
+      ]
     },
     "gdaAdminAccount": {
       "address": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
       "pools": [
         {
-            "id": "0x18608a04471156b2da378ee1d6fcb76c5499be62",
-            "createdAtTimestamp": "1724760772",
-            "createdAtBlockNumber": "16479116",
-            "updatedAtTimestamp": "1724760806",
-            "updatedAtBlockNumber": "16479133",
-            "admin": {
-                "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
-            },
-            "token": {
-                "id": "0xd6faf98befa647403cc56bdb598690660d5257d2",
-                "symbol": "fDAIx"
-            },
-            "totalMembers": 2,
-            "totalUnits": "200",
-            "totalConnectedMembers": 1,
-            "totalConnectedUnits": "100",
-            "totalDisconnectedMembers": 1,
-            "totalDisconnectedUnits": "100",
-            "totalAmountInstantlyDistributedUntilUpdatedAt": "7000000000000000000",
-            "flowRate": "0",
-            "perUnitSettledValue": "40333333333333332",
-            "perUnitFlowRate": "0",
-            "totalBuffer": "0",
-            "totalAmountFlowedDistributedUntilUpdatedAt": "133333333333332800",
-            "totalAmountDistributedUntilUpdatedAt": "7133333333333332800",
-            "adjustmentFlowRate": "0",
-            "totalFlowAdjustmentAmountDistributedUntilUpdatedAt": "0"
+          "id": "0x18608a04471156b2da378ee1d6fcb76c5499be62",
+          "createdAtTimestamp": "1724760772",
+          "createdAtBlockNumber": "16479116",
+          "updatedAtTimestamp": "1724760806",
+          "updatedAtBlockNumber": "16479133",
+          "admin": {
+            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
+          },
+          "token": {
+            "id": "0xd6faf98befa647403cc56bdb598690660d5257d2",
+            "symbol": "fDAIx"
+          },
+          "totalMembers": 2,
+          "totalUnits": "200",
+          "totalConnectedMembers": 1,
+          "totalConnectedUnits": "100",
+          "totalDisconnectedMembers": 1,
+          "totalDisconnectedUnits": "100",
+          "totalAmountInstantlyDistributedUntilUpdatedAt": "7000000000000000000",
+          "flowRate": "0",
+          "perUnitSettledValue": "40333333333333332",
+          "perUnitFlowRate": "0",
+          "totalBuffer": "0",
+          "totalAmountFlowedDistributedUntilUpdatedAt": "133333333333332800",
+          "totalAmountDistributedUntilUpdatedAt": "7133333333333332800",
+          "adjustmentFlowRate": "0",
+          "totalFlowAdjustmentAmountDistributedUntilUpdatedAt": "0"
         }
-    ]
+      ]
     },
     "idaAccount": {
       "address": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
@@ -164,7 +164,7 @@
       "incoming": [],
       "outgoing": [
         {
-          "token": "USDCx",
+          "token": "USDC.ex",
           "receiver": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
           "flowRate": 0,
           "totalStreamed": 0.0000972222222221
@@ -177,7 +177,7 @@
     },
     "superTokens": [
       {
-        "tokenName": "Super USDC (PoS) (USDCx)",
+        "tokenName": "Super USDC (PoS) (USDC.ex)",
         "balance": "4.9999027777927779",
         "activeStreamCount": 0,
         "closedStreamCount": 1,
