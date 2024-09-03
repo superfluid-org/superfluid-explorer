@@ -30,7 +30,7 @@ import { TokensQuery } from '@superfluid-finance/sdk-redux'
 import isEqual from 'lodash/fp/isEqual'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
-import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FC, FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 
 import AppLink from '../../../../components/AppLink/AppLink'
 import InfoTooltipBtn from '../../../../components/Info/InfoTooltipBtn'
@@ -40,6 +40,7 @@ import TableLoader from '../../../../components/Table/TableLoader'
 import useDebounce from '../../../../hooks/useDebounce'
 import { Network } from '../../../../redux/networks'
 import { sfSubgraph } from '../../../../redux/store'
+import { findTokenFromTokenList } from '../../../../hooks/useTokenQuery'
 
 export enum ListedStatus {
   Listed,
@@ -207,7 +208,17 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const hasNextPage = !!queryResult.data?.nextPaging
 
-  const tokens = queryResult.data?.data || []
+  const tokens = useMemo(() => (queryResult.data?.items || []).map(token => {
+    const tokenFromTokenList = findTokenFromTokenList({
+      chainId: network.chainId,
+      address: token.id
+    })
+    return {
+      ...token,
+      symbol: tokenFromTokenList?.symbol ?? token.symbol,
+      name: tokenFromTokenList?.name ?? token.name
+    }
+  }), [queryResult.data?.items?.length ?? 0]);
 
   const { filter, order, pagination } = queryArg
 
