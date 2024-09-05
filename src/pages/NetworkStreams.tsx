@@ -125,7 +125,7 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Box marginBottom="10px" width="50%">
+      {/* <Box marginBottom="10px" width="50%">
         <ToggleButtonGroup
           exclusive
           fullWidth
@@ -136,73 +136,46 @@ export const NetworkStreams: FC<NetworkStreamsProps> = ({ network }) => {
           <ToggleButton value={ViewMode.Table}>Table view</ToggleButton>
           <ToggleButton value={ViewMode.Map}>Map view</ToggleButton>
         </ToggleButtonGroup>
-      </Box>
+      </Box> */}
       <Table sx={{ tableLayout: 'fixed' }}>
-        {viewMode === ViewMode.Table && (
-          <TableBody>
-            {streams.map((stream) => (
-              <TableRow
-                hover
-                sx={{ '& > *': { borderBottom: 'none' } }}
-                key={stream.id}
-              >
-                <TableCell width="60%">
-                  <SenderReceiver
-                    network={network}
-                    fromAddress={stream.sender}
-                    toAddress={stream.receiver}
-                  />
-                </TableCell>
-                <TableCell width="50%">
-                  <TotalStreamed
-                    network={network}
-                    tokenAddress={stream.token}
-                    balance={stream.streamedUntilUpdatedAt}
-                    balanceTimestamp={stream.updatedAtTimestamp}
-                    flowRate={stream.currentFlowRate}
-                  />
-                </TableCell>
-                <TableCell width="20%" align="right">
-                  <TimeAgo
-                    subgraphTime={stream.createdAtTimestamp}
-                    typographyProps={{ typography: 'body2' }}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
+        <TableBody>
+          {streams.map((stream) => (
+            <TableRow
+              hover
+              sx={{ '& > *': { borderBottom: 'none' } }}
+              key={stream.id}
+            >
+              <TableCell width="60%">
+                <SenderReceiver
+                  network={network}
+                  fromAddress={stream.sender}
+                  toAddress={stream.receiver}
+                />
+              </TableCell>
+              <TableCell width="50%">
+                <TotalStreamed
+                  network={network}
+                  tokenAddress={stream.token}
+                  balance={stream.streamedUntilUpdatedAt}
+                  balanceTimestamp={stream.updatedAtTimestamp}
+                  flowRate={stream.currentFlowRate}
+                />
+              </TableCell>
+              <TableCell width="20%" align="right">
+                <TimeAgo
+                  subgraphTime={stream.createdAtTimestamp}
+                  typographyProps={{ typography: 'body2' }}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
 
-            <TableLoader
-              isLoading={query.isLoading || query.isFetching}
-              showSpacer={streams.length === 0}
-              minHeight="576px"
-            />
-          </TableBody>
-        )}
-
-        {viewMode === ViewMode.Map && (
-          <Box>Coming soon!</Box>
-          // <ReactFlow
-          //   style={{
-          //     width: '100%',
-          //     minHeight: '500px',
-          //     backgroundColor: '#303030'
-          //   }}
-          //   nodes={nodes}
-          //   onNodesChange={onNodesChange}
-          //   edges={edges}
-          //   onEdgesChange={onEdgesChange}
-          //   onConnect={onConnect}
-          //   fitView={true}
-          //   minZoom={1.5}
-          //   maxZoom={1.5}
-          //   edgesUpdatable={false}
-          //   nodesDraggable={false}
-          //   nodesConnectable={false}
-          //   panOnDrag={false}
-          //   zoomOnScroll={false}
-          //   nodesFocusable={false}
-          // />
-        )}
+          <TableLoader
+            isLoading={query.isLoading || query.isFetching}
+            showSpacer={streams.length === 0}
+            minHeight="576px"
+          />
+        </TableBody>
 
         {streams.length > 0 && (
           <TableFooter>

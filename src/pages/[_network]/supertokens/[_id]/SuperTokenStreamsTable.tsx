@@ -30,7 +30,16 @@ import { StreamsQuery } from '@superfluid-finance/sdk-redux'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
 import isEqual from 'lodash/isEqual'
-import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
+import {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 
 import AccountAddress from '../../../../components/Address/AccountAddress'
 import FlowRate from '../../../../components/Amount/FlowRate'
@@ -44,6 +53,13 @@ import { Network } from '../../../../redux/networks'
 import { sfSubgraph } from '../../../../redux/store'
 import { StreamStatus } from '../../accounts/AccountIncomingStreamsTable'
 import { StreamDetailsDialog } from '../../streams/StreamDetails'
+import UserBlock from '../../../../components/Map/UserBlock'
+import TokenStreamsMap from '../../../../components/Map/TokenStreamsMap'
+
+export enum ViewMode {
+  Table,
+  Map
+}
 
 const defaultOrdering = {
   orderBy: 'createdAtTimestamp',
@@ -70,6 +86,11 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
   const [showFilterMenu, setShowFilterMenu] = useState(false)
 
   const [streamStatus, setStreamStatus] = useState<StreamStatus | null>(null)
+
+  const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Table)
+
+  const onViewModeChange = (_event: any, newViewMode: ViewMode) =>
+    setViewMode(newViewMode)
 
   const defaultFilter = {
     token: tokenAddress
@@ -377,115 +398,132 @@ const SuperTokenStreamsTable: FC<SuperTokenStreamsTableProps> = ({
           </Stack>
         </Popover>
       </Toolbar>
-      <Table sx={{ tableLayout: 'fixed' }}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Sender</TableCell>
-            <TableCell>Receiver</TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={order.orderBy === 'currentFlowRate'}
-                direction={
-                  order.orderBy === 'currentFlowRate'
-                    ? order.orderDirection
-                    : 'desc'
-                }
-                onClick={onSortClicked('currentFlowRate')}
-              >
-                Flow Rate
-                <InfoTooltipBtn
-                  iconSx={{ mb: 0 }}
-                  title="Flow rate is the velocity of tokens being streamed."
-                />
-              </TableSortLabel>
-            </TableCell>
-            <TableCell width="200px">
-              <TableSortLabel
-                active={order.orderBy === 'createdAtTimestamp'}
-                direction={
-                  order.orderBy === 'createdAtTimestamp'
-                    ? order.orderDirection
-                    : 'desc'
-                }
-                onClick={onSortClicked('createdAtTimestamp')}
-              >
-                Created
-              </TableSortLabel>
-            </TableCell>
-            <TableCell width="68px" />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tableRows.map((stream) => (
-            <TableRow key={stream.id} hover>
-              <TableCell>
-                <AccountAddress
-                  dataCy={'sender'}
-                  network={network}
-                  address={stream.sender}
-                  ellipsis={6}
-                />
-              </TableCell>
-              <TableCell>
-                <AccountAddress
-                  dataCy={'receiver'}
-                  network={network}
-                  address={stream.receiver}
-                  ellipsis={6}
-                />
-              </TableCell>
-              <TableCell>
-                <FlowRate flowRate={stream.currentFlowRate} />
-              </TableCell>
-              <TableCell>
-                {new Date(stream.createdAtTimestamp * 1000).toLocaleString()}
-              </TableCell>
-
-              <TableCell align="right">
-                <StreamDetailsDialog network={network} streamId={stream.id}>
-                  {(onClick) => <DetailsButton onClick={onClick} />}
-                </StreamDetailsDialog>
-              </TableCell>
-            </TableRow>
-          ))}
-
-          {queryResult.isSuccess && tableRows.length === 0 && (
+      <Box marginBottom="10px" width="100%" alignSelf="center">
+        <ToggleButtonGroup
+          exclusive
+          fullWidth
+          size="small"
+          value={viewMode}
+          onChange={onViewModeChange}
+        >
+          <ToggleButton value={ViewMode.Table}>Table view</ToggleButton>
+          <ToggleButton value={ViewMode.Map}>Map view</ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+      {viewMode === ViewMode.Table && (
+        <Table sx={{ tableLayout: 'fixed' }}>
+          <TableHead>
             <TableRow>
-              <TableCell
-                colSpan={5}
-                sx={{ border: 0, height: '96px' }}
-                align="center"
-              >
-                <Typography data-cy={'no-results'} variant="body1">
-                  No results
-                </Typography>
+              <TableCell>Sender</TableCell>
+              <TableCell>Receiver</TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={order.orderBy === 'currentFlowRate'}
+                  direction={
+                    order.orderBy === 'currentFlowRate'
+                      ? order.orderDirection
+                      : 'desc'
+                  }
+                  onClick={onSortClicked('currentFlowRate')}
+                >
+                  Flow Rate
+                  <InfoTooltipBtn
+                    iconSx={{ mb: 0 }}
+                    title="Flow rate is the velocity of tokens being streamed."
+                  />
+                </TableSortLabel>
               </TableCell>
+              <TableCell width="200px">
+                <TableSortLabel
+                  active={order.orderBy === 'createdAtTimestamp'}
+                  direction={
+                    order.orderBy === 'createdAtTimestamp'
+                      ? order.orderDirection
+                      : 'desc'
+                  }
+                  onClick={onSortClicked('createdAtTimestamp')}
+                >
+                  Created
+                </TableSortLabel>
+              </TableCell>
+              <TableCell width="68px" />
             </TableRow>
+          </TableHead>
+          <TableBody>
+            {tableRows.map((stream) => (
+              <TableRow key={stream.id} hover>
+                <TableCell>
+                  <AccountAddress
+                    dataCy={'sender'}
+                    network={network}
+                    address={stream.sender}
+                    ellipsis={6}
+                  />
+                </TableCell>
+                <TableCell>
+                  <AccountAddress
+                    dataCy={'receiver'}
+                    network={network}
+                    address={stream.receiver}
+                    ellipsis={6}
+                  />
+                </TableCell>
+                <TableCell>
+                  <FlowRate flowRate={stream.currentFlowRate} />
+                </TableCell>
+                <TableCell>
+                  {new Date(stream.createdAtTimestamp * 1000).toLocaleString()}
+                </TableCell>
+
+                <TableCell align="right">
+                  <StreamDetailsDialog network={network} streamId={stream.id}>
+                    {(onClick) => <DetailsButton onClick={onClick} />}
+                  </StreamDetailsDialog>
+                </TableCell>
+              </TableRow>
+            ))}
+
+            {queryResult.isSuccess && tableRows.length === 0 && (
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  sx={{ border: 0, height: '96px' }}
+                  align="center"
+                >
+                  <Typography data-cy={'no-results'} variant="body1">
+                    No results
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
+
+            <TableLoader
+              isLoading={queryResult.isLoading || queryResult.isFetching}
+              showSpacer={tableRows.length === 0}
+            />
+          </TableBody>
+          {tableRows.length > 0 && (
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={5} align="right">
+                  <InfinitePagination
+                    page={skip / take + 1}
+                    pageSize={pagination.take}
+                    isLoading={queryResult.isFetching}
+                    hasNext={hasNextPage}
+                    onPageChange={setPage}
+                    onPageSizeChange={setPageSize}
+                    sx={{ justifyContent: 'flex-end' }}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           )}
-
-          <TableLoader
-            isLoading={queryResult.isLoading || queryResult.isFetching}
-            showSpacer={tableRows.length === 0}
-          />
-        </TableBody>
-        {tableRows.length > 0 && (
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={5} align="right">
-                <InfinitePagination
-                  page={skip / take + 1}
-                  pageSize={pagination.take}
-                  isLoading={queryResult.isFetching}
-                  hasNext={hasNextPage}
-                  onPageChange={setPage}
-                  onPageSizeChange={setPageSize}
-                  sx={{ justifyContent: 'flex-end' }}
-                />
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        )}
-      </Table>
+        </Table>
+      )}
+      {viewMode === ViewMode.Map && (
+        <TokenStreamsMap tableRows={tableRows} network={network} />
+      )}
     </>
   )
 }
