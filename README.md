@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to Superfluid Console repository 👋</h1>
+<h1 align="center">Welcome to Superfluid Explorer repository 👋</h1>
 
 <p>
   <a href="https://twitter.com/Superfluid_HQ/status/" target="_blank">
@@ -10,7 +10,7 @@
 
 ### ✨ [Superfluid App](https://app.superfluid.finance/)
 
-### ✨ [Superfluid Console](https://console.superfluid.finance/)
+### ✨ [Superfluid Explorer](https://explorer.superfluid.finance/)
 
 ### 📖 [Docs](https://docs.superfluid.finance)
 
@@ -18,9 +18,9 @@ The Superfluid Protocol is a framework that realizes the real-time finance visio
 where user accounts are connected together, and transactions can happen between
 user accounts instantaneously as a result.
 
-# Superfluid Console
+# Superfluid Explorer
 
-Superfluid Console is an explorer meant for developers and advanced users of the Superfluid Protocol.
+Superfluid Explorer is an explorer meant for developers and advanced users of the Superfluid Protocol.
 
 ## How to use
 

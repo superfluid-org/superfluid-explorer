@@ -70,7 +70,7 @@ function MyApp(props: MyAppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>Superfluid Console</title>
+        <title>Superfluid Explorer</title>
         {/* "theme-mode" is required to be in the head element by `useSfTheme`. */}
         <meta id="theme-mode" name="theme-mode" content={theme.palette.mode} />
         <meta name="theme-color" content={theme.palette.primary.main} />

@@ -31,7 +31,7 @@ const Home: NextPage = () => {
             color="text.primary"
             gutterBottom
           >
-            Welcome to Superfluid Console
+            Welcome to Superfluid Explorer
           </Typography>
           <Typography
             variant="body1"
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
             color="text.secondary"
             paragraph
           >
-            Superfluid Console is an explorer meant for developers and advanced
+            Superfluid Explorer is an explorer meant for developers and advanced
             users of the{' '}
             <AppLink
               data-cy={'protocol-link'}
