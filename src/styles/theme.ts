@@ -7,7 +7,7 @@ export const createSfTheme = (mode: 'light' | 'dark' = 'light') =>
     palette: {
       mode: mode,
       primary: {
-        main: '#86EE1E'
+        main: '#0A6643'
       },
       secondary: {
         main: '#2323FF'
