@@ -33,7 +33,7 @@
     "@superfluid-finance/metadata": "^1.5.0",
     "@superfluid-finance/sdk-core": "^0.8.0",
     "@superfluid-finance/sdk-redux": "^0.6.1",
-    "@superfluid-finance/tokenlist": "^5.6.1",
+    "@superfluid-finance/tokenlist": "^5.7.0",
     "@tanstack/react-query": "^5.53.3",
     "clsx": "^2.1.1",
     "decimal.js": "^10.3.1",

@@ -1,6 +1,6 @@
 import { memoize } from "lodash";
 import { sfSubgraph } from "../redux/store";
-import { extendedSuperTokenList } from "@superfluid-finance/tokenlist";
+import { extendedSuperTokenList as extendedSuperTokenList_, fetchLatestExtendedSuperTokenList } from "@superfluid-finance/tokenlist";
 import { UseQueryResult } from "../redux/UseQueryResult";
 import { Token } from "@superfluid-finance/sdk-core";
 
@@ -44,8 +44,11 @@ export function useTokenQuery(arg: Arg, options?: Omit<Options, "selectFromResul
     return tokenQuery;
 }
 
+export let extendedSuperTokenList = extendedSuperTokenList_;
+fetchLatestExtendedSuperTokenList().then(fetchedTokenList => extendedSuperTokenList = fetchedTokenList);
+
 export const findTokenFromTokenList = memoize((input: { chainId: number, address: string }) => {
     const tokenAddressLowerCased = input.address.toLowerCase();
     const tokenListToken = extendedSuperTokenList.tokens.find(x => x.chainId === input.chainId && x.address === tokenAddressLowerCased);
     return tokenListToken;
-}, ({ chainId, address }) => `${chainId}-${address.toLowerCase()}`);
+}, ({ chainId, address }) => `${chainId}-${address.toLowerCase()}-${extendedSuperTokenList.version}`);
