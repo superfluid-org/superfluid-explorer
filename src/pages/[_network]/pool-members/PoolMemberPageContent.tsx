@@ -39,6 +39,7 @@ import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import { PoolMemberFlowDistributions } from './PoolMemberFlowDistributions'
 import { useTotalAmountReceivedFromPoolMember } from './PoolMemberTotalAmountReceived'
 import PoolMemberUnitsUpdatedEventDataGrid from './PoolMemberUnitsUpdatedEventDataGrid'
+import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
 
 export const PoolMemberPageContent: FC<{
   poolMemberId: string
@@ -54,9 +55,9 @@ export const PoolMemberPageContent: FC<{
   const poolQuery = sfGdaSubgraph.usePoolQuery(
     poolMember
       ? {
-          chainId: network.chainId,
-          id: poolMember.pool
-        }
+        chainId: network.chainId,
+        id: poolMember.pool
+      }
       : skipToken
   )
 
@@ -153,12 +154,15 @@ export const PoolMemberPageContent: FC<{
                 <ListItemText
                   secondary="Pool"
                   primary={
-                    poolMember && pool ? (
+                    pool ? (
                       <AppLink
                         href={`/${network.slugName}/pools/${pool.id}`}
-                      >{`${pool.id.substring(0, 6)}... (${pool.id})`}</AppLink>
+                        passHref
+                      >
+                        <AccountAddressFormatted network={network} address={pool.id} />
+                      </AppLink>
                     ) : (
-                      <Skeleton sx={{ width: '50px' }} />
+                      <SkeletonAddress />
                     )
                   }
                 />

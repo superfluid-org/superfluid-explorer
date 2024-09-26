@@ -25,6 +25,9 @@ const searchByAddressDocument = gql`
     accounts(where: { id: $addressId }) {
       id
     }
+    pools(where: { id: $addressId }) {
+      id
+    }
   }
 `
 
@@ -42,6 +45,9 @@ export type SubgraphSearchByAddressResult = {
     isListed: boolean
   }[]
   accounts: {
+    id: string
+  }[]
+  pools: {
     id: string
   }[]
 }

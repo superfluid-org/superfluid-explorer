@@ -33,6 +33,9 @@ export type NetworkSearchResult = {
   accounts: {
     id: string
   }[]
+  pools: {
+    id: string
+  }[]
 }
 
 export const useSearch = (searchTerm: string) => {
@@ -41,6 +44,7 @@ export const useSearch = (searchTerm: string) => {
   const subgraphSearchByAddressResults = useSearchSubgraphByAddress(
     addressDisplay.addressChecksummed ?? 'skip'
   )
+
   const subgraphSearchByTokenSymbolResults =
     useSearchSubgraphByTokenSymbol(searchTerm)
   const addressBookResults = useSearchAddressBook(searchTerm)
@@ -53,7 +57,8 @@ export const useSearch = (searchTerm: string) => {
           (searchQuery.data as SubgraphSearchByAddressResult) ?? {
             accounts: [],
             tokensByAddress: [],
-            tokensByUnderlyingAddress: []
+            tokensByUnderlyingAddress: [],
+            pools: []
           }
 
         const network = networksByChainId.get(
@@ -67,7 +72,8 @@ export const useSearch = (searchTerm: string) => {
           tokens: searchResult.tokensByAddress.concat(
             searchResult.tokensByUnderlyingAddress
           ),
-          accounts: searchResult.accounts
+          accounts: searchResult.accounts,
+          pools: searchResult.pools
         }
       })
 
@@ -87,7 +93,8 @@ export const useSearch = (searchTerm: string) => {
           isFetching: searchQuery.isFetching,
           error: searchQuery.error,
           tokens: searchResult.tokensBySymbol,
-          accounts: []
+          accounts: [],
+          pools: []
         }
       })
 
@@ -106,14 +113,16 @@ export const useSearch = (searchTerm: string) => {
       subgraphSearchByAddressResultsMappedDictionary[network.slugName] ?? {
         isFetching: false,
         accounts: [],
-        tokens: []
+        tokens: [],
+        pools: []
       }
 
     const searchByTokenSymbolMappedResult =
       subgraphSearchByTokenSymbolResultsMappedDictionary[network.slugName] ?? {
         isFetching: false,
         accounts: [],
-        tokens: []
+        tokens: [],
+        pools: []
       }
 
     const addressBookResult = addressBookMappedResultsDictionary[
@@ -166,7 +175,13 @@ export const useSearch = (searchTerm: string) => {
             ENS: addressDisplay.ensName
           })),
         (x) => x.id
-      )
+      ),
+      pools:
+        searchByAddressMappedResult.pools
+          .map((x) => ({
+            ...x,
+            id: ethers.utils.getAddress(x.id),
+          }))
     }
   })
 }
