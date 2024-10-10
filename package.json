@@ -83,5 +83,5 @@
     "nonGlobalStepDefinitions": true,
     "step_definitions": "cypress/e2e/"
   },
-  "packageManager": "pnpm@9.1.0"
+  "packageManager": "pnpm@9.11.0"
 }
