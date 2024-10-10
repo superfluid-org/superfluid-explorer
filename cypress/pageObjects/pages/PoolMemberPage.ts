@@ -42,7 +42,7 @@ export class PoolMemberPage extends BasePage {
         POOL_ADMIN,
         ethers.utils.getAddress(data[network].poolMembers[0].pool.admin.id)
       )
-      this.containsText(POOL_ADDRESS, data[network].poolMembers[0].pool.id)
+      this.containsText(POOL_ADDRESS, ethers.utils.getAddress(data[network].poolMembers[0].pool.id))
       this.containsText(
         POOL_MEMBER,
         ethers.utils.getAddress(data[network].poolMembers[0].id.split('-')[2])
