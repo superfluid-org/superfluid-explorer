@@ -1048,7 +1048,7 @@ export class AccountPage extends BasePage {
           let totalDistributedAssertionString =
             pool.totalAmountDistributedUntilUpdatedAt === '0'
               ? '0'
-              : (pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(1)
+              : (pool.totalAmountDistributedUntilUpdatedAt / 1e18).toFixed(4)
           cy.get(POOLS_TOTAL_DISTRIBUTED)
             .eq(index)
             .should(

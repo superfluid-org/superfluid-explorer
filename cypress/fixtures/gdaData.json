@@ -12,7 +12,7 @@
       "token": {
         "id": "0x24f3631dbbf6880c684c5e59578c21194e285baf",
         "name": "Super fDAI Fake Token",
-        "symbol":"fDAIx"
+        "symbol": "fDAIx"
       },
       "totalMembers": 1,
       "totalUnits": "500000000000",
@@ -25,8 +25,8 @@
       "perUnitSettledValue": "4408387831",
       "perUnitFlowRate": "0",
       "totalBuffer": "0",
-      "totalAmountFlowedDistributedUntilUpdatedAt": "4146208203500000000000",
-      "totalAmountDistributedUntilUpdatedAt": "4365440942500000000000",
+      "totalAmountFlowedDistributedUntilUpdatedAt": "2164670768000000000000",
+      "totalAmountDistributedUntilUpdatedAt": "2383903507000000000000",
       "adjustmentFlowRate": "0",
       "totalFlowAdjustmentAmountDistributedUntilUpdatedAt": "0",
       "poolCreatedEvent": {

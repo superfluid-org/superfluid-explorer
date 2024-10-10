@@ -58,8 +58,8 @@
           "perUnitSettledValue": "40333333333333332",
           "perUnitFlowRate": "0",
           "totalBuffer": "0",
-          "totalAmountFlowedDistributedUntilUpdatedAt": "133333333333332800",
-          "totalAmountDistributedUntilUpdatedAt": "7133333333333332800",
+          "totalAmountFlowedDistributedUntilUpdatedAt": "66666666666666400",
+          "totalAmountDistributedUntilUpdatedAt": "7066666666666666400",
           "adjustmentFlowRate": "0",
           "totalFlowAdjustmentAmountDistributedUntilUpdatedAt": "0"
         }
@@ -184,7 +184,7 @@
         "subscriptionWithUnitsCount": 0
       },
       {
-        "tokenName": "Super MATIC (MATICx)",
+        "tokenName": "Super POL (POLx)",
         "balance": "4",
         "activeStreamCount": 0,
         "closedStreamCount": 0,
