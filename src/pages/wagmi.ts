@@ -4,6 +4,7 @@ import {
   avalanche,
   avalancheFuji,
   base,
+  baseSepolia,
   bsc,
   celo,
   degen,
@@ -35,6 +36,7 @@ const allWagmiChains = [
   avalancheFuji,
   sepolia,
   optimismSepolia,
+  baseSepolia,
   scrollSepolia
 ] as const
 

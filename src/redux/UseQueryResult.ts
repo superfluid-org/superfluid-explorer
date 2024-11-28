@@ -15,6 +15,4 @@ export type UseQueryResult<T = unknown> = {
   isFetching: boolean // Query is currently fetching, but might have data from an earlier request.
   isSuccess: boolean // Query has data from a successful load.
   isError: boolean // Query is currently in an "error" state.
-
-  refetch: () => void // A function to force refetch the query
 }

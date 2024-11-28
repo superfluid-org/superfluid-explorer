@@ -15,6 +15,7 @@ interface ContractAddresses {
   GDAv1Forwarder?: string
   flowScheduler?: string
   vestingScheduler?: string
+  vestingSchedulerV2?: string
   batchLiquidator?: string
   existentialNFTCloneFactory?: string
 }
@@ -39,6 +40,7 @@ const networkMetadataToChainId = metadata.networks.reduce(
       batchLiquidator: config.contractsV1.batchLiquidator,
       flowScheduler: config.contractsV1.flowScheduler,
       vestingScheduler: config.contractsV1.vestingScheduler,
+      vestingSchedulerV2: config.contractsV1.vestingSchedulerV2,
       existentialNFTCloneFactory: config.contractsV1.existentialNFTCloneFactory
     }
     return acc

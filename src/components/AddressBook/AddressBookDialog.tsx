@@ -35,7 +35,7 @@ export const AddressBookDialog: FC<{
 
   const [nameTag, setNameTag] = useState<string>(getInitialNameTag())
 
-  // Fixes: https://github.com/superfluid-finance/superfluid-console/issues/21
+  // Fixes: https://github.com/superfluid-finance/superfluid-explorer/issues/21
   useEffect(() => {
     setNameTag(getInitialNameTag())
     // eslint-disable-next-line react-hooks/exhaustive-deps

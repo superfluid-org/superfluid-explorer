@@ -39,7 +39,7 @@ import {
 import isEqual from 'lodash/fp/isEqual'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
-import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FC, FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 
 import AppLink from '../../../../components/AppLink/AppLink'
 import InfoTooltipBtn from '../../../../components/Info/InfoTooltipBtn'
@@ -49,6 +49,7 @@ import TableLoader from '../../../../components/Table/TableLoader'
 import useDebounce from '../../../../hooks/useDebounce'
 import { Network } from '../../../../redux/networks'
 import { sfSubgraph } from '../../../../redux/store'
+import { findTokenFromTokenList } from '../../../../hooks/useTokenQuery'
 
 export enum ListedStatus {
   Listed,
@@ -117,13 +118,31 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   const [queryArg, setQueryArg] =
     useState<RequiredTokensQuery>(createDefaultArg())
 
-  const [queryTrigger, queryResult] = sfSubgraph.useLazyTokensQuery()
+  const [queryTrigger, queriedTokens] = sfSubgraph.useLazyTokensQuery()
+
+  const tokens = useMemo(() => (queriedTokens.data?.items || []).map(token => {
+    const tokenFromTokenList = findTokenFromTokenList({
+      chainId: network.chainId,
+      address: token.id
+    })
+    return {
+      ...token,
+      symbol: tokenFromTokenList?.symbol ?? token.symbol,
+      name: tokenFromTokenList?.name ?? token.name
+    }
+  }), [queriedTokens.data?.items]);
 
   const [queryStatisticsArg, setQueryStatisticsArg] =
     useState<RequiredTokenStatisticsQuery>(createDefaultStatisticsArg())
 
   const [queryStatisticsTrigger, queryStatisticsResult] =
     sfSubgraph.useLazyTokenStatisticsQuery()
+
+  // const [queryStatisticsArg, setQueryStatisticsArg] =
+  //   useState<RequiredTokenStatisticsQuery>(createDefaultStatisticsArg())
+
+  // const [queryStatisticsTrigger, queryStatisticsResult] =
+  //   sfSubgraph.useLazyTokenStatisticsQuery()
 
   const queryTriggerDebounced = useDebounce(queryTrigger, 250)
 
@@ -138,8 +157,8 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     setQueryArg(newArgs)
 
     if (
-      queryResult.originalArgs &&
-      !isEqual(queryResult.originalArgs.filter, newArgs.filter)
+      queriedTokens.originalArgs &&
+      !isEqual(queriedTokens.originalArgs.filter, newArgs.filter)
     ) {
       queryTriggerDebounced(newArgs, true)
     } else {
@@ -210,16 +229,16 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const clearFilterField =
     (...fields: Array<keyof TokenStatistic_Filter> | string[]) =>
-    () => {
-      if (fields.includes('totalOutflowRate_gte')) {
-        setDailyOutflowRateGte('')
-        setPerSecondOutflowRateGte('')
-      } else if (fields.includes('totalOutflowRate_lte')) {
-        setDailyOutflowRateLte('')
-        setPerSecondOutflowRateLte('')
+      () => {
+        if (fields.includes('totalOutflowRate_gte')) {
+          setDailyOutflowRateGte('')
+          setPerSecondOutflowRateGte('')
+        } else if (fields.includes('totalOutflowRate_lte')) {
+          setDailyOutflowRateLte('')
+          setPerSecondOutflowRateLte('')
+        }
+        onFilterChange(omit(fields, queryStatisticsArg.filter))
       }
-      onFilterChange(omit(fields, queryStatisticsArg.filter))
-    }
 
   const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { token_, ...newFilter } = queryStatisticsArg.filter
@@ -396,9 +415,9 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     closeFilter()
   }
 
-  const hasNextPage = !!queryStatisticsResult.data?.nextPaging
+  const hasNextPage = !!queriedTokens.data?.nextPaging
 
-  const tokens = queryResult.data?.data || []
+  // const tokens = queryResult.data?.data || []
 
   const tokenStatistics = queryStatisticsResult.data?.data || []
 
@@ -413,8 +432,10 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     pagination: statisticsPagination
   } = queryStatisticsArg
 
+  const { filter, order, pagination } = queryArg
+
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
-    queryStatisticsResult.data?.paging || {}
+    queriedTokens.data?.paging || {}
 
   const openExport = () => setShowExportMenu(true)
   const closeExport = () => setShowExportMenu(false)
@@ -845,14 +866,14 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
               {(statisticsFilter.token_?.name_contains_nocase ||
                 statisticsFilter.token_?.symbol_contains_nocase ||
                 listedStatus !== null) && (
-                <Button
-                  data-cy={'reset-filter'}
-                  onClick={resetFilter}
-                  tabIndex={-1}
-                >
-                  Reset
-                </Button>
-              )}
+                  <Button
+                    data-cy={'reset-filter'}
+                    onClick={resetFilter}
+                    tabIndex={-1}
+                  >
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -983,7 +1004,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
               {/* <TableCell></TableCell> */}
               <TableCell data-cy={'token-outflow-rate'}>
                 {(Number(token.totalOutflowRate) * 60 * 60 * 24) / 1e18 >
-                0.01 ? (
+                  0.01 ? (
                   <>
                     {(
                       (Number(token.totalOutflowRate) * 60 * 60 * 24) /
@@ -998,7 +1019,7 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             </TableRow>
           ))}
 
-          {queryStatisticsResult.isSuccess && resultsToShow.length === 0 && (
+          {queriedTokens.isSuccess && tokens.length === 0 && (
             <TableRow>
               <TableCell
                 colSpan={3}
@@ -1011,11 +1032,8 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
           )}
 
           <TableLoader
-            isLoading={
-              queryStatisticsResult.isLoading ||
-              queryStatisticsResult.isFetching
-            }
-            showSpacer={resultsToShow.length === 0}
+            isLoading={queriedTokens.isLoading || queriedTokens.isFetching}
+            showSpacer={tokens.length === 0}
           />
         </TableBody>
 
@@ -1025,8 +1043,8 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
               <TableCell colSpan={6} align="right">
                 <InfinitePagination
                   page={skip / take + 1}
-                  pageSize={statisticsPagination.take}
-                  isLoading={queryStatisticsResult.isFetching}
+                  pageSize={pagination.take}
+                  isLoading={queriedTokens.isFetching}
                   hasNext={hasNextPage}
                   onPageChange={setPage}
                   onPageSizeChange={setPageSize}

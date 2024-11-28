@@ -1,36 +1,33 @@
 {
-  "avalanche-fuji": {
+  "optimism-sepolia": {
     "gdaMemberAccount": {
-      "address": "0x38691225C23f05507B56760275b53FDD2d2bDA37",
+      "address": "0x836a14Cf0E66f6de331a1fb91Ff0E05BCF771dA2",
       "pools": [
         {
-          "id": "poolMember-0x6c10bd07d2a8890fef26d800be4209ae37aaabeb-0x38691225c23f05507b56760275b53fdd2d2bda37",
-          "createdAtTimestamp": "1699525687",
-          "createdAtBlockNumber": "42188486",
-          "updatedAtTimestamp": "1699525687",
-          "updatedAtBlockNumber": "42188486",
-          "units": "1000000000000",
+          "id": "poolMember-0x18608a04471156b2da378ee1d6fcb76c5499be62-0x836a14cf0e66f6de331a1fb91ff0e05bcf771da2",
+          "createdAtTimestamp": "1724760774",
+          "createdAtBlockNumber": "16479117",
+          "updatedAtTimestamp": "1724760774",
+          "updatedAtBlockNumber": "16479117",
+          "units": "100",
           "pool": {
-            "id": "0x6c10bd07d2a8890fef26d800be4209ae37aaabeb",
-            "totalUnits": "1000000000000",
-            "flowRate": "0",
-            "totalAmountDistributedUntilUpdatedAt": "105349271000000000000",
+            "id": "0x18608a04471156b2da378ee1d6fcb76c5499be62",
+            "totalUnits": "200",
+            "totalAmountDistributedUntilUpdatedAt": "4033333333333333200",
             "token": {
-              "id": "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
+              "id": "0xd6faf98befa647403cc56bdb598690660d5257d2",
               "symbol": "fDAIx"
-            },
-            "admin": {
-              "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
-            },
-            "updatedAtTimestamp": "1699577706"
+            }
           },
           "account": {
-            "id": "0x38691225c23f05507b56760275b53fdd2d2bda37"
+            "id": "0x836a14cf0e66f6de331a1fb91ff0e05bcf771da2"
           },
-          "isConnected": true,
+          "isConnected": false,
           "totalAmountClaimed": "0",
           "totalAmountReceivedUntilUpdatedAt": "0",
-          "poolTotalAmountDistributedUntilUpdatedAt": "0"
+          "poolTotalAmountDistributedUntilUpdatedAt": "0",
+          "syncedPerUnitFlowRate": "0",
+          "syncedPerUnitSettledValue": "0"
         }
       ]
     },
@@ -38,91 +35,33 @@
       "address": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
       "pools": [
         {
-          "id": "0x6c10bd07d2a8890fef26d800be4209ae37aaabeb",
-          "createdAtTimestamp": "1699525671",
-          "createdAtBlockNumber": "42188479",
-          "updatedAtTimestamp": "1699577706",
-          "updatedAtBlockNumber": "42212099",
-          "flowRate": "0",
-          "totalMembers": 1,
-          "totalUnits": "1000000000000",
-          "totalAmountDistributedUntilUpdatedAt": "105349271000000000000",
-          "adjustmentFlowRate": "0",
-          "totalAmountFlowedDistributedUntilUpdatedAt": "105349271000000000000",
-          "totalAmountInstantlyDistributedUntilUpdatedAt": "0",
-          "totalBuffer": "0",
+          "id": "0x18608a04471156b2da378ee1d6fcb76c5499be62",
+          "createdAtTimestamp": "1724760772",
+          "createdAtBlockNumber": "16479116",
+          "updatedAtTimestamp": "1724760806",
+          "updatedAtBlockNumber": "16479133",
+          "admin": {
+            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
+          },
+          "token": {
+            "id": "0xd6faf98befa647403cc56bdb598690660d5257d2",
+            "symbol": "fDAIx"
+          },
+          "totalMembers": 2,
+          "totalUnits": "200",
           "totalConnectedMembers": 1,
-          "totalConnectedUnits": "1000000000000",
-          "totalDisconnectedMembers": 0,
-          "totalDisconnectedUnits": "0",
-          "admin": {
-            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
-          },
-          "token": {
-            "id": "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-            "symbol": "fDAIx"
-          },
-          "poolCreatedEvent": {
-            "id": "PoolCreated-0xdea225b7c2cab06a957f68e4dc6c8fdd299bf737fa6d7ae85b1df90f2992ed21-25"
-          }
-        },
-        {
-          "id": "0x5d8882a0f28158e0fa4afbd2f5ab05949191f08e",
-          "createdAtTimestamp": "1699317526",
-          "createdAtBlockNumber": "42093337",
-          "updatedAtTimestamp": "1699318440",
-          "updatedAtBlockNumber": "42093767",
+          "totalConnectedUnits": "100",
+          "totalDisconnectedMembers": 1,
+          "totalDisconnectedUnits": "100",
+          "totalAmountInstantlyDistributedUntilUpdatedAt": "7000000000000000000",
           "flowRate": "0",
-          "totalMembers": 0,
-          "totalUnits": "0",
-          "totalAmountDistributedUntilUpdatedAt": "0",
-          "adjustmentFlowRate": "0",
-          "totalAmountFlowedDistributedUntilUpdatedAt": "0",
-          "totalAmountInstantlyDistributedUntilUpdatedAt": "0",
+          "perUnitSettledValue": "40333333333333332",
+          "perUnitFlowRate": "0",
           "totalBuffer": "0",
-          "totalConnectedMembers": 0,
-          "totalConnectedUnits": "0",
-          "totalDisconnectedMembers": 0,
-          "totalDisconnectedUnits": "0",
-          "admin": {
-            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
-          },
-          "token": {
-            "id": "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-            "symbol": "fDAIx"
-          },
-          "poolCreatedEvent": {
-            "id": "PoolCreated-0x293237e14505ed11c6aba6eb958048780ba2b2cc4ccf6e1d84a3ffa8c50387c5-4"
-          }
-        },
-        {
-          "id": "0x88a1217122609ca21f5d3f320681a9b7186c0bc1",
-          "createdAtTimestamp": "1699312653",
-          "createdAtBlockNumber": "42091541",
-          "updatedAtTimestamp": "1699312653",
-          "updatedAtBlockNumber": "42091541",
-          "flowRate": "0",
-          "totalMembers": 0,
-          "totalUnits": "0",
-          "totalAmountDistributedUntilUpdatedAt": "0",
+          "totalAmountFlowedDistributedUntilUpdatedAt": "66666666666666400",
+          "totalAmountDistributedUntilUpdatedAt": "7066666666666666400",
           "adjustmentFlowRate": "0",
-          "totalAmountFlowedDistributedUntilUpdatedAt": "0",
-          "totalAmountInstantlyDistributedUntilUpdatedAt": "0",
-          "totalBuffer": "0",
-          "totalConnectedMembers": 0,
-          "totalConnectedUnits": "0",
-          "totalDisconnectedMembers": 0,
-          "totalDisconnectedUnits": "0",
-          "admin": {
-            "id": "0xd461647c2adb277799c313e6973dcc5f42b95b47"
-          },
-          "token": {
-            "id": "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f",
-            "symbol": "fDAIx"
-          },
-          "poolCreatedEvent": {
-            "id": "PoolCreated-0x61b5f3facf594d962de5bf233def7213ff1e9d9687c896a8ea5a639742c198cd-46"
-          }
+          "totalFlowAdjustmentAmountDistributedUntilUpdatedAt": "0"
         }
       ]
     },
@@ -132,56 +71,65 @@
         "publications": [
           {
             "token": "fDAIx",
-            "totalDistributed": "400",
-            "totalUnits": "300000",
-            "hash": "0xd461647c2adb277799c313e6973dcc5f42b95b47-0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f-0",
+            "totalDistributed": "100",
+            "totalUnits": "200",
+            "hash": "0xd461647c2adb277799c313e6973dcc5f42b95b47-0xd6faf98befa647403cc56bdb598690660d5257d2-1",
             "details": {
               "publisher": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
-              "totalUnitsApproved": "100000",
-              "totalUnitsPending": "200000",
-              "indexId": "0",
+              "totalUnitsApproved": "100",
+              "totalUnitsPending": "100",
+              "indexId": "1",
               "distributions": [
                 {
-                  "distributionAmount": "100 fDAIx"
+                  "distributionAmount": "20 fDAIx"
                 },
                 {
-                  "distributionAmount": "100 fDAIx"
+                  "distributionAmount": "20 fDAIx"
                 },
                 {
-                  "distributionAmount": "100 fDAIx"
+                  "distributionAmount": "20 fDAIx"
                 },
                 {
-                  "distributionAmount": "100 fDAIx"
+                  "distributionAmount": "20 fDAIx"
+                },
+                {
+                  "distributionAmount": "20 fDAIx"
                 }
               ],
               "subscriptions": [
                 {
                   "approved": "Yes",
-                  "totalAmountReceived": "133",
-                  "subscriptionUnits": "33.33%",
+                  "totalAmountReceived": "80",
+                  "subscriptionUnits": "50%",
                   "details": {
-                    "hash": "0xd461647c2adb277799c313e6973dcc5f42b95b47-0xd461647c2adb277799c313e6973dcc5f42b95b47-0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f-0",
-                    "shortIndex": "0xd461... (0)",
+                    "hash": "0xd461647c2adb277799c313e6973dcc5f42b95b47-0xd461647c2adb277799c313e6973dcc5f42b95b47-0xd6faf98befa647403cc56bdb598690660d5257d2-1",
+                    "shortIndex": "0xd461... (1)",
                     "token": "Super fDAI Fake Token (fDAIx)",
                     "publisher": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
                     "subscriber": "0xd461647C2Adb277799C313e6973Dcc5F42b95b47",
-                    "units": "33.33%",
+                    "units": "50%",
                     "approved": "Yes",
-                    "totalAmountReceived": "133",
+                    "totalAmountReceived": "80",
                     "distributions": [
                       {
-                        "amountReceived": "33"
+                        "amountReceived": "10"
                       },
                       {
-                        "amountReceived": "33"
+                        "amountReceived": "10"
                       },
                       {
-                        "amountReceived": "33"
+                        "amountReceived": "20"
+                      },
+                      {
+                        "amountReceived": "20"
+                      },
+                      {
+                        "amountReceived": "20"
                       }
                     ],
                     "unitsUpdated": [
                       {
-                        "units": "100000"
+                        "units": "100"
                       }
                     ]
                   }
@@ -216,7 +164,7 @@
       "incoming": [],
       "outgoing": [
         {
-          "token": "USDCx",
+          "token": "USDC.ex",
           "receiver": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
           "flowRate": 0,
           "totalStreamed": 0.0000972222222221
@@ -229,14 +177,14 @@
     },
     "superTokens": [
       {
-        "tokenName": "Super USDC (PoS) (USDCx)",
+        "tokenName": "Super USDC (PoS) (USDC.ex)",
         "balance": "4.9999027777927779",
         "activeStreamCount": 0,
         "closedStreamCount": 1,
         "subscriptionWithUnitsCount": 0
       },
       {
-        "tokenName": "Super MATIC (MATICx)",
+        "tokenName": "Super POL (POLx)",
         "balance": "4",
         "activeStreamCount": 0,
         "closedStreamCount": 0,

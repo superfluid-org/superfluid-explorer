@@ -106,6 +106,7 @@ const Protocol: NextPage = () => {
     GDAv1Forwarder,
     flowScheduler,
     vestingScheduler,
+    vestingSchedulerV2,
     existentialNFTCloneFactory
   } = protocolContracts[network.slugName] || {}
 
@@ -307,6 +308,12 @@ const Protocol: NextPage = () => {
                   title="VestingScheduler"
                   network={network}
                   address={vestingScheduler}
+                />
+                <AddressListItem
+                  dataCy={'VestingSchedulerV2-address'}
+                  title="VestingSchedulerV2"
+                  network={network}
+                  address={vestingSchedulerV2}
                 />
                 <AddressListItem
                   dataCy={'FlowScheduler-address'}

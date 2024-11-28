@@ -1,6 +1,7 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import {
+  Avatar,
   Breadcrumbs,
   Button,
   Card,
@@ -43,17 +44,18 @@ import SubgraphQueryLink from '../../../subgraph/SubgraphQueryLink'
 import SuperTokenIndexes from './SuperTokenIndexes'
 import SuperTokenPools from './SuperTokenPools'
 import SuperTokenStreams from './SuperTokenStreams'
+import { useTokenQuery } from '../../../../hooks/useTokenQuery'
 
 const SuperTokenPage: NextPage = () => {
   const network = useNetworkContext()
   const address = useContext(IdContext)
 
-  const tokenQuery = sfSubgraph.useTokenQuery({
+  const tokenQuery = useTokenQuery({
     chainId: network.chainId,
     id: address
   })
 
-  const superToken: Token | null | undefined = tokenQuery.data
+  const superToken = tokenQuery.data
 
   const minimumDepositQuery = rpcApi.useMinimumDepositQuery({
     chainId: network.chainId,
@@ -77,8 +79,8 @@ const SuperTokenPage: NextPage = () => {
 
   const flowRateConverted = flowRateBigNumber
     ? flowRateBigNumber
-        .mul(streamGranularityInSeconds[streamGranularity])
-        .toString()
+      .mul(streamGranularityInSeconds[streamGranularity])
+      .toString()
     : undefined
 
   const { data: totalSupply } = rpcApi.useTotalSupplyQuery({
@@ -128,8 +130,20 @@ const SuperTokenPage: NextPage = () => {
             direction="row"
             alignItems="center"
             justifyContent="space-between"
+            gap={1.5}
           >
-            <Typography variant="h4" component="h1" sx={{ mr: 1 }}>
+            {
+              superToken.logoURI && (
+                <Avatar src={superToken.logoURI} alt={superToken.name} sx={{ width: 32, height: 32 }} slotProps={{
+                  img: {
+                    sx: {
+                      objectFit: 'contain'
+                    }
+                  }
+                }} />
+              )
+            }
+            <Typography variant="h4" component="h1">
               {superToken.name}
             </Typography>
             <Stack direction="row" justifyContent="flex-end" flex={1} gap={1}>
@@ -284,7 +298,7 @@ const SuperTokenPage: NextPage = () => {
                     superToken ? (
                       superToken.underlyingAddress ===
                         '0x0000000000000000000000000000000000000000' ||
-                      superToken.underlyingAddress === '0x' ? (
+                        superToken.underlyingAddress === '0x' ? (
                         <>None</>
                       ) : (
                         <Tooltip title="View on blockchain explorer">

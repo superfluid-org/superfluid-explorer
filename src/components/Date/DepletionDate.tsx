@@ -9,6 +9,8 @@ interface DepletionDateProps {
   tooltipProps?: TooltipProps
 }
 
+const MAX_DATE_NUMBER = BigNumber.from(8640000000000000);
+
 const DepletionDate: React.FC<DepletionDateProps> = ({
   balance,
   balanceTimestamp,
@@ -19,12 +21,9 @@ const DepletionDate: React.FC<DepletionDateProps> = ({
 
   if (flowRateNum < 0) {
     const balanceBigNumber = BigNumber.from(balance)
-    const depletionTime = balanceBigNumber.div(
-      BigNumber.from(Math.abs(flowRateNum).toString())
-    )
-    const depletionDate = new Date(
-      balanceTimestamp * 1000 + depletionTime.toNumber() * 1000
-    )
+    const depletionTime = balanceBigNumber.div(BigNumber.from(Math.abs(flowRateNum).toString()))
+    const depletionTimestampInMs = BigNumber.from(balanceTimestamp).mul(1000).add(depletionTime).mul(1000);
+    const depletionDate = new Date(depletionTimestampInMs.lt(MAX_DATE_NUMBER) ? depletionTimestampInMs.toNumber() : MAX_DATE_NUMBER.toNumber());
     const depletionDateString = `${depletionDate.toLocaleDateString()} ${depletionDate.toLocaleTimeString()}`
     const unixTimestamp = Math.floor(depletionDate.getTime() / 1000)
 

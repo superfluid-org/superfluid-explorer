@@ -2,8 +2,8 @@ Feature: Landing page
 
   Scenario: Landing page recent activity
     Given User has opened the "landing" page
-    Then The latest streams for "matic" are shown
-    And All of the hyperlinks lead to "matic" pages
+    Then The latest streams for "base-mainnet" are shown
+    And All of the hyperlinks lead to "base-mainnet" pages
 
   #Cypress does not support multiple origins during the same test case
   #So the href attribute of elements get checked and then the page is opened in the next test case

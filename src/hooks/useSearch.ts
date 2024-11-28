@@ -18,6 +18,7 @@ import {
   SubgraphSearchByTokenSymbolResult,
   useSearchSubgraphByTokenSymbol
 } from './useSearchSubgraphByTokenSymbol'
+import { findTokenFromTokenList } from './useTokenQuery'
 
 export type NetworkSearchResult = {
   network: Network
@@ -32,6 +33,9 @@ export type NetworkSearchResult = {
   accounts: {
     id: string
   }[]
+  pools: {
+    id: string
+  }[]
 }
 
 export const useSearch = (searchTerm: string) => {
@@ -40,6 +44,7 @@ export const useSearch = (searchTerm: string) => {
   const subgraphSearchByAddressResults = useSearchSubgraphByAddress(
     addressDisplay.addressChecksummed ?? 'skip'
   )
+
   const subgraphSearchByTokenSymbolResults =
     useSearchSubgraphByTokenSymbol(searchTerm)
   const addressBookResults = useSearchAddressBook(searchTerm)
@@ -52,19 +57,23 @@ export const useSearch = (searchTerm: string) => {
           (searchQuery.data as SubgraphSearchByAddressResult) ?? {
             accounts: [],
             tokensByAddress: [],
-            tokensByUnderlyingAddress: []
+            tokensByUnderlyingAddress: [],
+            pools: []
           }
 
+        const network = networksByChainId.get(
+          searchQuery.originalArgs!.chainId as ChainId
+        )!;
+
         return {
-          network: networksByChainId.get(
-            searchQuery.originalArgs!.chainId as ChainId
-          )!,
+          network,
           isFetching: searchQuery.isFetching,
           error: searchQuery.error,
           tokens: searchResult.tokensByAddress.concat(
             searchResult.tokensByUnderlyingAddress
           ),
-          accounts: searchResult.accounts
+          accounts: searchResult.accounts,
+          pools: searchResult.pools
         }
       })
 
@@ -84,7 +93,8 @@ export const useSearch = (searchTerm: string) => {
           isFetching: searchQuery.isFetching,
           error: searchQuery.error,
           tokens: searchResult.tokensBySymbol,
-          accounts: []
+          accounts: [],
+          pools: []
         }
       })
 
@@ -103,14 +113,16 @@ export const useSearch = (searchTerm: string) => {
       subgraphSearchByAddressResultsMappedDictionary[network.slugName] ?? {
         isFetching: false,
         accounts: [],
-        tokens: []
+        tokens: [],
+        pools: []
       }
 
     const searchByTokenSymbolMappedResult =
       subgraphSearchByTokenSymbolResultsMappedDictionary[network.slugName] ?? {
         isFetching: false,
         accounts: [],
-        tokens: []
+        tokens: [],
+        pools: []
       }
 
     const addressBookResult = addressBookMappedResultsDictionary[
@@ -132,10 +144,23 @@ export const useSearch = (searchTerm: string) => {
         _.uniqBy(
           searchByAddressMappedResult.tokens
             .concat(searchByTokenSymbolMappedResult.tokens)
-            .map((x) => ({
-              ...x,
-              id: ethers.utils.getAddress(x.id)
-            })),
+            .map((token) => {
+              const tokenFromTokenList = findTokenFromTokenList({ chainId: network.chainId, address: token.id });
+              if (tokenFromTokenList) {
+                return {
+                  ...token,
+                  id: ethers.utils.getAddress(token.id),
+                  name: tokenFromTokenList.name,
+                  symbol: tokenFromTokenList.symbol,
+                  logoURI: tokenFromTokenList.logoURI
+                }
+              }
+
+              return ({
+                ...token,
+                id: ethers.utils.getAddress(token.id)
+              })
+            }),
           (x) => x.id
         ),
         (x) => x.isListed,
@@ -150,7 +175,13 @@ export const useSearch = (searchTerm: string) => {
             ENS: addressDisplay.ensName
           })),
         (x) => x.id
-      )
+      ),
+      pools:
+        searchByAddressMappedResult.pools
+          .map((x) => ({
+            ...x,
+            id: ethers.utils.getAddress(x.id),
+          }))
     }
   })
 }

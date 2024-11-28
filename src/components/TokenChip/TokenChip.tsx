@@ -2,8 +2,8 @@ import { Chip, ChipProps } from '@mui/material'
 import { FC } from 'react'
 
 import { Network } from '../../redux/networks'
-import { sfSubgraph } from '../../redux/store'
 import AppLink from '../AppLink/AppLink'
+import { useTokenQuery } from '../../hooks/useTokenQuery'
 
 export interface TokenChipProps {
   network: Network
@@ -16,7 +16,7 @@ const TokenChip: FC<TokenChipProps> = ({
   tokenAddress,
   ChipProps = { sx: {} }
 }) => {
-  const tokenQuery = sfSubgraph.useTokenQuery({
+  const tokenQuery = useTokenQuery({
     chainId: network.chainId,
     id: tokenAddress
   })

@@ -117,7 +117,10 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
         />
 
         {networkSearchResults
-          .filter((x) => x.tokens.length || x.accounts.length)
+          .filter(
+            (x) =>
+              x.tokens.length || x.accounts.length || x.pools.length
+          )
           .map((x) => (
             <Card sx={{ mt: 2 }} component="section" key={x.network.chainId}>
               <Typography sx={{ p: 1 }} variant="subtitle2" component="h3">
@@ -191,6 +194,34 @@ const SearchDialog: FC<{ open: boolean; close: () => void }> = ({
                             address={token.id}
                             isListed={token.isListed}
                           />
+                        </ListItemButton>
+                      </NextLink>
+                    </ListItem>
+                  ))}
+                  {x.pools.map((pools) => (
+                    <ListItem
+                      data-cy={x.network.slugName + '-pool-search-result'}
+                      disablePadding
+                      sx={{ pt: 0.5, pb: 0.5 }}
+                      key={`${x.network.chainId}_${pools.id}`}
+                    >
+                      <NextLink
+                        href={`/${x.network.slugName}/pools/${pools.id}`}
+                        passHref
+                      >
+                        <ListItemButton
+                          component="a"
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            flexDirection: 'column',
+                            justifyContent: 'flex-start'
+                          }}
+                        >
+                          <AccountAddressFormatted
+                            network={x.network}
+                            address={pools.id}
+                          /> (GDA pool)
                         </ListItemButton>
                       </NextLink>
                     </ListItem>

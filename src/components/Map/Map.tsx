@@ -15,6 +15,7 @@ import ReactFlow, {
 import { Network } from '../../redux/networks'
 import { sfSubgraph } from '../../redux/store'
 import UserBlock from './UserBlock'
+import { findTokenFromTokenList } from '../../hooks/useTokenQuery'
 
 export enum StreamStatus {
   Active,
@@ -103,7 +104,10 @@ const Map: FC<{
                 label: <UserBlock network={network} address={stream.receiver} />
               },
               flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${
-                stream.tokenSymbol
+                findTokenFromTokenList({
+                  chainId: network.chainId,
+                  address: stream.token
+                })?.symbol ?? stream.tokenSymbol
               }`,
               sourcePosition: Position.Top
             }
@@ -165,7 +169,10 @@ const Map: FC<{
                 label: <UserBlock network={network} address={stream.sender} />
               },
               flowRate: `${humanizedFlowRate.toFixed(2)}/Mo  ${
-                stream.tokenSymbol
+                findTokenFromTokenList({
+                  chainId: network.chainId,
+                  address: stream.token
+                })?.symbol ?? stream.tokenSymbol
               }`,
               sourcePosition: Position.Bottom
             }

@@ -8,7 +8,7 @@ import * as React from 'react'
 
 import AppLink from '../components/AppLink/AppLink'
 import NetworkTabs from '../components/NetworkTabs/NetworkTabs'
-import { networks, defaultNetwork } from '../redux/networks'
+import { defaultNetwork,networks } from '../redux/networks'
 import { NetworkStreams } from './NetworkStreams'
 
 const Home: NextPage = () => {
@@ -31,7 +31,7 @@ const Home: NextPage = () => {
             color="text.primary"
             gutterBottom
           >
-            Welcome to Superfluid Console
+            Welcome to Superfluid Explorer
           </Typography>
           <Typography
             variant="body1"
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
             color="text.secondary"
             paragraph
           >
-            Superfluid Console is an explorer meant for developers and advanced
+            Superfluid Explorer is an explorer meant for developers and advanced
             users of the{' '}
             <AppLink
               data-cy={'protocol-link'}

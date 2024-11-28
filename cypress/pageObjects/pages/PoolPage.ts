@@ -46,7 +46,7 @@ const POOL_CREATED_AT = '[data-cy=created-at]'
 export class PoolPage extends BasePage {
   static validatePoolData(network: string) {
     cy.fixture('gdaData').then((data) => {
-      this.containsText(POOL_TOKEN, data[network].poolWithData.token.symbol)
+      this.containsText(POOL_TOKEN, `${data[network].poolWithData.token.name} (${data[network].poolWithData.token.symbol})`)
       this.hasText(
         POOL_ADMIN,
         ethers.utils.getAddress(data[network].poolWithData.admin.id)
