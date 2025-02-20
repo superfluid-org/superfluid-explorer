@@ -1,11 +1,15 @@
 import FilterListIcon from '@mui/icons-material/FilterList'
+import IosShareIcon from '@mui/icons-material/IosShare'
 import {
   Box,
   Button,
   Chip,
+  FormControlLabel,
   IconButton,
   OutlinedInput,
   Popover,
+  Radio,
+  RadioGroup,
   Stack,
   Table,
   TableBody,
@@ -24,9 +28,14 @@ import {
   createSkipPaging,
   Ordering,
   Token_Filter,
-  Token_OrderBy
+  Token_OrderBy,
+  TokenStatistic_OrderBy,
+  TokenStatistic_Filter
 } from '@superfluid-finance/sdk-core'
-import { TokensQuery } from '@superfluid-finance/sdk-redux'
+import {
+  TokenStatisticsQuery,
+  TokensQuery
+} from '@superfluid-finance/sdk-redux'
 import isEqual from 'lodash/fp/isEqual'
 import omit from 'lodash/fp/omit'
 import set from 'lodash/fp/set'
@@ -52,31 +61,58 @@ interface SuperTokensTableProps {
 }
 
 type RequiredTokensQuery = Required<Omit<TokensQuery, 'block'>>
+type RequiredTokenStatisticsQuery = Required<
+  Omit<TokenStatisticsQuery, 'block'>
+>
 
 const defaultOrdering = {
   orderBy: 'isListed',
   orderDirection: 'desc'
 } as Ordering<Token_OrderBy>
 
+const defaultStatisticsOrdering = {
+  orderBy: 'token__isListed',
+  orderDirection: 'desc'
+} as Ordering<TokenStatistic_OrderBy>
+
 const defaultFilter: Token_Filter = {
   isSuperToken: true
+}
+
+const defaultStatisticsFilter: TokenStatistic_Filter = {
+  token_: defaultFilter
 }
 
 export const defaultPaging = createSkipPaging({
   take: 10
 })
 
+export const tokensPaging = createSkipPaging({
+  take: 500
+})
+
 const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
   const filterAnchorRef = useRef(null)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
+
+  const exportAnchorRef = useRef(null)
+  const [showExportMenu, setShowExportMenu] = useState(false)
+  const [exportValue, setExportValue] = useState('json')
 
   const [listedStatus, setListedStatus] = useState<ListedStatus | null>(null)
 
   const createDefaultArg = (): RequiredTokensQuery => ({
     chainId: network.chainId,
     filter: defaultFilter,
-    pagination: defaultPaging,
+    pagination: tokensPaging,
     order: defaultOrdering
+  })
+
+  const createDefaultStatisticsArg = (): RequiredTokenStatisticsQuery => ({
+    chainId: network.chainId,
+    filter: defaultStatisticsFilter,
+    pagination: defaultPaging,
+    order: defaultStatisticsOrdering
   })
 
   const [queryArg, setQueryArg] =
@@ -96,7 +132,26 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     }
   }), [queriedTokens.data?.items]);
 
+  const [queryStatisticsArg, setQueryStatisticsArg] =
+    useState<RequiredTokenStatisticsQuery>(createDefaultStatisticsArg())
+
+  const [queryStatisticsTrigger, queryStatisticsResult] =
+    sfSubgraph.useLazyTokenStatisticsQuery()
+
+  // const [queryStatisticsArg, setQueryStatisticsArg] =
+  //   useState<RequiredTokenStatisticsQuery>(createDefaultStatisticsArg())
+
+  // const [queryStatisticsTrigger, queryStatisticsResult] =
+  //   sfSubgraph.useLazyTokenStatisticsQuery()
+
   const queryTriggerDebounced = useDebounce(queryTrigger, 250)
+
+  const [dailyOutflowRateGte, setDailyOutflowRateGte] = useState<string>('')
+  const [dailyOutflowRateLte, setDailyOutflowRateLte] = useState<string>('')
+  const [perSecondOutflowRateGte, setPerSecondOutflowRateGte] =
+    useState<string>('')
+  const [perSecondOutflowRateLte, setPerSecondOutflowRateLte] =
+    useState<string>('')
 
   const onQueryArgsChanged = (newArgs: RequiredTokensQuery) => {
     setQueryArg(newArgs)
@@ -111,86 +166,228 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
     }
   }
 
+  const onQueryStatisticsArgsChanged = (
+    newStatisticsArgs: RequiredTokenStatisticsQuery
+  ) => {
+    setQueryStatisticsArg(newStatisticsArgs)
+    queryStatisticsTrigger(newStatisticsArgs, true)
+  }
+
   useEffect(() => {
     onQueryArgsChanged(createDefaultArg())
+    onQueryStatisticsArgsChanged(createDefaultStatisticsArg())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network])
 
-  const setPage = (newPage: number) =>
-    onQueryArgsChanged(
-      set('pagination.skip', (newPage - 1) * queryArg.pagination.take, queryArg)
+  const setPage = (newPage: number) => {
+    onQueryStatisticsArgsChanged(
+      set(
+        'pagination.skip',
+        (newPage - 1) * queryStatisticsArg.pagination.take,
+        queryStatisticsArg
+      )
     )
+  }
 
-  const setPageSize = (newPageSize: number) =>
-    onQueryArgsChanged(set('pagination.take', newPageSize, queryArg))
+  const setPageSize = (newPageSize: number) => {
+    onQueryStatisticsArgsChanged(
+      set('pagination.take', newPageSize, queryStatisticsArg)
+    )
+  }
 
-  const onOrderingChanged = (newOrdering: Ordering<Token_OrderBy>) =>
-    onQueryArgsChanged({ ...queryArg, order: newOrdering })
+  const onStatisticsOrderingChanged = (
+    newStatisticsOrdering: Ordering<TokenStatistic_OrderBy>
+  ) =>
+    onQueryStatisticsArgsChanged({
+      ...queryStatisticsArg,
+      order: newStatisticsOrdering
+    })
 
-  const onSortClicked = (field: Token_OrderBy) => () => {
-    if (queryArg.order?.orderBy !== field) {
-      onOrderingChanged({
+  const onStatisticsSortClicked = (field: TokenStatistic_OrderBy) => () => {
+    if (queryStatisticsArg.order?.orderBy !== field) {
+      onStatisticsOrderingChanged({
         orderBy: field,
         orderDirection: 'desc'
       })
-    } else if (queryArg.order.orderDirection === 'desc') {
-      onOrderingChanged({
+    } else if (queryStatisticsArg.order.orderDirection === 'desc') {
+      onStatisticsOrderingChanged({
         orderBy: field,
         orderDirection: 'asc'
       })
     } else {
-      onOrderingChanged(defaultOrdering)
+      onStatisticsOrderingChanged(defaultStatisticsOrdering)
     }
   }
 
-  const onFilterChange = (newFilter: Token_Filter) => {
-    onQueryArgsChanged({
-      ...queryArg,
-      pagination: { ...queryArg.pagination, skip: 0 },
+  const onFilterChange = (newFilter: TokenStatistic_Filter) => {
+    onQueryStatisticsArgsChanged({
+      ...queryStatisticsArg,
+      pagination: { ...queryStatisticsArg.pagination, skip: 0 },
       filter: newFilter
     })
   }
 
   const clearFilterField =
-    (...fields: Array<keyof Token_Filter>) =>
-    () =>
-      onFilterChange(omit(fields, queryArg.filter))
+    (...fields: Array<keyof TokenStatistic_Filter> | string[]) =>
+      () => {
+        if (fields.includes('totalOutflowRate_gte')) {
+          setDailyOutflowRateGte('')
+          setPerSecondOutflowRateGte('')
+        } else if (fields.includes('totalOutflowRate_lte')) {
+          setDailyOutflowRateLte('')
+          setPerSecondOutflowRateLte('')
+        }
+        onFilterChange(omit(fields, queryStatisticsArg.filter))
+      }
 
   const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { token_, ...newFilter } = queryStatisticsArg.filter
     if (e.target.value) {
       onFilterChange({
-        ...queryArg.filter,
-        name_contains_nocase: e.target.value
+        ...queryStatisticsArg.filter,
+        token_: {
+          name_contains_nocase: e.target.value,
+          isListed: token_?.isListed,
+          symbol_contains_nocase: token_?.symbol_contains_nocase
+        }
       })
     } else {
-      onFilterChange(omit('name_contains_nocase', queryArg.filter))
+      onFilterChange(
+        omit('token_.name_contains_nocase', queryStatisticsArg.filter)
+      )
     }
   }
 
   const onSymbolChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { token_, ...newFilter } = queryStatisticsArg.filter
     if (e.target.value) {
       onFilterChange({
-        ...queryArg.filter,
-        symbol_contains_nocase: e.target.value
+        ...queryStatisticsArg.filter,
+        token_: {
+          symbol_contains_nocase: e.target.value,
+          isListed: token_?.isListed,
+          name_contains_nocase: token_?.name_contains_nocase
+        }
       })
     } else {
-      onFilterChange(omit('symbol_contains_nocase', queryArg.filter))
+      onFilterChange(
+        omit('token_.symbol_contains_nocase', queryStatisticsArg.filter)
+      )
     }
   }
 
-  const getListedStatusFilter = (status: ListedStatus | null): Token_Filter => {
+  const onActiveStreamsGteChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      onFilterChange({
+        ...queryStatisticsArg.filter,
+        totalNumberOfActiveStreams_gte: Number(e.target.value)
+      })
+    } else {
+      onFilterChange(
+        omit('totalNumberOfActiveStreams_gte', queryStatisticsArg.filter)
+      )
+    }
+  }
+
+  const onActiveStreamsLteChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      onFilterChange({
+        ...queryStatisticsArg.filter,
+        totalNumberOfActiveStreams_lte: Number(e.target.value)
+      })
+    } else {
+      onFilterChange(
+        omit('totalNumberOfActiveStreams_lte', queryStatisticsArg.filter)
+      )
+    }
+  }
+
+  const queryOutflowRateGte = (normalizedOutflowRate: string) => {
+    if (normalizedOutflowRate) {
+      onFilterChange({
+        ...queryStatisticsArg.filter,
+        totalOutflowRate_gte: normalizedOutflowRate
+      })
+    } else {
+      onFilterChange(omit('totalOutflowRate_gte', queryStatisticsArg.filter))
+    }
+  }
+
+  const onOutflowRateGteChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDailyOutflowRateGte(e.target.value)
+  }
+
+  useEffect(() => {
+    if (dailyOutflowRateGte) {
+      const dailyOutflowRateGteValue = Number(dailyOutflowRateGte)
+      if (!isNaN(dailyOutflowRateGteValue)) {
+        const normalizedOutflowRate = (
+          (dailyOutflowRateGteValue * 1e18) /
+          (60 * 60 * 24)
+        ).toFixed(0)
+        setPerSecondOutflowRateGte(normalizedOutflowRate)
+        queryOutflowRateGte(normalizedOutflowRate)
+      }
+    }
+  }, [dailyOutflowRateGte])
+
+  const queryOutflowRateLte = (normalizedOutflowRate: string) => {
+    if (normalizedOutflowRate) {
+      onFilterChange({
+        ...queryStatisticsArg.filter,
+        totalOutflowRate_lte: normalizedOutflowRate
+      })
+    } else {
+      onFilterChange(omit('totalOutflowRate_lte', queryStatisticsArg.filter))
+    }
+  }
+
+  const onOutflowRateLteChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDailyOutflowRateLte(e.target.value)
+  }
+
+  useEffect(() => {
+    if (dailyOutflowRateLte) {
+      const dailyOutflowRateLteValue = Number(dailyOutflowRateLte)
+      if (!isNaN(dailyOutflowRateLteValue)) {
+        const normalizedOutflowRate = (
+          (dailyOutflowRateLteValue * 1e18) /
+          (60 * 60 * 24)
+        ).toFixed(0)
+        setPerSecondOutflowRateLte(normalizedOutflowRate)
+        queryOutflowRateLte(normalizedOutflowRate)
+      }
+    }
+  }, [dailyOutflowRateLte])
+
+  const getListedStatusFilter = (
+    status: ListedStatus | null
+  ): TokenStatistic_Filter => {
+    const { token_, ...newFilter } = queryStatisticsArg.filter
     switch (status) {
       case ListedStatus.Listed:
-        return { isListed: true }
+        return {
+          token_: {
+            isListed: true,
+            name_contains_nocase: token_?.name_contains_nocase,
+            symbol_contains_nocase: token_?.symbol_contains_nocase
+          }
+        }
       case ListedStatus.NotListed:
-        return { isListed: false }
+        return {
+          token_: {
+            isListed: false,
+            name_contains_nocase: token_?.name_contains_nocase,
+            symbol_contains_nocase: token_?.symbol_contains_nocase
+          }
+        }
       default:
         return {}
     }
   }
 
   const changeListedStatus = (newStatus: ListedStatus | null) => {
-    const { isListed, ...newFilter } = queryArg.filter
+    const { token_, ...newFilter } = queryStatisticsArg.filter
 
     setListedStatus(newStatus)
     onFilterChange({
@@ -214,16 +411,93 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
 
   const resetFilter = () => {
     clearListedStatusFilter()
-    onFilterChange(defaultFilter)
+    onFilterChange(defaultStatisticsFilter)
     closeFilter()
   }
 
   const hasNextPage = !!queriedTokens.data?.nextPaging
 
+  // const tokens = queryResult.data?.data || []
+
+  const tokenStatistics = queryStatisticsResult.data?.data || []
+
+  const resultsToShow = tokenStatistics.map((stat) => ({
+    ...stat,
+    ...tokens.find((token) => token.id === stat.id)
+  }))
+
+  const {
+    filter: statisticsFilter,
+    order: statisticsOrder,
+    pagination: statisticsPagination
+  } = queryStatisticsArg
+
   const { filter, order, pagination } = queryArg
 
   const { skip = defaultPaging.skip, take = defaultPaging.take } =
     queriedTokens.data?.paging || {}
+
+  const openExport = () => setShowExportMenu(true)
+  const closeExport = () => setShowExportMenu(false)
+  const onExportChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setExportValue((event.target as HTMLInputElement).value)
+  }
+
+  const jsonToCSV = (jsonData: any[]) => {
+    const keys = Object.keys(jsonData[0])
+    const csvRows = [keys.join(',')]
+
+    jsonData.forEach((item) => {
+      const values = keys.map((key) => item[key])
+      csvRows.push(values.join(','))
+    })
+
+    return csvRows.join('\n')
+  }
+
+  const transformData = (originalData: any[]) => {
+    return originalData.map((item) => {
+      const dailyOutflowRateRaw =
+        (parseFloat(item.totalOutflowRate) * 60 * 60 * 24) / 1e18
+      const dailyOutflowRate =
+        dailyOutflowRateRaw < 0.01
+          ? 0
+          : parseFloat(dailyOutflowRateRaw.toFixed(2))
+
+      return {
+        name: item.name,
+        symbol: item.symbol,
+        isListed: item.isListed,
+        totalNumberOfActiveStreams: item.totalNumberOfActiveStreams,
+        dailyOutflowRate: dailyOutflowRate,
+        address: item.id
+      }
+    })
+  }
+
+  const exportData = () => {
+    let blob
+    let fileName
+    const dataToExport = transformData(resultsToShow)
+    if (exportValue === 'json') {
+      const jsonData = JSON.stringify(dataToExport, null, 2)
+      blob = new Blob([jsonData], { type: 'application/json' })
+      fileName = 'tokens.json'
+    } else {
+      const csvData = jsonToCSV(dataToExport)
+      blob = new Blob([csvData], { type: 'text/csv' })
+      fileName = 'tokens.csv'
+    }
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.setAttribute('hidden', '')
+    a.setAttribute('href', url)
+    a.setAttribute('download', `${fileName}`)
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    closeExport()
+  }
 
   return (
     <>
@@ -232,30 +506,40 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
           Super tokens
         </Typography>
 
+        <Tooltip disableFocusListener title="Export">
+          <IconButton ref={exportAnchorRef} onClick={openExport}>
+            <IosShareIcon />
+          </IconButton>
+        </Tooltip>
+
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mx: 2 }}>
-          {filter.name_contains_nocase && (
+          {statisticsFilter.token_?.name_contains_nocase && (
             <Chip
               label={
                 <>
                   Name:{' '}
-                  <b data-cy={'chip-name'}>{filter.name_contains_nocase}</b>
+                  <b data-cy={'chip-name'}>
+                    {statisticsFilter.token_?.name_contains_nocase}
+                  </b>
                 </>
               }
               size="small"
-              onDelete={clearFilterField('name_contains_nocase')}
+              onDelete={clearFilterField('token_.name_contains_nocase')}
             />
           )}
 
-          {filter.symbol_contains_nocase && (
+          {statisticsFilter.token_?.symbol_contains_nocase && (
             <Chip
               label={
                 <>
                   Symbol:{' '}
-                  <b data-cy={'chip-symbol'}>{filter.symbol_contains_nocase}</b>
+                  <b data-cy={'chip-symbol'}>
+                    {statisticsFilter.token_?.symbol_contains_nocase}
+                  </b>
                 </>
               }
               size="small"
-              onDelete={clearFilterField('symbol_contains_nocase')}
+              onDelete={clearFilterField('token_.symbol_contains_nocase')}
             />
           )}
 
@@ -273,6 +557,62 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
               onDelete={clearListedStatusFilter}
             />
           )}
+
+          {statisticsFilter.totalNumberOfActiveStreams_gte && (
+            <Chip
+              label={
+                <>
+                  Active Streams &#8805;{' '}
+                  <b data-cy={'chip-active-streams-gte'}>
+                    {statisticsFilter.totalNumberOfActiveStreams_gte}
+                  </b>
+                </>
+              }
+              size="small"
+              onDelete={clearFilterField('totalNumberOfActiveStreams_gte')}
+            />
+          )}
+
+          {statisticsFilter.totalNumberOfActiveStreams_lte && (
+            <Chip
+              label={
+                <>
+                  Active Streams &#8804;{' '}
+                  <b data-cy={'chip-active-streams-lte'}>
+                    {statisticsFilter.totalNumberOfActiveStreams_lte}
+                  </b>
+                </>
+              }
+              size="small"
+              onDelete={clearFilterField('totalNumberOfActiveStreams_lte')}
+            />
+          )}
+
+          {statisticsFilter.totalOutflowRate_gte && (
+            <Chip
+              label={
+                <>
+                  Outflow Rate &#8805;{' '}
+                  <b data-cy={'chip-outflow-rate-gte'}>{dailyOutflowRateGte}</b>
+                </>
+              }
+              size="small"
+              onDelete={clearFilterField('totalOutflowRate_gte')}
+            />
+          )}
+
+          {statisticsFilter.totalOutflowRate_lte && (
+            <Chip
+              label={
+                <>
+                  Outflow Rate &#8804;{' '}
+                  <b data-cy={'chip-outflow-rate-lte'}>{dailyOutflowRateLte}</b>
+                </>
+              }
+              size="small"
+              onDelete={clearFilterField('totalOutflowRate_lte')}
+            />
+          )}
         </Stack>
 
         <Tooltip disableFocusListener title="Filter">
@@ -280,6 +620,59 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
+
+        <Popover
+          open={showExportMenu}
+          anchorEl={exportAnchorRef.current}
+          onClose={closeExport}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <Stack
+            sx={{ p: 3, pb: 2, minWidth: '300px' }}
+            component="form"
+            // onSubmit={onFormSubmit}
+            noValidate
+            spacing={2}
+          >
+            <Box>
+              <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
+                Export as
+              </Typography>
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="json"
+                name="radio-buttons-group"
+                value={exportValue}
+                onChange={onExportChange}
+              >
+                <FormControlLabel value="csv" control={<Radio />} label="CSV" />
+                <FormControlLabel
+                  value="json"
+                  control={<Radio />}
+                  label="JSON"
+                />
+              </RadioGroup>
+            </Box>
+
+            <Stack direction="row" justifyContent="flex-end" spacing={1}>
+              <Button
+                data-cy={'close-export'}
+                onClick={closeExport}
+                tabIndex={-1}
+              >
+                Close
+              </Button>
+              <Button
+                data-cy={'export-data'}
+                onClick={exportData}
+                tabIndex={-1}
+              >
+                Export
+              </Button>
+            </Stack>
+          </Stack>
+        </Popover>
 
         <Popover
           open={showFilterMenu}
@@ -304,12 +697,12 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 autoFocus
                 fullWidth
                 size="small"
-                value={filter.name_contains_nocase || ''}
+                value={statisticsFilter.token_?.name_contains_nocase || ''}
                 onChange={onNameChange}
                 endAdornment={
-                  filter.name_contains_nocase && (
+                  statisticsFilter.token_?.name_contains_nocase && (
                     <ClearInputAdornment
-                      onClick={clearFilterField('name_contains_nocase')}
+                      onClick={clearFilterField('token_.name_contains_nocase')}
                     />
                   )
                 }
@@ -324,12 +717,14 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 data-cy={'filter-symbol-input'}
                 fullWidth
                 size="small"
-                value={filter.symbol_contains_nocase || ''}
+                value={statisticsFilter.token_?.symbol_contains_nocase || ''}
                 onChange={onSymbolChange}
                 endAdornment={
-                  filter.symbol_contains_nocase && (
+                  statisticsFilter.token_?.symbol_contains_nocase && (
                     <ClearInputAdornment
-                      onClick={clearFilterField('symbol_contains_nocase')}
+                      onClick={clearFilterField(
+                        'token_.symbol_contains_nocase'
+                      )}
                     />
                   )
                 }
@@ -363,18 +758,122 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
               </ToggleButtonGroup>
             </Box>
 
+            <Box>
+              <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
+                Active Streams
+              </Typography>
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <>&#8804;</>
+                <OutlinedInput
+                  data-cy={'filter-active-streams-gte-input'}
+                  fullWidth
+                  size="small"
+                  value={statisticsFilter.totalNumberOfActiveStreams_gte || ''}
+                  onChange={onActiveStreamsGteChange}
+                  endAdornment={
+                    statisticsFilter.totalNumberOfActiveStreams_gte && (
+                      <ClearInputAdornment
+                        onClick={clearFilterField(
+                          'totalNumberOfActiveStreams_gte'
+                        )}
+                      />
+                    )
+                  }
+                />
+              </Stack>
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <>&#8805;</>
+                <OutlinedInput
+                  data-cy={'filter-active-streams-lte-input'}
+                  fullWidth
+                  size="small"
+                  value={statisticsFilter.totalNumberOfActiveStreams_lte || ''}
+                  onChange={onActiveStreamsLteChange}
+                  endAdornment={
+                    statisticsFilter.totalNumberOfActiveStreams_lte && (
+                      <ClearInputAdornment
+                        onClick={clearFilterField(
+                          'totalNumberOfActiveStreams_lte'
+                        )}
+                      />
+                    )
+                  }
+                />
+              </Stack>
+            </Box>
+
+            <Box>
+              <Typography variant="subtitle2" component="div" sx={{ mb: 1 }}>
+                Daily Outflow Rate
+              </Typography>
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <>&#8804;</>
+                <OutlinedInput
+                  data-cy={'filter-outflow-rate-gte-input'}
+                  fullWidth
+                  size="small"
+                  value={dailyOutflowRateGte || ''}
+                  onChange={onOutflowRateGteChange}
+                  endAdornment={
+                    statisticsFilter.totalOutflowRate_gte && (
+                      <ClearInputAdornment
+                        onClick={clearFilterField('totalOutflowRate_gte')}
+                      />
+                    )
+                  }
+                />
+              </Stack>
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <>&#8805;</>
+                <OutlinedInput
+                  data-cy={'filter-outflow-rate-lte-input'}
+                  fullWidth
+                  size="small"
+                  value={dailyOutflowRateLte || ''}
+                  onChange={onOutflowRateLteChange}
+                  endAdornment={
+                    statisticsFilter.totalOutflowRate_lte && (
+                      <ClearInputAdornment
+                        onClick={clearFilterField('totalOutflowRate_lte')}
+                      />
+                    )
+                  }
+                />
+              </Stack>
+            </Box>
+
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              {(filter.name_contains_nocase ||
-                filter.symbol_contains_nocase ||
+              {(statisticsFilter.token_?.name_contains_nocase ||
+                statisticsFilter.token_?.symbol_contains_nocase ||
                 listedStatus !== null) && (
-                <Button
-                  data-cy={'reset-filter'}
-                  onClick={resetFilter}
-                  tabIndex={-1}
-                >
-                  Reset
-                </Button>
-              )}
+                  <Button
+                    data-cy={'reset-filter'}
+                    onClick={resetFilter}
+                    tabIndex={-1}
+                  >
+                    Reset
+                  </Button>
+                )}
               <Button data-cy={'close-filter'} type="submit" tabIndex={-1}>
                 Close
               </Button>
@@ -387,11 +886,13 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
           <TableRow>
             <TableCell width="40%">
               <TableSortLabel
-                active={order?.orderBy === 'name'}
+                active={statisticsOrder?.orderBy === 'token__name'}
                 direction={
-                  order?.orderBy === 'name' ? order?.orderDirection : 'desc'
+                  statisticsOrder?.orderBy === 'token__name'
+                    ? statisticsOrder?.orderDirection
+                    : 'desc'
                 }
-                onClick={onSortClicked('name')}
+                onClick={onStatisticsSortClicked('token__name')}
               >
                 Token name
               </TableSortLabel>
@@ -399,11 +900,13 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
             <TableCell width="20%">Symbol</TableCell>
             <TableCell width="20%">
               <TableSortLabel
-                active={order?.orderBy === 'isListed'}
+                active={statisticsOrder?.orderBy === 'token__isListed'}
                 direction={
-                  order?.orderBy === 'isListed' ? order?.orderDirection : 'desc'
+                  statisticsOrder?.orderBy === 'token__isListed'
+                    ? statisticsOrder?.orderDirection
+                    : 'desc'
                 }
-                onClick={onSortClicked('isListed')}
+                onClick={onStatisticsSortClicked('token__isListed')}
               >
                 Listed
                 <InfoTooltipBtn
@@ -424,14 +927,46 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 />
               </TableSortLabel>
             </TableCell>
+            <TableCell width="20%">
+              <TableSortLabel
+                active={
+                  statisticsOrder?.orderBy === 'totalNumberOfActiveStreams'
+                }
+                direction={
+                  statisticsOrder?.orderBy === 'totalNumberOfActiveStreams'
+                    ? statisticsOrder?.orderDirection
+                    : 'desc'
+                }
+                onClick={onStatisticsSortClicked('totalNumberOfActiveStreams')}
+              >
+                Active Streams
+              </TableSortLabel>
+            </TableCell>
+            {/* <TableCell width="20%">Holders</TableCell> */}
+            <TableCell width="20%">
+              <TableSortLabel
+                active={statisticsOrder?.orderBy === 'totalOutflowRate'}
+                direction={
+                  statisticsOrder?.orderBy === 'totalOutflowRate'
+                    ? statisticsOrder?.orderDirection
+                    : 'desc'
+                }
+                onClick={onStatisticsSortClicked('totalOutflowRate')}
+              >
+                Daily Outflow Rate
+              </TableSortLabel>
+            </TableCell>
             <TableCell width="40%">Address</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {tokens.map((token) => (
+          {resultsToShow.map((token) => (
             <TableRow key={token.id}>
               <TableCell data-cy={'token-name'}>
                 <AppLink href={`/${network.slugName}/supertokens/${token.id}`}>
+                  {/* {tokens.find((stat) => stat.id === token.id)?.name || (
+                    <>&#8212;</>
+                  )} */}
                   {token.name || <>&#8212;</>}
                 </AppLink>
               </TableCell>
@@ -446,7 +981,10 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                   <Chip
                     clickable
                     size="small"
-                    label={token.symbol || <>&#8211;</>}
+                    label={
+                      // } //   ) //     <>&#8212;</> //   tokens.find((stat) => stat.id === token.id)?.symbol || ( // {
+                      token.symbol || <>&#8212;</>
+                    }
                     sx={{
                       cursor: 'pointer',
                       lineHeight: '24px'
@@ -455,7 +993,27 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
                 </AppLink>
               </TableCell>
               <TableCell data-cy={'token-listed-status'}>
+                {/* {tokens.find((stat) => stat.id === token.id)?.isListed
+                  ? 'Yes'
+                  : 'No'} */}
                 {token.isListed ? 'Yes' : 'No'}
+              </TableCell>
+              <TableCell data-cy={'token-active-streams'}>
+                {token.totalNumberOfActiveStreams}
+              </TableCell>
+              {/* <TableCell></TableCell> */}
+              <TableCell data-cy={'token-outflow-rate'}>
+                {(Number(token.totalOutflowRate) * 60 * 60 * 24) / 1e18 >
+                  0.01 ? (
+                  <>
+                    {(
+                      (Number(token.totalOutflowRate) * 60 * 60 * 24) /
+                      1e18
+                    ).toFixed(2)}
+                  </>
+                ) : (
+                  <>0</>
+                )}
               </TableCell>
               <TableCell data-cy={'token-address'}>{token.id}</TableCell>
             </TableRow>
@@ -479,10 +1037,10 @@ const SuperTokensTable: FC<SuperTokensTableProps> = ({ network }) => {
           />
         </TableBody>
 
-        {tokens.length > 0 && (
+        {resultsToShow.length > 0 && (
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={4} align="right">
+              <TableCell colSpan={6} align="right">
                 <InfinitePagination
                   page={skip / take + 1}
                   pageSize={pagination.take}
