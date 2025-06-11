@@ -35,6 +35,8 @@ import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { sfSubgraph } from '../../../redux/store'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
+import { skipToken } from '@reduxjs/toolkit/query'
+import FlowUpdatedEventDataGrid from './FlowUpdatedEventDataGrid'
 
 export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
   streamId,
@@ -46,7 +48,27 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
   })
 
   const stream: Stream | null | undefined = streamQuery.data
-
+  
+  const flowUpdatedEventsQuery = sfSubgraph.useFlowUpdatedEventsQuery(stream ? {
+    chainId: network.chainId,
+    filter: {
+      timestamp_gte: stream.createdAtTimestamp.toString(),
+      ...(stream.updatedAtTimestamp ? {
+        timestamp_lte: stream.updatedAtTimestamp.toString()
+      } : {}),
+      token: stream.token,
+      sender: stream.sender,
+      receiver: stream.receiver
+    },
+    order: {
+      orderBy: 'timestamp',
+      orderDirection: 'desc'
+    },
+    pagination: {
+      take: Infinity
+    }
+  } : skipToken)
+  
   const [streamPeriodPaging, setStreamPeriodPaging] =
     useState<SkipPaging>(createSkipPaging())
   const [streamPeriodOrdering, setStreamPeriodOrdering] = useState<
@@ -289,6 +311,28 @@ export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({
           />
         </Card>
       </Box>
+
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 1 }}>
+          Events
+          <InfoTooltipBtn
+            dataCy={'flow-events-tooltip'}
+            title="All creation, update, and deletion events for this stream"
+            size={22}
+          />
+        </Typography>
+
+        <Card elevation={2} data-cy={'flow-updated-events-grid'}>
+          <FlowUpdatedEventDataGrid
+            stream={stream}
+            queryResult={flowUpdatedEventsQuery}
+            setPaging={() => {}}
+            ordering={undefined}
+            setOrdering={() => {}}
+          />
+        </Card>
+      </Box>
+
     </Container>
   )
 }
