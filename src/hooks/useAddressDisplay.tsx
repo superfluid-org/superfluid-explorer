@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import { useMemo } from 'react'
 
 import { ensApi } from '../redux/slices/ensResolver.slice'
+import { getTOREXInfo, isTOREXAddress } from '../utils/torexAddressMap'
 
 interface AddressDisplayResult {
   addressChecksummed: string | null | undefined
@@ -47,11 +48,22 @@ export const useAddress = (
   const ensLookupQuery = ensApi.useLookupAddressQuery(address, {
     skip
   })
+
+  const torexInfo = useMemo(() => {
+    if (skip) return null
+    return getTOREXInfo(address)
+  }, [address, skip])
+
+  const isTorex = useMemo(() => {
+    if (skip) return false
+    return isTOREXAddress(address)
+  }, [address, skip])
+
   return {
     addressChecksummed: !skip
       ? ethers.utils.getAddress(address.toLowerCase())
       : undefined,
-    ensName: ensLookupQuery.data?.name,
+    ensName: isTorex && torexInfo ? torexInfo.name : ensLookupQuery.data?.name,
     avatar: undefined,
     isFetching: ensLookupQuery.isFetching
   }

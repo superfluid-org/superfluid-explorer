@@ -42,9 +42,9 @@ import {
   addressBookSelectors,
   createEntryId
 } from '../../../redux/slices/addressBook.slice'
-import { ensApi } from '../../../redux/slices/ensResolver.slice'
 import { sfSubgraph } from '../../../redux/store'
 import ellipsisAddress from '../../../utils/ellipsisAddress'
+import { useAddressDisplay } from '../../../hooks/useAddressDisplay'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import {
   incomingStreamOrderingDefault,
@@ -77,9 +77,7 @@ const AccountPage: NextPage = () => {
     id: address
   })
 
-  const ensAddressQuery = ensApi.useLookupAddressQuery(address)
-
-  const ensName = ensAddressQuery.currentData?.name
+  const addressDisplay = useAddressDisplay(address)
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams')
   const prefetchIndexesQuery = sfSubgraph.usePrefetch('indexes')
@@ -165,7 +163,7 @@ const AccountPage: NextPage = () => {
               sx={{ mx: 1 }}
             >
               {/* TODO(KK): When there's an address book entry then ENS name is not displayed anywhere. Not sure if I like it...  */}
-              {addressBookEntry ? addressBookEntry.nameTag : ensName}
+              {addressBookEntry ? addressBookEntry.nameTag : addressDisplay.ensName}
             </Typography>
             <Typography
               data-cy={'address'}
