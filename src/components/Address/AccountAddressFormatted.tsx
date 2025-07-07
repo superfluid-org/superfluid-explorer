@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { FC } from 'react'
 
+import { useAddressDisplay } from '../../hooks/useAddressDisplay'
 import { useAppSelector } from '../../redux/hooks'
 import { Network } from '../../redux/networks'
 import {
@@ -18,31 +19,36 @@ export const AccountAddressFormatted: FC<{
   const addressBookEntry = useAppSelector((state) =>
     addressBookSelectors.selectById(state, createEntryId(network, address))
   )
+  const addressDisplay = useAddressDisplay(address)
+  
   const parsedAddress = ellipsis
     ? ellipsisAddress(ethers.utils.getAddress(address), ellipsis)
     : ethers.utils.getAddress(address)
+
+  // Priority: Address Book > Whois recommended name >  shortened address
+  const displayName = addressBookEntry?.nameTag || addressDisplay.recommendedName || null
 
   if (format === 'addressPlusName') {
     return (
       <>
         {parsedAddress}
-        {!!addressBookEntry?.nameTag && ` (${addressBookEntry.nameTag})`}
+        {!!displayName && ` (${displayName})`}
       </>
     )
   }
 
   if (format === 'namePlusAddress') {
-    if (!addressBookEntry?.nameTag) {
+    if (!displayName) {
       return <>{parsedAddress}</>
     } else {
       return (
         <>
-          {addressBookEntry.nameTag} ({parsedAddress})
+          {displayName} ({parsedAddress})
         </>
       )
     }
   }
 
   // "nameOnly" is default
-  return <>{addressBookEntry?.nameTag || parsedAddress}</>
+  return <>{displayName || parsedAddress}</>
 }

@@ -3,6 +3,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder'
 import { Avatar, IconButton, SvgIconProps, Tooltip } from '@mui/material'
 import { FC, useState } from 'react'
 
+import { useAddressDisplay } from '../../hooks/useAddressDisplay'
 import { useAppSelector } from '../../redux/hooks'
 import { Network } from '../../redux/networks'
 import {
@@ -21,8 +22,12 @@ export const AddressBookButton: FC<{
     addressBookSelectors.selectById(state, createEntryId(network, address))
   )
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const addressDisplay = useAddressDisplay(address)
 
-  const avatarUrl = ensApi.useLookupAvatarQuery(address)
+  const ensAvatarQuery = ensApi.useLookupAvatarQuery(address, {
+    skip: !!addressDisplay.recommendedAvatar
+  })
+  const avatarUrl = addressDisplay.recommendedAvatar || ensAvatarQuery.currentData?.avatar
 
   return (
     <>
@@ -43,10 +48,12 @@ export const AddressBookButton: FC<{
         open={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
       />
-      {avatarUrl.currentData ? (
-        <Avatar alt={address} src={avatarUrl.currentData?.avatar} />
-      ) : (
-        ''
+      {avatarUrl && (
+        <Avatar 
+          alt={addressDisplay.recommendedName || address} 
+          src={avatarUrl} 
+          sx={{ width: 32, height: 32 }}
+        />
       )}
     </>
   )
