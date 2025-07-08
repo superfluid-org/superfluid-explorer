@@ -24,11 +24,8 @@ export const AddressBookButton: FC<{
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const addressDisplay = useAddressDisplay(address)
 
-  const ensAvatarQuery = ensApi.useLookupAvatarQuery(address, {
-    skip: !!addressDisplay.recommendedAvatar
-  })
-  const avatarUrl = addressDisplay.recommendedAvatar || ensAvatarQuery.currentData?.avatar
-
+  const avatarUrl = addressDisplay.recommendedAvatar 
+  
   return (
     <>
       <Tooltip
