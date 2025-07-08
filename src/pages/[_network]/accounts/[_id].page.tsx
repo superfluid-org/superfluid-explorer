@@ -37,12 +37,12 @@ import EventTableWithInfo from '../../../components/Table/EventTableWithInfo'
 import TokenChip from '../../../components/TokenChip/TokenChip'
 import IdContext from '../../../contexts/IdContext'
 import { useNetworkContext } from '../../../contexts/NetworkContext'
+import { useAddressDisplay } from '../../../hooks/useAddressDisplay'
 import { useAppSelector } from '../../../redux/hooks'
 import {
   addressBookSelectors,
   createEntryId
 } from '../../../redux/slices/addressBook.slice'
-import { ensApi } from '../../../redux/slices/ensResolver.slice'
 import { sfSubgraph } from '../../../redux/store'
 import ellipsisAddress from '../../../utils/ellipsisAddress'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
@@ -77,9 +77,7 @@ const AccountPage: NextPage = () => {
     id: address
   })
 
-  const ensAddressQuery = ensApi.useLookupAddressQuery(address)
-
-  const ensName = ensAddressQuery.currentData?.name
+  const addressDisplay = useAddressDisplay(address)
 
   const prefetchStreamsQuery = sfSubgraph.usePrefetch('streams')
   const prefetchIndexesQuery = sfSubgraph.usePrefetch('indexes')
@@ -164,8 +162,8 @@ const AccountPage: NextPage = () => {
               component="h1"
               sx={{ mx: 1 }}
             >
-              {/* TODO(KK): When there's an address book entry then ENS name is not displayed anywhere. Not sure if I like it...  */}
-              {addressBookEntry ? addressBookEntry.nameTag : ensName}
+              {/* Priority: Address Book > Whois recommended name */}
+              {addressBookEntry ? addressBookEntry.nameTag : addressDisplay.recommendedName}
             </Typography>
             <Typography
               data-cy={'address'}

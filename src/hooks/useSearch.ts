@@ -172,7 +172,7 @@ export const useSearch = (searchTerm: string) => {
           .map((x) => ({
             ...x,
             id: ethers.utils.getAddress(x.id),
-            ENS: addressDisplay.ensName
+            ENS: addressDisplay.recommendedName || addressDisplay.ensName
           })),
         (x) => x.id
       ),

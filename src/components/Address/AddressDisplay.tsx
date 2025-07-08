@@ -13,7 +13,10 @@ export default memo(function AddressDisplay({
   length = 'short'
 }: AddressDisplayProps) {
   const addressDisplay = useAddressDisplay(address)
-  if (addressDisplay.ensName) {
+  
+  if (addressDisplay.recommendedName) {
+    return <>{addressDisplay.recommendedName}</>
+  } else if (addressDisplay.ensName) {
     return <>{addressDisplay.ensName}</>
   } else {
     return (
