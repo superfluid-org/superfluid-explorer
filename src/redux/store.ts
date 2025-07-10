@@ -35,7 +35,6 @@ import { balanceRpcApiEndpoints } from './balanceRpcApiEndpoints'
 import { networks } from './networks'
 import { addressBookSlice } from './slices/addressBook.slice'
 import { themePreferenceSlice } from './slices/appPreferences.slice'
-import { ensApi } from './slices/ensResolver.slice'
 import { whoisApi } from './slices/whoisResolver.slice'
 
 export const rpcApi = initializeRpcApiSlice(createApiWithReactHooks)
@@ -82,7 +81,6 @@ export const makeStore = wrapMakeStore(() => {
       [sfSubgraph.reducerPath]: sfSubgraph.reducer,
       [themePreferenceSlice.name]: themePreferenceSlice.reducer,
       [addressBookSlice.name]: addressBookReducer,
-      [ensApi.reducerPath]: ensApi.reducer,
       [whoisApi.reducerPath]: whoisApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
@@ -108,7 +106,6 @@ export const makeStore = wrapMakeStore(() => {
         )
         .concat(rpcApi.middleware)
         .concat(sfSubgraph.middleware)
-        .concat(ensApi.middleware)
         .concat(whoisApi.middleware)
   })
 
