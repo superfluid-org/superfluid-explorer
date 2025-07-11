@@ -10,7 +10,6 @@ import {
   addressBookSelectors,
   createEntryId
 } from '../../redux/slices/addressBook.slice'
-import { ensApi } from '../../redux/slices/ensResolver.slice'
 import { AddressBookDialog } from './AddressBookDialog'
 
 export const AddressBookButton: FC<{

@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
 import { useMemo } from 'react'
 
-import { ensApi } from '../redux/slices/ensResolver.slice'
 import { whoisApi } from '../redux/slices/whoisResolver.slice'
 
 interface AddressDisplayResult {
@@ -34,26 +33,25 @@ export const useAddressDisplay = (
 }
 
 export const useName = (name: string, skip: boolean): AddressDisplayResult => {
-  const ensAddressQuery = ensApi.useResolveNameQuery(name, {
+  const whoisReverseQuery = whoisApi.useReverseResolveNameQuery(name, {
     skip
   })
-  
-  const whoisQuery = whoisApi.useResolveAddressQuery(
-    ensAddressQuery.currentData?.address || 'skip',
-    {
-      skip: !ensAddressQuery.currentData?.address
-    }
-  )
+
+  // Extract address from whois response (could be from ENS, Farcaster, etc.)
+  const resolvedAddress = whoisReverseQuery.currentData?.ENS?.address || 
+                         whoisReverseQuery.currentData?.Farcaster?.address ||
+                         whoisReverseQuery.currentData?.AlfaFrens?.address ||
+                         whoisReverseQuery.currentData?.TOREX?.address
 
   return {
-    addressChecksummed: ensAddressQuery.currentData?.address,
-    ensName: !!ensAddressQuery.currentData?.address ? name : null,
-    avatar: undefined,
-    whoisName: whoisQuery.data?.recommendedName,
-    whoisAvatar: whoisQuery.data?.recommendedAvatar,
-    recommendedName: whoisQuery.data?.recommendedName || (!!ensAddressQuery.currentData?.address ? name : null),
-    recommendedAvatar: whoisQuery.data?.recommendedAvatar || whoisQuery.data?.ENS?.avatarUrl,
-    isFetching: ensAddressQuery.isFetching || whoisQuery.isFetching
+    addressChecksummed: resolvedAddress ? ethers.utils.getAddress(resolvedAddress) : undefined,
+    ensName: whoisReverseQuery.currentData?.ENS?.handle,
+    avatar: whoisReverseQuery.currentData?.recommendedAvatar,
+    whoisName: whoisReverseQuery.currentData?.recommendedName,
+    whoisAvatar: whoisReverseQuery.currentData?.recommendedAvatar,
+    recommendedName: whoisReverseQuery.currentData?.recommendedName,
+    recommendedAvatar: whoisReverseQuery.currentData?.recommendedAvatar,
+    isFetching: whoisReverseQuery.isFetching
   }
 }
 
@@ -65,24 +63,16 @@ export const useAddress = (
     skip
   })
 
-  const needsEnsLookup = !skip && !whoisQuery.data?.ENS?.handle && !whoisQuery.isFetching
-  const ensLookupQuery = ensApi.useLookupAddressQuery(address, {
-    skip: skip || !needsEnsLookup
-  })
-
-  //Use fallback from ENS if whois is not returning the name
-  const ensName = whoisQuery.data?.ENS?.handle || ensLookupQuery.data?.name
-
   return {
     addressChecksummed: !skip
       ? ethers.utils.getAddress(address.toLowerCase())
       : undefined,
-    ensName: ensName,
-    avatar: undefined,
+    ensName: whoisQuery.data?.ENS?.handle,
+    avatar: whoisQuery.data?.recommendedAvatar,
     whoisName: whoisQuery.data?.recommendedName,
     whoisAvatar: whoisQuery.data?.recommendedAvatar,
-    recommendedName: whoisQuery.data?.recommendedName || ensName,
-    recommendedAvatar: whoisQuery.data?.recommendedAvatar || whoisQuery.data?.ENS?.avatarUrl,
-    isFetching: whoisQuery.isFetching || ensLookupQuery.isFetching
+    recommendedName: whoisQuery.data?.recommendedName,
+    recommendedAvatar: whoisQuery.data?.recommendedAvatar,
+    isFetching: whoisQuery.isFetching
   }
 }
