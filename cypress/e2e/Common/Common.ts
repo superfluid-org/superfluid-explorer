@@ -1,104 +1,108 @@
-import { Given, Then } from 'cypress-cucumber-preprocessor/steps'
+import { Given, Then } from 'cypress-cucumber-preprocessor/steps';
 
-import { BasePage } from '../../pageObjects/BasePage'
-import { CommonElements } from '../../pageObjects/components/CommonElements'
-import { AccountPage } from '../../pageObjects/pages/AccountPage'
-import { LandingPage } from '../../pageObjects/pages/LandingPage'
-import { TokenPage } from '../../pageObjects/pages/TokenPage'
+import { BasePage } from '../../pageObjects/BasePage';
+import { CommonElements } from '../../pageObjects/components/CommonElements';
+import { AccountPage } from '../../pageObjects/pages/AccountPage';
+import { LandingPage } from '../../pageObjects/pages/LandingPage';
+import { TokenPage } from '../../pageObjects/pages/TokenPage';
 
-Given(`User has opened the {string} page`, (page) => {
-  LandingPage.openPage(page)
-})
+/** @param {string} s */
+const norm = (s) => String(s).trim();
 
-Then(`User opens search dialog`, () => {
-  CommonElements.clickHeaderSearchBar()
-})
+Given('User has opened the {string} page', (page /** @type {string} */) => {
+  return LandingPage.openPage(norm(page));
+});
 
-Given(`User searches for static balance account`, () => {
-  CommonElements.searchForStaticBalanceAccount()
-})
+Then('User opens search dialog', () => {
+  return CommonElements.clickHeaderSearchBar();
+});
 
-Given(`User searches for transactions account`, () => {
-  CommonElements.searchForTransactionAccount()
-})
+Given('User searches for static balance account', () => {
+  return CommonElements.searchForStaticBalanceAccount();
+});
 
-Given(`User opens the {string} account result`, (network) => {
-  CommonElements.openNetworkAddressResult(network)
-})
+Given('User searches for transactions account', () => {
+  return CommonElements.searchForTransactionAccount();
+});
 
-Then(`The account page on {string} is opened`, (network) => {
-  CommonElements.validateAccountPageLink(network)
-})
+Given('User opens the {string} account result', (network /** @type {string} */) => {
+  return CommonElements.openNetworkAddressResult(norm(network));
+});
 
-Given(`User searches for {string}`, (text) => {
-  CommonElements.searchFor(text)
-})
+Then('The account page on {string} is opened', (network /** @type {string} */) => {
+  return CommonElements.validateAccountPageLink(norm(network));
+});
 
-Given(`User opens the first token result on {string}`, (network) => {
-  CommonElements.openFirstTokenResult(network)
-})
+Given('User searches for {string}', (text /** @type {string} */) => {
+  return CommonElements.searchFor(norm(text));
+});
 
-Then(`The token page on {string} is opened`, (network) => {
-  CommonElements.validateTokenPageLink(network)
-})
+Given('User opens the first token result on {string}', (network /** @type {string} */) => {
+  return CommonElements.openFirstTokenResult(norm(network));
+});
 
-Given(`Token listed status is {string}`, (text) => {
-  TokenPage.validateListedTokenStatus(text)
-})
+Then('The token page on {string} is opened', (network /** @type {string} */) => {
+  return CommonElements.validateTokenPageLink(norm(network));
+});
 
-Given(`User clicks the address book button`, () => {
-  AccountPage.clickAddressBookButton()
-})
+Given('Token listed status is {string}', (text /** @type {string} */) => {
+  return TokenPage.validateListedTokenStatus(norm(text));
+});
 
-Given(`User saves the entry as {string}`, (name) => {
-  CommonElements.inputAndSaveToAddressBook(name)
-})
+Given('User clicks the address book button', () => {
+  return AccountPage.clickAddressBookButton();
+});
 
-Given(`Address book button is filled`, () => {
-  AccountPage.addressBookButtonIsFilled()
-})
+Given('User saves the entry as {string}', (name /** @type {string} */) => {
+  return CommonElements.inputAndSaveToAddressBook(norm(name));
+});
 
-Given(`User has opened the {string} page on {string}`, (page, network) => {
-  LandingPage.openDataPage(page, network)
-})
+Given('Address book button is filled', () => {
+  return AccountPage.addressBookButtonIsFilled();
+});
 
-Then(`Address book entry named {string} is shown`, (name) => {
-  CommonElements.addressBookEntryIsShown(name)
-})
+Given('User has opened the {string} page on {string}', (page /** @type {string} */, network /** @type {string} */) => {
+  return LandingPage.openDataPage(norm(page), norm(network));
+});
 
-Then(`Account search result entry named {string} is shown`, (name) => {
-  CommonElements.accountSearchResultContainsName(name)
-})
+Then('Address book entry named {string} is shown', (name /** @type {string} */) => {
+  return CommonElements.addressBookEntryIsShown(norm(name));
+});
 
-Given(`User clicks on the subgraph explorer button`, () => {
-  CommonElements.clickSubgraphButton()
-})
+Then('Account search result entry named {string} is shown', (name /** @type {string} */) => {
+  return CommonElements.accountSearchResultContainsName(norm(name));
+});
 
-Then(`Subgraph explorer page is opened`, () => {
-  CommonElements.subgraphContainerIsVisible()
-})
+Given('User clicks on the subgraph explorer button', () => {
+  return CommonElements.clickSubgraphButton();
+});
 
-Given(`User has opened the {string} read more page`, (page) => {
-  CommonElements.openReadMePage(page)
-})
+Then('Subgraph explorer page is opened', () => {
+  return CommonElements.subgraphContainerIsVisible();
+});
 
-Then(`There are no elements containing {string}`, (text) => {
-  BasePage.notContains(text)
-})
+Given('User has opened the {string} read more page', (page /** @type {string} */) => {
+  return CommonElements.openReadMePage(norm(page));
+});
 
-Given(`User enables all of the testnets`, () => {
-  CommonElements.enableAllTestnets()
-})
+Then('There are no elements containing {string}', (text /** @type {string} */) => {
+  return BasePage.notContains(norm(text));
+});
 
-Given(/^User toggles the test network "([^"]*)" in settings$/, (slugName) => {
-  CommonElements.openSettingsMenu()
-  CommonElements.toggleTestnetBySlug(slugName)
-  CommonElements.closeSettingsMenu()
-})
+Given('User enables all of the testnets', () => {
+  return CommonElements.enableAllTestnets();
+});
+
+// regex-форма оставлена как есть; унифицированы кавычки и добавлен return
+Given(/^User toggles the test network "([^"]*)" in settings$/, (slugName /** @type {string} */) => {
+  CommonElements.openSettingsMenu();
+  CommonElements.toggleTestnetBySlug(norm(slugName));
+  return CommonElements.closeSettingsMenu();
+});
 
 Then(
-  `Tooltip is visible when user hovers the {string} tooltip icon`,
-  (tooltip) => {
-    AccountPage.hoverTooltipAndValidateLink(tooltip)
+  'Tooltip is visible when user hovers the {string} tooltip icon',
+  (tooltip /** @type {string} */) => {
+    return AccountPage.hoverTooltipAndValidateLink(norm(tooltip));
   }
-)
+);
