@@ -7,16 +7,23 @@ export interface EnabledForwarder {
   description: string
 }
 
+// Known forwarder metadata for display names and descriptions
+const KNOWN_FORWARDERS: Record<string, { name: string; description: string }> = {
+  // CFAv1Forwarder is deployed at different addresses per network
+  // GDAv1Forwarder is deployed at different addresses per network
+  // We'll match by checking metadata when available
+}
+
 export const adhocRpcEndpoints = {
   endpoints: (builder: RpcEndpointBuilder) => ({
     enabledForwarders: builder.query<
       EnabledForwarder[],
       {
         chainId: number
-        forwarders: Array<{ address: string; name: string; description: string }>
+        knownForwarders?: Array<{ address: string; name: string; description: string }>
       }
     >({
-      queryFn: async ({ chainId, forwarders }) => {
+      queryFn: async ({ chainId, knownForwarders = [] }) => {
         try {
           const client = await getSubgraphClient(chainId)
 
@@ -49,10 +56,24 @@ export const adhocRpcEndpoints = {
             )
           }
 
-          // Filter to only enabled forwarders that we know about
-          const enabledForwarders: EnabledForwarder[] = forwarders.filter(
-            (f) => forwarderStates.get(f.address.toLowerCase()) === true
+          // Create lookup map for known forwarders
+          const knownForwarderMap = new Map(
+            knownForwarders.map((f) => [f.address.toLowerCase(), f])
           )
+
+          // Return ALL enabled forwarders (not just known ones)
+          const enabledForwarders: EnabledForwarder[] = []
+          for (const [address, enabled] of forwarderStates.entries()) {
+            if (enabled) {
+              const known = knownForwarderMap.get(address)
+              enabledForwarders.push({
+                address,
+                name: known?.name || 'Unknown Forwarder',
+                description:
+                  known?.description || 'Trusted forwarder for gas-less transactions'
+              })
+            }
+          }
 
           return {
             data: enabledForwarders

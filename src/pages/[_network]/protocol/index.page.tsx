@@ -109,7 +109,7 @@ const Protocol: NextPage = () => {
     existentialNFTCloneFactory
   } = protocolContracts[network.slugName] || {}
 
-  // Prepare known forwarders for checking
+  // Prepare known forwarders metadata (optional, for display names)
   const knownForwarders = []
   if (CFAv1Forwarder) {
     knownForwarders.push({
@@ -130,7 +130,7 @@ const Protocol: NextPage = () => {
 
   const enabledForwardersResponse = rpcApi.useEnabledForwardersQuery({
     chainId: network.chainId,
-    forwarders: knownForwarders
+    knownForwarders
   })
 
   const onTabChange = (newValue: string) =>
