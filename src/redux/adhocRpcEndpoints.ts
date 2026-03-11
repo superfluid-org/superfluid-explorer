@@ -1,5 +1,5 @@
 import { Address, SuperToken__factory } from '@superfluid-finance/sdk-core'
-import { getFramework, RpcEndpointBuilder } from '@superfluid-finance/sdk-redux'
+import { getFramework, getSubgraphClient, RpcEndpointBuilder } from '@superfluid-finance/sdk-redux'
 
 export interface EnabledForwarder {
   address: string
@@ -11,36 +11,57 @@ export const adhocRpcEndpoints = {
   endpoints: (builder: RpcEndpointBuilder) => ({
     enabledForwarders: builder.query<
       EnabledForwarder[],
-      { chainId: number; forwarders: Array<{ address: string; name: string; description: string }> }
+      {
+        chainId: number
+        forwarders: Array<{ address: string; name: string; description: string }>
+      }
     >({
       queryFn: async ({ chainId, forwarders }) => {
-        const framework = await getFramework(chainId)
-        
-        const enabledForwarders: EnabledForwarder[] = []
+        try {
+          const client = getSubgraphClient(chainId)
 
-        // Check each forwarder against the governance contract
-        for (const forwarder of forwarders) {
-          try {
-            // Query governance contract's isTrustedForwarder method
-            // isTrustedForwarder(host, superToken, forwarder)
-            // For protocol-wide forwarders, superToken = 0x0
-            const isEnabled = await framework.contracts.governance.isTrustedForwarder(
-              framework.contracts.host.address,
-              '0x0000000000000000000000000000000000000000',
-              forwarder.address
-            )
-            
-            if (isEnabled) {
-              enabledForwarders.push(forwarder)
+          // Query TrustedForwarderChangedEvents sorted by timestamp
+          const result = await client.request<{
+            trustedForwarderChangedEvents: Array<{
+              forwarder: string
+              enabled: boolean
+              timestamp: string
+            }>
+          }>(`
+            query {
+              trustedForwarderChangedEvents(
+                orderBy: timestamp
+                orderDirection: asc
+              ) {
+                forwarder
+                enabled
+                timestamp
+              }
             }
-          } catch (e) {
-            // Forwarder check failed, skip it
-            console.warn(`Failed to check forwarder ${forwarder.name}:`, e)
-          }
-        }
+          `)
 
-        return {
-          data: enabledForwarders
+          // Build a map of forwarder address -> latest enabled state
+          const forwarderStates = new Map<string, boolean>()
+          for (const event of result.trustedForwarderChangedEvents) {
+            forwarderStates.set(
+              event.forwarder.toLowerCase(),
+              event.enabled
+            )
+          }
+
+          // Filter to only enabled forwarders that we know about
+          const enabledForwarders: EnabledForwarder[] = forwarders.filter(
+            (f) => forwarderStates.get(f.address.toLowerCase()) === true
+          )
+
+          return {
+            data: enabledForwarders
+          }
+        } catch (e) {
+          console.error('Failed to query enabled forwarders:', e)
+          return {
+            data: []
+          }
         }
       },
       providesTags: (_result, _error, arg) => [
