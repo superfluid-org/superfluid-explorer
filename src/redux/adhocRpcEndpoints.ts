@@ -18,7 +18,7 @@ export const adhocRpcEndpoints = {
     >({
       queryFn: async ({ chainId, forwarders }) => {
         try {
-          const client = getSubgraphClient(chainId)
+          const client = await getSubgraphClient(chainId)
 
           // Query TrustedForwarderChangedEvents sorted by timestamp
           const result = await client.request<{
