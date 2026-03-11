@@ -48,23 +48,28 @@ export const adhocRpcEndpoints = {
           `)
 
           // Build a map of forwarder address -> latest enabled state
+          // Events are sorted by timestamp ASC, so later events overwrite earlier ones
+          // This correctly handles: enabled -> disabled -> enabled scenarios
           const forwarderStates = new Map<string, boolean>()
           for (const event of result.trustedForwarderChangedEvents) {
-            forwarderStates.set(
-              event.forwarder.toLowerCase(),
-              event.enabled
-            )
+            const normalizedAddress = event.forwarder.toLowerCase()
+            forwarderStates.set(normalizedAddress, event.enabled)
           }
 
-          // Create lookup map for known forwarders
+          // Create lookup map for known forwarders (case-insensitive)
           const knownForwarderMap = new Map(
             knownForwarders.map((f) => [f.address.toLowerCase(), f])
           )
 
-          // Return ALL enabled forwarders (not just known ones)
+          // Return ALL enabled forwarders (filtered to enabled=true only)
+          // Map ensures deduplication (unique addresses only)
           const enabledForwarders: EnabledForwarder[] = []
+          const seenAddresses = new Set<string>() // Extra safety for deduplication
+          
           for (const [address, enabled] of forwarderStates.entries()) {
-            if (enabled) {
+            // Only include if final state is enabled=true
+            if (enabled && !seenAddresses.has(address)) {
+              seenAddresses.add(address)
               const known = knownForwarderMap.get(address)
               enabledForwarders.push({
                 address,
