@@ -33,18 +33,25 @@ interface AddressListItemProps {
   network: Network
   address?: string
   dataCy?: string
+  tooltip?: string
 }
 
 const AddressListItem: FC<AddressListItemProps> = ({
   network,
   title,
   address,
-  dataCy
+  dataCy,
+  tooltip
 }) => (
   <ListItem>
     <ListItemText
       data-cy={dataCy}
-      primary={title}
+      primary={
+        <>
+          {title}
+          {tooltip && <InfoTooltipBtn title={tooltip} />}
+        </>
+      }
       secondary={
         <Stack
           component="span"
@@ -329,6 +336,56 @@ const Protocol: NextPage = () => {
                 />
               </List>
             </Card>
+
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                px: 2,
+                mt: 4,
+                mb: 2
+              }}
+            >
+              Enabled forwarders
+            </Typography>
+
+            <Card>
+              <List
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  pb: 2
+                }}
+              >
+                {CFAv1Forwarder && (
+                  <AddressListItem
+                    dataCy={'CFAv1Forwarder-enabled'}
+                    title="CFAv1Forwarder"
+                    network={network}
+                    address={CFAv1Forwarder}
+                    tooltip="Allows gas-less transactions for Constant Flow Agreement operations"
+                  />
+                )}
+                {GDAv1Forwarder && (
+                  <AddressListItem
+                    dataCy={'GDAv1Forwarder-enabled'}
+                    title="GDAv1Forwarder"
+                    network={network}
+                    address={GDAv1Forwarder}
+                    tooltip="Allows gas-less transactions for General Distribution Agreement operations"
+                  />
+                )}
+                {!CFAv1Forwarder && !GDAv1Forwarder && (
+                  <ListItem>
+                    <ListItemText
+                      primary="No enabled forwarders"
+                      secondary="This network has no trusted forwarders configured"
+                    />
+                  </ListItem>
+                )}
+              </List>
+            </Card>
+
             <Typography
               variant="h5"
               component="h2"
