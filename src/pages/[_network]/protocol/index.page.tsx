@@ -106,7 +106,8 @@ const Protocol: NextPage = () => {
     flowScheduler,
     vestingScheduler,
     vestingSchedulerV2,
-    existentialNFTCloneFactory
+    existentialNFTCloneFactory,
+    macroForwarder
   } = protocolContracts[network.slugName] || {}
 
   // Prepare known forwarders metadata (optional, for display names)
@@ -125,6 +126,14 @@ const Protocol: NextPage = () => {
       name: 'GDAv1Forwarder',
       description:
         'Allows gas-less transactions for General Distribution Agreement operations'
+    })
+  }
+  if (macroForwarder) {
+    knownForwarders.push({
+      address: macroForwarder,
+      name: 'MacroForwarder',
+      description:
+        'Allows gas-less batch transactions for multiple operations'
     })
   }
 
