@@ -29,6 +29,7 @@
     "@mui/x-data-grid": "^5.11.1",
     "@reduxjs/toolkit": "^1.8.2",
     "@sentry/nextjs": "^7.120.3",
+    "@sfpro/sdk": "^0.1.9",
     "@socialgouv/matomo-next": "^1.9.2",
     "@superfluid-finance/metadata": "^1.6.0",
     "@superfluid-finance/sdk-core": "^0.8.0",

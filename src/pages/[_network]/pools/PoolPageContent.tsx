@@ -20,14 +20,18 @@ import {
   Pool,
   SkipPaging
 } from '@superfluid-finance/sdk-core'
+import { gdaForwarderAbi, gdaForwarderAddress } from '@sfpro/sdk/abi'
 import { gql } from 'graphql-request'
 import Error from 'next/error'
 import { FC, useState } from 'react'
+import { Address } from 'viem'
+import { useReadContract } from 'wagmi'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
 import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
 import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
+import FlowRate from '../../../components/Amount/FlowRate'
 import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
 import CopyLink from '../../../components/Copy/CopyLink'
@@ -57,6 +61,18 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
   })
 
   const pool: Pool | null | undefined = poolQuery.data
+
+  const adjustmentFlowRateQuery = useReadContract({
+    chainId: network.chainId,
+    address:
+      gdaForwarderAddress[
+        network.chainId as keyof typeof gdaForwarderAddress
+      ],
+    abi: gdaForwarderAbi,
+    functionName: 'getPoolAdjustmentFlowRate',
+    args: [id as Address],
+    query: { enabled: Boolean(pool) }
+  })
 
   const [
     instantDistributionUpdatedEventPaging,
@@ -175,6 +191,9 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                   totalUnits
                   totalConnectedUnits
                   totalDisconnectedUnits
+                  totalMembers
+                  totalConnectedMembers
+                  totalDisconnectedMembers
                 }
               }
             `}
@@ -388,6 +407,74 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                   </ListItem>
                 </Grid>
               </Grid>
+              <ListItem data-cy={'total-members'} divider>
+                <ListItemText
+                  secondary={
+                    <>
+                      Total Members
+                      <InfoTooltipBtn
+                        dataCy={'total-members-tooltip'}
+                        title="The number of accounts with more than 0 units in this pool."
+                      />
+                    </>
+                  }
+                  primary={
+                    pool ? (
+                      pool.totalMembers
+                    ) : (
+                      <Skeleton sx={{ width: '75px' }} />
+                    )
+                  }
+                />
+              </ListItem>
+              <Grid container>
+                <Grid item xs={6}>
+                  <ListItem divider>
+                    <ListItemText
+                      data-cy="total-connected-members"
+                      secondary={
+                        <>
+                          Total Connected Members
+                          <InfoTooltipBtn
+                            dataCy={'total-connected-members-tooltip'}
+                            title="Members whose balance automatically reflects distributions in real-time."
+                          />
+                        </>
+                      }
+                      primary={
+                        pool ? (
+                          pool.totalConnectedMembers
+                        ) : (
+                          <Skeleton sx={{ width: '75px' }} />
+                        )
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+                <Grid item xs={6}>
+                  <ListItem divider>
+                    <ListItemText
+                      data-cy="total-disconnected-members"
+                      secondary={
+                        <>
+                          Total Disconnected Members
+                          <InfoTooltipBtn
+                            dataCy={'total-disconnected-members-tooltip'}
+                            title="Members who must manually claim their accumulated distributions."
+                          />
+                        </>
+                      }
+                      primary={
+                        pool ? (
+                          pool.totalDisconnectedMembers
+                        ) : (
+                          <Skeleton sx={{ width: '75px' }} />
+                        )
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+              </Grid>
               <ListItem divider data-cy={'total-amount-distributed'}>
                 <ListItemText
                   secondary="Total Amount Distributed"
@@ -457,6 +544,27 @@ export const PoolPageContent: FC<{ id: string; network: Network }> = ({
                   </ListItem>
                 </Grid>
               </Grid>
+              {adjustmentFlowRateQuery.data != null &&
+                adjustmentFlowRateQuery.data !== BigInt(0) && (
+                  <ListItem data-cy={'adjustment-flow-rate'}>
+                    <ListItemText
+                      secondary={
+                        <>
+                          Adjustment Flow Rate
+                          <InfoTooltipBtn
+                            dataCy={'adjustment-flow-rate-tooltip'}
+                            title="The rounding remainder flow directed to the pool admin due to integer division when distributing flows across members. Queried directly from the blockchain for accuracy."
+                          />
+                        </>
+                      }
+                      primary={
+                        <FlowRate
+                          flowRate={adjustmentFlowRateQuery.data.toString()}
+                        />
+                      }
+                    />
+                  </ListItem>
+                )}
             </List>
           </Card>
         </Grid>
