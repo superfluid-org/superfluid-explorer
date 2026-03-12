@@ -1,18 +1,18 @@
 <h1 align="center">Welcome to Superfluid Explorer repository 👋</h1>
 
 <p>
-  <a href="https://twitter.com/Superfluid_HQ/status/" target="_blank">
-    <img alt="Twitter: Superfluid_HQ" src="https://img.shields.io/twitter/follow/Superfluid_HQ.svg?style=social" />
+  <a href="https://x.com/Superfluid_HQ/status/" target="_blank">
+    <img alt="X (Twitter): Superfluid_HQ" src="https://img.shields.io/twitter/follow/Superfluid_HQ.svg?style=social" />
   </a>
 </p>
 
-### 🏠 [Homepage](https://superfluid.finance)
+### 🏠 [Homepage](https://superfluid.org)
 
-### ✨ [Superfluid App](https://app.superfluid.finance/)
+### ✨ [Superfluid App](https://app.superfluid.org/)
 
-### ✨ [Superfluid Explorer](https://explorer.superfluid.finance/)
+### ✨ [Superfluid Explorer](https://explorer.superfluid.org/)
 
-### 📖 [Docs](https://docs.superfluid.finance)
+### 📖 [Docs](https://docs.superfluid.org)
 
 The Superfluid Protocol is a framework that realizes the real-time finance vision
 where user accounts are connected together, and transactions can happen between
