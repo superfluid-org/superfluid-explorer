@@ -7,10 +7,10 @@ export const createSfTheme = (mode: 'light' | 'dark' = 'light') =>
     palette: {
       mode: mode,
       primary: {
-        main: '#00991F'
+        main: '#0A6643'
       },
       secondary: {
-        main: '#4816E2'
+        main: '#2323FF'
       },
       error: {
         main: red.A400
@@ -21,7 +21,7 @@ export const createSfTheme = (mode: 'light' | 'dark' = 'light') =>
       background:
         mode === 'light'
           ? {
-              default: '#F9F9F9'
+              default: '#F7F8FA'
             }
           : {}
     },
