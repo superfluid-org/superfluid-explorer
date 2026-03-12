@@ -15,7 +15,10 @@
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "incremental": true,
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "paths": {
+      "@sfpro/sdk/abi": ["./node_modules/@sfpro/sdk/dist/abi/index.d.ts"]
+    }
   },
   "include": [
     "next-env.d.ts",
