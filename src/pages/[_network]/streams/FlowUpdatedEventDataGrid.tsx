@@ -16,7 +16,7 @@ import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { TransactionHash } from '../../../components/TransactionHash/TransactionHash'
 import { useNetworkContext } from '../../../contexts/NetworkContext'
-
+ 
 interface Props {
   stream: Stream | null | undefined
   queryResult: {
