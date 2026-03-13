@@ -33,18 +33,25 @@ interface AddressListItemProps {
   network: Network
   address?: string
   dataCy?: string
+  tooltip?: string
 }
 
 const AddressListItem: FC<AddressListItemProps> = ({
   network,
   title,
   address,
-  dataCy
+  dataCy,
+  tooltip
 }) => (
   <ListItem>
     <ListItemText
       data-cy={dataCy}
-      primary={title}
+      primary={
+        <>
+          {title}
+          {tooltip && <InfoTooltipBtn title={tooltip} />}
+        </>
+      }
       secondary={
         <Stack
           component="span"
@@ -84,14 +91,6 @@ const Protocol: NextPage = () => {
     chainId: network.chainId
   })
 
-  const onTabChange = (newValue: string) =>
-    router.replace({
-      query: {
-        ...router.query,
-        _network: newValue
-      }
-    })
-
   const {
     resolver,
     host,
@@ -107,8 +106,49 @@ const Protocol: NextPage = () => {
     flowScheduler,
     vestingScheduler,
     vestingSchedulerV2,
-    existentialNFTCloneFactory
+    existentialNFTCloneFactory,
+    macroForwarder
   } = protocolContracts[network.slugName] || {}
+
+  // Prepare known forwarders metadata (optional, for display names)
+  const knownForwarders = []
+  if (CFAv1Forwarder) {
+    knownForwarders.push({
+      address: CFAv1Forwarder,
+      name: 'CFAv1Forwarder',
+      description:
+        'Allows gas-less transactions for Constant Flow Agreement operations'
+    })
+  }
+  if (GDAv1Forwarder) {
+    knownForwarders.push({
+      address: GDAv1Forwarder,
+      name: 'GDAv1Forwarder',
+      description:
+        'Allows gas-less transactions for General Distribution Agreement operations'
+    })
+  }
+  if (macroForwarder) {
+    knownForwarders.push({
+      address: macroForwarder,
+      name: 'MacroForwarder',
+      description:
+        'Allows gas-less batch transactions for multiple operations'
+    })
+  }
+
+  const enabledForwardersResponse = rpcApi.useEnabledForwardersQuery({
+    chainId: network.chainId,
+    knownForwarders
+  })
+
+  const onTabChange = (newValue: string) =>
+    router.replace({
+      query: {
+        ...router.query,
+        _network: newValue
+      }
+    })
 
   return (
     <Container component={Box} sx={{ my: 2, py: 2 }}>
@@ -329,6 +369,57 @@ const Protocol: NextPage = () => {
                 />
               </List>
             </Card>
+
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                px: 2,
+                mt: 4,
+                mb: 2
+              }}
+            >
+              Enabled forwarders
+            </Typography>
+
+            <Card>
+              <List
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  pb: 2
+                }}
+              >
+                {enabledForwardersResponse.isLoading ? (
+                  <ListItem>
+                    <ListItemText
+                      primary={<Skeleton sx={{ width: '150px' }} />}
+                      secondary={<Skeleton sx={{ width: '300px' }} />}
+                    />
+                  </ListItem>
+                ) : enabledForwardersResponse.data &&
+                  enabledForwardersResponse.data.length > 0 ? (
+                  enabledForwardersResponse.data.map((forwarder) => (
+                    <AddressListItem
+                      key={forwarder.address}
+                      dataCy={`${forwarder.name}-enabled`}
+                      title={forwarder.name}
+                      network={network}
+                      address={forwarder.address}
+                      tooltip={forwarder.description}
+                    />
+                  ))
+                ) : (
+                  <ListItem>
+                    <ListItemText
+                      primary="No enabled forwarders"
+                      secondary="This network has no trusted forwarders configured"
+                    />
+                  </ListItem>
+                )}
+              </List>
+            </Card>
+
             <Typography
               variant="h5"
               component="h2"
