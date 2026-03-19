@@ -1,6 +1,6 @@
 import { Address, SuperToken__factory } from '@superfluid-finance/sdk-core'
 import { getFramework, getSubgraphClient, RpcEndpointBuilder } from '@superfluid-finance/sdk-redux'
-import { BigNumber, Contract } from 'ethers'
+import { BigNumber, Contract, providers } from 'ethers'
 
 export interface EnabledForwarder {
   address: string
@@ -49,7 +49,7 @@ function parseUnderlyingDecimals(d: unknown): number {
 async function getYieldBacking(
   yieldBackendAddress: string,
   tokenAddress: string,
-  provider: { call: (tx: { to: string; data: string }) => Promise<string> }
+  provider: providers.Provider
 ): Promise<{
   yieldBackendType: 'Aave' | 'ERC4626'
   totalBacking: BigNumber
