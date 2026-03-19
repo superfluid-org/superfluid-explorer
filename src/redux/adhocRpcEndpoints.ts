@@ -1,5 +1,6 @@
 import { Address, SuperToken__factory } from '@superfluid-finance/sdk-core'
 import { getFramework, getSubgraphClient, RpcEndpointBuilder } from '@superfluid-finance/sdk-redux'
+import { BigNumber, Contract, providers } from 'ethers'
 
 export interface EnabledForwarder {
   address: string
@@ -12,6 +13,115 @@ const KNOWN_FORWARDERS: Record<string, { name: string; description: string }> = 
   // CFAv1Forwarder is deployed at different addresses per network
   // GDAv1Forwarder is deployed at different addresses per network
   // We'll match by checking metadata when available
+}
+
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+
+function isZeroAddress(addr: string): boolean {
+  return !addr || addr === ZERO_ADDRESS
+}
+
+const ERC20_ABI = [
+  'function balanceOf(address) view returns (uint256)',
+  'function decimals() view returns (uint8)',
+  'function symbol() view returns (string)'
+]
+
+const YIELD_BACKEND_ABI = [
+  'function ASSET_TOKEN() view returns (address)',
+  'function A_TOKEN() view returns (address)',
+  'function VAULT() view returns (address)'
+]
+
+function parseUnderlyingDecimals(d: unknown): number {
+  return d != null ? Number(d) : 18
+}
+
+// --- Last yield withdrawal: omitted. To restore, use official Aave V3 subgraph (query
+// RedeemUnderlying by user=superToken, to=surplusReceiver) for Aave/AaveETH only; Spark and
+// generic ERC4626 have no suitable official subgraph. See docs/last-withdrawal-subgraph-research.md
+// const WITHDRAW_SURPLUS_SELECTOR = ethers.utils
+//   .hexDataSlice(ethers.utils.id('withdrawSurplusFromYieldBackend()'), 0, 4)
+//   .toLowerCase()
+// const EXPLORER_API_BASE: Record<number, string> = { ... }
+// async function getLastWithdrawalTimestamp(chainId, tokenAddress): Promise<string | null> { ... }
+
+async function getYieldBacking(
+  yieldBackendAddress: string,
+  tokenAddress: string,
+  provider: providers.Provider
+): Promise<{
+  yieldBackendType: 'Aave' | 'ERC4626'
+  totalBacking: BigNumber
+  underlyingDecimals: number
+  underlyingSymbol: string | null
+} | null> {
+  const backend = new Contract(
+    yieldBackendAddress,
+    YIELD_BACKEND_ABI,
+    provider
+  )
+
+  try {
+    const aTokenAddress = await backend.A_TOKEN()
+    if (aTokenAddress && !isZeroAddress(aTokenAddress)) {
+      const assetAddress = await backend.ASSET_TOKEN()
+      const underlying = new Contract(assetAddress, ERC20_ABI, provider)
+      const aToken = new Contract(aTokenAddress, ERC20_ABI, provider)
+      const [underlyingDecimals, underlyingSymbol, underlyingBal, aTokenBal] =
+        await Promise.all([
+          underlying.decimals().then(parseUnderlyingDecimals),
+          underlying.symbol().catch(() => null),
+          underlying.balanceOf(tokenAddress),
+          aToken.balanceOf(tokenAddress)
+        ])
+      const totalBacking = BigNumber.from(underlyingBal).add(
+        BigNumber.from(aTokenBal)
+      )
+      return {
+        yieldBackendType: 'Aave',
+        totalBacking,
+        underlyingDecimals: Number(underlyingDecimals),
+        underlyingSymbol: underlyingSymbol ?? null
+      }
+    }
+  } catch {
+    // not Aave
+  }
+
+  try {
+    const vaultAddress = await backend.VAULT()
+    if (vaultAddress && !isZeroAddress(vaultAddress)) {
+      const assetAddress = await backend.ASSET_TOKEN()
+      const underlying = new Contract(assetAddress, ERC20_ABI, provider)
+      const vaultAbi = [
+        'function balanceOf(address) view returns (uint256)',
+        'function convertToAssets(uint256) view returns (uint256)'
+      ]
+      const vault = new Contract(vaultAddress, vaultAbi, provider)
+      const [underlyingDecimals, underlyingSymbol, vaultShares, underlyingBal] =
+        await Promise.all([
+          underlying.decimals().then(parseUnderlyingDecimals),
+          underlying.symbol().catch(() => null),
+          vault.balanceOf(tokenAddress),
+          underlying.balanceOf(tokenAddress)
+        ])
+      const vaultAssets = await vault.convertToAssets(vaultShares)
+      const totalBacking = BigNumber.from(underlyingBal).add(
+        BigNumber.from(vaultAssets)
+      )
+      return {
+        yieldBackendType: 'ERC4626',
+        totalBacking,
+        underlyingDecimals: Number(underlyingDecimals),
+        underlyingSymbol: underlyingSymbol ?? null
+      }
+    }
+  } catch {
+    // not ERC4626
+  }
+
+  return null
 }
 
 export const adhocRpcEndpoints = {
@@ -159,6 +269,112 @@ export const adhocRpcEndpoints = {
         {
           type: 'GENERAL',
           id: arg.chainId
+        }
+      ]
+    }),
+
+    yieldBackendInfo: builder.query<
+      {
+        yieldBackendAddress: string | null
+        yieldBackendType: 'Aave' | 'ERC4626' | null
+        accruedYieldWei: string | null
+        underlyingDecimals: number | null
+        underlyingSymbol: string | null
+        /** Omitted for now; restore via Aave V3 subgraph for Aave/AaveETH. See docs/last-withdrawal-subgraph-research.md */
+        lastWithdrawal: string | null
+      },
+      { chainId: number; tokenAddress: string }
+    >({
+      queryFn: async ({ chainId, tokenAddress }) => {
+        const empty = {
+          yieldBackendAddress: null,
+          yieldBackendType: null,
+          accruedYieldWei: null,
+          underlyingDecimals: null,
+          underlyingSymbol: null,
+          lastWithdrawal: null
+        }
+        try {
+          const framework = await getFramework(chainId)
+          const provider = framework.settings.provider
+
+          const superTokenAbi = [
+            'function getYieldBackend() view returns (address)',
+            'function toUnderlyingAmount(uint256) view returns (uint256, uint256)',
+            'function totalSupply() view returns (uint256)'
+          ]
+          const superToken = new Contract(tokenAddress, superTokenAbi, provider)
+
+          let yieldBackendAddress: string
+          try {
+            yieldBackendAddress = await superToken.getYieldBackend()
+          } catch {
+            return { data: empty }
+          }
+          if (isZeroAddress(yieldBackendAddress)) {
+            return { data: empty }
+          }
+
+          const totalSupply = await superToken.totalSupply()
+          const [normalizedSupply] = await superToken.toUnderlyingAmount(
+            totalSupply
+          )
+
+          const backing = await getYieldBacking(
+            yieldBackendAddress,
+            tokenAddress,
+            provider
+          )
+          // lastWithdrawal omitted; would require Aave V3 subgraph for Aave/AaveETH (see docs)
+
+          if (!backing) {
+            return {
+              data: {
+                yieldBackendAddress,
+                yieldBackendType: null,
+                accruedYieldWei: null,
+                underlyingDecimals: null,
+                underlyingSymbol: null,
+                lastWithdrawal: null
+              }
+            }
+          }
+
+          const { yieldBackendType, totalBacking, underlyingDecimals, underlyingSymbol } = backing
+          const accrued = totalBacking.sub(BigNumber.from(normalizedSupply))
+          const accruedYieldWei =
+            accrued.isNegative() || accrued.isZero()
+              ? '0'
+              : accrued.toString()
+
+          return {
+            data: {
+              yieldBackendAddress,
+              yieldBackendType,
+              accruedYieldWei,
+              underlyingDecimals,
+              underlyingSymbol,
+              lastWithdrawal: null
+            }
+          }
+        } catch (e) {
+          console.error('yieldBackendInfo query failed:', e)
+          return {
+            data: {
+              yieldBackendAddress: null,
+              yieldBackendType: null,
+              accruedYieldWei: null,
+              underlyingDecimals: null,
+              underlyingSymbol: null,
+              lastWithdrawal: null
+            }
+          }
+        }
+      },
+      providesTags: (_result, _error, arg) => [
+        {
+          type: 'GENERAL',
+          id: `yieldBackend-${arg.chainId}-${arg.tokenAddress}`
         }
       ]
     })

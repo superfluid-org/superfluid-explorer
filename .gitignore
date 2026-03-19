@@ -329,3 +329,7 @@ $RECYCLE.BIN/
 
 cypress/screenshots
 cypress/videos
+
+# Local pnpm/corepack (sandbox-friendly install)
+.pnpm-store/
+.corepack/

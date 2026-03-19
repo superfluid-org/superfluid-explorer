@@ -17,14 +17,14 @@ import {
   Typography
 } from '@mui/material'
 import { Box } from '@mui/system'
-import { Token } from '@superfluid-finance/sdk-core'
 import { BigNumber, ethers } from 'ethers'
 import { gql } from 'graphql-request'
 import { NextPage } from 'next'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
+import { ReactNode, useContext, useEffect, useState } from 'react'
 
+import Amount from '../../../../components/Amount/Amount'
 import EtherFormatted from '../../../../components/Amount/EtherFormatted'
 import FlowingBalance from '../../../../components/Amount/FlowingBalance'
 import AppLink from '../../../../components/AppLink/AppLink'
@@ -45,6 +45,38 @@ import SuperTokenIndexes from './SuperTokenIndexes'
 import SuperTokenPools from './SuperTokenPools'
 import SuperTokenStreams from './SuperTokenStreams'
 import { useTokenQuery } from '../../../../hooks/useTokenQuery'
+
+// Last yield withdrawal: omitted for now. To restore, implement via official Aave V3
+// subgraph (RedeemUnderlying by user + to) for Aave/AaveETH only; Spark/ERC4626
+// have no suitable official subgraph. See docs/last-withdrawal-subgraph-research.md
+// function formatLastWithdrawalDisplay(raw: string | null): ReactNode {
+//   if (!raw) {
+//     return (
+//       <Tooltip title="Withdrawal history is not indexed yet">
+//         <Typography
+//           component="span"
+//           color="text.secondary"
+//           sx={{ cursor: 'help' }}
+//         >
+//           —
+//         </Typography>
+//       </Tooltip>
+//     )
+//   }
+//   const date = new Date(raw)
+//   if (Number.isNaN(date.getTime())) {
+//     return (
+//       <Typography component="span" color="text.secondary">
+//         —
+//       </Typography>
+//     )
+//   }
+//   return date.toLocaleDateString(undefined, {
+//     year: 'numeric',
+//     month: 'short',
+//     day: 'numeric'
+//   })
+// }
 
 const SuperTokenPage: NextPage = () => {
   const network = useNetworkContext()
@@ -87,6 +119,15 @@ const SuperTokenPage: NextPage = () => {
     chainId: network.chainId,
     tokenAddress: address
   })
+
+  const { data: yieldBackendInfo } = rpcApi.useYieldBackendInfoQuery({
+    chainId: network.chainId,
+    tokenAddress: address
+  })
+
+  const hasSupportedYieldBackend =
+    !!yieldBackendInfo?.yieldBackendAddress &&
+    yieldBackendInfo?.yieldBackendType != null
 
   const router = useRouter()
   const { tab } = router.query
@@ -269,7 +310,7 @@ const SuperTokenPage: NextPage = () => {
                   }
                 />
               </ListItem>
-              <ListItem>
+              <ListItem divider={!!yieldBackendInfo?.yieldBackendAddress}>
                 <ListItemText
                   data-cy={'underlying-token-address'}
                   secondary={
@@ -328,6 +369,39 @@ const SuperTokenPage: NextPage = () => {
                   }
                 />
               </ListItem>
+
+              {yieldBackendInfo?.yieldBackendAddress && (
+                <ListItem>
+                  <ListItemText
+                    data-cy={'yield-backend'}
+                    secondary="Yield backend"
+                    primary={
+                      <Stack direction="row" alignItems="center" gap={0.5}>
+                        <Typography component="span">
+                          {yieldBackendInfo.yieldBackendType ?? 'Unknown'}
+                        </Typography>
+                        <Typography component="span" color="text.secondary">
+                          ·
+                        </Typography>
+                        <Tooltip title="View on blockchain explorer">
+                          <AppLink
+                            href={network.getLinkForAddress(
+                              yieldBackendInfo.yieldBackendAddress
+                            )}
+                            target="_blank"
+                          >
+                            {yieldBackendInfo.yieldBackendAddress.slice(0, 6)}…
+                            {yieldBackendInfo.yieldBackendAddress.slice(-4)}
+                            <OpenInNewIcon
+                              sx={{ ml: 0.25, fontSize: 'inherit' }}
+                            />
+                          </AppLink>
+                        </Tooltip>
+                      </Stack>
+                    }
+                  />
+                </ListItem>
+              )}
             </List>
           </Card>
         </Grid>
@@ -502,7 +576,7 @@ const SuperTokenPage: NextPage = () => {
             />
           </ListItem>
 
-          <ListItem>
+          <ListItem divider={hasSupportedYieldBackend}>
             <ListItemText
               data-cy={'total-supply'}
               secondary="Total supply"
@@ -516,7 +590,7 @@ const SuperTokenPage: NextPage = () => {
             />
           </ListItem>
 
-          <ListItem>
+          <ListItem divider={hasSupportedYieldBackend}>
             <ListItemText
               secondary="Minimum deposit"
               primary={
@@ -528,6 +602,41 @@ const SuperTokenPage: NextPage = () => {
               }
             />
           </ListItem>
+
+          {hasSupportedYieldBackend && yieldBackendInfo && (
+            <>
+              <ListItem>
+                <ListItemText
+                  data-cy={'accrued-yield'}
+                  secondary="Accrued yield"
+                  primary={
+                    yieldBackendInfo.accruedYieldWei != null &&
+                    yieldBackendInfo.underlyingDecimals != null ? (
+                      <>
+                        <Amount
+                          wei={yieldBackendInfo.accruedYieldWei}
+                          decimals={yieldBackendInfo.underlyingDecimals}
+                        />{' '}
+                        {yieldBackendInfo.underlyingSymbol ?? superToken?.symbol ?? ''}
+                      </>
+                    ) : (
+                      <Skeleton sx={{ width: '200px' }} />
+                    )
+                  }
+                />
+              </ListItem>
+              {/* Last yield withdrawal: omitted. Restore via Aave V3 subgraph for Aave/AaveETH; see docs/last-withdrawal-subgraph-research.md */}
+              {/* <ListItem>
+                <ListItemText
+                  data-cy={'last-yield-withdrawal'}
+                  secondary="Last yield withdrawal"
+                  primary={formatLastWithdrawalDisplay(
+                    yieldBackendInfo.lastWithdrawal
+                  )}
+                />
+              </ListItem> */}
+            </>
+          )}
         </List>
       </Card>
 
