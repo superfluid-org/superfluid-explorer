@@ -1,0 +1,9 @@
+diff --git a/tempo/KeyAuthorization.ts b/tempo/KeyAuthorization.ts
+index 497846068a48e927133724e877f7f5f50bb71af3..3d0910b557f3ba3d51318709a01fa3b1136850a8 100644
+--- a/tempo/KeyAuthorization.ts
++++ b/tempo/KeyAuthorization.ts
+@@ -1,3 +1,4 @@
++// @ts-nocheck — raw published source; fails type-check under consumer tsconfigs with moduleResolution:node (compiled _types/_esm are what actually get used)
+ import * as AbiItem from '../core/AbiItem.js'
+ import type * as Address from '../core/Address.js'
+ import type * as Errors from '../core/Errors.js'
