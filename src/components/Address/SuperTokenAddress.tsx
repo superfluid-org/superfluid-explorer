@@ -4,9 +4,9 @@ import { Token } from '@superfluid-finance/sdk-core'
 import { ethers } from 'ethers'
 import { FC } from 'react'
 
+import { useTokenQuery } from '../../hooks/useTokenQuery'
 import { Network } from '../../redux/networks'
 import AppLink from '../AppLink/AppLink'
-import { useTokenQuery } from '../../hooks/useTokenQuery'
 
 const SuperTokenAddress: FC<{
   network: Network

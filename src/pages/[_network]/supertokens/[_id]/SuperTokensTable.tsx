@@ -38,9 +38,9 @@ import ClearInputAdornment from '../../../../components/Table/ClearInputAdornmen
 import InfinitePagination from '../../../../components/Table/InfinitePagination'
 import TableLoader from '../../../../components/Table/TableLoader'
 import useDebounce from '../../../../hooks/useDebounce'
+import { findTokenFromTokenList } from '../../../../hooks/useTokenQuery'
 import { Network } from '../../../../redux/networks'
 import { sfSubgraph } from '../../../../redux/store'
-import { findTokenFromTokenList } from '../../../../hooks/useTokenQuery'
 
 export enum ListedStatus {
   Listed,

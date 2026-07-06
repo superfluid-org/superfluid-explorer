@@ -11,6 +11,7 @@ import {
   Stack,
   Typography
 } from '@mui/material'
+import { skipToken } from '@reduxjs/toolkit/query'
 import {
   createSkipPaging,
   Ordering,
@@ -35,7 +36,6 @@ import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { Network } from '../../../redux/networks'
 import { sfSubgraph } from '../../../redux/store'
 import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
-import { skipToken } from '@reduxjs/toolkit/query'
 import FlowUpdatedEventDataGrid from './FlowUpdatedEventDataGrid'
 
 export const StreamPageContent: FC<{ streamId: string; network: Network }> = ({

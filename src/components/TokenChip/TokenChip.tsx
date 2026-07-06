@@ -1,9 +1,9 @@
 import { Chip, ChipProps } from '@mui/material'
 import { FC } from 'react'
 
+import { useTokenQuery } from '../../hooks/useTokenQuery'
 import { Network } from '../../redux/networks'
 import AppLink from '../AppLink/AppLink'
-import { useTokenQuery } from '../../hooks/useTokenQuery'
 
 export interface TokenChipProps {
   network: Network

@@ -12,10 +12,10 @@ import ReactFlow, {
   useNodesState
 } from 'reactflow'
 
+import { findTokenFromTokenList } from '../../hooks/useTokenQuery'
 import { Network } from '../../redux/networks'
 import { sfSubgraph } from '../../redux/store'
 import UserBlock from './UserBlock'
-import { findTokenFromTokenList } from '../../hooks/useTokenQuery'
 
 export enum StreamStatus {
   Active,

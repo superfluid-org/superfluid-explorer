@@ -24,6 +24,7 @@ import Error from 'next/error'
 import { FC, useState } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
+import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
 import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
 import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
 import AppLink from '../../../components/AppLink/AppLink'
@@ -39,7 +40,6 @@ import SubgraphQueryLink from '../../subgraph/SubgraphQueryLink'
 import { PoolMemberFlowDistributions } from './PoolMemberFlowDistributions'
 import { useTotalAmountReceivedFromPoolMember } from './PoolMemberTotalAmountReceived'
 import PoolMemberUnitsUpdatedEventDataGrid from './PoolMemberUnitsUpdatedEventDataGrid'
-import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
 
 export const PoolMemberPageContent: FC<{
   poolMemberId: string
