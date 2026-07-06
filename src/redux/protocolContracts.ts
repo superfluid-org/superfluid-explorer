@@ -19,6 +19,7 @@ interface ContractAddresses {
   batchLiquidator?: string
   existentialNFTCloneFactory?: string
   macroForwarder?: string
+  clearMacroForwarderV1WithPermit2?: string
 }
 
 type NetworkContracts = {
@@ -43,7 +44,9 @@ const networkMetadataToChainId = metadata.networks.reduce(
       vestingScheduler: config.contractsV1.vestingScheduler,
       vestingSchedulerV2: config.contractsV1.vestingSchedulerV2,
       existentialNFTCloneFactory: config.contractsV1.existentialNFTCloneFactory,
-      macroForwarder: config.contractsV1.macroForwarder
+      macroForwarder: config.contractsV1.macroForwarder,
+      clearMacroForwarderV1WithPermit2:
+        config.contractsV1.clearMacroForwarderV1WithPermit2
     }
     return acc
   },

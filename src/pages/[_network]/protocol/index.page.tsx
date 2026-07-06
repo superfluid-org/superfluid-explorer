@@ -107,7 +107,8 @@ const Protocol: NextPage = () => {
     vestingScheduler,
     vestingSchedulerV2,
     existentialNFTCloneFactory,
-    macroForwarder
+    macroForwarder,
+    clearMacroForwarderV1WithPermit2
   } = protocolContracts[network.slugName] || {}
 
   // Prepare known forwarders metadata (optional, for display names)
@@ -134,6 +135,14 @@ const Protocol: NextPage = () => {
       name: 'MacroForwarder',
       description:
         'Allows gas-less batch transactions for multiple operations'
+    })
+  }
+  if (clearMacroForwarderV1WithPermit2) {
+    knownForwarders.push({
+      address: clearMacroForwarderV1WithPermit2,
+      name: 'ClearMacroForwarderV1WithPermit2',
+      description:
+        'Allows gas-less transactions for Clear macro operations, optionally using Permit2 token approvals to wrap tokens into Super Tokens'
     })
   }
 
