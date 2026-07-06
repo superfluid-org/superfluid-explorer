@@ -1,8 +1,9 @@
-import { memoize } from "lodash";
-import { sfSubgraph } from "../redux/store";
-import { extendedSuperTokenList as extendedSuperTokenList_, fetchLatestExtendedSuperTokenList } from "@superfluid-finance/tokenlist";
-import { UseQueryResult } from "../redux/UseQueryResult";
 import { Token } from "@superfluid-finance/sdk-core";
+import { extendedSuperTokenList as extendedSuperTokenList_, fetchLatestExtendedSuperTokenList } from "@superfluid-finance/tokenlist";
+import { memoize } from "lodash";
+
+import { sfSubgraph } from "../redux/store";
+import { UseQueryResult } from "../redux/UseQueryResult";
 
 type Arg = Parameters<typeof sfSubgraph.useTokenQuery>[0];
 type Options = Parameters<typeof sfSubgraph.useTokenQuery>[1];

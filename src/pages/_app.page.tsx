@@ -20,7 +20,7 @@ import SfAppBar from '../components/Layout/SfAppBar'
 import { AvailableNetworksProvider } from '../contexts/AvailableNetworksContext'
 import IdContext from '../contexts/IdContext'
 import { NetworkContext } from '../contexts/NetworkContext'
-import { useMatomo } from '../hooks/useMatomo'
+import { ANALYTICS_ENABLED, useMatomo } from '../hooks/useMatomo'
 import { networks, tryGetString } from '../redux/networks'
 import { wrapper } from '../redux/store'
 import useSfTheme from '../styles/useSfTheme'
@@ -46,7 +46,11 @@ function MyApp(props: MyAppProps) {
   useMatomo()
 
   useEffect(() => {
-    if (process.env.NEXT_PUBLIC_HJID && process.env.NEXT_PUBLIC_HJSV) {
+    if (
+      ANALYTICS_ENABLED &&
+      process.env.NEXT_PUBLIC_HJID &&
+      process.env.NEXT_PUBLIC_HJSV
+    ) {
       hotjar.initialize(
         Number(process.env.NEXT_PUBLIC_HJID),
         Number(process.env.NEXT_PUBLIC_HJSV)

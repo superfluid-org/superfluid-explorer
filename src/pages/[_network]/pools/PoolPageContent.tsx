@@ -14,13 +14,13 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
+import { gdaForwarderAbi, gdaForwarderAddress } from '@sfpro/sdk/abi'
 import {
   createSkipPaging,
   Ordering,
   Pool,
   SkipPaging
 } from '@superfluid-finance/sdk-core'
-import { gdaForwarderAbi, gdaForwarderAddress } from '@sfpro/sdk/abi'
 import { gql } from 'graphql-request'
 import Error from 'next/error'
 import { FC, useState } from 'react'
@@ -31,8 +31,8 @@ import AccountAddress from '../../../components/Address/AccountAddress'
 import { AccountAddressFormatted } from '../../../components/Address/AccountAddressFormatted'
 import SuperTokenAddress from '../../../components/Address/SuperTokenAddress'
 import BalanceWithToken from '../../../components/Amount/BalanceWithToken'
-import FlowRate from '../../../components/Amount/FlowRate'
 import FlowingBalanceWithToken from '../../../components/Amount/FlowingBalanceWithToken'
+import FlowRate from '../../../components/Amount/FlowRate'
 import AppLink from '../../../components/AppLink/AppLink'
 import CopyLink from '../../../components/Copy/CopyLink'
 import InfoTooltipBtn from '../../../components/Info/InfoTooltipBtn'

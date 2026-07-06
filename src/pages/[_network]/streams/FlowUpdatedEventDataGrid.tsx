@@ -10,8 +10,8 @@ import {
 import { FC, useMemo } from 'react'
 
 import AccountAddress from '../../../components/Address/AccountAddress'
-import FlowRate from '../../../components/Amount/FlowRate'
 import EtherFormatted from '../../../components/Amount/EtherFormatted'
+import FlowRate from '../../../components/Amount/FlowRate'
 import { AppDataGrid } from '../../../components/DataGrid/AppDataGrid'
 import TimeAgo from '../../../components/TimeAgo/TimeAgo'
 import { TransactionHash } from '../../../components/TransactionHash/TransactionHash'

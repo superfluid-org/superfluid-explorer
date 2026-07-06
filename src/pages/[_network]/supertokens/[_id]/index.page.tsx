@@ -22,7 +22,7 @@ import { gql } from 'graphql-request'
 import { NextPage } from 'next'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
-import { ReactNode, useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import Amount from '../../../../components/Amount/Amount'
 import EtherFormatted from '../../../../components/Amount/EtherFormatted'
@@ -37,6 +37,7 @@ import SkeletonTokenName from '../../../../components/Skeleton/SkeletonTokenName
 import EventTableWithInfo from '../../../../components/Table/EventTableWithInfo'
 import IdContext from '../../../../contexts/IdContext'
 import { useNetworkContext } from '../../../../contexts/NetworkContext'
+import { useTokenQuery } from '../../../../hooks/useTokenQuery'
 import { useAppSelector } from '../../../../redux/hooks'
 import { streamGranularityInSeconds } from '../../../../redux/slices/appPreferences.slice'
 import { rpcApi, sfSubgraph } from '../../../../redux/store'
@@ -44,7 +45,6 @@ import SubgraphQueryLink from '../../../subgraph/SubgraphQueryLink'
 import SuperTokenIndexes from './SuperTokenIndexes'
 import SuperTokenPools from './SuperTokenPools'
 import SuperTokenStreams from './SuperTokenStreams'
-import { useTokenQuery } from '../../../../hooks/useTokenQuery'
 
 // Last yield withdrawal: omitted for now. To restore, implement via official Aave V3
 // subgraph (RedeemUnderlying by user + to) for Aave/AaveETH only; Spark/ERC4626
