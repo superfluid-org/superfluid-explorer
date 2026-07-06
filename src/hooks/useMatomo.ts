@@ -1,6 +1,8 @@
 import { init, push } from '@socialgouv/matomo-next'
 import { SyntheticEvent, useEffect, useRef } from 'react'
 
+export const ANALYTICS_ENABLED = false
+
 const url = process.env.NEXT_PUBLIC_MATOMO_URL
 const siteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID
 
@@ -22,6 +24,9 @@ export const register = (
   id: TrackerId,
   ...args: any[]
 ) => {
+  if (!ANALYTICS_ENABLED) {
+    return
+  }
   push([type, id, ...args])
 }
 
@@ -30,7 +35,7 @@ export const useMatomo = () => {
   const initialized = useRef(false)
 
   useEffect(() => {
-    if (url && siteId && !initialized.current) {
+    if (ANALYTICS_ENABLED && url && siteId && !initialized.current) {
       init({ url, siteId })
       initialized.current = true
     }
