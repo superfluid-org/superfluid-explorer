@@ -223,19 +223,6 @@ export const networks = [
       `https://sepolia-optimism.etherscan.io/address/${address}`
   },
   {
-    displayName: 'Scroll Sepolia',
-    slugName: 'scroll-sepolia',
-    isTestnet: true,
-    supportsGDA: getSupportsGDA(534351),
-    chainId: 534351,
-    rpcUrl: getRpcUrl(534351),
-    subgraphUrl: getSubgraphUrl(534351),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://sepolia.scrollscan.com/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://sepolia.scrollscan.com/address/${address}`
-  },
-  {
     displayName: 'Base Sepolia',
     slugName: 'base-sepolia',
     isTestnet: true,
