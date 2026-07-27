@@ -14,7 +14,6 @@ import {
   optimismSepolia,
   polygon,
   scroll,
-  scrollSepolia,
   sepolia
 } from 'viem/chains' // prolly not a fantastic approach for bundle size
 import { createConfig, http } from 'wagmi'
@@ -36,8 +35,7 @@ const allWagmiChains = [
   avalancheFuji,
   sepolia,
   optimismSepolia,
-  baseSepolia,
-  scrollSepolia
+  baseSepolia
 ] as const
 
 if (allWagmiChains.length !== networks.length) {
