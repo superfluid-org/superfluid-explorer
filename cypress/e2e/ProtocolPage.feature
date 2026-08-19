@@ -18,5 +18,4 @@ Feature: Protocol page test cases
       | base-mainnet     |
       | scroll-mainnet   |
       | optimism-sepolia |
-      | degen            |
 
