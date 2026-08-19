@@ -40,16 +40,13 @@ export class CommonElements extends BasePage {
   }
 
   static openNetworkAddressResult(network: string) {
-    cy.get('[data-cy=' + network + '-account-search-result]').then((el) => {
-      cy.wrap(el.text()).as('lastOpenedResult')
-    })
     this.click('[data-cy=' + network + '-account-search-result]')
   }
 
   static validateAccountPageLink(network: string) {
-    cy.get('@lastOpenedResult').then((result) => {
+    cy.fixture('commonData').then((fixture) => {
       this.validatePageUrl(
-        '/' + network + '/accounts/' + result + '?tab=tokens'
+        '/' + network + '/accounts/' + fixture.lotsOfDataAccount + '?tab=tokens'
       )
     })
   }
