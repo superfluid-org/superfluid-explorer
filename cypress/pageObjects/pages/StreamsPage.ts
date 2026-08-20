@@ -17,8 +17,18 @@ export class StreamsPage extends BasePage {
   static validateTokenSenderReceiver(network: string) {
     cy.fixture('streamData').then((streamData) => {
       this.hasText(TOKEN_NAME, streamData[network].token)
-      cy.get(STREAM_SENDER).should('have.text', streamData[network].sender)
-      cy.get(STREAM_RECEIVER).should('have.text', streamData[network].receiver)
+
+      const accountLink = (address: string) =>
+        new RegExp(`^/${network}/accounts/${address}$`, 'i')
+
+      cy.get(STREAM_SENDER)
+        .first()
+        .should('have.attr', 'href')
+        .and('match', accountLink(streamData[network].sender))
+      cy.get(STREAM_RECEIVER)
+        .first()
+        .should('have.attr', 'href')
+        .and('match', accountLink(streamData[network].receiver))
     })
   }
 
