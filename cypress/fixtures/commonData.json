@@ -14,7 +14,6 @@
     "celo",
     "base",
     "scroll",
-    "optimism-sepolia",
-    "degen-chain"
+    "optimism-sepolia"
   ]
 }

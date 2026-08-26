@@ -157,19 +157,6 @@ export const networks = [
       `https://celoscan.io/address/${address}`
   },
   {
-    displayName: 'Degen Chain',
-    slugName: 'degen',
-    isTestnet: false,
-    supportsGDA: getSupportsGDA(666666666),
-    chainId: 666666666,
-    rpcUrl: getRpcUrl(666666666),
-    subgraphUrl: getSubgraphUrl(666666666),
-    getLinkForTransaction: (txHash: string): string =>
-      `https://explorer.degen.tips/tx/${txHash}`,
-    getLinkForAddress: (address: string): string =>
-      `https://explorer.degen.tips/address/${address}`
-  },
-  {
     displayName: 'Scroll',
     isTestnet: false,
     supportsGDA: getSupportsGDA(534352),
