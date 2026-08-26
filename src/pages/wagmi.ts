@@ -1,6 +1,7 @@
 import { Transport } from 'viem'
 import {
   arbitrum,
+  arcTestnet,
   avalanche,
   avalancheFuji,
   base,
@@ -33,7 +34,8 @@ const allWagmiChains = [
   avalancheFuji,
   sepolia,
   optimismSepolia,
-  baseSepolia
+  baseSepolia,
+  arcTestnet
 ] as const
 
 if (allWagmiChains.length !== networks.length) {

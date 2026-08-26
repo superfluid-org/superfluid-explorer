@@ -221,6 +221,19 @@ export const networks = [
       `https://sepolia.basescan.org/tx/${txHash}`,
     getLinkForAddress: (address: string): string =>
       `https://sepolia.basescan.org/address/${address}`
+  },
+  {
+    displayName: 'Arc Testnet',
+    slugName: 'arc-testnet',
+    isTestnet: true,
+    supportsGDA: getSupportsGDA(5042002),
+    chainId: 5042002,
+    rpcUrl: getRpcUrl(5042002),
+    subgraphUrl: getSubgraphUrl(5042002),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://testnet.arcscan.app/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://testnet.arcscan.app/address/${address}`
   }
 ] as const
 
