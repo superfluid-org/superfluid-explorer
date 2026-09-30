@@ -1,6 +1,7 @@
 import { Transport } from 'viem'
 import {
   arbitrum,
+  arc,
   arcTestnet,
   avalanche,
   avalancheFuji,
@@ -31,6 +32,7 @@ const allWagmiChains = [
   celo,
   base,
   scroll,
+  arc,
   avalancheFuji,
   sepolia,
   optimismSepolia,

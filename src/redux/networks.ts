@@ -169,6 +169,19 @@ export const networks = [
     getLinkForAddress: (address: string): string =>
       `https://scrollscan.com/address/${address}`
   },
+  {
+    displayName: 'Arc',
+    isTestnet: false,
+    supportsGDA: getSupportsGDA(5042),
+    chainId: 5042,
+    slugName: 'arc-mainnet',
+    rpcUrl: getRpcUrl(5042),
+    subgraphUrl: getSubgraphUrl(5042),
+    getLinkForTransaction: (txHash: string): string =>
+      `https://explorer.arc.io/tx/${txHash}`,
+    getLinkForAddress: (address: string): string =>
+      `https://explorer.arc.io/address/${address}`
+  },
   // testnets
   {
     displayName: 'Avalanche Fuji',
