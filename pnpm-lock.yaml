@@ -54,8 +54,8 @@ importers:
         specifier: ^1.13.1
         version: 1.13.1(next@12.3.7(@babel/core@7.23.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@superfluid-finance/metadata':
-        specifier: ^1.6.4
-        version: 1.6.4
+        specifier: ^1.6.5
+        version: 1.6.5
       '@superfluid-finance/sdk-core':
         specifier: ^0.8.0
         version: 0.8.0(@openzeppelin/test-helpers@0.5.16(bn.js@5.2.5)(bufferutil@4.1.0)(utf-8-validate@5.0.10))(bufferutil@4.1.0)(ethers@5.7.1(bufferutil@4.1.0)(utf-8-validate@5.0.10))(graphql@16.14.2)(ts-node@10.9.2(@types/node@20.19.43)(typescript@5.9.3))(typescript@5.9.3)(utf-8-validate@5.0.10)
@@ -3089,8 +3089,8 @@ packages:
     peerDependencies:
       ethers: 5.7.1
 
-  '@superfluid-finance/metadata@1.6.4':
-    resolution: {integrity: sha512-lqAcodeGsO3DYN6OCx/e0AePU6yAn9wNT6cXwcED/DN+vWsQVEgVsSjY00AzDeCFFjCeomx64zZL917GV7rv2w==}
+  '@superfluid-finance/metadata@1.6.5':
+    resolution: {integrity: sha512-CDM0YInnc/7f/S9VCyD6hQsCtUATA4w26+BXXAUS6ke0JDWfjg+7ev9WXwdiQl1BqfCDQ9X7BOB5k9uI6CXV0g==}
 
   '@superfluid-finance/sdk-core@0.8.0':
     resolution: {integrity: sha512-fgPg1TGOIWJ1keeIxnKyB/9pwxB+8kIiCXKeVJa0Kqpo8o0S0zFUeDQdt5FuesTZWDE1GNgRbGfKPUlg/SYB2A==}
@@ -14646,12 +14646,12 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@superfluid-finance/metadata@1.6.4': {}
+  '@superfluid-finance/metadata@1.6.5': {}
 
   '@superfluid-finance/sdk-core@0.8.0(@openzeppelin/test-helpers@0.5.16(bn.js@5.2.5)(bufferutil@4.1.0)(utf-8-validate@5.0.10))(bufferutil@4.1.0)(ethers@5.7.1(bufferutil@4.1.0)(utf-8-validate@5.0.10))(graphql@16.14.2)(ts-node@10.9.2(@types/node@20.19.43)(typescript@5.9.3))(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@superfluid-finance/ethereum-contracts': 1.11.0(@openzeppelin/test-helpers@0.5.16(bn.js@5.2.5)(bufferutil@4.1.0)(utf-8-validate@5.0.10))(bufferutil@4.1.0)(ethers@5.7.1(bufferutil@4.1.0)(utf-8-validate@5.0.10))(ts-node@10.9.2(@types/node@20.19.43)(typescript@5.9.3))(typescript@5.9.3)(utf-8-validate@5.0.10)
-      '@superfluid-finance/metadata': 1.6.4
+      '@superfluid-finance/metadata': 1.6.5
       browserify: 17.0.0
       ethers: 5.7.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       graphql: 16.14.2
