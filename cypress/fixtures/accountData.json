@@ -160,7 +160,7 @@
       "incoming": [],
       "outgoing": [
         {
-          "token": "USDCx",
+          "token": "USDC.ex",
           "receiver": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
           "flowRate": 0,
           "totalStreamed": 0.0000972222222221
