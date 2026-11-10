@@ -191,17 +191,17 @@
       {
         "name": "Transfer",
         "blockNumber": "87227782",
-        "shortTransactionHash": "0xa1f55..."
+        "shortTransactionHash": "0xa1f5..."
       },
       {
         "name": "TokenDowngraded",
         "blockNumber": "87227782",
-        "shortTransactionHash": "0xa1f55..."
+        "shortTransactionHash": "0xa1f5..."
       },
       {
         "name": "Burned",
         "blockNumber": "87227782",
-        "shortTransactionHash": "0xa1f55..."
+        "shortTransactionHash": "0xa1f5..."
       },
       {
         "name": "FlowUpdated",
