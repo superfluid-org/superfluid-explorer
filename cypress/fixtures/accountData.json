@@ -173,14 +173,14 @@
     },
     "superTokens": [
       {
-        "tokenName": "Super MATIC (MATICx)",
+        "tokenName": "Super POL (POLx)",
         "balance": "4",
         "activeStreamCount": 0,
         "closedStreamCount": 0,
         "subscriptionWithUnitsCount": 0
       },
       {
-        "tokenName": "Super USDC (PoS) (USDCx)",
+        "tokenName": "Super USDC (PoS) (USDC.ex)",
         "balance": "0.0000007777927779",
         "activeStreamCount": 0,
         "closedStreamCount": 1,
