@@ -12,7 +12,7 @@ const NETWORK_RIGHT_ARROW = '[data-testid=KeyboardArrowRightIcon]'
 const TOKENS_BUTTON = '[data-cy=token-page-button]'
 
 //Links
-const TERMS_OF_USE_LINK = 'https://www.superfluid.finance/termsofuse/'
+const TERMS_OF_USE_LINK = 'https://superfluid.org/terms-of-use'
 const PRIVACY_POLICY_LINK =
   'https://www.iubenda.com/privacy-policy/34415583/legal'
 const SUPERFLUID_PROTOCOL_LINK =

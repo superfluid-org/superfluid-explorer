@@ -143,16 +143,12 @@
   },
   "matic": {
     "ongoingStreamAccount": {
-      "address": "0xEb85888b31FADF79CB264d065EdcB4a14551c28d",
+      "address": "0x6eeca384392a814c1e030cf97dc5b8d51aa205eb",
       "streams": {
-        "incoming": [
-          {
-            "flowRate": "0.000000001929012345"
-          }
-        ],
+        "incoming": [],
         "outgoing": [
           {
-            "flowRate": "0.000000003858024691"
+            "flowRate": "0.095129375951293759"
           }
         ]
       }
@@ -164,7 +160,7 @@
       "incoming": [],
       "outgoing": [
         {
-          "token": "USDC.ex",
+          "token": "USDCx",
           "receiver": "0xF9Ce34dFCD3cc92804772F3022AF27bCd5E43Ff2",
           "flowRate": 0,
           "totalStreamed": 0.0000972222222221
@@ -177,21 +173,36 @@
     },
     "superTokens": [
       {
-        "tokenName": "Super USDC (PoS) (USDC.ex)",
-        "balance": "4.9999027777927779",
-        "activeStreamCount": 0,
-        "closedStreamCount": 1,
-        "subscriptionWithUnitsCount": 0
-      },
-      {
-        "tokenName": "Super POL (POLx)",
+        "tokenName": "Super MATIC (MATICx)",
         "balance": "4",
         "activeStreamCount": 0,
         "closedStreamCount": 0,
         "subscriptionWithUnitsCount": 0
+      },
+      {
+        "tokenName": "Super USDC (PoS) (USDCx)",
+        "balance": "0.0000007777927779",
+        "activeStreamCount": 0,
+        "closedStreamCount": 1,
+        "subscriptionWithUnitsCount": 0
       }
     ],
     "events": [
+      {
+        "name": "Transfer",
+        "blockNumber": "87227782",
+        "shortTransactionHash": "0xa1f55..."
+      },
+      {
+        "name": "TokenDowngraded",
+        "blockNumber": "87227782",
+        "shortTransactionHash": "0xa1f55..."
+      },
+      {
+        "name": "Burned",
+        "blockNumber": "87227782",
+        "shortTransactionHash": "0xa1f55..."
+      },
       {
         "name": "FlowUpdated",
         "blockNumber": "17936924",
@@ -213,17 +224,7 @@
         "shortTransactionHash": "0xfdfa..."
       },
       {
-        "name": "Sent",
-        "blockNumber": "17935699",
-        "shortTransactionHash": "0xfdfa..."
-      },
-      {
         "name": "Transfer",
-        "blockNumber": "17935647",
-        "shortTransactionHash": "0x5124..."
-      },
-      {
-        "name": "Sent",
         "blockNumber": "17935647",
         "shortTransactionHash": "0x5124..."
       },
@@ -234,11 +235,6 @@
       },
       {
         "name": "TokenUpgraded",
-        "blockNumber": "17935626",
-        "shortTransactionHash": "0x781c..."
-      },
-      {
-        "name": "Minted",
         "blockNumber": "17935626",
         "shortTransactionHash": "0x781c..."
       }
