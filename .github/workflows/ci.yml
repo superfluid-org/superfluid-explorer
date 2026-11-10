@@ -32,7 +32,7 @@ jobs:
         run: CYPRESS_DOWNLOAD_MIRROR=https://cy-cdn.currents.dev pnpm install
 
       - name: Cypress tests
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7.4.6
         with:
           command: pnpm cypress-cloud run --browser ${{ matrix.browser }} --record --parallel --key ${{ secrets.CYPRESS_CONSOLE_RECORD_KEY }} --ci-build-id ui-${{ github.repository }}-${{ github.run_id }}-${{ github.run_attempt}}
           start: pnpm dev

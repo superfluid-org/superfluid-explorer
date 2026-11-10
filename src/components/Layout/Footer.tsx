@@ -17,7 +17,7 @@ const Footer: FC = () => {
         By using this web app, you accept our{' '}
         <AppLink
           data-cy={'terms-of-use-link'}
-          href="https://www.superfluid.finance/termsofuse/"
+          href="https://superfluid.org/terms-of-use"
           target="_blank"
           rel="noreferrer"
         >
