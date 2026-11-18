@@ -1,7 +1,7 @@
 <h1 align="center">Welcome to Superfluid Explorer repository 👋</h1>
 
 <p>
-  <a href="https://x.com/Superfluid_HQ/status/" target="_blank">
+  <a href="https://x.com/Superfluid_HQ" target="_blank">
     <img alt="X (Twitter): Superfluid_HQ" src="https://img.shields.io/twitter/follow/Superfluid_HQ.svg?style=social" />
   </a>
 </p>
